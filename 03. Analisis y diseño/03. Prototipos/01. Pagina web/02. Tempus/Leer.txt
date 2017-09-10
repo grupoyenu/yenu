@@ -1,0 +1,18 @@
+El proyecto "Administrador" corresponde a "PENCIL".
+
+Contiene el menu de opciones correspondientes al actor "Administrador".
+
+1. Usuarios
+	a. Crear.
+	b. Borrar / Modificar.
+
+2. Roles
+	a. Crear.
+	b. Borrar / Modificar.
+
+3. Permisos
+	a. Crear.
+	b. Borrar / Modificar.
+
+
+Ver uargflow.
