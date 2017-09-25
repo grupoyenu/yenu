@@ -1,0 +1,29 @@
+
+HORARIOS DE CURSADA
+
+	1. SELECT * FROM `clase` cl, `cursada` cu WHERE cl.`idclase` = cu.`idclase`
+
+	2. SELECT cl.`idclase`, cu.`idcarrera`, cu.`idasignatura`, cl.`dia`, cl.`desde`, cl.`hasta` 
+		FROM `clase` cl, `cursada` cu 
+		WHERE cl.`idclase` = cu.`idclase`
+
+	3. SELECT cl.`idclase`, cu.`idcarrera`, cu.`idasignatura`, cl.`dia`, cl.`desde`, cl.`hasta`, a.`sector`, a.`numero` 
+		FROM `clase` cl, `cursada` cu, `aula` a  
+		WHERE cl.`idclase` = cu.`idclase` AND cl.`idaula` = a.`idaula`
+
+	4. 
+
+AULAS
+
+	1. SELECT cl.`idclase`, cu.`idcarrera`, cu.`idasignatura`, cl.`dia`, cl.`desde`, cl.`hasta`, a.`sector`, a.`numero` 
+		FROM `clase` cl, `cursada` cu, `aula` a  
+		WHERE cl.`idclase` = cu.`idclase` AND cl.`idaula` = a.`idaula` AND  a.`sector`='A'
+
+	2. SELECT cl.`idclase`, cu.`idcarrera`, cu.`idasignatura`, cl.`dia`, cl.`desde`, cl.`hasta`, a.`sector`, a.`numero` 
+		FROM `clase` cl, `cursada` cu, `aula` a  
+		WHERE cl.`idclase` = cu.`idclase` AND cl.`idaula` = a.`idaula` AND  a.`sector`='A' AND a.`numero`=3
+
+	3. SELECT cl.`idclase`, cu.`idcarrera`, cu.`idasignatura`, cl.`dia`, cl.`desde`, cl.`hasta`, a.`sector`, a.`numero` 
+		FROM `clase` cl, `cursada` cu, `aula` a  
+		WHERE cl.`idclase` = cu.`idclase` AND cl.`idaula` = a.`idaula` AND  a.`sector`='A' AND a.`numero`=3 
+       		ORDER BY  cl.`dia`
