@@ -83,10 +83,22 @@ class Carrera
         $this->nombre = $nombre;
     }
     
-    
-    public function crear($codigo, $nombre) 
+    /**
+     * Realiza la creacion de una nueva carrera en la base de datos. Para ello,
+     * se hace una búsqueda para verificar que la carrera no exista. En caso que
+     * la carrera exista, se obtienen sus datos. En caso contrario, se crea un
+     * nuevo registro.
+     * @param integer $codigo Codigo de la Carrera (Obligatorio).
+     * @param string $nombre Nombre de la Carrera (Obligatorio).
+     * */
+    public function crear($codigo, $nombre)
     {
-        
+        $this->buscar($codigo, $nombre);
+        if (is_null($this->codigo)) {
+            ObjetoDatos::getInstancia()->ejecutarQuery("INSERT INTO carrera VALUES (".$codigo.",'".$nombre."')");
+            $this->codigo = $codigo;
+            $this->nombre = $nombre;
+        }
     }
     
     /**
@@ -112,16 +124,29 @@ class Carrera
      * Busca a una carrera en la base de datos utilizando su nombre. Si la carrera
      * se encuentra cargada en la base de datos se actualizan los atributos codigo y
      * nombre. En caso contrario, los atributos serán nulos.
-     * La búsqueda en la base de datos se realiza igualando el parametro ingresado
-     * con el campo nombre de la tabla carrera. No se obtienen similares.
-     * @param $nombre String Recibe el nombre de la carrera a buscar.
+     * La búsqueda en la base de datos se realiza igualando los parametros dados con 
+     * los campos de la tabla carrera. No se obtienen similares.
+     * Se puede realizar la búsqueda combinando codigo y carrera. No se admite una
+     * búsqueda para los dos campos nulos a la vez. Se puede usar la combinacion que
+     * sigue codigo-null, null-nombre o codigo-nombre.
+     * @param $codigo integer Recibe el codigo de la carrera (Opcional).
+     * @param $nombre string Recibe el nombre de la carrera a buscar (Opcional).
      * */
-    public function buscar($nombre)
+    public function buscar($codigo = null, $nombre = null)
     {
-        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery(""
-            ."SELECT * "
-            ."FROM carrera "
-            ."WHERE nombre = '".$nombre."'");
+        $consulta = "SELECT * FROM carrera WHERE ";
+        if ($codigo) {
+            $consulta = $consulta." codigo = ".$codigo. " ";
+            if ($nombre) {
+                $consulta = $consulta." AND nombre = '".$nombre."'";
+            }
+        } else {
+            if ($nombre) {
+                $consulta = $consulta." nombre = '".$nombre."'";
+            }
+        }
+        
+        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
         if ($this->datos->num_rows > 0) {
             foreach ($this->datos->fetch_assoc() as $atributo => $valor) {
                 $this->{$atributo} = $valor;
@@ -130,6 +155,7 @@ class Carrera
             $this->codigo = null;
             $this->nombre = null;
         }
+        $consulta = null;
         $this->datos = null;
     }
 

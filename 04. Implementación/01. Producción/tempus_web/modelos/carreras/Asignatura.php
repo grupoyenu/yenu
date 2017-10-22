@@ -32,7 +32,7 @@ class Asignatura
             $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery(""
                 ."SELECT * "
                 ."FROM asignatura "
-                ."WHERE idasignatura = ".$codigo);
+                ."WHERE idasignatura = ".$idasignatura);
             if ($this->datos->num_rows > 0) {
                 foreach ($this->datos->fetch_assoc() as $atributo => $valor) {
                     $this->{$atributo} = $valor;

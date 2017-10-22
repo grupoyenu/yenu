@@ -55,7 +55,7 @@ class ObjetoDatos extends mysqli {
     
     /**
      * Ejecuta una consulta en la base de datos y se asigna al atributo de clase datos.
-     * @param $consulta_ Consulta SQL que se desea realizar. 
+     * @param mysqli_result $consulta_ Consulta SQL que se desea realizar. 
      * */
     function setDatos($consulta_ = null) 
     {
@@ -64,7 +64,7 @@ class ObjetoDatos extends mysqli {
     
     /**
      * Ejecuta una consulta en la base de datos y devuelve el resultado.
-     * @param type $consulta_
+     * @param string $consulta_
      * @return mysqli_result
      */
     function ejecutarQuery($consulta_ = null) 

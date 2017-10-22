@@ -1,6 +1,7 @@
 <?php
 require_once 'Carrera.php';
 require_once 'Asignatura.php';
+require_once '../lib/conf/ObjetoDatos.php';
 
 /**
  * Esta clase corresponde con la tabla asignaturas-carreras de la base de datos.
@@ -26,14 +27,27 @@ class Plan
     /** @var integer */
     private $anio;
     
+    /** @var mysqli_result Resultado de una consulta a la base de datos. */
+    private $datos;
+    
     /**
-     * 
-     * @param integer $idasignatura Recibe el identificador de la Asignatura.
-     * @param integer $idcarrera Recibe el identificador de la Carrera.
+     * Constructor de clase.
+     * @param integer $idasignatura Identificador de la Asignatura (Opcional).
+     * @param integer $idcarrera Identificador de la Carrera (Opcional).
      * */
     function __construct($idasignatura = null, $idcarrera = null) 
     {
-        
+        if($idasignatura && $idcarrera) {
+            $consulta = "SELECT * FROM asignatura_carrera WHERE idasignatura = ".$idasignatura." AND idcarrera =".$idcarrera;
+            $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+            if ($this->datos->num_rows > 0) {
+                $fila = $this->datos->fetch_row();
+                $this->asignatura = new Asignatura($fila[0]);
+                $this->carrera = new Carrera($fila[1]);
+                $this->anio = $fila[2];
+            } 
+            $this->datos = null;
+        }
     }
     
     /**
@@ -98,7 +112,12 @@ class Plan
      * */
     public function crear($idasignatura, $idcarrera, $anio)
     {
-        
+        $this->buscar($idasignatura, $idcarrera);
+        if(is_null($this->asignatura) && is_null($this->carrera)) {
+            $consulta = "INSERT INTO asignatura_carrera VALUES (".$idasignatura.",".$idcarrera.",".$anio.")";
+            ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+        }
+        $this->datos = null;
     }
     
     public function borrar($idasignatura, $idcarrera)
@@ -108,14 +127,24 @@ class Plan
     
     /**
      * Realiza la busqueda de una relación asignatura-carrera.
-     * @param integer $idasignatura Recibe el identificador de la Asignatura. 
+     * @param integer $idasignatura Recibe el identificador de la Asignatura.
      * @param integer $idcarrera Recibe el identificador de la Carrera.
      * */
     public function buscar($idasignatura, $idcarrera)
     {
-        
+        $consulta = "SELECT * FROM asignatura_carrera WHERE idasignatura = ".$idasignatura." AND idcarrera = ".$idcarrera;
+        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+        if ($this->datos->num_rows > 0) {
+            $fila = $this->datos->fetch_row();
+            $this->asignatura = new Asignatura($fila[0]);
+            $this->carrera = new Carrera($fila[1]);
+            $this->anio = $fila[2];
+        } else {
+            $this->asignatura = null;
+            $this->carrera = null;
+            $this->anio = null;
+        }
+        $this->datos = null;
     }
-    
-    
-    
+   
 }

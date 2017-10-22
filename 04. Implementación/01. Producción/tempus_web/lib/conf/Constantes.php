@@ -13,7 +13,7 @@ class Constantes {
     
     const SERVER = "http://localhost";
     const APPURL = "http://localhost/tempus";
-    const HOMEURL = "http://localhost/tempus/ ...";
+    const HOMEURL = "http://localhost/tempus/vistas/estructura/home.php";
     const HOMEAUTH = "http://localhost/tempus/ ...";
     
     const BD_SCHEMA = "tempus";
