@@ -10,23 +10,17 @@ class MesaExamen
     /** @var integer Identificador de la mesa en la base de datos. */
     private $idmesa;
     
-    /** @var Aula Aula en el que se dicta la mesa (Si tuviera asignada). */
-    private $aula;
-    
-    /** @var string Fecha en formato YYYY/MM/DD */
-    private $fecha;
-    
-    /** @var string Hora en formato HH:MM:SS */
-    private $hora;
-    
-    /** @var integer 1 es primer llamado, 2 es segundo llamado. */
-    private $llamado;
-    
     /** @var Plan Asignatura y Carrera a la que pertenece la mesa. */
     private $plan;
     
     /** @var Tribunal Tribunal de la mesa. */
     private $tribunal;
+    
+    /** @var Llamado Primer llamado. */
+    private $primero;
+    
+    /**@var Llamado Segundo llamado.  */
+    private $segundo;
     
     /** @var mysqli_result Resultado de una consulta a la base de datos. */
     private $datos;
@@ -35,10 +29,9 @@ class MesaExamen
     {
        
     }
-   
+    
     /**
-     * Devuelve el identificador la mesa.
-     * @return integer $idmesa
+     * @return the $idmesa
      */
     public function getIdmesa()
     {
@@ -46,44 +39,7 @@ class MesaExamen
     }
 
     /**
-     * Devuelve el identificador del aula.
-     * @return integer $aula
-     */
-    public function getAula()
-    {
-        return $this->aula;
-    }
-
-    /**
-     * Devuelve la fecha de mesa.
-     * @return string $fecha
-     */
-    public function getFecha()
-    {
-        return $this->fecha;
-    }
-
-    /**
-     * Devuelve la hora de la mesa.
-     * @return string $hora
-     */
-    public function getHora()
-    {
-        return $this->hora;
-    }
-
-    /**
-     * Devuelve el llamado de la mesa.
-     * @return integer $llamado
-     */
-    public function getLlamado()
-    {
-        return $this->llamado;
-    }
-
-    /**
-     * Devuelve el plan al que pertenece la mesa.
-     * @return Plan $plan
+     * @return the $plan
      */
     public function getPlan()
     {
@@ -91,8 +47,7 @@ class MesaExamen
     }
 
     /**
-     * Devuelve el tribunal de mesa.
-     * @return Tribunal $tribunal
+     * @return the $tribunal
      */
     public function getTribunal()
     {
@@ -100,8 +55,23 @@ class MesaExamen
     }
 
     /**
-     * Modifica el identificador de la mesa.
-     * @param integer $idmesa
+     * @return the $primero
+     */
+    public function getPrimero()
+    {
+        return $this->primero;
+    }
+
+    /**
+     * @return the $segundo
+     */
+    public function getSegundo()
+    {
+        return $this->segundo;
+    }
+
+    /**
+     * @param number $idmesa
      */
     public function setIdmesa($idmesa)
     {
@@ -109,43 +79,6 @@ class MesaExamen
     }
 
     /**
-     * Modifica el aula donde se desarrolla la mesa.
-     * @param Aula $aula
-     */
-    public function setAula($aula)
-    {
-        $this->aula = $aula;
-    }
-
-    /**
-     * Modifica la fecha de mesa.
-     * @param string $fecha
-     */
-    public function setFecha($fecha)
-    {
-        $this->fecha = $fecha;
-    }
-
-    /**
-     * Modifica la hora de la mesa.
-     * @param string $hora
-     */
-    public function setHora($hora)
-    {
-        $this->hora = $hora;
-    }
-
-    /**
-     * Modifica el llamado de mesa.
-     * @param integer $llamado
-     */
-    public function setLlamado($llamado)
-    {
-        $this->llamado = $llamado;
-    }
-
-    /**
-     * Modifica el plan al que pertenece la mesa.
      * @param Plan $plan
      */
     public function setPlan($plan)
@@ -154,48 +87,86 @@ class MesaExamen
     }
 
     /**
-     * Modifica el tribunal de la mesa.
      * @param Tribunal $tribunal
      */
     public function setTribunal($tribunal)
     {
         $this->tribunal = $tribunal;
     }
+
+    /**
+     * @param Llamado $primero
+     */
+    public function setPrimero($primero)
+    {
+        $this->primero = $primero;
+    }
+
+    /**
+     * @param Llamado $segundo
+     */
+    public function setSegundo($segundo)
+    {
+        $this->segundo = $segundo;
+    }
     
     /**
-     * Realiza la creación de una nueva mesa de examen. Para ello, primero se realiza
-     * una búsqueda para verificar que no exista la mesa. Si la mesa de examen ya 
-     * existe (Asignatura-Carrera y llamado), se obtiene la información de la misma.
-     * En caso contrario, se realiza la creación del registro y se obtiene el idmesa.
-     * @param Plan $plan (Obligatorio).
-     * @param Tribunal $tribunal Tribunal de mesa (Obligatorio).
-     * @param Aula $aula Aula donde se dicta la mesa (Opcional).
-     * @param string $fecha Fecha en formato YYYY-MM-DD (Obligatorio).
-     * @param string $hora Hora HH:MM (Obligatorio).
-     * @param integer $llamado 1 - Primer llamado o 2 - Segundo llamado (Obligatorio).
+     * Realiza la creacion de una nueva mesa de examen. Primero se realiza la búsqueda de 
+     * mesa de examen. En caso que exista, se obtiene su información. En caso contrario, 
+     * se crea un nuevo registro. Para ello, tambien se hace la creacion del tribunal, 
+     * primer llamado y segundo llamado. 
+     * @param Plan $plan El plan debe existir en la base de datos (Obligatorio).
+     * @param Tribunal $tribunal El tribunal se busca. Luego se obtiene o crea (Obligatorio).
+     * @param Llamado $primero El llamado se crea (Obligatorio).
+     * @param Llamado $segundo El llamado se crea (Opcional).
      * */
-    public function crear($plan, $tribunal, $aula = null, $fecha, $hora, $llamado)
-    {
-        $this->buscar($plan, $llamado);
+    public function crear($plan, $tribunal, $primero, $segundo) {
+        $this->buscar($plan);
         if (is_null($this->idmesa)) {
-            /* No se ha encontrado una mesa de examen. Se crea una nueva. */
-            $idasignatura = $plan->getAsignatura()->getIdasignatura();
-            $idcarrera = $plan->getCarrera()->getCodigo();
-            $idtribunal = $tribunal->getIdtribunal();
-            $idaula = "NULL";
-            if ($aula) {
-                $idaula = $aula->getIdaula();
+            /* No se ha encontrado una mesa de examen - Se crea una nueva. */
+            
+            $presidente = $tribunal->getPresidente()->getIdDocente();
+            $vocal1 = $tribunal->getVocal1()->getIdDocente();
+            $vocal2 = $tribunal->getVocal2()->getIdDocente();
+            $suplente = $tribunal->getSuplente()->getIdDocente();
+            
+            $tribunal->crear($presidente, $vocal1, $vocal2, $suplente);
+            
+            
+            if ($tribunal->getIdtribunal()) {
+                /* Se ha creado el tribunal */
+                $primero->crear($primero->getFecha(), $primero->getHora(), $primero->getAula());
+                if ($segundo) {
+                    $segundo->crear($segundo->getFecha(), $segundo->getHora(), $segundo->getAula());
+                }
+                
+                $idasignatura = $plan->getAsignatura()->getIdasignatura();
+                $idcarrera = $plan->getCarrera()->getCodigo();
+                
+                $consulta = "INSERT INTO mesa_examen VALUES ";
+                $consulta = $consulta."(null,".$idasignatura.",".$idcarrera.",".$tribunal->getIdtribunal().",".$primero->getIdllamado().",".$segundo->getIdllamado().")";
+                ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+                
+                if (ObjetoDatos::getInstancia()->affected_rows > 0) {
+                    $this->idmesa = (Int) ObjetoDatos::getInstancia()->insert_id;
+                    $this->plan = $plan;
+                    $this->tribunal = $tribunal;
+                    $this->primero = $primero;
+                    $this->segundo = $segundo;
+                } else {
+                    $this->idmesa = null;
+                    $this->plan = null;
+                    $this->tribunal = null;
+                    $this->primero = null;
+                    $this->segundo = null;
+                }
+            } else {
+                $this->idmesa = null;
+                $this->plan = null;
+                $this->tribunal = null;
+                $this->primero = null;
+                $this->segundo = null;
             }
-            $consulta = "INSERT INTO mesa_examen VALUES ";
-            $consulta = $consulta."(null,".$idasignatura.",".$idcarrera.",".$idaula.",".$idtribunal.",'".$fecha."','".$hora."',".$llamado.")";
-            ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
-            $this->idmesa = (Int) ObjetoDatos::getInstancia()->insert_id;
-            $this->plan = $plan;
-            $this->tribunal = $tribunal;
-            $this->aula = $aula;
-            $this->fecha = $fecha;
-            $this->hora = $hora;
-            $this->llamado = $llamado;
         }
     }
     
@@ -207,38 +178,35 @@ class MesaExamen
     }
     
     /**
-     * Realiza la búsqueda de una mesa de examen.
-     * @param Plan $plan
+     * Realiza la búsqueda de una mesa de examen. Cuando se encuentra la mesa de examen
+     * se obtiene toda la información asociada. En caso contrario, cada uno de sus atributos
+     * seran nulos. 
+     * @param Plan $plan Recibe la asignatura y carrera de la mesa de examen (Obligatorio).
      * */
-    public function buscar($plan, $llamado)
+    public function buscar($plan)
     {
         $idasignatura = $plan->getAsignatura()->getIdasignatura();
         $idcarrera = $plan->getCarrera()->getCodigo();
         $consulta = "SELECT * FROM mesa_examen WHERE ";
-        $consulta = $consulta."idasignatura = ".$idasignatura." AND idcarrera = ".$idcarrera." AND llamado =".$llamado;
+        $consulta = $consulta."idasignatura = ".$idasignatura." AND idcarrera = ".$idcarrera;
         $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
         if ($this->datos->num_rows > 0) {
             
             $fila = $this->datos->fetch_row();
             $this->idmesa = $fila[0];
             $this->plan = $plan;
-            $this->aula = null;
-            if($fila[3]) {
-                $this->aula = new Aula($fila[3]);
+            $this->tribunal = new Tribunal($fila[3]);
+            $this->primero = new Llamado($fila[4]);
+            if($fila[5]) {
+                $this->segundo = new Llamado($fila[5]);
             }
-            $this->tribunal = new Tribunal($fila[4]);
-            $this->fecha = $fila[5];
-            $this->hora = $fila[6];
-            $this->llamado = $fila[7];
             
         } else {
             $this->idmesa = null;
             $this->plan = null;
-            $this->aula = null;
             $this->tribunal = null;
-            $this->fecha = null;
-            $this->hora = null;
-            $this->llamado = null;
+            $this->primero = null;
+            $this->segundo = null;
         }
         $this->datos = null;
     }

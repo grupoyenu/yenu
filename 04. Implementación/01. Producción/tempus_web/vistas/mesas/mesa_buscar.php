@@ -1,5 +1,5 @@
 
-<?php header('Content-Type: text/html; charset=ISO-8859-1');?>
+<?php header('Content-Type: text/html; charset=ISO-8859-1'); ?>
 
 <html>
 	<?php include_once '../estructura/encabezado.php'; ?>

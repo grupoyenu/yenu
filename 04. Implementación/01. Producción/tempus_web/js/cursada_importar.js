@@ -4,7 +4,7 @@
 
 $(document).ready(function() {
 	
-	$("table#tablaImportarMesas").DataTable({
+	$("table#tablaImportarCursadas").DataTable({
 		dom: 'Bfrtip',
         buttons: [
         	{

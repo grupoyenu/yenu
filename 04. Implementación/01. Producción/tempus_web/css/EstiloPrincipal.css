@@ -297,6 +297,13 @@
 		border-color: #006200;
 	}
 	
+	.rojo{
+		color:#3a3a3a;
+		background-color: #d56500;
+		bgcolor:#ffa953;
+		border-color: black;
+	}
+	
 	input[type='text'], input[type='number'], select, input[type='date'] {
 		border: 1px solid;
 		border-color: #CCC;

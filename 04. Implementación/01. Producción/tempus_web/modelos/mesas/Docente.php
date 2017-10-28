@@ -34,14 +34,13 @@ class Docente
     function __construct($iddocente = null)
     {
         if($iddocente) {
-            $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery(""
-                ."SELECT * " 
-                ."FROM docente "
-                ."WHERE iddocente = ".$iddocente);
+            $consulta = "SELECT * FROM docente WHERE iddocente = ".$iddocente." LIMIT 1";
+            $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
             if ($this->datos->num_rows > 0) {
-                foreach ($this->datos->fetch_assoc() as $atributo => $valor) {
-                    $this->{$atributo} = $valor;
-                }
+                /* Se ha encontrado un docente que cumple la condicion de busqueda */
+                $fila = $this->datos->fetch_row();
+                $this->iddocente = $fila[0];
+                $this->nombre = $fila[1];
             }
             $this->datos = null;
         }
@@ -90,28 +89,26 @@ class Docente
         $this->buscar($nombre);
         if (is_null($this->iddocente)) {
             ObjetoDatos::getInstancia()->ejecutarQuery("INSERT INTO docente VALUES (null,'".$nombre."')");
-            $this->iddocente = (Int) ObjetoDatos::getInstancia()->insert_id;
-            $this->nombre = $nombre;
+            if (ObjetoDatos::getInstancia()->affected_rows > 0) {
+                $this->iddocente = (Int) ObjetoDatos::getInstancia()->insert_id;
+                $this->nombre = $nombre;
+            }
         }
     }
     
     /**
      * Se borra al docente de la base de datos. En caso que se elimine correctamente,
      * el docente queda con los atributos nulos. Caso contrario, mantiene la informacion.
-     * @return bool 
+     * @param integer $iddocente Identificador del docente a borrar (Obligatorio).
      * */
     public function borrar($iddocente)
     {
-        try {
-            
-            ObjetoDatos::getInstancia()->ejecutarQuery("DELETE FROM docente WHERE iddocente = ".$iddocente);
+        $consulta = "DELETE FROM docente WHERE iddocente = ".$iddocente;
+        ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+        if (ObjetoDatos::getInstancia()->affected_rows > 0) {
             $this->iddocente = null;
             $this->nombre = null;
-            
-        } catch(Exception $exception) {
-            return 0;
         }
-      return 1;
     }
     
     /**
@@ -124,15 +121,15 @@ class Docente
      * */
     public function buscar($nombre)
     {
-        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery(""
-            ."SELECT * "
-            ."FROM docente "
-            ."WHERE nombre = '".$nombre."'");
+        $consulta = "SELECT * FROM docente WHERE nombre = '".$nombre."' LIMIT 1";
+        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
         if ($this->datos->num_rows > 0) {
-            foreach ($this->datos->fetch_assoc() as $atributo => $valor) {
-                $this->{$atributo} = $valor;
-            }
+            /* Se ha encontrado un docente que cumple la condicion de busqueda */
+            $fila = $this->datos->fetch_row();
+            $this->iddocente = $fila[0];
+            $this->nombre = $fila[1];
         } else {
+            /* No se ha encontrado un docente */
             $this->iddocente = null;
             $this->nombre = null;
         }

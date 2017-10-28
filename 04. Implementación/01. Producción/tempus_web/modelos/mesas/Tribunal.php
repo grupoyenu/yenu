@@ -173,7 +173,6 @@ class Tribunal
         }
     }
     
-    
     public function borrar()
     {
         
@@ -205,6 +204,7 @@ class Tribunal
             /* Si no hay vocal2 no deberia haber suplente */
             $consulta = $consulta. " AND vocal2 IS NULL AND suplente IS NULL";
         }
+       
         
         $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
         if ($this->datos->num_rows > 0) {

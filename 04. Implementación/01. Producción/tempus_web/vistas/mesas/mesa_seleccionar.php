@@ -1,5 +1,7 @@
 <html>
+
 	<?php include_once '../estructura/encabezado.php'; ?>
+	
 	<section id="main-content">
 		<article>
 			<div class="content">
@@ -8,7 +10,7 @@
             	<form action="mesa_importar.php" enctype="multipart/form-data" id="formSeleccionarMesas" name="formSeleccionarMesas" method="post" >
             	
             		<fieldset>
-            			<legend>Selecci&oacute;n de archivo</legend>
+            			<legend>Selección de archivo</legend>
             			
             			<label for="fileMesas">Archivo:</label>
            				<input type="file" id="fileMesas" name="fileMesas" accept=".csv">
