@@ -1,0 +1,28 @@
+/**
+ * Este archivo contiene el codigo necesario para realizar los controles del formulario
+ * para seleccionar un archivo de mesas, antes que sea enviado al servidor.
+ * Para ello se hace uso de la biblioteca JQuery.
+ * 
+ * @see jQuery
+ * 
+ * @author Marquez Emanuel.
+ */
+
+$(document).ready(function() {
+	
+	/** Captura el submit para controlar el archivo que se ha seleccionado */
+	$('form#formSeleccionarMesas').submit(function() {		
+		var archivo = $('input#fileMesas').val();
+		/** Controla si no se ha seleccionado un archivo */
+		if (archivo == '') {
+			alert("Se debe seleccionar un archivo");
+			return false;
+		}
+		/** Controla si el archivo seleccionado es CSV */
+		if( document.getElementById("fileMesas").value.toLowerCase().lastIndexOf(".csv") == -1) {
+	        alert("Se debe seleccionar un archivo cuyo formato sea .csv");
+	        return false;
+		}
+	});
+	
+});

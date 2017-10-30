@@ -1,7 +1,7 @@
 <html>
 
 	<?php include_once '../estructura/encabezado.php'; ?>
-	
+	<script type="text/javascript" src="../../js/mesa_seleccionar.js"></script>
 	<section id="main-content">
 		<article>
 			<div class="content">

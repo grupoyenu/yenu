@@ -1,5 +1,4 @@
 <?php
-require_once '../lib/conf/ObjetoDatos.php';
 require_once 'Docente.php';
 
 /**

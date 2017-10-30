@@ -14,31 +14,34 @@ class Cursadas
     public function crear($cursadas = array())
     {
         $mensaje = "";
-        
+        /*
         echo '<pre>'; print_r($cursadas); echo '</pre>';
+        */
         
-        foreach ($cursadas as $cursada) {
+        if($this->borrar()) {
             
-            $plan = $cursada->getPlan();
-            $asignatura = new Asignatura();
-            $asignatura->crear($plan->getAsignatura()->getNombre());
-            
-            $carrera = new Carrera();
-            $carrera->crear($plan->getCarrera()->getCodigo(), $plan->getCarrera()->getNombre());
-            
-            $plan->crear($asignatura->getIdasignatura(), $carrera->getCodigo(), $plan->getAnio());
-            $plan->setAsignatura($asignatura);
-            $plan->setCarrera($carrera);
-            
-            $clases = $cursada->getClases();
-            
-            foreach ($clases as $clase) {
-                $aula = $clase->getAula();
-                $aula->crear($aula->getNombre(), $aula->getNombre());
-            }
-            
-            $cursada->crear($plan, $clases);
-            
+            foreach ($cursadas as $cursada) {
+                
+                $plan = $cursada->getPlan();
+                $asignatura = new Asignatura();
+                $asignatura->crear($plan->getAsignatura()->getNombre());
+                
+                $carrera = new Carrera();
+                $carrera->crear($plan->getCarrera()->getCodigo(), $plan->getCarrera()->getNombre());
+                
+                $plan->crear($asignatura->getIdasignatura(), $carrera->getCodigo(), $plan->getAnio());
+                $plan->setAsignatura($asignatura);
+                $plan->setCarrera($carrera);
+                
+                $clases = $cursada->getClases();
+                
+                foreach ($clases as $clase) {
+                    $aula = $clase->getAula();
+                    $aula->crear($aula->getNombre(), $aula->getSector());
+                }
+                
+                $cursada->crear($plan, $clases);
+            }   
         }
     }
     

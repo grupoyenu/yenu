@@ -5,7 +5,7 @@
  * */
 class Mesas 
 {
-    /** @var array */
+    /** @var MesaExamen[] */
     private $mesas;
     
     /** @var mysqli_result */
@@ -183,6 +183,7 @@ class Mesas
      * Realiza la eliminacion de todas las mesas de examen cargadas en la base 
      * de datos. Para ello se realiza la eliminación de los registros de la tabla
      * mesa de examen, llamado, tribunal y docente.
+     * @author Marquez Emanuel.
      * */
     public function borrar()
     {   
@@ -199,5 +200,23 @@ class Mesas
            return true;
         }
         return false;
+    }
+    
+    /**
+     * Realiza la cuenta de la cantidad de mesas de examen que tienen segundo llamado.
+     * Cuando el conteo es cero significa que no hay mesas con dos llamados, por lo
+     * tanto la cantidad de llamados para el turno será uno.
+     * @return integer Cero si tiene un llamado, entero mayor a cero en caso contrario.
+     * @author Marquez Emanuel.
+     * */
+    public function cantidadLlamados()
+    {
+        $consulta = "SELECT COUNT(idmesa) FROM mesa_examen WHERE segundo IS NOT NULL";
+        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+        if ($this->datos->num_rows) {
+            $fila = mysqli_fetch_array($this->datos);
+            return $fila[0];
+        }
+        return 0;
     }
 }

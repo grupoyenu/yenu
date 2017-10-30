@@ -2,10 +2,9 @@
  * 
  */
 
-
 $(document).ready(function() {
 	
-	$("table#tablaBuscarCursadas").DataTable({
+	$("table#tablaBuscarMesas").DataTable({
 		dom: 'Bfrtip',
         buttons: [
         	{
@@ -14,7 +13,7 @@ $(document).ready(function() {
 	            pageSize: 'LEGAL',
 	            download: 'open',
 	            text: 'Descargar PDF',
-	            title: ' Horarios de cursada '
+	            title: ' Mesas de examen '
         	},
         	{
         		extend: 'excelHtml5',

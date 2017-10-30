@@ -1,9 +1,10 @@
 <?php
-    session_start();
-    $resultado = $_SESSION['resultado'];
+
+
+    include_once '../../lib/conf/ControlAcceso.php'; 
     
-    /* Se elimina la variable de sesion */
-    session_unset($_SESSION['resultado']);
+
+   
     
 ?>
 
@@ -17,7 +18,10 @@
                 	<fieldset>
                 		<legend>Resultado</legend>
                 		<?php 
-                		    
+                    		$resultado = $_SESSION['resultado'];
+                    		
+                    		/* Se elimina la variable de sesion */
+                    		session_unset($_SESSION['resultado']);
                 		    
                     		foreach ($resultado as $valor) {
                     		    echo "Valor: $valor<br />\n";
