@@ -1,5 +1,4 @@
 <?php
-require_once '../lib/conf/ObjetoDatos.php';
 
 /**
  * 
@@ -27,13 +26,14 @@ class Aula
     function __construct($idaula = null)
     {
         if ($idaula) {
-            $consulta = "SELECT * FROM aula WHERE idaula = '".$idaula;
+            $consulta = "SELECT * FROM aula WHERE idaula = ".$idaula;
             $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
             if ($this->datos->num_rows > 0) {
                 $fila = $this->datos->fetch_row();
                 $this->idaula = $fila[0];
-                $this->sector = $fila[1];
-                $this->nombre = $fila[2];
+                $this->nombre = $fila[1];
+                $this->sector = $fila[2];
+                
             }
             $this->datos = null;
         }

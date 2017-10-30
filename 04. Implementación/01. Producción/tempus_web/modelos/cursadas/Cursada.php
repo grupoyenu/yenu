@@ -1,5 +1,4 @@
 <?php
-require_once '../lib/conf/ObjetoDatos.php';
 
 /**
  * 
@@ -8,7 +7,7 @@ class Cursada
 {
     private $plan;
     
-    /** @var array  */
+    /** @var Clase[] */
     private $clases;
     
     /** @var mysqli_result */
@@ -31,7 +30,7 @@ class Cursada
     }
 
     /**
-     * @return array $clases
+     * @return Clase[] $clases
      */
     public function getClases()
     {
@@ -47,7 +46,7 @@ class Cursada
     }
 
     /**
-     * @param array $clases
+     * @param Clase[] $clases
      */
     public function setClases($clases)
     {
@@ -118,7 +117,7 @@ class Cursada
      * Controla que no exista cargada la relacion entre cursada y clase.
      * @return boolean Verdadero si existe o Falso en caso contrario.
      * */
-    private function buscarRelacion($idasignatura, $idcarrera, $idclase) 
+    private function buscarRelacion($idasignatura, $idcarrera, $idclase)
     {
         $resultado = false;
         $consulta = "SELECT * FROM cursada WHERE idasignatura = ".$idasignatura." AND idcarrera = ".$idcarrera." AND idclase = ".$idclase."";
@@ -129,7 +128,26 @@ class Cursada
         $this->datos = null;
         return $resultado;
     }
-        
+    
+    /**
+     * Obtiene las clases de una asignatura para una determinada carrera.
+     * */
+    public function obtenerHorarios($idasignatura, $idcarrera)
+    {
+        $consulta = "SELECT `idclase` FROM `cursada` WHERE `idasignatura`={$idasignatura} AND `idcarrera`= ".$idcarrera;
+        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+        if ($this->datos->num_rows > 0) {
+            $this->clases = array(6);
+            while ($fila = mysqli_fetch_array($this->datos)) {
+                $clase = new Clase($fila[0]);
+                $this->clases [$clase->getDia()] = $clase;
+            }
+        } else {
+            $this->clases = null;
+        }
+        $this->datos = null;
+    }
+    
     
     
   

@@ -1,5 +1,4 @@
 <?php
-require_once '../lib/conf/ObjetoDatos.php';
 
 /**
  * Esta corresponde con la tabla Clase de la base de datos. Contiene los metodos
@@ -43,13 +42,13 @@ class Clase
     function __construct($idclase = null)
     {
        if ($idclase) {
-           $consulta = "SELECT * FROM clase WHERE idclase = ".$idclase." LIMIT 1";
+           $consulta = "SELECT idclase, dia, DATE_FORMAT(desde, '%H:%i'), DATE_FORMAT(hasta, '%H:%i'), idaula FROM clase WHERE idclase = {$idclase} LIMIT 1";
            $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
            if ($this->datos->num_rows > 0) {
                $fila = $this->datos->fetch_row();
                $this->idclase = $fila[0];
                $this->dia = $fila[1];
-               $this->desdee = $fila[2];
+               $this->desde = $fila[2];
                $this->hasta = $fila[3];
                $this->aula = new Aula($fila[4]);
            }

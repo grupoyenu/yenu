@@ -1,5 +1,4 @@
 <?php
-require_once '../lib/conf/ObjetoDatos.php';
 
 /**
  * Esta clase corresponde con la tabla Asignatura de la base de datos.

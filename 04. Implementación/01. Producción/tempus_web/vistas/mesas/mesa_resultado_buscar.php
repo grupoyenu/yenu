@@ -1,9 +1,7 @@
 <?php  
-
+    header('Content-Type: text/html; charset=ISO-8859-1'); 
     require_once '../../modelos/mesas/MesaExamen.php';
     
-    header('Content-Type: text/html; charset=ISO-8859-1'); 
-   
     session_start();
     
     $resultado = $_SESSION['resultado'];

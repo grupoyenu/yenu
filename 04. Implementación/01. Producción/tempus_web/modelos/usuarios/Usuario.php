@@ -44,8 +44,8 @@ class Usuario {
                 foreach ($this->datos->fetch_assoc() as $atributo => $valor) {
                     $this->{$atributo} = $valor;
                 }
-                $roles = new Roles(false);
-                $this->roles = $roles->obtenerRolesUsuario($idusuario);
+                $roles->obtenerRolesUsuario($this->idusuario);
+                $this->roles = $roles->getRoles();
             }
         }
     }
@@ -153,11 +153,30 @@ class Usuario {
      * @param integer $idRol
      * @return boolean
      */
-    function poseeRol($idRol) 
+    public function poseeRol($idRol) 
     {
         foreach ($this->roles as $Rol) {
             if ($idRol == $Rol->getIdRol()) {
                 return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Verifica si el usuario posee un determinado permiso. Devuelve verdadero
+     * en caso que alguno de los roles del usuario contenga el permiso buscado.
+     * @param integer $nombre Nombre del permiso (Obligatorio).
+     * @return boolean
+     * */
+    public function poseePermiso($nombre)
+    {
+        foreach ($this->roles as $rol) {
+            foreach ($rol->getPermisos() as $permiso) {
+                if ($nombre = $permiso->getNombre()) {
+                    return true;
+                }
+                
             }
         }
         return false;
@@ -198,7 +217,8 @@ class Usuario {
                 $this->{$atributo} = $valor;
             }
             $roles = new Roles(false);
-            $this->roles = $roles->obtenerRolesUsuario($this->idusuario);
+            $roles->obtenerRolesUsuario($this->idusuario);
+            $this->roles = $roles->getRoles();
         } else {
             $this->idusuario = null;
             $this->email = null;

@@ -1,7 +1,13 @@
 <?php  
-
     header('Content-Type: text/html; charset=ISO-8859-1'); 
-    session_start();
+    include_once '../../lib/conf/Utilidades.php';
+    
+    /* Controla que solo se acceda de la pagina donde se importa el archivo */
+    $ubicacion = $_SERVER["PHP_SELF"];
+    if($ubicacion != '/tempus/vistas/mesas/mesa_importar.php') {
+        header("Location: " . Constantes::HOMEURL);
+    }
+    
 ?>
 <html>
 	<?php include_once '../estructura/encabezado.php'; ?>
@@ -10,6 +16,7 @@
 		<article>
 			<div class="content">
             	<h2>IMPORTAR MESAS DE EXAMEN</h2>
+            	
             	<form action="../../Controladores/ManejadorMesa.php" id="formCargarMesas" name="formCargarMesas" method="post" enctype="multipart/form-data">
                 	
                 <?php 
@@ -68,10 +75,12 @@
                                     </thead>
                                     <tbody>
                                     <?php
-                                            /* $sesionmesas = array que se almacena en la sesion */
-                                            $sesionmesas = array();
+                                        /* $sesionmesas = array que se almacena en la sesion */
+                                        $sesionmesas = array();
+                                        $estilo = " style='background-color: #c50000; color: white;' ";
+                                        if ($columnas == 10) {
+                                            
                                             while (($fila = fgetcsv($mesas, 2000, ";")) !== FALSE) {
-                                                
                                                 /* Para saber si agregar la fila al array en sesion */
                                                 $agregar = TRUE;
                                                 
@@ -84,106 +93,257 @@
                                                 $vocal2 = (string) $fila[5];
                                                 $suplente = (string) $fila[6];
                                                 $primero = (string) $fila[7];
-                                                
-                                                /* Controla si tiene uno o dos llamados */
-                                                if ($columnas == 10) {
-                                                    $segundo = (string) $fila[8];
-                                                    $hora = (string) $fila[9];
-                                                } else {
-                                                    $hora = (string) $fila[8];
-                                                }
+                                                $segundo = (string) $fila[8];
+                                                $hora = (string) $fila[9];
                                                 
                                                 echo "<tr>";
-                                                $mensaje = "";
+                                                $mensaje = Utilidades::formatoCodigoCarrera($codigo);
                                                 if($codigo == 0) {
-                                                    $mensaje = "style='background-color: #c50000; color: white;' title='No se ha designado codigo o no es numérico'";
+                                                    $mensaje = $estilo." title='{$mensaje}'";
                                                     $codigo = $fila[0];
                                                     $agregar = FALSE;
                                                 }
                                                 echo "<td ".$mensaje.">$codigo</td>";
                                                 
-                                                $mensaje = "";
-                                                if (!$carrera) {
-                                                    $mensaje = "style='background-color: #c50000; color: white;' title='No se ha designado un nombre de carrera'";
+                                                $mensaje = Utilidades::formatoNombreCarrera($carrera);
+                                                if ($mensaje) {
+                                                    $mensaje = $estilo." title='{$mensaje}'";
                                                     $agregar = FALSE;
-                                                } else {
-                                                    if (ctype_digit($carrera)) {
-                                                        $mensaje = "style='background-color: #c50000; color: white;' title='El nombre de carrera es numérico'";
-                                                        $agregar = FALSE;
-                                                    }
                                                 }
                                                 echo "<td ".$mensaje.">$carrera</td>";
                                                 
-                                                $mensaje = "";
-                                                if(!$asignatura) {
-                                                    $mensaje = "style='background-color: #c50000; color: white;' title='No se ha designado un nombre de asignatura'";
+                                                $mensaje = Utilidades::formatoNombreAsignatura($asignatura);
+                                                if($mensaje) {
+                                                    $mensaje = $estilo." title='{$mensaje}'";
                                                     $agregar = FALSE;
-                                                } else {
-                                                    if (ctype_digit($asignatura)) {
-                                                        $mensaje = "style='background-color: #c50000; color: white;' title='El nombre de asignatura es numérico'";
-                                                        $agregar = FALSE;
-                                                    }
                                                 }
                                                 echo "<td ".$mensaje.">$asignatura</td>";
                                                 
                                                 $mensaje = "";
                                                 if(!$presidente) {
-                                                    $mensaje = "style='background-color: #c50000; color: white;' title='No se ha designado un presidente de tribunal'";
+                                                    /* El presidente es obligatorio */
+                                                    $mensaje = $estilo." title='No se ha designado un presidente de tribunal'";
                                                     $agregar = FALSE;
                                                 } else {
-                                                    
+                                                    /* Se controla el formato del docente agregado */
+                                                    $mensaje = Utilidades::formatoNombreDocente($presidente);
+                                                    if ($mensaje) {
+                                                        $mensaje = $estilo." title='{$mensaje}'";
+                                                        $agregar = FALSE;
+                                                    }
                                                 }
                                                 echo "<td ".$mensaje.">$presidente</td>";
                                                 
                                                 $mensaje = "";
                                                 if(!$vocal1) {
-                                                    $mensaje = "style='background-color: #c50000; color: white;' title='No se ha designado un vocal primero de tribunal'";
+                                                    /* El vocal 1 es obligatorio */
+                                                    $mensaje = $estilo." title='No se ha designado un vocal primero de tribunal'";
                                                     $agregar = FALSE;
                                                 } else {
-                                                    
+                                                    /* Se controla el formato del docente agregado */
+                                                    $mensaje = Utilidades::formatoNombreDocente($vocal1);
+                                                    if ($mensaje) {
+                                                        $mensaje = $estilo." title='{$mensaje}'";
+                                                        $agregar = FALSE;
+                                                    }
                                                 }
                                                 echo "<td ".$mensaje.">$vocal1</td>";
                                                 
                                                 $mensaje = "";
-                                                echo "<td ".$mensaje.">$vocal2</td>";
-                                                
-                                                $mensaje = "";
-                                                echo "<td ".$mensaje.">$suplente</td>";
-                                                
-                                                $mensaje = "";
-                                                echo "<td ".$mensaje.">$primero</td>";
-                                                
-                                                if ($columnas == 10) {
-                                                    /* Hay que agregar la columna del segundo llamado */
+                                                if ($vocal2) {
+                                                    /* Solo en caso que se agregue alguna cadena se verifica porque el vocal 2 no es obligatorio */
+                                                    $mensaje = Utilidades::formatoNombreDocente($vocal2);
+                                                    if ($mensaje) {
+                                                        $mensaje = $estilo." title='{$mensaje}'";
+                                                        $agregar = FALSE;
+                                                    }
+                                                    echo "<td ".$mensaje.">$vocal2</td>";
                                                     $mensaje = "";
-                                                    echo "<td".$mensaje.">$segundo</td>";
-                                                }
-                                                $mensaje = "";
-                                                if(!$hora) {
-                                                    $mensaje = "style='background-color: #c50000; color: white;' title='No se ha designado horario'";
-                                                    $agregar = FALSE;
+                                                    if ($suplente) {
+                                                        $mensaje = Utilidades::formatoNombreDocente($suplente);
+                                                        if ($mensaje) {
+                                                            $mensaje = $estilo." title='{$mensaje}'";
+                                                            $agregar = FALSE;
+                                                        }
+                                                    }
+                                                    echo "<td ".$mensaje.">$suplente</td>";
                                                 } else {
+                                                    /* Como no hay vocal suplente no deberia haber suplente */
+                                                    echo "<td ".$mensaje.">$vocal2</td>";
+                                                    $mensaje = "";
+                                                    if ($suplente) {
+                                                        $mensaje = $estilo." title='El suplente debe ocupar el lugar de vocal 2'";
+                                                        $agregar = FALSE;
+                                                    }
+                                                    echo "<td ".$mensaje.">$suplente</td>";
+                                                }
+                                                
+                                                if ($primero && $segundo) {
+                                                    $mensaje = Utilidades::formatoFecha($primero);
+                                                    if ($mensaje) {
+                                                        $mensaje = $estilo." title='{$mensaje}'";
+                                                        $agregar = FALSE;
+                                                    }
+                                                    echo "<td ".$mensaje.">$primero</td>";
                                                     
+                                                    $mensaje = Utilidades::formatoFecha($segundo);
+                                                    if ($mensaje) {
+                                                        $mensaje = $estilo." title='{$mensaje}'";
+                                                        $agregar = FALSE;
+                                                    }
+                                                    echo "<td ".$mensaje.">$segundo</td>";
+                                                } else {
+                                                    $mensaje = $estilo." title='Ambos llamados se han omitido'";
+                                                    echo "<td ".$mensaje.">$primero</td>";
+                                                    echo "<td ".$mensaje.">$segundo</td>";
+                                                }
+                                                
+                                                $mensaje = Utilidades::formatoHora($hora);
+                                                if($mensaje) {
+                                                    $mensaje = $estilo." title='{$mensaje}'";
+                                                    $agregar = FALSE;
                                                 }
                                                 echo "<td ".$mensaje.">$hora</td>";
                                                 echo "</tr>";
                                                 
                                                 if($agregar) {
-                                                    if ($columnas == 10) {
-                                                        $sesionmesas [] = array($codigo, $carrera, $asignatura, $presidente, $vocal1, $vocal2, $suplente, $primero, $segundo, $hora);
-                                                    } else {
-                                                        $sesionmesas [] = array($codigo, $carrera, $asignatura, $presidente, $vocal1, $vocal2, $suplente, $primero, $hora);
-                                                    }
+                                                    /* agrega la fila al array que se almacena en la sesion. */
+                                                    $sesionmesas [] = array($codigo, $carrera, $asignatura, $presidente, $vocal1, $vocal2, $suplente, $primero, $segundo, $hora);
                                                 }
                                             }
-                                            $_SESSION['mesas'] = $sesionmesas;
+                                            
+                                        } else {
+                                            while (($fila = fgetcsv($mesas, 2000, ";")) !== FALSE) {
+                                                /* Para saber si agregar la fila al array en sesion */
+                                                $agregar = TRUE;
+                                                
+                                                /* Obtiene cada una de las columnas */
+                                                $codigo = (int) $fila[0];
+                                                $carrera = (string) $fila[1];
+                                                $asignatura = (string) $fila[2];
+                                                $presidente = (string) $fila[3];
+                                                $vocal1 = (string) $fila[4];
+                                                $vocal2 = (string) $fila[5];
+                                                $suplente = (string) $fila[6];
+                                                $primero = (string) $fila[7];
+                                                $hora = (string) $fila[8];
+                                                
+                                                echo "<tr>";
+                                                $mensaje = Utilidades::formatoCodigoCarrera($codigo);
+                                                if($codigo == 0) {
+                                                    $mensaje = $estilo." title='{$mensaje}'";
+                                                    $codigo = $fila[0];
+                                                    $agregar = FALSE;
+                                                }
+                                                echo "<td ".$mensaje.">$codigo</td>";
+                                                
+                                                $mensaje = Utilidades::formatoNombreCarrera($carrera);
+                                                if ($mensaje) {
+                                                    $mensaje = $estilo." title='{$mensaje}'";
+                                                    $agregar = FALSE;
+                                                }
+                                                echo "<td ".$mensaje.">$carrera</td>";
+                                                
+                                                $mensaje = Utilidades::formatoNombreAsignatura($asignatura);
+                                                if($mensaje) {
+                                                    $mensaje = $estilo." title='{$mensaje}'";
+                                                    $agregar = FALSE;
+                                                }
+                                                echo "<td ".$mensaje.">$asignatura</td>";
+                                                
+                                                $mensaje = "";
+                                                if(!$presidente) {
+                                                    /* El presidente es obligatorio */
+                                                    $mensaje = $estilo." title='No se ha designado un presidente de tribunal'";
+                                                    $agregar = FALSE;
+                                                } else {
+                                                    /* Se controla el formato del docente agregado */
+                                                    $mensaje = Utilidades::formatoNombreDocente($presidente);
+                                                    if ($mensaje) {
+                                                        $mensaje = $estilo." title='{$mensaje}'";
+                                                        $agregar = FALSE;
+                                                    }
+                                                }
+                                                echo "<td ".$mensaje.">$presidente</td>";
+                                                
+                                                $mensaje = "";
+                                                if(!$vocal1) {
+                                                    /* El vocal 1 es obligatorio */
+                                                    $mensaje = $estilo." title='No se ha designado un vocal primero de tribunal'";
+                                                    $agregar = FALSE;
+                                                } else {
+                                                    /* Se controla el formato del docente agregado */
+                                                    $mensaje = Utilidades::formatoNombreDocente($vocal1);
+                                                    if ($mensaje) {
+                                                        $mensaje = $estilo." title='{$mensaje}'";
+                                                        $agregar = FALSE;
+                                                    }
+                                                }
+                                                echo "<td ".$mensaje.">$vocal1</td>";
+                                                
+                                                $mensaje = "";
+                                                if ($vocal2) {
+                                                    /* Solo en caso que se agregue alguna cadena se verifica porque el vocal 2 no es obligatorio */
+                                                    $mensaje = Utilidades::formatoNombreDocente($vocal2);
+                                                    if ($mensaje) {
+                                                        $mensaje = $estilo." title='{$mensaje}'";
+                                                        $agregar = FALSE;
+                                                    }
+                                                    echo "<td ".$mensaje.">$vocal2</td>";
+                                                    $mensaje = "";
+                                                    if ($suplente) {
+                                                        $mensaje = Utilidades::formatoNombreDocente($suplente);
+                                                        if ($mensaje) {
+                                                            $mensaje = $estilo." title='{$mensaje}'";
+                                                            $agregar = FALSE;
+                                                        }
+                                                    }
+                                                    echo "<td ".$mensaje.">$suplente</td>";
+                                                } else {
+                                                    /* Como no hay vocal suplente no deberia haber suplente */
+                                                    echo "<td ".$mensaje.">$vocal2</td>";
+                                                    $mensaje = "";
+                                                    if ($suplente) {
+                                                        $mensaje = $estilo." title='El suplente debe ocupar el lugar de vocal 2'";
+                                                        $agregar = FALSE;
+                                                    }
+                                                    echo "<td ".$mensaje.">$suplente</td>";
+                                                }
+                                                
+                                                $mensaje = Utilidades::formatoFecha($primero);
+                                                if ($mensaje) {
+                                                    $mensaje = $estilo." title='{$mensaje}'";
+                                                    $agregar = FALSE;
+                                                }
+                                                echo "<td ".$mensaje.">$primero</td>";
+                                                
+                                                $mensaje = Utilidades::formatoHora($hora);
+                                                if($mensaje) {
+                                                    $mensaje = $estilo." title='{$mensaje}'";
+                                                    $agregar = FALSE;
+                                                }
+                                                echo "<td ".$mensaje.">$hora</td>";
+                                                echo "</tr>";
+                                                
+                                                if($agregar) {
+                                                    /* agrega la fila al array que se almacena en la sesion. */
+                                                    $sesionmesas [] = array($codigo, $carrera, $asignatura, $presidente, $vocal1, $vocal2, $suplente, $primero, $hora);
+                                                }
+                                            }
+                                        }
+                                            
+                                        $_SESSION['mesas'] = $sesionmesas;
                                     ?>
                                     </tbody>
                     		  	</table>
                     		</fieldset>
-                    		<input type="hidden" id="accion" name="accion" value="importar">
-                    		<input class="botonVerde" type="submit" id="btnCargarMesas" name="btnCargarMesas" value="Cargar">
-                        <?php 
+                    		<?php
+                    		  if (count($sesionmesas) > 0) {
+                    		?>  
+                    		      <input type="hidden" id="accion" name="accion" value="importar">
+                    		      <input class="botonVerde" type="submit" id="btnCargarMesas" name="btnCargarMesas" value="Cargar">
+                    		<?php 
+                    		  }
                     }
                 ?>            	
             	</form>

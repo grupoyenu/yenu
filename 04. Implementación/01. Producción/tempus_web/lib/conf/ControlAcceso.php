@@ -106,14 +106,8 @@ class ControlAcceso {
             return false;
         }
         
-        foreach ($Usuario->roles as $Rol) {
-            foreach ($Rol->permisos as $Permiso) {
-                if ($permiso == $Permiso->nombre) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return $Usuario->poseePermiso($permiso);
+        
     }
     
     /**

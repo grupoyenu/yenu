@@ -1,6 +1,4 @@
 <?php
-require_once '../lib/conf/ObjetoDatos.php';
-require_once 'Tribunal.php';
 
 /**
  * 
@@ -31,7 +29,7 @@ class MesaExamen
     }
     
     /**
-     * @return the $idmesa
+     * @return integer $idmesa
      */
     public function getIdmesa()
     {
@@ -39,7 +37,7 @@ class MesaExamen
     }
 
     /**
-     * @return the $plan
+     * @return Plan $plan
      */
     public function getPlan()
     {
@@ -47,7 +45,7 @@ class MesaExamen
     }
 
     /**
-     * @return the $tribunal
+     * @return Tribunal $tribunal
      */
     public function getTribunal()
     {
@@ -55,7 +53,7 @@ class MesaExamen
     }
 
     /**
-     * @return the $primero
+     * @return Llamado $primero
      */
     public function getPrimero()
     {
@@ -63,7 +61,7 @@ class MesaExamen
     }
 
     /**
-     * @return the $segundo
+     * @return Llamado $segundo
      */
     public function getSegundo()
     {
@@ -71,7 +69,7 @@ class MesaExamen
     }
 
     /**
-     * @param number $idmesa
+     * @param integer $idmesa
      */
     public function setIdmesa($idmesa)
     {

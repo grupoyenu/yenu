@@ -1,3 +1,11 @@
+<?php 
+
+    include_once '../../lib/conf/PermisosSistema.php';
+    include_once '../../lib/conf/ControlAcceso.php'; 
+
+    ControlAcceso::requierePermiso(PermisosSistema::CURSADAS);
+?>
+
 <html>
 	<?php include_once '../estructura/encabezado.php'; ?>
 	<section id="main-content">

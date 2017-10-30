@@ -1,4 +1,8 @@
-<?php  header('Content-Type: text/html; charset=ISO-8859-1'); ?>
+<?php  
+    header('Content-Type: text/html; charset=ISO-8859-1'); 
+    include_once '../../lib/conf/ControlAcceso.php'; 
+    include_once '../../lib/conf/PermisosSistema.php';   
+?>
 	
 	<head>
 		<title>TEMPUS</title>
@@ -9,8 +13,7 @@
 		
 		<link rel='stylesheet' type='text/css' href='../../css/datatables.min.css'/>
 	    <link rel='stylesheet' type='text/css' href='../../js/Buttons-1.4.2/css/buttons.dataTables.min.css'/>
-	    
-		 
+	    <script type="text/javascript" src="../../js/jquery-3.2.1.min.js"></script>
 		<script type="text/javascript" src="../../js/datatables.min.js"></script>
 	    <script type='text/javascript' src='../../js/Buttons-1.4.2/js/buttons.html5.min.js'></script>
 	    <script type='text/javascript' src='../../js/Buttons-1.4.2/js/dataTables.buttons.min.js'></script>
@@ -31,7 +34,9 @@
     		<ul class="ul">
               <li><a href="../estructura/home.php">Home</a></li>
               
+             <?php 
              
+             if (ControlAcceso::verificaPermiso(PermisosSistema::CURSADAS)) { ?>
                   <li class="dropdown">
                     <a class="dropbtn">Cursada</a>
                     <div class="dropdown-content">
@@ -41,24 +46,31 @@
                       <a href="#">Informe</a>
                     </div>
                   </li>
+              <?php 
+              } 
               
+              if (ControlAcceso::verificaPermiso(PermisosSistema::MESAS)) { ?>
+                  <li class="dropdown">
+                    <a class="dropbtn">Mesas de examen</a>
+                    <div class="dropdown-content">
+                      <a href="../mesas/mesa_seleccionar.php">Importar</a>
+                      <a href="../mesas/mesa_crear.php">Crear</a>
+                      <a href="../mesas/mesa_buscar.php">Borrar / Modificar</a>
+                      <a href="">Informe</a>
+                    </div>
+                  </li>
+              <?php 
+              }
               
-              <li class="dropdown">
-                <a class="dropbtn">Mesas de examen</a>
-                <div class="dropdown-content">
-                  <a href="../mesas/mesa_seleccionar.php">Importar</a>
-                  <a href="../mesas/mesa_crear.php">Crear</a>
-                  <a href="../mesas/mesa_buscar.php">Borrar / Modificar</a>
-                  <a href="">Informe</a>
-                </div>
-              </li>
-              
-              <li class="dropdown">
-                <a class="dropbtn">Aulas</a>
-                <div class="dropdown-content">
-                  <a href="">Borrar / Modificar</a>
-                </div>
-              </li>
-              
+              if (ControlAcceso::verificaPermiso(PermisosSistema::AULAS)) { ?>
+                  <li class="dropdown">
+                    <a class="dropbtn">Aulas</a>
+                    <div class="dropdown-content">
+                      <a href="">Borrar / Modificar</a>
+                    </div>
+                  </li>
+             <?php 
+              }
+              ?>
             </ul>
 		</nav>

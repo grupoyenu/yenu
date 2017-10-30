@@ -6,7 +6,12 @@
  *
  * @author Eder dos Santos <esantos@uarg.unpa.edu.ar>
  */
-class PermisosSistema {
+class PermisosSistema 
+{
+    /* ROLES DEL SISTEMA */   
+    
+    const ROL_ADMIN = "Administrador";
+    const ROL_SECRETARIA = "Secretaria";
     
     const PERMISO_AUTH = "Auth";
     
@@ -14,20 +19,33 @@ class PermisosSistema {
     const PERMISO_LOGIN = "Ingresar";
     const PERMISO_CONSULTAR = "Consultar";
     
+    /* PERMISOS RELACIONADOS AL SUBSISTEMA DE AULAS */
    
+    const AULAS = "Aulas";
     
-    const PERMISO_CURSADAS = "Cursadas";
+    /* PERMISOS RELACIONADOS AL SUBSISTEMA DE CURSADAS */
+    
+    const CURSADAS = "Cursadas";
+    const IMPORTAR_CURSADA = "Importar cursada";
+    const CREAR_CURSADA = "Crear cursada";
+    const BORRAR_CURSADA = "Borrar cursada";
+    const BUSCAR_CURSADA = "Buscar cursada";
+    const INFORME_CURSADA = "Informe cursada";
+    
+    /* PERMISOS RELACIONADOS AL SUBSISTEMA DE MESAS */
+    
+    const MESAS = "Mesas";
+    const IMPORTAR_MESA = "Importar mesa";
+    const CREAR_MESA = "Crear mesa";
+    const BORRAR_MESA = "Borrar mesa";
+    const BUSCAR_MESA = "Buscar mesa";
+    const INFORME_MESA = "Informe mesa";
+    
+    /* PERMISOS RELACIONADOS AL SUBSISTEMA DE USUARIOS */
     
     const PERMISO_USUARIOS = "Usuarios";
     
     
-    /** @var string Administrador del Sistema. */
-    const ROL_ADMIN = "Administrador";
     
-    /** @var string Secretaría Académica. */
-    const ROL_SECRETARIA = "Secretaria";   
-    
-    /** Usuario no registrado */
-    const ROL_INVITADO = "Invitado";
     
 }

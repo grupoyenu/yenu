@@ -1,12 +1,4 @@
 <?php
-require_once '../lib/conf/ObjetoDatos.php';
-require_once '../modelos/carreras/Carrera.php';
-require_once '../modelos/carreras/Asignatura.php';
-require_once '../modelos/carreras/Plan.php';
-require_once '../modelos/mesas/Tribunal.php';
-require_once '../modelos/mesas/Docente.php';
-require_once '../modelos/mesas/MesaExamen.php';
-require_once '../modelos/mesas/Llamado.php';
 
 /**
  * 

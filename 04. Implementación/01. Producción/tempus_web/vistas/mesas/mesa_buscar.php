@@ -1,5 +1,14 @@
 
-<?php header('Content-Type: text/html; charset=ISO-8859-1'); ?>
+<?php 
+
+    header('Content-Type: text/html; charset=ISO-8859-1'); 
+    include_once '../../lib/conf/ControlAcceso.php';
+    include_once '../../lib/conf/PermisosSistema.php';
+    
+    /*
+    ControlAcceso::requierePermiso(PermisosSistema::MESAS);
+    */
+?>
 
 <html>
 	<?php include_once '../estructura/encabezado.php'; ?>
