@@ -1,10 +1,11 @@
 <?php  
     header('Content-Type: text/html; charset=ISO-8859-1'); 
     include_once '../../lib/conf/Utilidades.php';
+    include_once '../../lib/conf/Constantes.php';
     
     /* Controla que solo se acceda de la pagina donde se importa el archivo */
     $ubicacion = $_SERVER["PHP_SELF"];
-    if($ubicacion != '/tempus/vistas/mesas/mesa_importar.php') {
+    if($ubicacion != '/tempus/vistas/mesas/mesa_seleccionar.php') {
         header("Location: " . Constantes::HOMEURL);
     }
     
@@ -208,6 +209,14 @@
                                                 
                                                 if($agregar) {
                                                     /* agrega la fila al array que se almacena en la sesion. */
+                                                    if ($primero) {
+                                                        $primero = str_replace('/', '-', $primero);
+                                                        $primero = date('Y-m-d', strtotime($primero));
+                                                    }
+                                                    if ($segundo) {
+                                                        $segundo = str_replace('/', '-', $segundo);
+                                                        $segundo = date('Y-m-d', strtotime($segundo));
+                                                    }
                                                     $sesionmesas [] = array($codigo, $carrera, $asignatura, $presidente, $vocal1, $vocal2, $suplente, $primero, $segundo, $hora);
                                                 }
                                             }
@@ -327,6 +336,8 @@
                                                 
                                                 if($agregar) {
                                                     /* agrega la fila al array que se almacena en la sesion. */
+                                                    $primero = str_replace('/', '-', $primero);
+                                                    $primero = date('Y-m-d', strtotime($primero));
                                                     $sesionmesas [] = array($codigo, $carrera, $asignatura, $presidente, $vocal1, $vocal2, $suplente, $primero, $hora);
                                                 }
                                             }

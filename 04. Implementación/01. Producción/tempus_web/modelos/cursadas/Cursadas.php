@@ -1,12 +1,26 @@
 <?php
 
 /**
+ * Esta clase contiene el conjunto de Cursadas. Se puede realizar la creacion,
+ * busqueda y eliminacion de un conjunto de cursadas sobre la base de datos.
  * 
+ * Fecha de creación = 28/10/2017.
+ * 
+ * @author Oyarzo Mariela.
+ * @author Quiroga Sandra.
+ * @authos Marquez Emanuel.
  * */
 class Cursadas 
 {
     /** @var mysqli_result */
     private $datos;
+    
+    /**
+     * */
+    function  __construct()
+    {
+        
+    }
     
     /**
      * @param Cursada[] $cursadas

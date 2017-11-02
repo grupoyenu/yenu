@@ -1,7 +1,17 @@
 <?php
 
 /**
+ * Esta clase sirve para trabajar sobre un conjunto de mesas de examen. Con ella
+ * se puede realizar la creación, búsqueda y eliminacion de mesas de examen. 
+ * Fecha de creación = 28/10/2017.
  * 
+ * @author Oyarzo Mariela.
+ * @author Quiroga Sandra.
+ * @authos Marquez Emanuel.Fecha de creación = 28/10/2017.
+ * 
+ * @author Oyarzo Mariela.
+ * @author Quiroga Sandra.
+ * @authos Marquez Emanuel.
  * */
 class Mesas 
 {
@@ -19,117 +29,221 @@ class Mesas
         $this->mesas = array();
     }
     
-    public function agregarMesa() {
-        
+    public function agregarMesa($mesa) 
+    {
+        $this->mesas[] = $mesa;   
     }
     
     /**
-     * Realiza la creación de un conjunto de mesas de examen.
+     * Realiza la creación de un conjunto de mesas de examen. Antes de hacer la
+     * operacion verifica que se haya definido el array que se recibe. Luego, 
+     * hace la eliminación de los registros actuales. Cuando el borrado de los 
+     * registros es correcta procede a la creacion de cada uno de los elementos
+     * del array. El resultado de este método se devuelve en un array.
      * @param array $mesas Recibe las filas del archivo a cargar.
+     * @return array Contiene el resultado, mensaje y datos.
      * */
-    public function crear($mesas = array()) 
+    public function crear($mesas) 
     {
-        $this->borrar();
-        
-        $tamanio = count($mesas);
-        $columnas = count($mesas[0]);
-        $contadorexitos = 0;
+        /* Indica un mensaje a mostrar */
         $mensaje = "";
+        /* Indica si se ha realizado la creacion o fallo */
+        $creacion = true;
+        /* Contiene las mesas que no se han cargado durante la creacion */
+        $datos = null;
         
-       
-        $carrera = new Carrera();
-        $asignatura = new Asignatura();
-        $plan = new Plan();
-        $plan->setAsignatura($asignatura);
-        $plan->setCarrera($carrera);
-        $presidente = new Docente();
-        $vocal1 = new Docente();
-        $vocal2 = new Docente();
-        $suplente = new Docente();
-        $tribunal = new Tribunal();
-        $mesa = new MesaExamen();
-        $primero = new Llamado();
-        $segundo = new Llamado();
-        
-        for ($i=0; $i < $tamanio; $i++) {
-            
-            $fila = $mesas[$i];
-            
-            $codigocarrera = $fila[0];
-            $nombrecarrera = $fila[1];
-            $nombreasignatura = $fila[2];
-            $nombrepresidente = $fila[3];
-            $nombrevocal1 = $fila[4];
-            $nombrevocal2 = $fila[5];
-            $nombresuplente = $fila[6];
-            $fechaprimero = $fila[7];
-            if ($columnas == 10) {
-                $fechasegundo = $fila[8];
-                $hora = $fila[9];
-            } else {
-                $hora = $fila[8];
-            }
-            
-            /* Se verifica si la carrera ya se uso en la fila anterior */
-            if($codigocarrera != $carrera->getCodigo()) {
-                $carrera->crear($codigocarrera, $nombrecarrera);
-            }
-            
-            /* Se verifica si la asignatura ya se uso en la fila anterior */
-            if ($nombreasignatura != $asignatura->getIdasignatura()) {
-                $asignatura->crear($nombreasignatura);
-            }
-            
-            if (($codigocarrera != $plan->getCarrera()->getCodigo()) || ($nombreasignatura != $plan->getAsignatura()->getNombre())) {
-                $plan->crear($asignatura->getIdasignatura(), $carrera->getCodigo(), 1);
-            }
-            
-            $plan->setAsignatura($asignatura);
-            $plan->setCarrera($carrera);
-            
-            $presidente->crear($nombrepresidente);
-            $vocal1->crear($nombrevocal1);
-            $vocal2->setIdDocente(null);
-            $vocal2->setNombre(null);
-            $suplente->setIdDocente(null);
-            $suplente->setNombre(null);
-            
-            if ($nombrevocal2) {
-                /* Solo si hay vocal1 se verifica que haya suplente */
-                $vocal2->crear($nombrevocal2);
-                if ($nombresuplente) {
-                    $suplente->crear($nombresuplente);
+        if (isset($mesas)) {
+            if ($this->borrar()) {
+                /* Se han borrado todos los registros existentes */
+                $tamanio = count($mesas);
+                $columnas = count($mesas[0]);
+                $contadorexitos = 0;
+                
+                /* Crea los objetos que se van a utilizar */
+                $carrera = new Carrera();
+                $asignatura = new Asignatura();
+                $plan = new Plan();
+                $plan->setAsignatura($asignatura);
+                $plan->setCarrera($carrera);
+                $presidente = new Docente();
+                $vocal1 = new Docente();
+                $vocal2 = new Docente();
+                $suplente = new Docente();
+                $tribunal = new Tribunal();
+                $mesa = new MesaExamen();
+                $primero = new Llamado();
+                
+                if ($columnas == 10) {
+                    /* Se debe hacer la creacion para dos llamados */
+                    $segundo = new Llamado();
+                    
+                    for ($i=0; $i < $tamanio; ++$i) {
+                        /* lee la primer fila */
+                        $fila = $mesas[$i];
+                        /* obtiene los datos de la fila */
+                        $codigocarrera = $fila[0];
+                        $nombrecarrera = $fila[1];
+                        $nombreasignatura = $fila[2];
+                        $nombrepresidente = $fila[3];
+                        $nombrevocal1 = $fila[4];
+                        $nombrevocal2 = $fila[5];
+                        $nombresuplente = $fila[6];
+                        $fechaprimero = $fila[7];
+                        $fechasegundo = $fila[8];
+                        $hora = $fila[9];
+                        
+                        /* Se verifica si la carrera ya se uso en la fila anterior */
+                        if($codigocarrera != $carrera->getCodigo()) {
+                            $carrera->crear($codigocarrera, $nombrecarrera);
+                        }
+                        /* Se verifica si la asignatura ya se uso en la fila anterior */
+                        if ($nombreasignatura != $asignatura->getNombre()) {
+                            $asignatura->crear($nombreasignatura);
+                        }
+                        
+                        $plan->crear($asignatura->getIdasignatura(), $carrera->getCodigo(), 1);
+                        $plan->setAsignatura($asignatura);
+                        $plan->setCarrera($carrera);
+                        
+                        $presidente->crear($nombrepresidente);
+                        $vocal1->crear($nombrevocal1);
+                        
+                        $vocal2->setIdDocente(null);
+                        $vocal2->setNombre(null);
+                        $suplente->setIdDocente(null);
+                        $suplente->setNombre(null);
+                        
+                        if ($nombrevocal2) {
+                            /* Solo si hay vocal1 se verifica que haya suplente */
+                            $vocal2->crear($nombrevocal2);
+                            if ($nombresuplente) {
+                                $suplente->crear($nombresuplente);
+                            }
+                        }
+                        
+                        $tribunal->setPresidente($presidente);
+                        $tribunal->setVocal1($vocal1);
+                        $tribunal->setVocal2($vocal2);
+                        $tribunal->setSuplente($suplente);
+                        
+                        $tribunal->crear($presidente->getIdDocente(), $vocal1->getIdDocente(), $vocal2->getIdDocente(), $suplente->getIdDocente());
+                        
+                        $primero->setFecha(null);
+                        $primero->setHora(null);
+                        if ($fechaprimero) {
+                            $primero->setFecha($fechaprimero);
+                            $primero->setHora($hora);
+                            $primero->setAula(null);
+                        }
+                        
+                        $segundo->setFecha(null);
+                        $segundo->setHora(null);
+                        if ($segundo) {
+                            $segundo->setFecha($fechasegundo);
+                            $segundo->setHora($hora);
+                            $segundo->setAula(null);
+                        }
+                        
+                        $mesa->crear($plan, $tribunal, $primero, $segundo);
+                        
+                        if ($mesa->getIdmesa()) {
+                            /* Se ha creado correctamente la mesa de examen */
+                            $contadorexitos = $contadorexitos + 1;
+                        } else {
+                            $datos [] = $fila;
+                        }
+                        $mesa->setIdmesa(null);
+                    }
+                    
+                } else {
+                    /* Se debe hacer la creacion para un solo llamado */
+                    $segundo = null;
+                    
+                    for ($i=0; $i < $tamanio; ++$i) {
+                        $fila = $mesas[$i];
+                        $codigocarrera = $fila[0];
+                        $nombrecarrera = $fila[1];
+                        $nombreasignatura = $fila[2];
+                        $nombrepresidente = $fila[3];
+                        $nombrevocal1 = $fila[4];
+                        $nombrevocal2 = $fila[5];
+                        $nombresuplente = $fila[6];
+                        $fechaprimero = $fila[7];
+                        $hora = $fila[8];
+                        
+                        /* Se verifica si la carrera ya se uso en la fila anterior */
+                        if($codigocarrera != $carrera->getCodigo()) {
+                            $carrera->crear($codigocarrera, $nombrecarrera);
+                        }
+                        /* Se verifica si la asignatura ya se uso en la fila anterior */
+                        if ($nombreasignatura != $asignatura->getNombre()) {
+                            $asignatura->crear($nombreasignatura);
+                        }
+                        
+                        $plan->crear($asignatura->getIdasignatura(), $carrera->getCodigo(), 1);
+                        $plan->setAsignatura($asignatura);
+                        $plan->setCarrera($carrera);
+                        
+                        $presidente->crear($nombrepresidente);
+                        $vocal1->crear($nombrevocal1);
+                        $vocal2->setIdDocente(null);
+                        $vocal2->setNombre(null);
+                        $suplente->setIdDocente(null);
+                        $suplente->setNombre(null);
+                        
+                        if ($nombrevocal2) {
+                            /* Solo si hay vocal1 se verifica que haya suplente */
+                            $vocal2->crear($nombrevocal2);
+                            if ($nombresuplente) {
+                                $suplente->crear($nombresuplente);
+                            }
+                        }
+                        
+                        $tribunal->setPresidente($presidente);
+                        $tribunal->setVocal1($vocal1);
+                        $tribunal->setVocal2($vocal2);
+                        $tribunal->setSuplente($suplente);
+                        
+                        $tribunal->crear($presidente->getIdDocente(), $vocal1->getIdDocente(), $vocal2->getIdDocente(), $suplente->getIdDocente());
+                        
+                        $primero->setFecha($fechaprimero);
+                        $primero->setHora($hora);
+                        $primero->setAula(null);
+                        
+                        $mesa->crear($plan, $tribunal, $primero, $segundo);
+                        
+                        if ($mesa->getIdmesa()) {
+                            $contadorexitos = $contadorexitos + 1;
+                        } else {
+                            $datos [] = $fila;
+                        }
+                        
+                        $mesa->setIdmesa(null);
+                    }
+                    /* Fin del for para un solo llamado */
                 }
+                /* Fin del else para un solo llamado */
+                
+                if ($contadorexitos > 0) {
+                    $mensaje = "Se han creado ".$contadorexitos." mesas de examen sobre ".$tamanio." recibidas";
+                    
+                } else {
+                    $mensaje = "No se han creado mesas de examen para un total de ".$tamanio." mesas recibidas";
+                }
+                
+                
+            } else {
+                /* No se han borrado todos los registros existentes */
+                $mensaje = 'No se ha podido realizar la eliminación de las mesas de examen actuales';
+                $creacion = false;
             }
-            
-            $tribunal->setPresidente($presidente);
-            $tribunal->setVocal1($vocal1);
-            $tribunal->setVocal2($vocal2);
-            $tribunal->setSuplente($suplente);
-            
-            $primero->setFecha($fechaprimero);
-            $primero->setHora($hora);
-            $primero->setAula(null);
-            
-            $segundo->setFecha($fechaprimero);
-            $segundo->setHora($hora);
-            $segundo->setAula(null);
-            
-            $mesa->crear($plan, $tribunal, $primero, $segundo);
-            
-            if ($mesa->getIdmesa()) {
-                $contadorexitos = $contadorexitos + 1;
-            }
-        }
-        
-        if ($contadorexitos > 0) {
-            $mensaje = "Se han creado un total de ".$contadorexitos." mesas, sobre un total de ".$tamanio." mesas recibidas. ";
-            
         } else {
-            $mensaje = "No se han creado mesas de examen para un total de ".$tamanio." mesas recibidas. ";
+            /* El parametro mesas no esta definido o es nulo (ISSET) */
+            $mensaje = 'No se han recibido las mesas de examen a crear';
+            $creacion = false;
         }
         
-        $resultado = array('resultado'=>true,'mensaje'=>$mensaje, 'datos'=>NULL);
+        $resultado = array('resultado'=>true,'mensaje'=>$mensaje, 'datos'=>$datos);
         return $resultado;
     } 
     
@@ -186,20 +300,22 @@ class Mesas
      * @author Marquez Emanuel.
      * */
     public function borrar()
-    {   
-        ObjetoDatos::getInstancia()->ejecutarQuery("DELETE FROM mesa_examen WHERE 1");
-        $mesas = ObjetoDatos::getInstancia()->affected_rows;
-        ObjetoDatos::getInstancia()->ejecutarQuery("DELETE FROM llamado WHERE 1");
-        $llamado = ObjetoDatos::getInstancia()->affected_rows;
-        ObjetoDatos::getInstancia()->ejecutarQuery("DELETE FROM tribunal WHERE 1");
-        $tribunal = ObjetoDatos::getInstancia()->affected_rows;
-        ObjetoDatos::getInstancia()->ejecutarQuery("DELETE FROM docente WHERE 1");
-        $docente = ObjetoDatos::getInstancia()->affected_rows;
-        
-        if (($mesas > 0) && ($llamado > 0) && ($tribunal > 0) && ($docente > 0)) {
-           return true;
+    {
+        ObjetoDatos::getInstancia()->autocommit(false);
+        ObjetoDatos::getInstancia()->begin_transaction();
+        try {
+            
+            ObjetoDatos::getInstancia()->ejecutarQuery("DELETE FROM mesa_examen WHERE 1");
+            ObjetoDatos::getInstancia()->ejecutarQuery("DELETE FROM llamado WHERE 1");
+            ObjetoDatos::getInstancia()->ejecutarQuery("DELETE FROM tribunal WHERE 1");
+            ObjetoDatos::getInstancia()->ejecutarQuery("DELETE FROM docente WHERE 1");
+            
+        }catch (Exception $exception) {
+            return false;
         }
-        return false;
+        ObjetoDatos::getInstancia()->commit();
+        ObjetoDatos::getInstancia()->autocommit(true);
+        return true;
     }
     
     /**

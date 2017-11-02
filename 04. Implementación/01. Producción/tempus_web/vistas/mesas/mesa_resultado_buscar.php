@@ -42,15 +42,14 @@
                     		          <thead>
                         		          <tr>
                             		          <th></th>
-                            		          <th>Codigo</th>
                             		          <th>Carrera</th>
                             		          <th>Asignatura</th>
                             		          <th>Presidente</th>
                             		          <th>Vocal1</th>
                             		          <th>Vocal2</th>
                             		          <th>Suplente</th>
-                            		          <th>1er llamado</th>
-                            		          <th>2do llamado</th>
+                            		          <th>Llamado 1</th>
+                            		          <th>Llamado 2</th>
                             		          <th>Hora</th>
                             		          <th>Lugar</th>
                         		          </tr>
@@ -61,7 +60,6 @@
                     		              
                     		              echo "<tr>";
                     		              echo "<td><input type='radio' name='radioMesas'></td>";
-                    		              echo "<td>".$mesa->getPlan()->getCarrera()->getCodigo()."</td>";
                     		              echo "<td>".$mesa->getPlan()->getCarrera()->getNombre()."</td>";
                     		              echo "<td>".$mesa->getPlan()->getAsignatura()->getNombre()."</td>";
                     		              echo "<td>".$mesa->getTribunal()->getPresidente()->getNombre()."</td>";
@@ -93,14 +91,13 @@
                     		          <thead>
                         		          <tr>
                             		          <th></th>
-                            		          <th>Codigo</th>
                             		          <th>Carrera</th>
                             		          <th>Asignatura</th>
                             		          <th>Presidente</th>
                             		          <th>Vocal1</th>
                             		          <th>Vocal2</th>
                             		          <th>Suplente</th>
-                            		          <th>1er llamado</th>
+                            		          <th>Llamado 1</th>
                             		          <th>Hora</th>
                             		          <th>Lugar</th>
                         		          </tr>
@@ -111,7 +108,6 @@
                     		              
                     		              echo "<tr>";
                     		              echo "<td><input type='radio' name='radioMesas'></td>";
-                    		              echo "<td>".$mesa->getPlan()->getCarrera()->getCodigo()."</td>";
                     		              echo "<td>".$mesa->getPlan()->getCarrera()->getNombre()."</td>";
                     		              echo "<td>".$mesa->getPlan()->getAsignatura()->getNombre()."</td>";
                     		              echo "<td>".$mesa->getTribunal()->getPresidente()->getNombre()."</td>";

@@ -118,31 +118,39 @@ class MesaExamen
      * @param Llamado $primero El llamado se crea (Obligatorio).
      * @param Llamado $segundo El llamado se crea (Opcional).
      * */
-    public function crear($plan, $tribunal, $primero, $segundo) {
+    public function crear($plan, $tribunal, $primero, $segundo) 
+    {
         $this->buscar($plan);
         if (is_null($this->idmesa)) {
             /* No se ha encontrado una mesa de examen - Se crea una nueva. */
+            $idasignatura = $plan->getAsignatura()->getIdasignatura();
+            $idcarrera = $plan->getCarrera()->getCodigo();
+            $idprimero = 'null';
+            $idsegundo = 'null';
+           
             
-            $presidente = $tribunal->getPresidente()->getIdDocente();
-            $vocal1 = $tribunal->getVocal1()->getIdDocente();
-            $vocal2 = $tribunal->getVocal2()->getIdDocente();
-            $suplente = $tribunal->getSuplente()->getIdDocente();
-            
-            $tribunal->crear($presidente, $vocal1, $vocal2, $suplente);
-            
-            
-            if ($tribunal->getIdtribunal()) {
-                /* Se ha creado el tribunal */
+            /* Crea el o los llamados para la mesa de examen */
+            if ($primero) {
                 $primero->crear($primero->getFecha(), $primero->getHora(), $primero->getAula());
-                if ($segundo) {
-                    $segundo->crear($segundo->getFecha(), $segundo->getHora(), $segundo->getAula());
+                if ($primero->getIdllamado()) {
+                    $idprimero = $primero->getIdllamado();
+                } else {
+                    $primero = null;
                 }
-                
-                $idasignatura = $plan->getAsignatura()->getIdasignatura();
-                $idcarrera = $plan->getCarrera()->getCodigo();
-                
+            }
+            if ($segundo) {
+                $segundo->crear($segundo->getFecha(), $segundo->getHora(), $segundo->getAula());
+                if ($segundo->getIdllamado()) {
+                    $idsegundo = $segundo->getIdllamado();
+                } else {
+                    $segundo = null;
+                }
+            }
+            
+            if (isset($primero) || isset($segundo)) {
                 $consulta = "INSERT INTO mesa_examen VALUES ";
-                $consulta = $consulta."(null,".$idasignatura.",".$idcarrera.",".$tribunal->getIdtribunal().",".$primero->getIdllamado().",".$segundo->getIdllamado().")";
+                $consulta = $consulta."(null,".$idasignatura.",".$idcarrera.",".$tribunal->getIdtribunal().",".$idprimero.",".$idsegundo.")";
+                
                 ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
                 
                 if (ObjetoDatos::getInstancia()->affected_rows > 0) {

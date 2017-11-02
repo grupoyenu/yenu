@@ -11,16 +11,19 @@
 $(document).ready(function() {
 	
 	/** Captura el submit para controlar el archivo que se ha seleccionado */
-	$('form#formSeleccionarMesas').submit(function() {		
+	$('form#formSeleccionarMesas').submit(function() {	
+		
+		$("h3#mensaje" ).remove();
 		var archivo = $('input#fileMesas').val();
+		
 		/** Controla si no se ha seleccionado un archivo */
 		if (archivo == '') {
-			alert("Se debe seleccionar un archivo");
+			$("<h3 id='mensaje'>Antes de importar debe seleccionar un archivo csv</h3>").insertAfter( "#content h2" );
 			return false;
 		}
 		/** Controla si el archivo seleccionado es CSV */
 		if( document.getElementById("fileMesas").value.toLowerCase().lastIndexOf(".csv") == -1) {
-	        alert("Se debe seleccionar un archivo cuyo formato sea .csv");
+	        $("<h3 id='mensaje'>Se debe seleccionar un archivo cuyo formato sea .csv</h3>").insertAfter( "#content h2" );
 	        return false;
 		}
 	});

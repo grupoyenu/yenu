@@ -150,7 +150,7 @@
 	}
 	
 	#main-content header, #main-content .content {
-	    padding: 40px;
+	    padding: 40px 5px 40px 5px;
 	}
 
 /**** #MAIN-FOOTER ****/
@@ -190,22 +190,27 @@
 	}
 	
 	h2 {
+		font-size: 2.1em;
 		color: black;
 	}
 	
 	h3 {
+		font-size: 1.9em;
 	    color: black;
 	}
 	
 	h4 {
+		font-size: 1.7em;
 	    color: black;
 	}
 	
 	h5 {
+		font-size: 1.5em;
 		color: black;
 	}
 	
 	h6 {
+		font-size: 1.3em;
 		color: black;
 	}
 	
@@ -229,10 +234,7 @@
 		border-radius: 5px;
 		margin-bottom: 20px;
 		margin-top: 20px;
-		padding-left: 15px;
-		padding-right: 15px;
-		padding-top: 15px;
-    	padding-bottom: 30px;
+		padding: 40px 10px 40px 10px;
 		text-align: left;
 		width: auto;
 		vertical-align: top;

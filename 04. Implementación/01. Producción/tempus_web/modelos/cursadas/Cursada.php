@@ -5,6 +5,7 @@
  * */
 class Cursada 
 {
+    /** @var Plan  */
     private $plan;
     
     /** @var Clase[] */

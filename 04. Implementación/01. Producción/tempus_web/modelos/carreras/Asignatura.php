@@ -15,15 +15,21 @@
  * */
 class Asignatura 
 {
+    /** @var integer */
     private $idasignatura;
+    
+    /** @var string */
     private $nombre;
+    
+    /** @var mysqli_result */
     private $datos;
     
     /**
      * Constructor de la clase. Si se ingresa un identificador de asignatura, se
      * realiza la busqueda de su informacion en la base de datos. En caso contrario,
      * se crea la asignatura con sus atributos nulos.
-     * @param integer $idasignatura Recibe el identificador de la asignatura-
+     * @param integer $idasignatura Recibe el identificador de la asignatura.
+     * @author Márquez Emanuel.
      * */
     function __construct($idasignatura = null)
     {

@@ -27,11 +27,11 @@
             			<div class="content">
             				<h2>SISTEMA TEMPUS</h2>
             				<fieldset>
-            					<legend>Estimado usuario:</legend>
+            					<legend>Estimado usuario</legend>
             					
-            					 <p>Bienvenido a la aplicación Tempus, a través de la cual podrá consultar horarios de cursada y mesas de examen.</p>
+            					 <p>Bienvenido a la aplicación Tempus, a través de la cual podrá importar y consultar horarios de cursada y mesas de examen.</p>
                                  
-                                 <h3>Ingreso al Sistema</h3>
+                                 <h6>Ingreso al Sistema</h6>
                                  <p>Usted puede consultar el sistema si está conectado a su e-mail Institucional. Por favor haga click en el botón a continuación y elija su cuenta institucional.</p>
                                  
                                  

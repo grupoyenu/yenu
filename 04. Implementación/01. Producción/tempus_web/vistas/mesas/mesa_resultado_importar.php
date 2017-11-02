@@ -18,14 +18,24 @@
                 	<fieldset>
                 		<legend>Resultado</legend>
                 		<?php 
+                		
                     		$resultado = $_SESSION['resultado'];
-                    		
-                    		/* Se elimina la variable de sesion */
                     		session_unset($_SESSION['resultado']);
                 		    
-                    		foreach ($resultado as $valor) {
-                    		    echo "Valor: $valor<br />\n";
+                    		if ($resultado['resultado']) {
+                    		    
+                    		    echo "<h3>{$resultado['mensaje']}</h3>";
+                    		    
+                    		    if ($resultado['datos']) {
+                    		        
+                    		        echo '<pre>'; print_r($resultado['datos']); echo '</pre>';
+                    		        
+                    		    }
+                    		    
+                    		} else {
+                    		    
                     		}
+                    		
                 		?>
                 	</fieldset>
             	</form>
