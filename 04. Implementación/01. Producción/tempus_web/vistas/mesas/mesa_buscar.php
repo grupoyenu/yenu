@@ -22,7 +22,7 @@
             		<fieldset>
             			<legend>Asignatura</legend>
             			
-            			<label for="txtAsignatura">Nombre:</label>
+            			<label for="txtAsignatura" class="centrado">Nombre:</label>
             			<input type="text" id="txtAsignatura" name="txtAsignatura" title="Ingrese el nombre de la asignatura">
            				
             		</fieldset>

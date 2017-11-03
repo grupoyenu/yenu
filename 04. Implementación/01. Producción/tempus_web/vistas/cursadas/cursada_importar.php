@@ -2,6 +2,7 @@
     header('Content-Type: text/html; charset=ISO-8859-1');
     
     include_once '../../lib/conf/Utilidades.php';
+    include_once '../../lib/conf/Constantes.php';
     
     /* Controla que solo se acceda de la pagina donde se importa el archivo */
     $ubicacion = $_SERVER["PHP_SELF"];
@@ -50,7 +51,7 @@
                         /* El archivo no ha pasado las validaciones. Se muestra el mensaje. */
                         echo "<fieldset>";
                         echo "<legend>".$nombre."</legend>";
-                        echo "<h3>".$mensaje."</h3>";
+                        echo "<h4>".$mensaje."</h4>";
                         echo "</fieldset>";
                     } else {
                         /* El archivo ha pasado las validaciones. Se puede cargar la tabla. */
@@ -443,9 +444,7 @@
                         		              $Cursada->setClases($clases);
                         		              $sesioncursadas [] = $Cursada;
                         		            }
-                        		            
-                        		            
-                        		        }
+                        		        } /* Fin del if (agregar) */
                         		    }
                         		    $_SESSION['cursadas'] = $sesioncursadas;
                         		?>

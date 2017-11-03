@@ -29,6 +29,26 @@ class Mesas
         $this->mesas = array();
     }
     
+    /**
+     * @return MesaExamen[] $mesas
+     */
+    public function getMesas()
+    {
+        return $this->mesas;
+    }
+
+    /**
+     * @param MesaExamen[] $mesas
+     */
+    public function setMesas($mesas)
+    {
+        $this->mesas = $mesas;
+    }
+
+    /**
+     * Agrega una mesa de examen al arreglo.
+     * @param MesaExamen $mesa
+     * */
     public function agregarMesa($mesa) 
     {
         $this->mesas[] = $mesa;   
@@ -243,7 +263,7 @@ class Mesas
             $creacion = false;
         }
         
-        $resultado = array('resultado'=>true,'mensaje'=>$mensaje, 'datos'=>$datos);
+        $resultado = array('resultado'=>$creacion,'mensaje'=>$mensaje, 'datos'=>$datos);
         return $resultado;
     } 
     

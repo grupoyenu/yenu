@@ -2,13 +2,7 @@
     header('Content-Type: text/html; charset=ISO-8859-1'); 
     include_once '../../lib/conf/Utilidades.php';
     include_once '../../lib/conf/Constantes.php';
-    
-    /* Controla que solo se acceda de la pagina donde se importa el archivo */
-    $ubicacion = $_SERVER["PHP_SELF"];
-    if($ubicacion != '/tempus/vistas/mesas/mesa_seleccionar.php') {
-        header("Location: " . Constantes::HOMEURL);
-    }
-    
+      
 ?>
 <html>
 	<?php include_once '../estructura/encabezado.php'; ?>
@@ -47,15 +41,16 @@
                         /* El archivo no ha pasado las validaciones. Se muestra el mensaje. */
                         echo "<fieldset>";
                         echo "<legend>".$nombre."</legend>";
-                        echo "<h3>".$mensaje."</h3>";
+                        echo "<h4>".$mensaje."</h4>";
                         echo "</fieldset>";
                     } else {
-                        
+                        /* Regresa a la primer fila luego de leer para saber la cantidad de columnas */
+                        rewind($mesas);
                         /* El archivo ha pasado las validaciones. Se puede cargar la tabla. */    
                         ?>
                             <fieldset>
                     		  	<legend><?= $nombre ?></legend>
-                    		  	<table id="tablaImportarMesas">
+                    		  	<table id="tablaImportarMesas" class="display">
                     		  		<thead>
                                         <tr>
                                         	<th>Codigo</th>
@@ -97,7 +92,13 @@
                                                 $segundo = (string) $fila[8];
                                                 $hora = (string) $fila[9];
                                                 
-                                                echo "<tr>";
+                                                /* Se controla que no se dupliquen filas */
+                                                $mensaje = Utilidades::mesasDuplicadas($sesionmesas, $asignatura, $codigo);
+                                                if ($mensaje) {
+                                                    $mensaje = $estilo." title='{$mensaje}'";
+                                                    $agregar = FALSE;
+                                                }
+                                                echo "<tr {$mensaje}>";
                                                 $mensaje = Utilidades::formatoCodigoCarrera($codigo);
                                                 if($codigo == 0) {
                                                     $mensaje = $estilo." title='{$mensaje}'";
@@ -237,7 +238,14 @@
                                                 $primero = (string) $fila[7];
                                                 $hora = (string) $fila[8];
                                                 
-                                                echo "<tr>";
+                                                /* Se controla que no se dupliquen filas */
+                                                $mensaje = Utilidades::mesasDuplicadas($sesionmesas, $asignatura, $codigo);
+                                                if ($mensaje) {
+                                                    $mensaje = $estilo." title='{$mensaje}'";
+                                                    $agregar = FALSE;
+                                                }
+                                                echo "<tr {$mensaje}>";
+                                                
                                                 $mensaje = Utilidades::formatoCodigoCarrera($codigo);
                                                 if($codigo == 0) {
                                                     $mensaje = $estilo." title='{$mensaje}'";

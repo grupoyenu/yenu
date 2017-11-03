@@ -19,23 +19,23 @@ $(document).ready(function() {
         	{
         		extend: 'excelHtml5',
         		text: 'Descargar Excel'
-        	},
-            language: {
-    			processing: "Procesando...",
-    	        search: "Buscar:",
-                lengthMenu: "Viendo _MENU_ regristros por página",
-                zeroRecords: "Sin resultados",
-                info: "Mostrando _START_ a _END_ de _TOTAL_ entradas",
-                infoEmpty: "No hay registros disponibles",
-                infoFiltered: "(Filtrado de _MAX_ registros totales)",
-                loadingRecords: "Cargando registros...",
-                emptyTable: "Sin resultados",
-                paginate: {
-                    previous: "Anterior",
-                    next: "Siguiente"
-                }
-           }
-        ]
+        	}
+        ],
+        language: {
+			processing: "Procesando...",
+	        search: "Buscar:",
+            lengthMenu: "Viendo _MENU_ regristros por página",
+            zeroRecords: "Sin resultados",
+            info: "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+            infoEmpty: "No hay registros disponibles",
+            infoFiltered: "(Filtrado de _MAX_ registros totales)",
+            loadingRecords: "Cargando registros...",
+            emptyTable: "Sin resultados",
+            paginate: {
+                previous: "Anterior",
+                next: "Siguiente"
+            }
+       }
 	});
 	
 });

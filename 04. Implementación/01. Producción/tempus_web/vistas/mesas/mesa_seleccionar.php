@@ -1,5 +1,10 @@
+<?php 
+    
+    include_once '../../lib/conf/ControlAcceso.php'; 
+    include_once '../../lib/conf/PermisosSistema.php';
+    ControlAcceso::requierePermiso(PermisosSistema::CURSADAS);
+?>
 <html>
-
 	<?php include_once '../estructura/encabezado.php'; ?>
 	<script type="text/javascript" src="../../js/mesa_seleccionar.js"></script>
 	<section id="main-content">
@@ -12,7 +17,7 @@
             		<fieldset>
             			<legend>Selección de archivo</legend>
             			
-            			<label for="fileMesas">Archivo:</label>
+            			<label for="fileMesas" class="centrado">Archivo:</label>
            				<input type="file" id="fileMesas" name="fileMesas" accept=".csv" title="Seleccionar archivo csv">
             			
             		</fieldset>

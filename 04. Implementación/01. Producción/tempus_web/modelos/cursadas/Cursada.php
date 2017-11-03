@@ -55,35 +55,52 @@ class Cursada
     }
 
     /**
-     * Realiza la creacion de una cursada.
+     * Realiza la creación de una cursada. Para ello realiza la creacion de cada
+     * una de las clases del arreglo y luego crea la relación entre el plan y la
+     * clase. Devuelve verdadero cuando ambos registros se crean, falso cuando no
+     * se crea la clase o la relación (tabla cursada de la base de datos).
      * @param Plan $plan Asignatura y Carrera para la Cursada (Obligatorio).
-     * @param array
+     * @param Clase[] $clases Recibe el conjunto de clases para el plan (Obligatorio).
+     * @return boolean true o false.
+     * @author Márquez Emanuel.
      * */
     public function crear($plan, $clases = array())
     {
-        $tamanio = count($clases);
-        $idasignatura = $plan->getAsignatura()->getIdasignatura();
-        $idcarrera = $plan->getCarrera()->getCodigo();
-      
-        for ($i=0; $i < $tamanio; $i++) {
+        if (isset($clases)) {
             
-            $clase =  $clases[$i];
-            
-            $dia = $clase->getDia();
-            $desde = $clase->getDesde();
-            $hasta = $clase->getHasta();
-            $aula = $clase->getAula();
-            $clase->crear($dia, $desde, $hasta, $aula);
-            
-            $idclase = $clase->getIdclase();
-            
-            if ($idclase) {
-                /* Se ha creado la clase */
-                $resultado = $this->crearRelacion($idasignatura, $idcarrera, $idclase);
-                if ($resultado) {
-                    $this->clases [] = $clase;
+            $tamanio = count($clases);
+            $idasignatura = $plan->getAsignatura()->getIdasignatura();
+            $idcarrera = $plan->getCarrera()->getCodigo();
+            $contadorexitos = 0;
+            for ($i=0; $i < $tamanio; $i++) {
+                
+                $clase =  $clases[$i];
+                
+                $dia = $clase->getDia();
+                $desde = $clase->getDesde();
+                $hasta = $clase->getHasta();
+                $aula = $clase->getAula();
+                $clase->crear($dia, $desde, $hasta, $aula);
+                $idclase = $clase->getIdclase();
+                
+                if ($idclase) {
+                    /* Se ha creado la clase */
+                    $resultado = $this->crearRelacion($idasignatura, $idcarrera, $idclase);
+                    if ($resultado) {
+                        $contadorexitos = $contadorexitos + 1;
+                        $this->clases [] = $clase;
+                    }
                 }
             }
+            
+            if ($contadorexitos > 0) {
+                return true;
+            } else {
+                return false;
+            }
+            
+        } else {
+            return false;
         }
     }
     

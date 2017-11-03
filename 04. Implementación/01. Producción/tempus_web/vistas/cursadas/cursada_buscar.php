@@ -15,8 +15,8 @@
             	
             		<fieldset>
             			<legend>Asignatura</legend>
-            			<label>Nombre:</label>
-            			<input type="text" id="txtAsignatura" name="txtAsignatura" title="">
+            			<label for="txtAsignatura" class="centrado">Nombre:</label>
+            			<input type="text" id="txtAsignatura" name="txtAsignatura" title="Ingrese el nombre de asignatura">
             		</fieldset>
             		<input type="hidden" id="accion" name="accion" value="buscar">
             		<input class="botonVerde" type="submit" id="btnBuscarCursada" name="btnBuscarCursada" value="Buscar">

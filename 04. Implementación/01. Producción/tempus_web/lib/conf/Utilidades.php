@@ -230,4 +230,29 @@ class Utilidades
         }
         return "El nombre de aula no cumple con el formato (Se aceptan letras, acentos, espacios)";
     }
+    
+    /**
+     * Controla que en un arreglo no haya mesas de examen duplicadas. Se controla
+     * que no exista una mesa de examen para la misma asignatura en la misma
+     * carrera. Para ello, se busca primero el nombre de asignatura, si existe se
+     * busca la carrera para ver coincidencias.
+     * */
+    static function mesasDuplicadas($mesas, $asignatura, $carrera)
+    {
+        $mensaje = null;
+        $posicion = 0;
+        $encontrado = false;
+        $tamanio = count($mesas);
+        while (($posicion < $tamanio) && !$encontrado) {
+            $mesa = $mesas[$posicion];
+            if (in_array($asignatura, $mesa)) {
+                if (in_array($carrera, $mesa)) {
+                    $mensaje = "La mesa de examen ya se encuentra cargada";
+                    $encontrado = true;
+                }
+            }
+            ++$posicion;
+        }
+        return $mensaje;
+    }
 }

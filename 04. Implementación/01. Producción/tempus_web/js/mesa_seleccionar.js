@@ -18,12 +18,12 @@ $(document).ready(function() {
 		
 		/** Controla si no se ha seleccionado un archivo */
 		if (archivo == '') {
-			$("<h3 id='mensaje'>Antes de importar debe seleccionar un archivo csv</h3>").insertAfter( "#content h2" );
+			$("<h3 id='mensaje' class='letraNaranja'>Antes de importar debe seleccionar un archivo csv</h3>").insertAfter( "#content h2" );
 			return false;
 		}
 		/** Controla si el archivo seleccionado es CSV */
 		if( document.getElementById("fileMesas").value.toLowerCase().lastIndexOf(".csv") == -1) {
-	        $("<h3 id='mensaje'>Se debe seleccionar un archivo cuyo formato sea .csv</h3>").insertAfter( "#content h2" );
+	        $("<h3 id='mensaje' class='letraNaranja'>Se debe seleccionar un archivo cuyo formato sea csv</h3>").insertAfter( "#content h2" );
 	        return false;
 		}
 	});

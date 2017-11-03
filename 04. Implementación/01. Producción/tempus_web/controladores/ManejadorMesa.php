@@ -25,7 +25,7 @@
     
     session_start();
 
-    $redireccion = "/tempus/vistas/mesas/mesa_resultado_importar.php";
+    $redireccion = Constantes::HOMEURL;
     
     $accion = $_POST['accion'];
 

@@ -18,18 +18,17 @@
     
     switch ($accion) {
         case "importar":
-            $redireccion = Constantes::APPURL."/vistas/cursadas/cursada_resultado_importar.php";
+            $redireccion = "/tempus/vistas/cursadas/cursada_resultado_importar.php";
             $filas = $_SESSION['cursadas'];
             $resultado = null;
             if ($filas) {
                 $cursadas = new Cursadas();
                 $resultado = $cursadas->crear($filas);
             } else {
-                $mensaje = "No se pudo obtener la información a cargar.";
+                $mensaje = "No se pudo obtener la información a cargar";
                 $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>NULL);
             }
-            
-            $_SESSION['mesas'] = NULL;
+            $_SESSION['cursadas'] = NULL;
             $_SESSION['resultado'] = $resultado;
             break;
         case "crear":
