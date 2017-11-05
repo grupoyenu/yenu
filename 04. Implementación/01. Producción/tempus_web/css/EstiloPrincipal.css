@@ -246,7 +246,7 @@
 		border-radius: 5px;
 		margin-bottom: 20px;
 		margin-top: 20px;
-		padding: 40px 10px 40px 10px;
+		padding: 25px 10px 25px 10px;
 		text-align: left;
 		width: auto;
 		vertical-align: top;
@@ -323,16 +323,15 @@
 		border-color: #CCC;
 		border-radius: 3px;
 		display: inline-block;
-		width: 230px;
+		width: 270px;
 		height: 30px;
 	}
 	
 	label {
 		display:inline-block;
 		height: 30px;
-		min-width: 250px;
-		max-width: auto;
-		margin-left: 12px;
+		min-width: 220px;
+		margin-left: 2%;
 		margin-right: 12px;
 		margin-top: 15px;
 	}

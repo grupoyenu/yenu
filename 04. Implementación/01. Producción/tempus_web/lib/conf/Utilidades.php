@@ -153,7 +153,7 @@ class Utilidades
     {
         $longitud = strlen($nombre);
         if (($longitud > 3) && ($longitud < 256)) {
-            $expresion = "^[A-Za-záéíóúñüÁÉÍÓÚÜÑ,. ]{5,255}$";
+            $expresion = "^[A-Za-záéíóúñüÁÉÍÓÚÜÑ,. ]{4,255}$";
             if (ereg($expresion, $nombre)) {
                 return null;
             }
@@ -236,6 +236,11 @@ class Utilidades
      * que no exista una mesa de examen para la misma asignatura en la misma
      * carrera. Para ello, se busca primero el nombre de asignatura, si existe se
      * busca la carrera para ver coincidencias.
+     * @param array $mesas Recibe el arreglo de mesas.
+     * @param string $asignatura Recibe el nombre de la asignatura.
+     * @param integer $codigo Recibe el codigo de la carrera.
+     * @return string Null si no hay duplicadas, mensaje en caso contrario.
+     * @author Márquez Emanuel.
      * */
     static function mesasDuplicadas($mesas, $asignatura, $carrera)
     {
@@ -255,4 +260,35 @@ class Utilidades
         }
         return $mensaje;
     }
+    
+    /**
+     * Controla que en un arreglo no haya cursadas duplicadas. Se controla que
+     * no exista una cursada para la misma asignatura en la misma carrera. Para
+     * ello, se busca primero el nombre de la asignatura, si existe se busca la
+     * carrera para ver coincidencias.
+     * @param Cursada[] $cursadas Recibe el arreglo de cursadas.
+     * @param string $asignatura Recibe el nombre de la asignatura.
+     * @param integer $codigo Recibe el codigo de la carrera.
+     * @return string Null si no hay duplicadas, mensaje en caso contrario.
+     * @author Márquez Emanuel.
+     * */
+    static function cursadasDuplicadas($cursadas, $asignatura, $codigo)
+    {
+        $mensaje = null;
+        $posicion = 0;
+        $encontrado = false;
+        $tamanio = count($cursadas);
+        while (($posicion < $tamanio) && !$encontrado) {
+            $cursada = $cursadas[$posicion];
+            if ($cursada->getPlan()->getAsignatura()->getNombre() == $asignatura) {
+                if ($cursada->getPlan()->getCarrera()->getCodigo() == $codigo) {
+                    $mensaje = "La cursada ya se encuentra cargada";
+                    $encontrado = true;
+                }
+            }
+            ++$posicion;
+        }
+        return $mensaje;
+    }
+    
 }

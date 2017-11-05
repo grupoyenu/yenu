@@ -128,7 +128,6 @@ class MesaExamen
             $idprimero = 'null';
             $idsegundo = 'null';
            
-            
             /* Crea el o los llamados para la mesa de examen */
             if ($primero) {
                 $primero->crear($primero->getFecha(), $primero->getHora(), $primero->getAula());

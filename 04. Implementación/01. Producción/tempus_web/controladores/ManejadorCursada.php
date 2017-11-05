@@ -48,9 +48,8 @@
         case "modificar":
             
             break;
+        case "modificacion":
             
-        default:
-            ;
             break;
     }
     

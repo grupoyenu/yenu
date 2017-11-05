@@ -11,7 +11,6 @@
     include_once '../../modelos/mesas/Llamado.php';
     include_once '../../lib/conf/ControlAcceso.php';
     
-    
 ?>
 <html>
 	<?php include_once '../estructura/encabezado.php'; ?>
@@ -26,9 +25,6 @@
                 		<legend>Resultado de la búsqueda</legend>
                 		<?php  
                 		  $resultado = $_SESSION['resultado'];
-                		  /* Se elimina la variable de sesion */
-                		  session_unset($_SESSION['resultado']);
-                		  
                 		  $mesas = $resultado['datos'];
                 		  
                 		  if ($mesas) {
@@ -56,30 +52,31 @@
                     		          </thead>
                 		          	<tbody>
                 		            <?php
-                    		          foreach ($mesas as $mesa) {
-                    		              
-                    		              echo "<tr>";
-                    		              echo "<td><input type='radio' name='radioMesas'></td>";
-                    		              echo "<td>".$mesa->getPlan()->getCarrera()->getNombre()."</td>";
-                    		              echo "<td>".$mesa->getPlan()->getAsignatura()->getNombre()."</td>";
-                    		              echo "<td>".$mesa->getTribunal()->getPresidente()->getNombre()."</td>";
-                    		              echo "<td>".$mesa->getTribunal()->getVocal1()->getNombre()."</td>";
-                    		              $vocal2 = "";
-                    		              $suplente = "";
-                    		              if ($mesa->getTribunal()->getVocal2()) {
-                    		                  $vocal2 = $mesa->getTribunal()->getVocal2()->getNombre();
-                    		                  if ($mesa->getTribunal()->getSuplente()) {
-                    		                      $suplente = $mesa->getTribunal()->getSuplente()->getNombre();
-                    		                  }
-                    		              }
-                    		              echo "<td>".$vocal2."</td>";
-                    		              echo "<td>".$suplente."</td>";
-                    		              echo "<td>".$mesa->getPrimero()->getFecha()."</td>";
-                    		              echo "<td>".$mesa->getSegundo()->getFecha()."</td>";
-                    		              echo "<td>".$mesa->getPrimero()->getHora()."</td>";
-                    		              echo "<td>campus</td>";
-                    		              echo "</tr>";
-                    		          }
+                		            $tamanio = count($mesas);
+                		            for ($indice=0; $indice<$tamanio; ++$indice) {
+                		                $mesa = $mesas [$indice];
+                		                echo "<tr>";
+                		                echo "<td><input type='radio' name='radioMesas' value='".$indice."'></td>";
+                		                echo "<td>".$mesa->getPlan()->getCarrera()->getNombre()."</td>";
+                		                echo "<td>".$mesa->getPlan()->getAsignatura()->getNombre()."</td>";
+                		                echo "<td>".$mesa->getTribunal()->getPresidente()->getNombre()."</td>";
+                		                echo "<td>".$mesa->getTribunal()->getVocal1()->getNombre()."</td>";
+                		                $vocal2 = "";
+                		                $suplente = "";
+                		                if ($mesa->getTribunal()->getVocal2()) {
+                		                    $vocal2 = $mesa->getTribunal()->getVocal2()->getNombre();
+                		                    if ($mesa->getTribunal()->getSuplente()) {
+                		                        $suplente = $mesa->getTribunal()->getSuplente()->getNombre();
+                		                    }
+                		                }
+                		                echo "<td>".$vocal2."</td>";
+                		                echo "<td>".$suplente."</td>";
+                		                echo "<td>".$mesa->getPrimero()->getFecha()."</td>";
+                		                echo "<td>".$mesa->getSegundo()->getFecha()."</td>";
+                		                echo "<td>".$mesa->getPrimero()->getHora()."</td>";
+                		                echo "<td>campus</td>";
+                		                echo "</tr>";
+                		            }
                     		        ?>
                                  	</tbody>
                                  </table>
@@ -104,10 +101,11 @@
                     		          </thead>
                 		          	<tbody>
                 		            <?php
-                    		          foreach ($mesas as $mesa) {
-                    		              
+                    		          $tamanio = count($mesas);
+                    		          for ($indice=0; $indice<$tamanio; ++$indice) {
+                    		              $mesa = $mesas [$indice];
                     		              echo "<tr>";
-                    		              echo "<td><input type='radio' name='radioMesas'></td>";
+                    		              echo "<td><input type='radio' name='radioMesas' value='".$indice."'></td>";
                     		              echo "<td>".$mesa->getPlan()->getCarrera()->getNombre()."</td>";
                     		              echo "<td>".$mesa->getPlan()->getAsignatura()->getNombre()."</td>";
                     		              echo "<td>".$mesa->getTribunal()->getPresidente()->getNombre()."</td>";
@@ -138,7 +136,7 @@
                 	<?php  if ($mesas) { ?>
                 	    	<input class="botonRojo" type="submit" id="btnBorrarMesa" name="btnBorrarMesa" value="Borrar">
                         	<input class="botonVerde" type="submit" id="btnModificarMesa" name="btnModificarMesa" value="Modificar">
-                	    
+                	    	<input type="hidden" id="accion" name="accion" value="">
                 	<?php } ?>
             	</form>
             </div>
