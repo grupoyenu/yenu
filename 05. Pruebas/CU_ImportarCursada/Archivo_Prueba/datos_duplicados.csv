@@ -1,0 +1,22 @@
+16;Analista de Sistemas;Análisis Matematico I;1;20:00;23:00;A;3;16:00;18:00;A;1;18:00;21:00;A;3;;;;;;;;
+16;Analista de Sistemas;Matemática discreta;1;14:00;16:00;A;10;14:00;16:00;E;9;14:00;16:00;E;11;;;;;;;;
+16;Analista de Sistemas;Organización de las computadoras;1;;;;;18:00;20:00;A;6;;;;;;;;;;;;
+16;Analista de Sistemas;Resolución de Problemas y Algoritmos;1;;;;;20:00;22:00;A;6;;;;;;;;;;;;
+16;Analista de Sistemas;Análisis y Producción del Discurso;1;;;;;;;;;;;;;;;;;;;;
+16;Analista de Sistemas;Base de datos;2;17:00;19:00;A;6;16:00;18:00;A;6;;;;;16:00;18:00;A;6;;;;
+16;Analista de Sistemas;Análisis y Diseño del Software;2;19:00;21:00;A;4;;;;;16:00;18:00;A;4;18:00;20:00;A;4;;;;
+16;Analista de Sistemas;C.U.S;2;;;;;18:00;20:00;A;3;;;;;;;;;15:00;17:00;A;2
+16;Analista de Sistemas;Sistemas Operativos;2;;;;;20:00;23:00;A;7;;;;;20:00;23:00;A;7;;;;
+16;Analista de Sistemas;Estructura de Datos;2;;;;;;;;;18:00;21:00;A;8;;;;;17:00;20:00;A;8
+16;Analista de Sistemas;Sistemas Operativos Distribuidos;3;18:00;21:00;A;7;;;;;20:00;22:00;A;7;;;;;;;;
+16;Analista de Sistemas;Gestión de Proyectos de Software;3;;;;;16:00;18:00;A;4;;;;;16:00;18:00;A;4;;;;
+16;Analista de Sistemas;Laboratorio de Desarrollo de Software;3;;;;;18:00;21:00;A;4;;;;;;;;;17:00;20:00;A;4
+16;Analista de Sistemas;Estadistica I;3;;;;;;;;;18:00;20:00;A;5;;;;;;;;
+72;Licenciatura en Sistemas;Análisis Matematico I;1;20:00;23:00;A;3;16:00;18:00;A;1;18:00;21:00;A;3;;;;;;;;
+72;Licenciatura en Sistemas;Matemática discreta;1;14:00;16:00;A;10;14:00;16:00;E;9;14:00;16:00;E;11;;;;;;;;
+72;Licenciatura en Sistemas;Organización de las computadoras;1;;;;;18:00;20:00;A;6;;;;;;;;;;;;
+72;Licenciatura en Sistemas;Resolución de Problemas y Algoritmos;1;;;;;20:00;22:00;A;6;;;;;;;;;;;;
+72;Licenciatura en Sistemas;Análisis y Producción del Discurso;1;;;;;;;;;;;;;;;;;;;;
+72;Licenciatura en Sistemas;Base de datos;2;17:00;19:00;A;6;16:00;18:00;A;6;;;;;16:00;18:00;A;6;;;;
+16;Analista de Sistemas;Análisis y Producción del Discurso;1;;;;;;;;;;;;;;;;;;;;
+16;Analista de Sistemas;Estructura de Datos;2;;;;;;;;;18:00;21:00;A;8;;;;;17:00;20:00;A;8
