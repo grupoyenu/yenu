@@ -114,9 +114,10 @@ class MesaExamen
      * se crea un nuevo registro. Para ello, tambien se hace la creacion del tribunal, 
      * primer llamado y segundo llamado. 
      * @param Plan $plan El plan debe existir en la base de datos (Obligatorio).
-     * @param Tribunal $tribunal El tribunal se busca. Luego se obtiene o crea (Obligatorio).
+     * @param Tribunal $tribunal El tribunal debe existir en la base de datos (Obligatorio).
      * @param Llamado $primero El llamado se crea (Obligatorio).
      * @param Llamado $segundo El llamado se crea (Opcional).
+     * @return string Mensaje asociado a la operación.
      * */
     public function crear($plan, $tribunal, $primero, $segundo) 
     {
@@ -130,7 +131,12 @@ class MesaExamen
            
             /* Crea el o los llamados para la mesa de examen */
             if ($primero) {
-                $primero->crear($primero->getFecha(), $primero->getHora(), $primero->getAula());
+                $idaula = null;
+                if ($primero->getAula()) {
+                    $idaula = $primero->getAula()->getIdaula();
+                }
+                
+                $primero->crear($primero->getFecha(), $primero->getHora(), $idaula);
                 if ($primero->getIdllamado()) {
                     $idprimero = $primero->getIdllamado();
                 } else {
@@ -138,7 +144,11 @@ class MesaExamen
                 }
             }
             if ($segundo) {
-                $segundo->crear($segundo->getFecha(), $segundo->getHora(), $segundo->getAula());
+                $idaula = null;
+                if ($segundo->getAula()) {
+                    $idaula = $segundo->getAula()->getIdaula();
+                }
+                $segundo->crear($segundo->getFecha(), $segundo->getHora(), $idaula);
                 if ($segundo->getIdllamado()) {
                     $idsegundo = $segundo->getIdllamado();
                 } else {
@@ -158,21 +168,17 @@ class MesaExamen
                     $this->tribunal = $tribunal;
                     $this->primero = $primero;
                     $this->segundo = $segundo;
+                    return "Se ha creado la mesa de examen correctamente";
                 } else {
-                    $this->idmesa = null;
-                    $this->plan = null;
-                    $this->tribunal = null;
-                    $this->primero = null;
-                    $this->segundo = null;
+                    $this->limpiarMesaExamen();
+                    return "No se ha podido realizar la creación de la mesa de examen";
                 }
             } else {
-                $this->idmesa = null;
-                $this->plan = null;
-                $this->tribunal = null;
-                $this->primero = null;
-                $this->segundo = null;
+                $this->limpiarMesaExamen();
+                return "No se ha podido realizar la creación de llamado para la mesa de examen";
             }
         }
+        return "Se ha encontrado una mesa de examen para la asignatura en la carrera indicada";
     }
     
     /**
@@ -199,7 +205,7 @@ class MesaExamen
             
             $fila = $this->datos->fetch_row();
             $this->idmesa = $fila[0];
-            $this->plan = $plan;
+            $this->plan = new Plan($fila[1], $fila[2]);
             $this->tribunal = new Tribunal($fila[3]);
             $this->primero = new Llamado($fila[4]);
             if($fila[5]) {
@@ -207,13 +213,22 @@ class MesaExamen
             }
             
         } else {
-            $this->idmesa = null;
-            $this->plan = null;
-            $this->tribunal = null;
-            $this->primero = null;
-            $this->segundo = null;
+            $this->limpiarMesaExamen();
         }
         $this->datos = null;
+    }
+    
+    /**
+     * Coloca todos los atributos de la mesa de examen en nulo.
+     * 
+     * */
+    private function limpiarMesaExamen() 
+    {
+        $this->idmesa = null;
+        $this->plan = null;
+        $this->tribunal = null;
+        $this->primero = null;
+        $this->segundo = null;
     }
 
 }

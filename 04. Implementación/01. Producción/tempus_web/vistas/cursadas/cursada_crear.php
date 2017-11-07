@@ -20,18 +20,25 @@
             			<fieldset>
             				<legend>Información de Carrera y Asignatura</legend>
             				
-            				<label for="">* Código de carrera:</label>
-            				<input type="number">
+            				<label for="codigoCarrera">* Código de carrera:</label>
+            				<input type="number" name="codigoCarrera" id="codigoCarrera" required>
             				<label for="">* Nombre de Carrera:</label>
-            				<input type="text">
+            				<input type="text" name="txtNombreCarrera" id="txtCarrera" required>
             				<br>
-            				<label for="">* Nombre de Asignatura:</label>
-            				<input type="text">
-            				<label for="">* Año:</label>
+            				<label for="txtAsignatura">* Nombre de Asignatura:</label>
+            				<input type="text" name="txtAsignatura" id="txtAsignatura" required>
+            				<label for="selectAnio">* Año:</label>
+            				<select name="selectAnio" id="selectAnio" required>
+            					<option value="1">1</option>
+            					<option value="2">2</option>
+            					<option value="3">3</option>
+            					<option value="4">4</option>
+            					<option value="5">5</option>
+            				</select>
             			</fieldset>
             			<fieldset>
             				<legend>Información de clases</legend>
-            				<table>
+            				<table id="tablaCrearCursada" class="tablaCrearCursada">
             					<thead>
             						<tr>
             							<th></th>
@@ -46,7 +53,7 @@
             					<?php
             						for ($i = 1; $i < 7; ++$i) {
             						    echo "<tr>";
-            						    echo "<td><input type='checkbox' value='{$i}' name='cbDiasClase' id='cbDiasClase'></td>";
+            						    echo "<td><input type='checkbox' value='{$i}' name='cbDiasClase' id='cbDiasClase{$i}'></td>";
             						    $dia = $i;
             						    switch ($i) {
             						        case 1:
@@ -80,8 +87,8 @@
             						        echo "<option value='{$horafin}:00'>{$horafin}:00 hs</option>";
             						    }
             						    echo "</select></td>";
-            						    echo "<td><input type='text' disabled='disabled'></td>";
-            						    echo "<td><input type='text' disabled='disabled'></td>";
+            						    echo "<td><input type='text' disabled='disabled' id='txtSector{$i}' name='txtSector{$i}' required></td>";
+            						    echo "<td><input type='text' disabled='disabled' id='txtAula{$i}' name='txtAula{$i}' required></td>";
             						    echo "</tr>";
             						}
             					?>

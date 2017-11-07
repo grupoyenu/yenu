@@ -12,6 +12,11 @@
     date_default_timezone_set('America/Argentina/Buenos_Aires');
     $hoy = date("Y-m-d");
     
+    /* Fecha minima del segundo llamado (fecha actual mas 7 dias) */
+    $fechaminima = strtotime ('+7 days' , strtotime($hoy));
+    $fechaminima = date("Y-m-d", $fechaminima);
+    
+    /* Fecha maxima del segundo llamado (fecha actual mas 1 anio) */
     $fechamaxima = strtotime ('+1 year' , strtotime($hoy));
     $fechamaxima = date("Y-m-d", $fechamaxima);
     
@@ -27,7 +32,7 @@
 			<div id="content" class="content">
 			
             	<h2>CREAR MESA DE EXAMEN</h2>
-            	<form action="" id="formCrearMesa" name="formCrearMesa" method="post" >
+            	<form action="../../controladores/ManejadorMesa.php" id="formCrearMesa" name="formCrearMesa" method="post" >
             	
             		<fieldset>
             			<legend>Nueva mesa de examen</legend>
@@ -69,7 +74,7 @@
             		        <?php
                 		        if ($llamados && $llamados > 0) {
                 		            echo "<label for='dateSegundoLlamado'>Segundo Llamado:</label>";
-                		            echo "<input type='date' name='dateSegundoLlamado' id='dateSegundoLlamado' max='{$fechamaxima}'>";
+                		            echo "<input type='date' name='dateSegundoLlamado' id='dateSegundoLlamado' min='{$fechaminima}' max='{$fechamaxima}'>";
                 		        }
             		        ?>
         		        </fieldset>

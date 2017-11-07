@@ -26,7 +26,7 @@ class Llamado {
      * */
     function __construct($idllamado = NULL){
         if($idllamado) {
-            $consulta = "SELECT idllamado, DATE_FORMAT(fecha, '%d-%m'), DATE_FORMAT(hora, '%H:%i'), idaula FROM llamado WHERE idllamado = ".$idllamado;
+            $consulta = "SELECT idllamado, DATE_FORMAT(fecha, '%d-%m-%Y'), DATE_FORMAT(hora, '%H:%i'), idaula FROM llamado WHERE idllamado = ".$idllamado;
             $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
             if ($this->datos->num_rows > 0) {
                 $fila = $this->datos->fetch_row();
@@ -122,7 +122,7 @@ class Llamado {
         $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery("INSERT INTO llamado VALUES (null,'".$fecha."','".$hora."',".$aula.")");
         if(ObjetoDatos::getInstancia()->affected_rows) {
             $this->idllamado = (Int) ObjetoDatos::getInstancia()->insert_id;
-            $this->fecha = $fecha;
+            $this->fecha = date('d-m-Y', strtotime($fecha));
             $this->hora = $hora;
         } else {
             $this->idllamado = null;

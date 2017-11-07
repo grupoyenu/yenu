@@ -16,6 +16,8 @@ $(document).ready(function() {
 		$("h3#mensaje" ).remove();
 		var mensaje = "";
 		
+		alert($('input#dateSegundoLlamado').val());
+		
 		var codigocarrera = $('input#codigoCarrera').val();
 		if (codigocarrera == '' || codigocarrera == null) {
 			mensaje = "El código de carrera es un campo obligatorio";

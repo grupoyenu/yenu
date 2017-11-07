@@ -291,4 +291,23 @@ class Utilidades
         return $mensaje;
     }
     
+    /**
+     * Realiza la conversión de una cadena de texto a formato Camel Case.
+     * Cada una de las palabras de la cadena de texto recibida será convertida
+     * a un formato donde se inicia la primer letra con mayuscula y luego las 
+     * demas letras con minuscula.
+     * @param string $texto Cadena de texto en cualquier formato.
+     * @return string Devuelve la cadena en formato Camel Case. 
+     * @author Márquez Emanuel.
+     * */
+    static function convertirCamelCase($texto)
+    {
+        if ($texto) {
+            /* Convierta la cadena completa a minuscula */
+            $texto = strtolower($texto);
+            /* Coloca cada letra inicial de palabra en mayuscula */
+            $texto = ucwords($texto);
+        }
+        return $texto;
+    }
 }

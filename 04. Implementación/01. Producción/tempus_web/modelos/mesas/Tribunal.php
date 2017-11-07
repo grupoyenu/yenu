@@ -227,6 +227,7 @@ class Tribunal
             $this->presidente = null;
             $this->vocal1 = null;
             $this->vocal2 = null;
+            $this->suplente = null;
         }
         $this->datos = null;
     }

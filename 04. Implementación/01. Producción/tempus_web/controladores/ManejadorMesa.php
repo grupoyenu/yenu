@@ -12,6 +12,7 @@
  * */
     include_once '../lib/conf/ObjetoDatos.php';
     include_once '../lib/conf/Constantes.php';
+    include_once '../lib/conf/Utilidades.php';
     
     include_once '../modelos/mesas/Mesas.php';
     include_once '../modelos/mesas/MesaExamen.php';
@@ -22,6 +23,7 @@
     include_once '../modelos/carreras/Carrera.php';
     include_once '../modelos/carreras/Asignatura.php';
     include_once '../modelos/mesas/Docente.php';
+    include_once '../modelos/aulas/Aula.php';
     
     session_start();
 
@@ -49,17 +51,102 @@
             $redireccion = Constantes::APPURL."/vistas/mesas/mesa_resultado_crear.php";
             
             $codigocarrera = $_POST['codigoCarrera'];
-            $nombrecarrera = $_POST['txtCarrera'];
-            $nombreasignatura = $_POST['txtAsignatura'];
-            $nombrepresidente = $_POST['txtNombrePresidente'];
-            $nombrevocal1 = $_POST['txtNombreVocal1'];
-            $nombrevocal2 = $_POST['txtNombreVocal2'];
-            $nombresuplente = $_POST['txtNombreSuplente'];
+            $nombrecarrera = Utilidades::convertirCamelCase($_POST['txtCarrera']);
+            $nombreasignatura = Utilidades::convertirCamelCase($_POST['txtAsignatura']);
+            $nombrepresidente = Utilidades::convertirCamelCase($_POST['txtNombrePresidente']);
+            $nombrevocal1 = Utilidades::convertirCamelCase($_POST['txtNombreVocal1']);
+            $nombrevocal2 = Utilidades::convertirCamelCase($_POST['txtNombreVocal2']);
+            $nombresuplente = Utilidades::convertirCamelCase($_POST['txtNombreSuplente']);
             $primerllamado = $_POST['datePrimerLlamado'];
             $segundollamado = $_POST['dateSegundoLlamado'];
             $sector = $_POST['txtSector'];
-            $aula = $_POST['txtNombreAula'];
+            $nombreaula = Utilidades::convertirCamelCase($_POST['txtNombreAula']);
             $hora =  $_POST['selectHora'];
+            
+            $mensaje = "";
+            $resultado = null;
+            
+            $mesa = new MesaExamen();
+            $asignatura = new Asignatura();
+            $asignatura->crear($nombreasignatura);
+            $carrera = new Carrera();
+            $carrera->crear($codigocarrera, $nombrecarrera);
+            
+            if ($asignatura->getIdasignatura() && $carrera->getCodigo()) {
+                $plan = new Plan();
+               
+                if ($plan->crear($asignatura->getIdasignatura(), $carrera->getCodigo(), 1)) {
+                    $plan->setAsignatura($asignatura);
+                    $plan->setCarrera($carrera);
+                    $tribunal = new Tribunal();
+                    
+                    /* procede con la creación del tribunal */
+                    $presidente = new Docente();
+                    $vocal1 = new Docente();
+                    $vocal2 = new Docente();
+                    $suplente = new Docente();
+                    
+                    $presidente->crear($nombrepresidente);
+                    $vocal1->crear($nombrevocal1);
+                    $vocal2->setIdDocente(null);
+                    $suplente->setIdDocente(null);
+                    
+                    if ($nombrevocal2) {
+                        $vocal2->crear($nombrevocal2);
+                        if ($nombresuplente) {
+                            $suplente->crear($nombresuplente);
+                        }
+                    }
+                    
+                    $tribunal->crear($presidente->getIdDocente(), $vocal1->getIdDocente(), $vocal2->getIdDocente(), $suplente->getIdDocente());
+                    
+                    if ($tribunal->getIdtribunal()) {
+                        
+                        $tribunal->setPresidente($presidente);
+                        $tribunal->setVocal1($vocal1);
+                        $tribunal->setVocal2($vocal2);
+                        $tribunal->setSuplente($suplente);
+                        
+                        $aula = new Aula();
+                        $aula->crear($nombreaula, $sector);
+                        
+                        if ($aula->getIdaula()) {
+                            $primero = new Llamado();
+                            $segundo = new Llamado();
+                            
+                            if ($primerllamado) {
+                                $primero->setAula($aula);
+                                $primero->setFecha($primerllamado);
+                                $primero->setHora($hora);
+                            }
+                            
+                            if ($segundollamado) {
+                                $segundo->setAula($aula);
+                                $segundo->setFecha($segundollamado);
+                                $segundo->setHora($hora);
+                            } 
+                        }
+                        
+                        $mensaje = $mesa->crear($plan, $tribunal, $primero, $segundo);
+                        
+                        if ($mesa->getIdmesa()) {
+                            $resultado = array('resultado'=>TRUE,'mensaje'=>$mensaje, 'datos'=>$mesa);
+                        } else {
+                            $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>NULL);
+                        }
+                    } else {
+                        $mensaje = "No se ha podido realizar la creación del tribunal para la mesa de examen";
+                        $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>NULL);
+                    }
+                } else {
+                    $mensaje = "No se ha podido realizar la creación de la relacion entre carrera y asignatura para la mesa de examen";
+                    $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>NULL);
+                }
+            } else {
+                $mensaje = "No se ha podido realizar la creación de la carrera y/o asignatura a la cual pertenece la mesa de examen";
+                $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>NULL);
+            }
+            $_SESSION['resultado'] = $resultado;
             
             break;
         case "buscar":

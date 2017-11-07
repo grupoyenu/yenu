@@ -72,7 +72,13 @@
                 		                echo "<td>".$vocal2."</td>";
                 		                echo "<td>".$suplente."</td>";
                 		                echo "<td>".$mesa->getPrimero()->getFecha()."</td>";
-                		                echo "<td>".$mesa->getSegundo()->getFecha()."</td>";
+                		                
+                		                if ($mesa->getSegundo()) {
+                		                    echo "<td>".$mesa->getSegundo()->getFecha()."</td>";
+                		                } else {
+                		                    echo "<td></td>";
+                		                }
+                		               
                 		                echo "<td>".$mesa->getPrimero()->getHora()."</td>";
                 		                echo "<td>campus</td>";
                 		                echo "</tr>";
