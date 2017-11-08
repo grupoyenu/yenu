@@ -124,16 +124,22 @@
                                 $segundo->setAula($aula);
                                 $segundo->setFecha($segundollamado);
                                 $segundo->setHora($hora);
-                            } 
-                        }
-                        
-                        $mensaje = $mesa->crear($plan, $tribunal, $primero, $segundo);
-                        
-                        if ($mesa->getIdmesa()) {
-                            $resultado = array('resultado'=>TRUE,'mensaje'=>$mensaje, 'datos'=>$mesa);
+                            } else {
+                                $segundo = null;
+                            }
+                            
+                            $mensaje = $mesa->crear($plan, $tribunal, $primero, $segundo);
+                            
+                            if ($mesa->getIdmesa()) {
+                                $resultado = array('resultado'=>TRUE,'mensaje'=>$mensaje, 'datos'=>$mesa);
+                            } else {
+                                $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>NULL);
+                            }
                         } else {
+                            $mensaje = "No se ha podido realizar la creación u obtención del aula para la mesa de examen ({$sector},{$nombreaula})";
                             $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>NULL);
                         }
+                        
                     } else {
                         $mensaje = "No se ha podido realizar la creación del tribunal para la mesa de examen";
                         $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>NULL);

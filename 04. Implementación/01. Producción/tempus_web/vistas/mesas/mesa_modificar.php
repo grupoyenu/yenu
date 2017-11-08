@@ -43,14 +43,25 @@
                 		              }
                 		          }
                 		          
+                		          $horario = '';
                 		          $primero = "";
                 		          $segundo = "";
                 		          if($mesa->getPrimero()) {
                 		              $primero = $mesa->getPrimero()->getFecha();
+                		              $primero = str_replace('/', '-', $primero);
+                		              $primero = date('Y-m-d', strtotime($primero));
+                		              
+                		              if (!$mesa->getSegundo()) {
+                		                  $horario = $mesa->getPrimero()->getHora();
+                		              }
                 		          }
                 		          
                 		          if($mesa->getSegundo()) {
                 		              $segundo = $mesa->getSegundo()->getFecha();
+                		              $segundo = str_replace('/', '-', $segundo);
+                		              $segundo = date('Y-m-d', strtotime($segundo));
+                		              
+                		              $horario = $mesa->getSegundo()->getHora();
                 		          }
                 		          
                 		          ?>
@@ -60,10 +71,10 @@
                     		          <fieldset>
                         		          <legend>Tribunal</legend>
                         		          <label for="txtNombrePresidente">* Presidente:</label>
-                        		          <input type="text" name="txtNombrePresidente" id="txtNombrePresidente" value="<?= $presidente;?>">
+                        		          <input type="text" name="txtNombrePresidente" id="txtNombrePresidente" value="<?= $presidente;?>" required>
                         		          
                         		          <label for="txtNombreVocal1">* Vocal 1:</label>
-                        		          <input type="text" name="txtNombreVocal1" id="txtNombreVocal1" value="<?= $vocal1;?>">
+                        		          <input type="text" name="txtNombreVocal1" id="txtNombreVocal1" value="<?= $vocal1;?>" required>
                         		          
                         		          <br>
                         		          
@@ -87,7 +98,16 @@
                         		          <legend>Horario</legend>
                         		          <label for="selectHora">* Hora</label>
                         		          <select  name="selectHora" id="selectHora">
-                    		          
+                    		          		<?php
+                        		                for ($hora = 10; $hora < 23; ++$hora) {
+                        		                    $hora2 = $hora.':00';
+                        		                    if($hora2 == $horario) {
+                        		                        echo "<option value='{$hora2}' selected>{$hora2} hs</option>";
+                        		                    } else {
+                        		                        echo "<option value='{$hora2}'>{$hora2} hs</option>";
+                        		                    }
+                            					}
+                            				?>
                     		          	</select>
                     		          </fieldset>
                 		          
@@ -96,11 +116,19 @@
                 		          
                 		      <?php  
                 		      } else {
-                		          
+                		          /* No se han obtenido los datos */
+                		          echo "<fieldset>";
+                		          echo "<legend>Resultado</legend>";
+                		          echo "<h6 class='letraRoja letraCentrada'>No se ha obtenido la información de la mesa de examen a modificar</h6>";
+                		          echo "</fieldset>";
                 		      }
                 		      
                 		  } else {
                 		      /* No se ha definido resultado o es nulo (isset) */
+                		      echo "<fieldset>";
+                		      echo "<legend>Resultado</legend>";
+                		      echo "<h6 class='letraRoja letraCentrada'>No se ha obtenido la información de la mesa de examen a modificar</h6>";
+                		      echo "</fieldset>";
                 		  }
                 		  
                     ?>

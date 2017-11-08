@@ -128,7 +128,7 @@ class MesaExamen
             $idcarrera = $plan->getCarrera()->getCodigo();
             $idprimero = 'null';
             $idsegundo = 'null';
-           
+            
             /* Crea el o los llamados para la mesa de examen */
             if ($primero) {
                 $idaula = null;
@@ -156,7 +156,7 @@ class MesaExamen
                 }
             }
             
-            if (isset($primero) || isset($segundo)) {
+            if ($primero || $segundo) {
                 $consulta = "INSERT INTO mesa_examen VALUES ";
                 $consulta = $consulta."(null,".$idasignatura.",".$idcarrera.",".$tribunal->getIdtribunal().",".$idprimero.",".$idsegundo.")";
                 

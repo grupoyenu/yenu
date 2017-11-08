@@ -2,7 +2,6 @@
     include_once '../../lib/conf/ControlAcceso.php'; 
     include_once '../../lib/conf/PermisosSistema.php';
     
-    ControlAcceso::requierePermiso(PermisosSistema::CURSADAS);
 ?>
 <html>
 	<?php include_once '../estructura/encabezado.php'; ?>
@@ -12,7 +11,7 @@
 			<div class="content">
 			
             	<h2>CREAR HORARIO DE CURSADA</h2>
-            	<form action="../../controladores/ManejadorCursada.php" id="formCrearCursada" name="formCrearCursada" method="post" >
+            	<form action="file.php" id="formCrearCursada" name="formCrearCursada" method="post" >
             	
             		<fieldset>
             			<legend>Horario</legend>
@@ -53,7 +52,7 @@
             					<?php
             						for ($i = 1; $i < 7; ++$i) {
             						    echo "<tr>";
-            						    echo "<td><input type='checkbox' value='{$i}' name='cbDiasClase' id='cbDiasClase{$i}'></td>";
+            						    echo "<td><input type='checkbox' value='{$i}' name='cbDiasClase{$i}' id='cbDiasClase{$i}'></td>";
             						    $dia = $i;
             						    switch ($i) {
             						        case 1:
@@ -90,7 +89,11 @@
             						    echo "<td><input type='text' disabled='disabled' id='txtSector{$i}' name='txtSector{$i}' required></td>";
             						    echo "<td><input type='text' disabled='disabled' id='txtAula{$i}' name='txtAula{$i}' required></td>";
             						    echo "</tr>";
+            						    
+            						   
             						}
+            						echo "<label for='datePrimerLlamado'>Primer Llamado:</label>";
+            						echo "<input type='date'  name='datePrimerLlamado' id='datePrimerLlamado'>";
             					?>
             					</tbody>
             				</table>

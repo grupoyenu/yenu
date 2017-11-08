@@ -1,6 +1,7 @@
 /**
  * Controla los eventos del formulario mesa_resultado_buscar.php
  * 
+ * @author Marquez Emanuel
  */
 
 $(document).ready(function() {
@@ -47,6 +48,12 @@ $(document).ready(function() {
 	 * desea hacer el usuario.
 	 * */
 	$("#formBuscarMesas").on("click", "#btnModificarMesa", function(event) {
+		
+		$("h3#mensaje" ).remove();
+		if(!$("input[name='radioMesas']").is(":checked")) {
+			$("<h3 id='mensaje' class='letraNaranja'>Debe seleccionar una mesa de examen a modificar</h3>").insertAfter("#content h2");
+			return false;
+		}
 		$("input[name='accion']").val("modificar");
 	});
 	
@@ -56,6 +63,11 @@ $(document).ready(function() {
 	 * desea hacer el usuario.
 	 * */
 	$("#formBuscarMesas").on("click", "#btnBorrarMesa", function(event) {
+		$("h3#mensaje" ).remove();
+		if(!$("input[name='radioMesas']").is(":checked")) {
+			$("<h3 id='mensaje' class='letraNaranja'>Debe seleccionar una mesa de examen a borrar</h3>").insertAfter("#content h2");
+			return false;
+		}
 		$("input[name='accion']").val("borrar");
 
 	});

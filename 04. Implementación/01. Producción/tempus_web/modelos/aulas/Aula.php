@@ -128,13 +128,13 @@ class Aula
         if ($this->datos->num_rows > 0) {
             $fila = $this->datos->fetch_row();
             $this->idaula = $fila[0];
-            $this->sector = $fila[1];
-            $this->nombre = $fila[2];
+            $this->nombre = $fila[1];
+            $this->sector = $fila[2];
             
         } else {
             $this->idaula = null;
-            $this->sector = null;
             $this->nombre = null;
+            $this->sector = null;
         }
         $this->datos = null;
     }

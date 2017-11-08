@@ -32,7 +32,9 @@
             $_SESSION['resultado'] = $resultado;
             break;
         case "crear":
-            $redireccion = Constantes::APPURL."/vistas/cursadas/cursada_crear.php";
+            $redireccion = Constantes::APPURL."/vistas/cursadas/file.php";
+            
+            
             
             break;
         case "buscar":

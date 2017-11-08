@@ -1,8 +1,14 @@
 /**
- * 
+ *  Controla los eventos del archivo cursada_importar.php
+ *  
+ *  @see jQuery
+ *   
+ *  @author Marquez Emanuel
  */
 
 $(document).ready(function() {
+	
+	/** Inicializa la tabla para presentar las cursadas */
 	
 	$("table#tablaImportarCursadas").DataTable({
 		dom: 'Bfrtip',

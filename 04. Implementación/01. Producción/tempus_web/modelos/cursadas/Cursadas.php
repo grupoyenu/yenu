@@ -180,13 +180,12 @@ class Cursadas
             }
             return array('resultado'=>true,'mensaje'=>$mensaje, 'datos'=>$registros);
         } else {
-            $mensaje = "No se han encontrado resultados para la búsquda";
+            $mensaje = "No se han encontrado resultados para el campo ingresado";
             if ($asignatura) {
-                $mensaje = " '{$asignatura}' "; 
+                $mensaje = " ({$asignatura}) "; 
             }
+            return array('resultado'=>true,'mensaje'=>$mensaje, 'datos'=>NULL);
         }
     }
-    
-    
     
 }
