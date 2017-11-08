@@ -220,7 +220,6 @@ class MesaExamen
     
     /**
      * Coloca todos los atributos de la mesa de examen en nulo.
-     * 
      * */
     private function limpiarMesaExamen() 
     {
@@ -229,6 +228,19 @@ class MesaExamen
         $this->tribunal = null;
         $this->primero = null;
         $this->segundo = null;
+    }
+    
+    /**
+     * Realiza la modificación de la mesa de examen. 
+     * 
+     * @param integer $idmesa Recibe el identificador de la mesa de examen a modificar.
+     * @param Tribunal $tribunal Recibe el tribunal de la mesa de examen.
+     * @param Llamado $primero Recibe el primer llamado de la mesa de examen.
+     * @param Llamado $segundo Recibe el segundo llamado de la mesa de examen.
+     * */
+    public function modificar($idmesa, $tribunal, $primero, $segundo) 
+    {
+        
     }
 
 }

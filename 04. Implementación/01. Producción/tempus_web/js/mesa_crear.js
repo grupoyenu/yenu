@@ -14,65 +14,60 @@ $(document).ready(function() {
 	$('form#formCrearMesa').submit(function() {	
 		
 		$("h3#mensaje" ).remove();
-		var mensaje = "";
 		
-		alert($('input#dateSegundoLlamado').val());
+		var primero = $('input#datePrimerLlamado').val();
+		var segundo = $('input#dateSegundoLlamado').val();
+		var presidente = $('input#txtNombrePresidente').val().toLowerCase();
+		var vocal1 = $('input#txtNombreVocal1').val().toLowerCase();
+		var vocal2 = $('input#txtNombreVocal2').val().toLowerCase();
+		var suplente = $('input#txtNombreSuplente').val().toLowerCase();
 		
-		var codigocarrera = $('input#codigoCarrera').val();
-		if (codigocarrera == '' || codigocarrera == null) {
-			mensaje = "El código de carrera es un campo obligatorio";
-			$("<h3 id='mensaje' class='letraNaranja'>"+mensaje+"</h3>").insertAfter( "#content h2" );
+		if (presidente == vocal1) {
+			$("<h3 id='mensaje' class='letraNaranja'>El nombre del Presidente coincide con el nombre del Vocal 1</h3>").insertAfter( "#content h2" );
 			$('html,body').animate({scrollTop: $("#content").offset().top}, 300);
 			return false;
 		}
 		
-		var nombrecarrera = $('input#txtCarrera').val();
-		if (nombrecarrera == '' || nombrecarrera == null) {
-			mensaje = "El nombre de carrera es un campo obligatorio";
-			$("<h3 id='mensaje' class='letraNaranja'>"+mensaje+"</h3>").insertAfter( "#content h2" );
+		if (presidente == vocal2) {
+			$("<h3 id='mensaje' class='letraNaranja'>El nombre del Presidente coincide con el nombre del Vocal 2</h3>").insertAfter( "#content h2" );
 			$('html,body').animate({scrollTop: $("#content").offset().top}, 300);
 			return false;
 		}
 		
-		var nombreasignatura = $('input#txtAsignatura').val();
-		if (nombreasignatura == '' || nombreasignatura == null) {
-			mensaje = "El nombre de asignatura es un campo obligatorio";
-			$("<h3 id='mensaje' class='letraNaranja'>"+mensaje+"</h3>").insertAfter( "#content h2" );
+		if (presidente == suplente) {
+			$("<h3 id='mensaje' class='letraNaranja'>El nombre del Presidente coincide con el nombre del Suplente</h3>").insertAfter( "#content h2" );
 			$('html,body').animate({scrollTop: $("#content").offset().top}, 300);
 			return false;
 		}
 		
-		var presidente = $('input#txtNombrePresidente').val();
-		if (presidente == '' || presidente == null) {
-			mensaje = "El presidente de tribunal es un campo obligatorio";
-			$("<h3 id='mensaje' class='letraNaranja'>"+mensaje+"</h3>").insertAfter( "#content h2" );
+		if (vocal1 == vocal2) {
+			$("<h3 id='mensaje' class='letraNaranja'>El nombre del Vocal 1 coincide con el nombre del Vocal 2</h3>").insertAfter( "#content h2" );
 			$('html,body').animate({scrollTop: $("#content").offset().top}, 300);
 			return false;
 		}
 		
-		var vocal1 = $('input#txtNombreVocal1').val();
-		if (vocal1 == '' || vocal1 == null) {
-			mensaje = "El vocal primero de tribunal es un campo obligatorio";
-			$("<h3 id='mensaje' class='letraNaranja'>"+mensaje+"</h3>").insertAfter( "#content h2" );
+		if (vocal1 == suplente) {
+			$("<h3 id='mensaje' class='letraNaranja'>El nombre del Vocal 1 coincide con el nombre del Suplente</h3>").insertAfter( "#content h2" );
 			$('html,body').animate({scrollTop: $("#content").offset().top}, 300);
 			return false;
 		}
 		
-		var sector = $('input#txtSector').val();
-		if (sector == '' || sector == null) {
-			mensaje = "El sector es un campo obligatorio";
-			$("<h3 id='mensaje' class='letraNaranja'>"+mensaje+"</h3>").insertAfter( "#content h2" );
+		if(vocal2 && suplente) {
+			if(vocal2 == suplente) {
+				$("<h3 id='mensaje' class='letraNaranja'>El nombre del Vocal 2 coincide con el nombre del Suplente</h3>").insertAfter( "#content h2" );
+				$('html,body').animate({scrollTop: $("#content").offset().top}, 300);
+				return false;
+			}
+		}
+		
+		/* Si no hay primer llamado ni segundo llamado, muestra mensaje */
+		
+		if (!primero && !segundo) {
+			$("<h3 id='mensaje' class='letraNaranja'>Debe indicar una fecha de llamado</h3>").insertAfter( "#content h2" );
 			$('html,body').animate({scrollTop: $("#content").offset().top}, 300);
 			return false;
 		}
 		
-		var nombreaula = $('input#txtNombreAula').val();
-		if (nombreaula == '' || nombreaula == null) {
-			mensaje = "El nombre de aula es un campo obligatorio";
-			$("<h3 id='mensaje' class='letraNaranja'>"+mensaje+"</h3>").insertAfter( "#content h2" );
-			$('html,body').animate({scrollTop: $("#content").offset().top}, 300);
-			return false;
-		}
 	});
 	
 });

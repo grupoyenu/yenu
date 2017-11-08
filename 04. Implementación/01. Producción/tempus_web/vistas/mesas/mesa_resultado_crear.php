@@ -74,9 +74,14 @@
                				                    echo "<input type='text' value='{$mesa->getPrimero()->getAula()->getSector()}' readonly>";
                				                    echo "<label>Nombre:</label>";
                				                    echo "<input type='text' value='{$mesa->getPrimero()->getAula()->getNombre()}' readonly>";
+               				                    echo "<br>";
+               				                    echo "<label>Hora:</label>";
+               				                    echo "<input type='text' value='{$mesa->getPrimero()->getHora()}' readonly>";
                				                } else {
                				                    echo "<label>Lugar:</label>";
                				                    echo "<input type='text' value='Campus' readonly>";
+               				                    echo "<label>Hora:</label>";
+               				                    echo "<input type='text' value='{$mesa->getPrimero()->getHora()}' readonly>";
                				                }
                				               
                				            }
@@ -90,9 +95,14 @@
                				                echo "<input type='text' value='{$mesa->getSegundo()->getAula()->getSector()}' readonly>";
                				                echo "<label>Nombre:</label>";
                				                echo "<input type='text' value='{$mesa->getSegundo()->getAula()->getNombre()}' readonly>";
+               				                echo "<br>";
+               				                echo "<label>Hora:</label>";
+               				                echo "<input type='text' value='{$mesa->getSegundo()->getHora()}' readonly>";
                				            }else {
                				                echo "<label>Lugar:</label>";
                				                echo "<input type='text' value='Campus' readonly>";
+               				                echo "<label>Hora:</label>";
+               				                echo "<input type='text' value='{$mesa->getSegundo()->getHora()}' readonly>";
                				            }
                				        }
                				       

@@ -1,6 +1,11 @@
 <?php
 
-
+/**
+ * 
+ * @author Oyarzo Mariela.
+ * @author Quiroga Sandra.
+ * @author Marquez Emanuel.
+ * */
 class Llamado {
     
     /** @var integer */
@@ -23,6 +28,7 @@ class Llamado {
      * la busqueda de la informacion en la base de datos. En caso contrario, se
      * crear con sus atributos nulos.
      * @param integer $idllamado Identificador del llamado.
+     * @author Marquez Emanuel.
      * */
     function __construct($idllamado = NULL){
         if($idllamado) {
@@ -44,6 +50,7 @@ class Llamado {
     }
     /**
      * @return integer $idllamado
+     * @author Marquez Emanuel.
      */
     public function getIdllamado()
     {
@@ -52,6 +59,7 @@ class Llamado {
 
     /**
      * @return string $fecha
+     * @author Marquez Emanuel.
      */
     public function getFecha()
     {
@@ -60,6 +68,7 @@ class Llamado {
 
     /**
      * @return string $hora
+     * @author Marquez Emanuel.
      */
     public function getHora()
     {
@@ -68,16 +77,16 @@ class Llamado {
 
     /**
      * @return Aula $aula
+     * @author Marquez Emanuel.
      */
     public function getAula()
     {
         return $this->aula;
     }
     
-    
-    
     /**
      * @param integer $idllamado
+     * @author Marquez Emanuel.
      */
     public function setIdllamado($idllamado)
     {
@@ -86,6 +95,7 @@ class Llamado {
 
     /**
      * @param string $fecha
+     * @author Marquez Emanuel.
      */
     public function setFecha($fecha)
     {
@@ -94,6 +104,7 @@ class Llamado {
 
     /**
      * @param string $hora
+     * @author Marquez Emanuel.
      */
     public function setHora($hora)
     {
@@ -102,6 +113,7 @@ class Llamado {
     
     /**
      * @param Aula $aula
+     * @author Marquez Emanuel.
      */
     public function setAula($aula)
     {
@@ -113,6 +125,7 @@ class Llamado {
      * @param string $fecha Fecha en formato YYYY-MM-DD (Obligatorio).
      * @param string $hora Hora en formato HH:MM (Obligatorio).
      * @param integer $aula Identificador de aula (Opcional).
+     * @author Marquez Emanuel.
      * */
     public function crear($fecha, $hora, $aula = NULL)
     {
@@ -124,10 +137,14 @@ class Llamado {
             $this->idllamado = (Int) ObjetoDatos::getInstancia()->insert_id;
             $this->fecha = date('d-m-Y', strtotime($fecha));
             $this->hora = $hora;
+            if ($aula) {
+                $this->aula = new Aula($aula);
+            } else {
+                $this->aula = null;
+            }
+            
         } else {
-            $this->idllamado = null;
-            $this->fecha = null;
-            $this->hora = null;
+            $this->limpiar();
         }
     }
     
@@ -135,8 +152,63 @@ class Llamado {
     {
         
     }
+    
+    /**
+     * Coloca cada uno de los atributos del llamado en nulo.
+     * @author Marquez Emanuel.
+     * */
+    private function limpiar()
+    {
+        $this->idllamado = null;
+        $this->fecha = null;
+        $this->hora = null;
+        $this->aula = null;
+        $this->datos = null;
+    }
+    
+    /**
+     * Realiza la modificación del llamado indicado. Cuando la operación se hace
+     * correctamente, se asignan los parametros recibidos al llamado y se devuelve
+     * un mensaje. En caso contrario, los atributos del llamado serán nulos y se
+     * devuelve un mensaje.
+     * @param integer $idllamado Recibe el identificador del llamado a modificar.
+     * @param string $fecha Recibe la fecha en formato YYYY-MM-DD. 
+     * @param string $hora Recibe la hora en formato HH:MM. 
+     * @param Aula $aula Recibe el aula.
+     * @return string Mensaje con el resultado de la operación.
+     * @author Marquez Emanuel.
+     * */
+    public function modificar($idllamado, $fecha, $hora, $aula)
+    {
+        if ($idllamado) {
+            /* Solo la fecha y hora son obligatorios */
+            if ($fecha && $hora) {
+                
+                $idaula = "null";
+                if ($aula) {
+                    $idaula = $aula->getIdaula();
+                }
+                
+                $consulta = "UPDATE llamado SET fecha={$fecha}, hora={$hora}, idaula={$aula} WHERE idllamado=".$idaula;
+                ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+                if (ObjetoDatos::getInstancia()->affected_rows > 0) {
+                    $this->idllamado = $idllamado;
+                    $this->fecha = $fecha;
+                    $this->hora = $hora;
+                    if ($aula) {
+                        $this->aula = $aula;
+                    } else {
+                        $this->aula = null;
+                    }
+                    return "Se ha modificado el llamado correctamente";
+                } else {
+                    $this->limpiar();
+                    return "No se ha modificado el llamado correctamente";
+                }
+            }
+            return "No se obtuvo la fecha u hora, necesaria para realizar la modificación del llamado";
+        }
+        return "No se obtuvo la información necesaria para realizar la modificación del llamado";
+    }
 
-    
-    
-    
 }

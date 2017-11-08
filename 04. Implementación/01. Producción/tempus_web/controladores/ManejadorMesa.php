@@ -190,7 +190,24 @@
             $_SESSION['resultado'] = $resultado;
             break;
         case "modificacion":
+            $redireccion = Constantes::APPURL."/vistas/mesas/mesa_resultado_modificar.php";
             
+            $codigocarrera = $_POST['codigoCarrera'];
+            $nombrecarrera = Utilidades::convertirCamelCase($_POST['txtCarrera']);
+            $nombreasignatura = Utilidades::convertirCamelCase($_POST['txtAsignatura']);
+            $nombrepresidente = Utilidades::convertirCamelCase($_POST['txtNombrePresidente']);
+            $nombrevocal1 = Utilidades::convertirCamelCase($_POST['txtNombreVocal1']);
+            $nombrevocal2 = Utilidades::convertirCamelCase($_POST['txtNombreVocal2']);
+            $nombresuplente = Utilidades::convertirCamelCase($_POST['txtNombreSuplente']);
+            $primerllamado = $_POST['datePrimerLlamado'];
+            $segundollamado = $_POST['dateSegundoLlamado'];
+            $sector = $_POST['txtSector'];
+            $nombreaula = Utilidades::convertirCamelCase($_POST['txtNombreAula']);
+            $hora =  $_POST['selectHora'];
+            
+            
+            
+            $_SESSION['resultado'];
         break;
     }
 

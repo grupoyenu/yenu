@@ -139,4 +139,14 @@ class Aula
         $this->datos = null;
     }
     
+    /**
+     * Verifica la disponilidad del aula para un determinado dia y franja de horario.
+     * Para ello controla si existen horarios de cursada para el aula indicada.
+     * */
+    public function verificarDisponibilidad ($idaula, $dia, $desde, $hasta) 
+    {
+    
+        
+    }
+    
 }

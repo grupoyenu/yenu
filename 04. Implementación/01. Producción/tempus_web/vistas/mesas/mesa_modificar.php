@@ -8,14 +8,19 @@
     include_once '../../modelos/mesas/Tribunal.php';
     include_once '../../modelos/mesas/MesaExamen.php';
     include_once '../../modelos/mesas/Llamado.php';
+    include_once '../../modelos/aulas/Aula.php';
     include_once '../../lib/conf/ControlAcceso.php';
 
+    
+    $mesas = new Mesas();
+    $llamados = $mesas->cantidadLlamados();
 ?>
 <html>
 	<?php include_once '../estructura/encabezado.php'; ?>
+	<script type="text/javascript" src="../../js/mesa_modificar.js"></script>
 	<section id="main-content">
 		<article>
-			<div class="content">
+			<div id="content" class="content">
             	<h2>MODIFICAR MESA DE EXAMEN</h2>
             	<form action="../../Controladores/ManejadorMesa.php" id="formModificarMesa" name="formModificarMesa" method="post">
                 	
@@ -53,6 +58,11 @@
                 		              
                 		              if (!$mesa->getSegundo()) {
                 		                  $horario = $mesa->getPrimero()->getHora();
+                		                  
+                		                  if ($mesa->getPrimero()->getAula()) {
+                		                      $sector = $mesa->getPrimero()->getAula()->getSector();
+                		                      $nombreaula = $mesa->getPrimero()->getAula()->getNombre();
+                		                  }
                 		              }
                 		          }
                 		          
@@ -60,8 +70,12 @@
                 		              $segundo = $mesa->getSegundo()->getFecha();
                 		              $segundo = str_replace('/', '-', $segundo);
                 		              $segundo = date('Y-m-d', strtotime($segundo));
-                		              
                 		              $horario = $mesa->getSegundo()->getHora();
+                		              
+                		              if ($mesa->getSegundo()->getAula()) {
+                		                  $sector = $mesa->getSegundo()->getAula()->getSector();
+                		                  $nombreaula = $mesa->getSegundo()->getAula()->getNombre();
+                		              }
                 		          }
                 		          
                 		          ?>
@@ -71,47 +85,88 @@
                     		          <fieldset>
                         		          <legend>Tribunal</legend>
                         		          <label for="txtNombrePresidente">* Presidente:</label>
-                        		          <input type="text" name="txtNombrePresidente" id="txtNombrePresidente" value="<?= $presidente;?>" required>
+                        		          <input type="text" name="txtNombrePresidente" id="txtNombrePresidente" value="<?= $presidente;?>" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ. ]{10,255}" required>
                         		          
                         		          <label for="txtNombreVocal1">* Vocal 1:</label>
-                        		          <input type="text" name="txtNombreVocal1" id="txtNombreVocal1" value="<?= $vocal1;?>" required>
+                        		          <input type="text" name="txtNombreVocal1" id="txtNombreVocal1" value="<?= $vocal1;?>" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ0123456789,. ]{5,255}" required>
                         		          
                         		          <br>
                         		          
                         		          <label for="txtNombreVocal2">Vocal 2:</label>
-                        		          <input type="text" name="txtNombreVocal2" id="txtNombreVocal2" value="<?= $vocal2;?>">
+                        		          <input type="text" name="txtNombreVocal2" id="txtNombreVocal2" value="<?= $vocal2;?>" pattern="[A-Za-záéíóúñüÁÉÍÓÚÜÑ,. ]{4,255}">
                         		          
                         		          <label for="txtNombreSuplente">Suplente:</label>
-                        		          <input type="text" name="txtNombreSuplente" id="txtNombreSuplente" value="<?= $suplente;?>">
+                        		          <input type="text" name="txtNombreSuplente" id="txtNombreSuplente" value="<?= $suplente;?>" pattern="[A-Za-záéíóúñüÁÉÍÓÚÜÑ,. ]{4,255}">
                     		          </fieldset>
                     		          <fieldset>
                         		          <legend>Llamados</legend>
                         		          
                         		          <label for="datePrimerLlamado">Primer Llamado:</label>
                         		          <input type="date"  name="datePrimerLlamado" id="datePrimerLlamado" value="<?= $primero;?>">
-                        		          
-                        		          <label for="dateSegundoLlamado">Segundo Llamado:</label>
-                        		          <input type="date" name="dateSegundoLlamado" id="dateSegundoLlamado" value="<?= $segundo;?>">
-                        		          
+                        		          <?php
+                        		              if ($llamados && $llamados > 0) {
+                            		          ?>
+                            		          	 <label for="dateSegundoLlamado">Segundo Llamado:</label>
+                        		         		 <input type="date" name="dateSegundoLlamado" id="dateSegundoLlamado" value="<?= $segundo;?>">
+                            		          <?php
+                            		          }
+                        		          ?>
                     		          </fieldset>
-                    		          <fieldset>
-                        		          <legend>Horario</legend>
-                        		          <label for="selectHora">* Hora</label>
-                        		          <select  name="selectHora" id="selectHora">
-                    		          		<?php
-                        		                for ($hora = 10; $hora < 23; ++$hora) {
-                        		                    $hora2 = $hora.':00';
-                        		                    if($hora2 == $horario) {
-                        		                        echo "<option value='{$hora2}' selected>{$hora2} hs</option>";
-                        		                    } else {
-                        		                        echo "<option value='{$hora2}'>{$hora2} hs</option>";
-                        		                    }
-                            					}
-                            				?>
-                    		          	</select>
-                    		          </fieldset>
-                		          
+                    		          
+                    		          <?php
+                    		          
+                    		          if ($sector && $nombreaula) {
+                    		              
+                    		              ?>
+                    		              <fieldset>
+                            		          <legend>Lugar</legend>
+                            		          <label for="txtSector">* Sector</label>
+                            		          <input type="text" name="txtSector" id="txtSector" value="<?= $sector; ?>" pattern="[A-Z]" maxlength="1" required>
+                            		        	
+                            		          <label for="txtNombreAula">* Nombre aula:</label>
+                            		          <input type="text" name="txtNombreAula" id="txtNombreAula" value="<?= $nombreaula; ?>" pattern="[A-Za-záéíóúñüÁÉÍÓÚÜÑ0123456789 ]{1,255}" required>
+        		        		
+        		        					  <br>
+        		        					  
+                            		          <label for="selectHora">* Hora</label>
+                            		          <select  name="selectHora" id="selectHora">
+                        		          		<?php
+                            		                for ($hora = 10; $hora < 23; ++$hora) {
+                            		                    $hora2 = $hora.':00';
+                            		                    if($hora2 == $horario) {
+                            		                        echo "<option value='{$hora2}' selected>{$hora2} hs</option>";
+                            		                    } else {
+                            		                        echo "<option value='{$hora2}'>{$hora2} hs</option>";
+                            		                    }
+                                					}
+                                				?>
+                        		          	</select>
+                        		          </fieldset>
+                    		              <?php 
+                    		              
+                    		          } else {
+                    		              ?>
+                    		              <fieldset>
+                            		          <legend>Horario</legend>
+                            		          <label for="selectHora">* Hora</label>
+                            		          <select  name="selectHora" id="selectHora">
+                        		          		<?php
+                            		                for ($hora = 10; $hora < 23; ++$hora) {
+                            		                    $hora2 = $hora.':00';
+                            		                    if($hora2 == $horario) {
+                            		                        echo "<option value='{$hora2}' selected>{$hora2} hs</option>";
+                            		                    } else {
+                            		                        echo "<option value='{$hora2}'>{$hora2} hs</option>";
+                            		                    }
+                                					}
+                                				?>
+                        		          	</select>
+                        		          </fieldset>
+                    		              <?php  
+                    		          }
+                		         	  ?>
                 		          </fieldset>
+                		          <input type="hidden" id="accion" name="accion" value="modificacion">
                 		          <input class="botonVerde" type="submit" name="btnModificarMesa" id="btnModificarMesa" value="Modificar">
                 		          
                 		      <?php  

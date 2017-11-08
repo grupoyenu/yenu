@@ -40,13 +40,13 @@
             			<fieldset>
             				<legend>Información básica</legend>
             				<label for="txtCarrera">* Código:</label>
-            				<input type="number" id="codigoCarrera" name="codigoCarrera" title="Ingrese el código de la carrera" min="1" max="999">
+            				<input type="number" id="codigoCarrera" name="codigoCarrera" title="Ingrese el código de la carrera" min="1" max="999" required>
             			
                 			<label for="txtCarrera">* Nombre carrera:</label>
-                			<input type="text" id="txtCarrera" name="txtCarrera" title="Ingrese el nombre de la carrera" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ. ]{10,255}" >
+                			<input type="text" id="txtCarrera" name="txtCarrera" title="Ingrese el nombre de la carrera" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ. ]{10,255}" required>
                 			
                 			<label for="txtAsignatura">* Nombre asignatura:</label>
-                			<input type="text" id="txtAsignatura" name="txtAsignatura" title="Ingrese el nombre de la asignatura" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ0123456789,. ]{5,255}">
+                			<input type="text" id="txtAsignatura" name="txtAsignatura" title="Ingrese el nombre de la asignatura" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ0123456789,. ]{5,255}" required>
             			</fieldset>
             			
             			<fieldset>
@@ -83,10 +83,10 @@
         		        	<legend>Lugar</legend>
         		        	
         		        	<label for="txtSector">* Sector</label>
-        		        	<input type="text" name="txtSector" id="txtSector" pattern="[A-Z]">
+        		        	<input type="text" name="txtSector" id="txtSector" pattern="[A-Z]" maxlength="1" required>
         		        	
         		        	<label for="txtNombreAula">* Nombre aula:</label>
-        		        	<input type="text" name="txtNombreAula" id="txtNombreAula" pattern="[A-Za-záéíóúñüÁÉÍÓÚÜÑ0123456789 ]{1,255}">
+        		        	<input type="text" name="txtNombreAula" id="txtNombreAula" pattern="[A-Za-záéíóúñüÁÉÍÓÚÜÑ0123456789 ]{1,255}" required>
         		        	
         		        	<label for="selectHora">* Hora:</label>
         		        	<select name="selectHora" id="selectHora">

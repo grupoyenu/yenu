@@ -1,8 +1,11 @@
 <?php
-require_once 'Docente.php';
+    require_once 'Docente.php';
 
 /**
  * 
+ * @author Oyarzo Mariela.
+ * @author Quiroga Sandra.
+ * @author Marquez Emanuel.
  * */
 class Tribunal
 {
@@ -26,6 +29,7 @@ class Tribunal
     
     /**
      * Constructor de clase.
+     * @author Marquez Emanuel.
      * */
     function __construct($idtribunal = null)
     {
@@ -54,6 +58,7 @@ class Tribunal
     /**
      * Devuelve el identificador del tribunal.
      * @return integer $idtribunal
+     * @author Marquez Emanuel.
      */
     public function getIdtribunal()
     {
@@ -63,6 +68,7 @@ class Tribunal
     /**
      * Devuelve el presidente del tribunal.
      * @return Docente $presidente
+     * @author Marquez Emanuel.
      */
     public function getPresidente()
     {
@@ -72,6 +78,7 @@ class Tribunal
     /**
      * Devuelve el vocal primero del tribunal.
      * @return Docente $vocal1
+     * @author Marquez Emanuel.
      */
     public function getVocal1()
     {
@@ -81,6 +88,7 @@ class Tribunal
     /**
      * Devuelve el vocal segundo del tribunal.
      * @return Docente $vocal2
+     * @author Marquez Emanuel.
      */
     public function getVocal2()
     {
@@ -90,6 +98,7 @@ class Tribunal
     /**
      * Devuelve el suplente del tribunal.
      * @return Docente $suplente
+     * @author Marquez Emanuel.
      */
     public function getSuplente()
     {
@@ -99,6 +108,7 @@ class Tribunal
     /**
      * Modifica el identificador del tribunal.
      * @param integer $idtribunal
+     * @author Marquez Emanuel.
      */
     public function setIdtribunal($idtribunal)
     {
@@ -108,6 +118,7 @@ class Tribunal
     /**
      * Modifica el presidente del tribuanal.
      * @param Docente $presidente
+     * @author Marquez Emanuel.
      */
     public function setPresidente($presidente)
     {
@@ -117,6 +128,7 @@ class Tribunal
     /**
      * Modifica el vocal primer del tribunal.
      * @param Docente $vocal1
+     * @author Marquez Emanuel.
      */
     public function setVocal1($vocal1)
     {
@@ -126,6 +138,7 @@ class Tribunal
     /**
      * Modifica el vocal segundo del tribunal.
      * @param Docente $vocal2
+     * @author Marquez Emanuel.
      */
     public function setVocal2($vocal2)
     {
@@ -135,6 +148,7 @@ class Tribunal
     /**
      * Modifica el suplente de tribunal.
      * @param Docente $suplente
+     * @author Marquez Emanuel.
      */
     public function setSuplente($suplente)
     {
@@ -147,6 +161,7 @@ class Tribunal
      * @param integer $vocal1 Identificador del docente que será vocal1 (Obligatorio).
      * @param integer $vocal2 Identificador del docente que será vocal2 (Opcional).
      * @param integer $suplente Identificador del docente que será suplente (Opcional).
+     * @author Marquez Emanuel.
      * */
     public function crear($presidente, $vocal1, $vocal2 = null, $suplente = null)
     {
@@ -185,6 +200,7 @@ class Tribunal
      * @var integer $vocal1 Identificador del vocal primero.
      * @var integer $vocal2 Identificador del vocal segundo (null por defecto).
      * @var integer $suplente Identificador del susplente (null por defecto).
+     * @author Marquez Emanuel.
      * */
     public function buscar($presidente, $vocal1, $vocal2 = null, $suplente = null)
     {
@@ -204,7 +220,6 @@ class Tribunal
             $consulta = $consulta. " AND vocal2 IS NULL AND suplente IS NULL";
         }
        
-        
         $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
         if ($this->datos->num_rows > 0) {
             
@@ -223,16 +238,72 @@ class Tribunal
             }
             
         } else {
-            $this->idtribunal = null;
-            $this->presidente = null;
-            $this->vocal1 = null;
-            $this->vocal2 = null;
-            $this->suplente = null;
+            $this->limpiar();
         }
         $this->datos = null;
     }
     
+    /**
+     * Coloca cada uno de los atributos del tribunal en nulo.
+     * @author Marquez Emanuel.
+     * */
+    private function limpiar() 
+    {
+        $this->idtribunal = null;
+        $this->presidente = null;
+        $this->vocal1 = null;
+        $this->vocal2 = null;
+        $this->suplente = null;
+        $this->datos = null;
+    }
     
+    /**
+     * Realiza la modificación del tribunal indicado. Cuando la operación se
+     * hace exitosamente, se asignan los parametros al tribunal y se devuelve
+     * un mensaje. En caso contrario, se colocan en nulo los atributos del 
+     * tribunal y se devuelve un mensaje.
+     * @param integer $idtribunal Identificador del tribunal a modificar.
+     * @param Docente $presidente Docente que cumple el rol de presidente.
+     * @param Docente $vocal1 Docente que cumple el rol del vocal primero.
+     * @param Docente $vocal2 Docente que cumple el rol del vocal segundo.
+     * @param Docente $suplente Docente que cumple el rol del suplente.
+     * @return string Mensaje con el resultado de la operación.
+     * */
+    public function modificar($idtribunal, $presidente, $vocal1, $vocal2, $suplente)
+    {
+        if($idtribunal) {
+            if($presidente && $vocal1) {
+                
+                $idpresidente = $presidente->getIdDocente();
+                $idvocal1 = $vocal1->getIdDocente();
+                $idvocal2 = "null";
+                $idsuplente = "null";
+                if($vocal2) {
+                    $idvocal2 = $vocal2->getIdDocente();
+                    if($suplente) {
+                        $idsuplente = $suplente->getIdDocente();
+                    }
+                }
+                $consulta = "UPDATE tribunal SET presidente={$idpresidente}, vocal1={$idvocal1}, vocal2={$idvocal2}, suplente={$idsuplente} WHERE idtribunal=".$idtribunal;
+                ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+                if (ObjetoDatos::getInstancia()->affected_rows > 0) {
+                    $this->idtribunal = $idtribunal;
+                    $this->presidente = $presidente;
+                    $this->vocal1 = $vocal1;
+                    $this->vocal2 = $vocal2;
+                    $this->suplente = $suplente;
+                    return "Se ha modificado el tribunal correctamente";
+                } else {
+                    $this->limpiar();
+                    return "No se ha modificado el tribunal correctamente";
+                }
+            }
+            $this->limpiar();
+            return "No se obtuvo la información del presidente o vocal primero, necesaria para realizar la modificación del tribunal";
+        }
+        $this->limpiar();
+        return "No se obtuvo la información necesaria para realizar la modificación del tribunal";
+    }
     
 }
 
