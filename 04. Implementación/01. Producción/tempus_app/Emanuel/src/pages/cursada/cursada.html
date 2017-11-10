@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Horarios de Cursada</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding class="content">
+	<div>
+		<form [formGroup]="form" (ngSubmit)="consultarCursadas()"> 
+			<ion-list>
+			
+				<ion-item>
+					<ion-label stacked>Nombre de carrera</ion-label>
+					<ion-input type="text" formControlName="carrera" [(ngModel)]="cursadaCarrera" required></ion-input>
+				  </ion-item>
+
+				<ion-item>
+					<ion-label stacked>Nombre de asignatura</ion-label>
+					<ion-input type="text" formControlName="asignatura" [(ngModel)]="cursadaAsignatura" required></ion-input>
+				</ion-item>
+				
+				<ion-item>
+					<ion-label>Año</ion-label>
+					<ion-select formControlName="anio" [(ngModel)]="cursadaAnio">
+					  <ion-option value="1" selected>1° Año</ion-option>
+					  <ion-option value="2">2° Año</ion-option>
+					  <ion-option value="3">3° Año</ion-option>
+					  <ion-option value="4">4° Año</ion-option>
+					  <ion-option value="5">5° Año</ion-option>
+					</ion-select>
+				</ion-item>
+				
+				<ion-item>
+					<button ion-button text-center-block>Buscar</button>
+				</ion-item>
+			</ion-list>
+			
+		</form> 		
+	</div>
+	<div>
+	
+		
+		<ion-item *ngFor="let item of cursadas">
+			<ion-label *ngIf="item.dia == 1">Lunes</ion-label>
+			<ion-label *ngIf="item.dia == 2">Martes</ion-label>
+			<ion-label *ngIf="item.dia == 3">Miercoles</ion-label>
+			<ion-label *ngIf="item.dia == 4">Jueves</ion-label>
+			<ion-label *ngIf="item.dia == 5">Viernes</ion-label>
+			<ion-label *ngIf="item.dia == 6">Sabado</ion-label>
+			<ion-label>{{ item.desde }} {{ item.hasta }} {{ item.sector }} {{ item.nombre }}</ion-label>
+		</ion-item>
+		
+		<table border="1px;">
+			<thead>
+				<tr>
+					<th>Día</th>
+					<th>Lugar</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let item of cursadas">
+					<td *ngIf="item.dia == 1">Lunes</td>
+					<td *ngIf="item.dia == 2">Martes</td>
+					<td *ngIf="item.dia == 3">Miercoles</td>
+					<td *ngIf="item.dia == 4">Jueves</td>
+					<td *ngIf="item.dia == 5">Viernes</td>
+					<td *ngIf="item.dia == 6">Sabado</td>
+					<td>{{ item.desde }} {{ item.hasta }} {{ item.sector }} {{ item.nombre }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+</ion-content>
+
