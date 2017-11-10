@@ -106,9 +106,9 @@ class UsuarioGoogle extends Usuario {
      * login Google. 
      * @param string $email Correo electronico del usuario (Obligatorio). 
      * */
-    public function buscar ($email) 
+    public function buscar($email, $metodo = self::METODO_GOOGLE) 
     {
-        parent::buscar($email, Usuario::METODO_GOOGLE);
+        parent::buscar($email, $metodo);
         if ($this->getIdusuario()) {
             $consulta = "SELECT * FROM usuario_google WHERE idusuario = ".$this->getIdusuario();
             $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
