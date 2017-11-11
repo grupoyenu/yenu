@@ -1,7 +1,6 @@
 <?php
 
     include_once '../../lib/conf/ControlAcceso.php';
-    
     include_once '../../modelos/carreras/Plan.php';
     include_once '../../modelos/cursadas/Cursada.php';
     include_once '../../modelos/cursadas/Clase.php';
@@ -20,9 +19,6 @@
                 		<?php 
                 		
                     		$resultado = $_SESSION['resultado'];
-                    		
-                    		echo '<pre>'; print_r($resultado); echo '</pre>';
-		    
                     		session_unset($_SESSION['resultado']);
                 		    
                     		if ($resultado['resultado']) {

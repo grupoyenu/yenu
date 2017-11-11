@@ -180,7 +180,7 @@
                                                     echo "<td ".$mensaje.">$suplente</td>";
                                                 }
                                                 
-                                                if ($primero && $segundo) {
+                                                if ($primero || $segundo) {
                                                     $mensaje = Utilidades::formatoFecha($primero);
                                                     if ($mensaje) {
                                                         $mensaje = $estilo." title='{$mensaje}'";

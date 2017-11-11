@@ -11,7 +11,7 @@
 			<div class="content">
 			
             	<h2>CREAR HORARIO DE CURSADA</h2>
-            	<form action="file.php" id="formCrearCursada" name="formCrearCursada" method="post" >
+            	<form action="../../controladores/ManejadorCursada.php" id="formCrearCursada" name="formCrearCursada" method="post" >
             	
             		<fieldset>
             			<legend>Horario</legend>
@@ -22,7 +22,7 @@
             				<label for="codigoCarrera">* Código de carrera:</label>
             				<input type="number" name="codigoCarrera" id="codigoCarrera" required>
             				<label for="">* Nombre de Carrera:</label>
-            				<input type="text" name="txtNombreCarrera" id="txtCarrera" required>
+            				<input type="text" name="txtCarrera" id="txtCarrera" required>
             				<br>
             				<label for="txtAsignatura">* Nombre de Asignatura:</label>
             				<input type="text" name="txtAsignatura" id="txtAsignatura" required>
@@ -92,14 +92,13 @@
             						    
             						   
             						}
-            						echo "<label for='datePrimerLlamado'>Primer Llamado:</label>";
-            						echo "<input type='date'  name='datePrimerLlamado' id='datePrimerLlamado'>";
             					?>
             					</tbody>
             				</table>
             			</fieldset>
             			
             		</fieldset>
+            		<input type="hidden" id="accion" name="accion" value="crear">
             		<input class="botonVerde" type="submit" id="btnCrearCursada" name="btnCrearCursada" value="Crear">
             	</form>
             	
