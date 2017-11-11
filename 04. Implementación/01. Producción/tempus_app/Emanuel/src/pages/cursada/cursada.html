@@ -6,7 +6,7 @@
 <ion-content padding class="content">
 	<div>
 		<form [formGroup]="form" (ngSubmit)="consultarCursadas()"> 
-			<ion-list>
+			<ion-list no-lines>
 			
 				<ion-item>
 					<ion-label stacked>Nombre de carrera</ion-label>
@@ -30,7 +30,7 @@
 				</ion-item>
 				
 				<ion-item>
-					<button ion-button text-center-block>Buscar</button>
+					<button ion-button full>Buscar</button>
 				</ion-item>
 			</ion-list>
 			

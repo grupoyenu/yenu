@@ -1,13 +1,33 @@
-
 <ion-header>
-
   <ion-navbar>
     <ion-title>Mesas de Examen</ion-title>
   </ion-navbar>
-
 </ion-header>
-
-
 <ion-content padding>
+	<div>
+		<form>
+			<ion-list no-lines>
+			<ion-item>
+				<ion-label>* Carrera:</ion-label>
+				<ion-select>
+					<ion-option *ngFor="let item of carreras" value="{{item.codigo}}">{{item.nombre}}</ion-option>
+				</ion-select>
+			</ion-item>
+			<ion-item>
+				<ion-label>* Asignatura:</ion-label>
+				<ion-select>
+					<ion-option>Asignatura 1</ion-option>
+					<ion-option>Asignatura 2</ion-option>
+				</ion-select>
+			</ion-item>
+			<ion-item>
+				<button ion-button full>Buscar</button>
+			</ion-item>
+			</ion-list>
+		</form>
+	</div>
+	
+	<div>
+	</div>
 
 </ion-content>
