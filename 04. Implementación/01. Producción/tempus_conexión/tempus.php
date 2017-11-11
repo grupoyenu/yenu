@@ -24,6 +24,36 @@
     
     switch ($opcion) {
         
+        case "carreras":
+            try {
+                $carreras = array();
+                $stmt = $pdo->query("SELECT * FROM carrera WHERE 1");
+                while($row  = $stmt->fetch(PDO::FETCH_OBJ)) {
+                    $carreras[] = array ('codigo' => $row->codigo, 'nombre' => $row->nombre);
+                }
+                if (count($carreras) > 0) {
+                    foreach ($carreras as $carrera) {
+                        $asignaturas = array();
+                        $consulta = " SELECT a.idasignatura id, a.nombre nombre, ac.anio anio ".
+                            " FROM asignatura_carrera ac, asignatura a ".
+                            " WHERE ac.idasignatura=a.idasignatura AND ac.idcarrera = ".$carrera['codigo'];
+                        $stmt = $pdo->query($consulta);
+                        while($row  = $stmt->fetch(PDO::FETCH_OBJ)) {
+                            $asignaturas[] = array('id'=> $row->id, 'nombre'=> $row->nombre, 'anio'=> $row->anio);
+                        }
+                        $data[] = array ('codigo' => $carrera['codigo'], 'nombre' => $carrera['nombre'], 'asignaturas' => $asignaturas);
+                    }
+                } else {
+                    $data[] = array ('mensaje' => "No se han obtenido carreras de la base de datos");
+                }
+                echo json_encode($data);
+                
+                
+            } catch (PDOException $e) {
+                $data[] = array ('message' =>"Error al obtener las carreras: ". $e->getMessage());
+                echo json_encode($data);
+            }
+            break;
         case "buscarCursada":
             $carrera = filter_var($_REQUEST['carrera'], FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
             $asignatura = filter_var($_REQUEST['asignatura'], FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
