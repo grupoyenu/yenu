@@ -40,7 +40,7 @@ export class MesaPage {
 			  this.carreras = data.json();
 			  
 		  } else {
-			  this.enviarNotificacion("No se pudo procesar la petición");
+			  console.log("No se pudo procesar la petición");
 		  }
       });
 	}

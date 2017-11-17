@@ -17,6 +17,7 @@ export class CursadaPage {
 	public cursadaAsignatura: any;
 	public cursadaAnio : any;
 	public cursadas : any = [];
+	public carreras : any = [];
 	
 	// IDENTIFICADORES PARA LA CARRERA Y ASIGNATURA
 	public idasignatura : any = null;
@@ -43,6 +44,31 @@ export class CursadaPage {
 
 	ionViewDidLoad() {
 		console.log('ionViewDidLoad CursadaPage');
+		this.consultarCarreras();
+	}
+	
+	consultarCarreras() {
+		console.log('consultarCarreras MesaPage');
+		
+		let body       : string = "key=carreras",
+			type       : string = "application/x-www-form-urlencoded; charset=UTF-8",
+			headers    : any    = new Headers({ 'Content-Type': type}),
+			options    : any    = new RequestOptions({ headers: headers }),
+			url        : any    = this.baseURI + "tempus.php";
+			
+		this.http.post(url, body, options).subscribe(data =>
+		{
+		  /* ---SE DEBE BORRAR --- */
+		  console.log(data.json());
+		  
+		  if(data.status === 200) {
+			  this.carreras = data.json();
+			  
+			  
+		  } else {
+			  console.log("No se pudo procesar la petición");
+		  }
+      });
 	}
 	
 	consultarCursadas() 

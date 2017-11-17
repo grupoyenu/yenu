@@ -9,9 +9,11 @@
 			<ion-list no-lines>
 			
 				<ion-item>
-					<ion-label stacked>Nombre de carrera</ion-label>
-					<ion-input type="text" formControlName="carrera" [(ngModel)]="cursadaCarrera" required></ion-input>
-				  </ion-item>
+					<ion-label>* Carrera:</ion-label>
+					<ion-select formControlName="carrera" [(ngModel)]="cursadaCarrera">
+						<ion-option  *ngFor="let item of carreras" value="{{item.nombre}}">{{item.nombre}}</ion-option>
+					</ion-select>
+				</ion-item>
 
 				<ion-item>
 					<ion-label stacked>Nombre de asignatura</ion-label>
@@ -37,9 +39,8 @@
 		</form> 		
 	</div>
 	<div>
-	
-		
 		<ion-item *ngFor="let item of cursadas">
+			{{item.nombreAsi}}
 			<ion-label *ngIf="item.dia == 1">Lunes</ion-label>
 			<ion-label *ngIf="item.dia == 2">Martes</ion-label>
 			<ion-label *ngIf="item.dia == 3">Miercoles</ion-label>
@@ -49,25 +50,6 @@
 			<ion-label>{{ item.desde }} {{ item.hasta }} {{ item.sector }} {{ item.nombre }}</ion-label>
 		</ion-item>
 		
-		<table border="1px;">
-			<thead>
-				<tr>
-					<th>Día</th>
-					<th>Lugar</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let item of cursadas">
-					<td *ngIf="item.dia == 1">Lunes</td>
-					<td *ngIf="item.dia == 2">Martes</td>
-					<td *ngIf="item.dia == 3">Miercoles</td>
-					<td *ngIf="item.dia == 4">Jueves</td>
-					<td *ngIf="item.dia == 5">Viernes</td>
-					<td *ngIf="item.dia == 6">Sabado</td>
-					<td>{{ item.desde }} {{ item.hasta }} {{ item.sector }} {{ item.nombre }}</td>
-				</tr>
-			</tbody>
-		</table>
 	</div>
 	
 </ion-content>
