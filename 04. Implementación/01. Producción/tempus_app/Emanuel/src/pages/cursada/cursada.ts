@@ -37,7 +37,7 @@ export class CursadaPage {
 		this.form = formBuilder.group({
          "carrera"                  : ["", Validators.required],
          "asignatura"           : ["", Validators.required],
-		 "anio"           : ["", Validators.required]
+		 "anio"           : ["", Validators.compose([Validators.required])]
       });
 		
 	}
@@ -76,8 +76,10 @@ export class CursadaPage {
 		 /* ---SE DEBE BORRAR --- */
 		console.log(' Entro al consultarCursadas ');
 		
-		
-		let carrera    : string = this.form.controls["carrera"].value,
+		if(this.form.valid) {
+			console.log(' FORMULARIO VALIDO ');
+			
+			let carrera    : string = this.form.controls["carrera"].value,
 			asignatura : string = this.form.controls["asignatura"].value,
 			anio       : any    = this.form.controls["anio"].value,
 			body       : string = "key=buscarCursada&carrera="+carrera+"&asignatura="+asignatura+"&anio="+anio,
@@ -86,21 +88,27 @@ export class CursadaPage {
 			options    : any    = new RequestOptions({ headers: headers }),
 			url        : any    = this.baseURI + "tempus.php";
 
-      this.http.post(url, body, options)
-      .subscribe(data =>
-      {
-		  /* ---SE DEBE BORRAR --- */
-		  console.log(data.json());
-		  
-		  if(data.status === 200) {
+			this.http.post(url, body, options)
+			.subscribe(data =>
+			{
+			  /* ---SE DEBE BORRAR --- */
+			  console.log(data.json());
 			  
-			  /* SE HA OBTENIDO RESULTADO. ASIGNA EL RESULTADO DE LA CONSULTA A LAS CURSADAS  */
-			  this.cursadas = data.json();
-			  
-		  } else {
-			  this.enviarNotificacion("No se pudo procesar la petición");
-		  }
-      });
+				if(data.status === 200) {
+				  
+				  /* SE HA OBTENIDO RESULTADO. ASIGNA EL RESULTADO DE LA CONSULTA A LAS CURSADAS  */
+				  this.cursadas = data.json();
+				  
+				} else {
+					this.enviarNotificacion("No se pudo procesar la petición");
+				}
+			});
+			
+		} else {
+			console.log(' FORMULARIO INVALIDO ');
+			this.enviarNotificacion("FORMULARIO INVALIDO");
+		}
+		
 	}
 	
 	/*
