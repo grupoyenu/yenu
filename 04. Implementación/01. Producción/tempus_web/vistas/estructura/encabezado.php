@@ -14,6 +14,7 @@
 		<link rel='stylesheet' type='text/css' href='../../css/datatables.min.css'/>
 		<link rel='stylesheet' type='text/css' href='../../css/responsivo.css'/>
 	    <link rel='stylesheet' type='text/css' href='../../js/Buttons-1.4.2/css/buttons.dataTables.min.css'/>
+	    <link rel='stylesheet' type='text/css' href='../../js/jquery-confirm-master/css/jquery-confirm.css'/>
 	    <script type="text/javascript" src="../../js/jquery-3.2.1.min.js"></script>
 		<script type="text/javascript" src="../../js/datatables.min.js"></script>
 	    <script type='text/javascript' src='../../js/Buttons-1.4.2/js/buttons.html5.min.js'></script>

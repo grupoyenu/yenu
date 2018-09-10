@@ -8,7 +8,7 @@
 	<script type="text/javascript" src="../../js/cursada_crear.js"></script>
 	<section id="main-content">
 		<article>
-			<div class="content">
+			<div id="content" class="content">
 			
             	<h2>CREAR HORARIO DE CURSADA</h2>
             	<form action="../../controladores/ManejadorCursada.php" id="formCrearCursada" name="formCrearCursada" method="post" >

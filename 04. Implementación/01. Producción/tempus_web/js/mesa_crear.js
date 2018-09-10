@@ -61,13 +61,10 @@ $(document).ready(function() {
 		}
 		
 		/* Si no hay primer llamado ni segundo llamado, muestra mensaje */
-		
 		if (!primero && !segundo) {
 			$("<h3 id='mensaje' class='letraNaranja'>Debe indicar una fecha de llamado</h3>").insertAfter( "#content h2" );
 			$('html,body').animate({scrollTop: $("#content").offset().top}, 300);
 			return false;
 		}
 		
-	});
-	
 });

@@ -166,6 +166,7 @@
                     		          }
                 		         	  ?>
                 		          </fieldset>
+                		          <input type="hidden" id="idmesa" name="idmesa" value="<?= $mesa->getIdmesa(); ?>">
                 		          <input type="hidden" id="accion" name="accion" value="modificacion">
                 		          <input class="botonVerde" type="submit" name="btnModificarMesa" id="btnModificarMesa" value="Modificar">
                 		          
@@ -180,10 +181,10 @@
                 		      
                 		  } else {
                 		      /* No se ha definido resultado o es nulo (isset) */
-                		      echo "<fieldset>";
-                		      echo "<legend>Resultado</legend>";
-                		      echo "<h6 class='letraRoja letraCentrada'>No se ha obtenido la información de la mesa de examen a modificar</h6>";
-                		      echo "</fieldset>";
+                		      echo "<fieldset>
+                                        <legend>Resultado</legend>
+                                        <h6 class='letraRoja letraCentrada'>No se ha obtenido la información de la mesa de examen a modificar</h6>
+                                    </fieldset>";
                 		  }
                 		  
                     ?>

@@ -24,13 +24,6 @@
                     		    
                     		    echo "<h6 class='letraVerde letraCentrada'>{$resultado['mensaje']}</h6>";
                     		    
-                    		    if ($resultado['datos']) {
-                    		        
-                    		        echo '<pre>'; print_r($resultado); echo '</pre>';
-                    		    ?>
-                    		    	
-                    		    <?php 
-                    		    }
                     		} else {
                     		    /* No se ha realizado la operación */
                     		    echo "<h6 class='letraRoja letraCentrada'>{$resultado['mensaje']}</h6>";

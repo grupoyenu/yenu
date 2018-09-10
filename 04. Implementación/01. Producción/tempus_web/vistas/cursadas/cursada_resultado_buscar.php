@@ -1,4 +1,7 @@
 <?php 
+
+    header('Content-Type: text/html; charset=ISO-8859-1'); 
+
     include_once '../../modelos/carreras/Plan.php'; 
     include_once '../../modelos/aulas/Aula.php'; 
     include_once '../../modelos/cursadas/Clase.php'; 
@@ -14,7 +17,7 @@
 		<article>
 			<div id="content" class="content">
             	<h2>BUSCAR HORARIO DE CURSADA</h2>
-            	<form action="" id="formBuscarCursadas" name="formBuscarCursadas" method="post">
+            	<form action="../../Controladores/ManejadorCursada.php" id="formBuscarCursadas" name="formBuscarCursadas" method="post">
                 	
                 	<fieldset>
                 		<legend>Resultado de la búsqueda</legend>
@@ -47,15 +50,16 @@
                     				<tbody>
                     				<?php
                     		        
-                    				foreach ($cursadas as $cursada) {
-                    				    
+                    				$tamanio = count($cursadas);
+                    				for ($indice=0; $indice<$tamanio; ++$indice) {
+                    				    $cursada = $cursadas [$indice];
                     				    $plan = $cursada->getPlan();
                     				    $asignatura = $plan->getAsignatura();
                     				    $carrera = $plan->getCarrera();
                     				    $clases = $cursada->getClases();
                     				    
                     				    echo "<tr>";
-                    				    echo "<td><input type='radio' id='radioCursadas' name='radioCursadas'></td>";
+                    				    echo "<td><input type='radio' id='radioCursadas' name='radioCursadas' value='".$indice."'></td>";
                     				    echo "<td>{$carrera->getNombre()}</td>";
                     				    echo "<td>{$asignatura->getNombre()}</td>";
                     				    
@@ -84,7 +88,7 @@
                         		} else {
                         		    /* No se han encontrado resultados */
                         		    $mensaje = $resultado['mensaje'];
-                        		    echo "<h6 class='letraVerde letraCentrada'>{$mensaje}</h6>";
+                        		    echo "<h6 class='letraVerde letraCentrada'>No se han encontrado resultados</h6>";
                         		}
                     		    
                     		} else {

@@ -349,9 +349,11 @@
                         		            
                         		            $Carrera = new Carrera();
                         		            $Carrera->setCodigo($codigo);
+                        		            $carrera = Utilidades::convertirCamelCase($carrera);
                         		            $Carrera->setNombre($carrera);
                         		            
                         		            $Asignatura = new Asignatura();
+                        		            $asignatura = Utilidades::convertirCamelCase($asignatura);
                         		            $Asignatura->setNombre($asignatura);
                         		            
                         		            $Plan = new Plan();
