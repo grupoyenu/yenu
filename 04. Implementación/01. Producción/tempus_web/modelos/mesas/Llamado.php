@@ -20,6 +20,9 @@ class Llamado {
     /** @var Aula */
     private $aula;
     
+    /** @var string Fecha de modificacion */
+    private $fechamod;
+    
     /** @var mysqli_result */
     private $datos;
 
@@ -85,6 +88,14 @@ class Llamado {
     }
     
     /**
+     * @return string $fechamod
+     * */
+    public function getFechamod()
+    {
+        return $this->fechamod;
+    }
+    
+    /**
      * @param integer $idllamado
      * @author Marquez Emanuel.
      */
@@ -118,6 +129,14 @@ class Llamado {
     public function setAula($aula)
     {
         $this->aula = $aula;
+    }
+    
+    /**
+     * @param string $fechamod
+     * */
+    public function setFechamod($fechamod)
+    {
+        $this->fechamod = $fechamod;
     }
     
     /**

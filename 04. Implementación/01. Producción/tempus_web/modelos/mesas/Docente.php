@@ -85,12 +85,14 @@ class Docente
      * */
     public function crear($nombre)
     {
-        $this->buscar($nombre);
-        if (is_null($this->iddocente)) {
-            ObjetoDatos::getInstancia()->ejecutarQuery("INSERT INTO docente VALUES (null,'".$nombre."')");
-            if (ObjetoDatos::getInstancia()->affected_rows > 0) {
-                $this->iddocente = (Int) ObjetoDatos::getInstancia()->insert_id;
-                $this->nombre = $nombre;
+        if ($nombre) {
+            $this->buscar($nombre);
+            if (is_null($this->iddocente)) {
+                ObjetoDatos::getInstancia()->ejecutarQuery("INSERT INTO docente VALUES (null,'".$nombre."')");
+                if (ObjetoDatos::getInstancia()->affected_rows > 0) {
+                    $this->iddocente = (Int) ObjetoDatos::getInstancia()->insert_id;
+                    $this->nombre = $nombre;
+                }
             }
         }
     }
@@ -102,11 +104,13 @@ class Docente
      * */
     public function borrar($iddocente)
     {
-        $consulta = "DELETE FROM docente WHERE iddocente = ".$iddocente;
-        ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
-        if (ObjetoDatos::getInstancia()->affected_rows > 0) {
-            $this->iddocente = null;
-            $this->nombre = null;
+        if($iddocente) {
+            $consulta = "DELETE FROM docente WHERE iddocente = ".$iddocente;
+            ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+            if (ObjetoDatos::getInstancia()->affected_rows > 0) {
+                $this->iddocente = null;
+                $this->nombre = null;
+            }
         }
     }
     

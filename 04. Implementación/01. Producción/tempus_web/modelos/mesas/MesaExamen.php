@@ -232,15 +232,53 @@ class MesaExamen
     
     /**
      * Realiza la modificación de la mesa de examen. 
-     * 
      * @param integer $idmesa Recibe el identificador de la mesa de examen a modificar.
      * @param Tribunal $tribunal Recibe el tribunal de la mesa de examen.
      * @param Llamado $primero Recibe el primer llamado de la mesa de examen.
      * @param Llamado $segundo Recibe el segundo llamado de la mesa de examen.
+     * @return string Mensaje con el resultado de la operación.
      * */
     public function modificar($idmesa, $tribunal, $primero, $segundo) 
     {
-        
+        if ($idmesa && $tribunal) {
+            
+            if ($primero || $segundo) {
+                
+                ObjetoDatos::getInstancia()->autocommit(false);
+                ObjetoDatos::getInstancia()->begin_transaction();
+                try {
+                    
+                    $idtribunal = $tribunal->getIdtribunal();
+                    $presidente = $tribunal->getPresidente();
+                    $vocal1 = $tribunal->getVocal1();
+                    $vocal2 = $tribunal->getVocal2();
+                    $suplente = $tribunal->getSuplente();
+                    
+                    $mensaje = $tribunal->modificar($idtribunal, $presidente, $vocal1, $vocal2, $suplente);
+                    
+                    if ($tribunal->getIdtribunal()) {
+                        
+                        if ($primero) {
+                            
+                            
+                        }
+                        
+                        if ($segundo) {
+                            
+                        }
+                    }
+                    
+                } catch (Exception $exception) {
+                    ObjetoDatos::getInstancia()->rollback();
+                    ObjetoDatos::getInstancia()->autocommit(true);
+                    return "No se ha podido realizar la modificación por un error durante la operación";
+                }
+                ObjetoDatos::getInstancia()->commit();
+                ObjetoDatos::getInstancia()->autocommit(true);
+            }
+            return "No se ha recibido la información correspondiente al llamado";
+        }
+        return "No se ha recibido la información necesaria para modificar la mesa de examen";
     }
 
 }

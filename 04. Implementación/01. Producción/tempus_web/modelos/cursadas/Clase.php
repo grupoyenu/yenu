@@ -30,6 +30,9 @@ class Clase
     /** @var Aula */
     private $aula;
     
+    /** @var string Fecha de modificacion de clase */
+    private $fechamod;
+    
     /** @var mysqli_result */
     private $datos;
     
@@ -95,6 +98,14 @@ class Clase
     {
         return $this->aula;
     }
+    
+    /**
+     * @return string $fechamod
+     * */
+    public function getFechamod()
+    {
+        return $this->fechamod;
+    }
 
     /**
      * @param integer $idclase
@@ -135,6 +146,14 @@ class Clase
     {
         $this->aula = $aula;
     }
+    
+    /**
+     * @param string $fechamod
+     * */
+    public function setFechamod($fechamod)
+    {
+        $this->fechamod = $fechamod;
+    }
 
     /**
      * Realiza la creación de una nueva clase. 
@@ -170,12 +189,21 @@ class Clase
     }
     
     /**
-     * Realiza la eliminación de una clase en la base de datos.
-     * @param 
+     * Realiza la eliminación de una clase en la base de datos. Si se hace la
+     * elimiinacion correctamente, el idclase sera nulo. En caso contrario, el
+     * idclase sera el recibido por parametro.
+     * @param integer Identificador de la clase a borrar.
      * */
     public function borrar($idclase) 
     {
-        
+        $consulta = "DELETE FROM clase WHERE idclase=".$idclase;
+        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+        if ($this->datos->num_rows > 0) {
+            $this->idclase = null;
+        } else {
+            $this->idclase = $idclase;
+        }
+        $this->datos = null;
     }
     
     /**
@@ -210,9 +238,32 @@ class Clase
     
     
     /**
-     * 
+     * Modifica un horario de clase.
+     * @param $idclase integer Identificador de la clase a modifcar.
+     * @param $desde string Hora de inicio de la clase en formato HH:MM.
+     * @param $hasta string Hora de fin de la clase en formato HH:MM.
+     * @param $aula Aula Aula donde se dicta la clase.
      * */
-    public function modificar()
-    {}
+    public function modificar($idclase, $desde, $hasta, $aula)
+    {
+        $idaula = $aula->getIdaula();
+        $consulta = " ";
+        ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+        if (ObjetoDatos::getInstancia()->affected_rows > 0) {
+            /* Se ha realizado la creacion. Se obtiene el id */
+            $this->idclase = (Int) ObjetoDatos::getInstancia()->insert_id;
+            $this->dia = $dia;
+            $this->desde = $desde;
+            $this->hasta = $hasta;
+            $this->aula = $aula;
+        } else {
+            /* No se ha realizado la creacion. Se ponen nulos los atributos */
+            $this->idclase = null;
+            $this->dia = null;
+            $this->desde = null;
+            $this->hasta = null;
+            $this->aula = null;
+        }
+    }
     
 }
