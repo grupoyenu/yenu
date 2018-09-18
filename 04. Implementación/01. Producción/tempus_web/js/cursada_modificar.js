@@ -12,7 +12,7 @@ $(document).ready(function() {
 	
 	/** VALORES ORIGINALES DE LOS CAMPOS DE INFORMACION BASICA */
 	var orig_codigoCarrera = $('input#numCarrera').val();
-	var orig_nombreCarrera = $('input#txtCarrera').val().toLowerCase();
+	var orig_nombreCarrera = $('input#txtCarrera').val();
 	var orig_nombreAsignatura = $('input#txtAsignatura').val();
 	var orig_anio = $('input#selAnio').val();
 	
@@ -86,6 +86,12 @@ $(document).ready(function() {
 			}
 		}
 	});
+	
+	$('form#formModificarCursada').submit(function() {
+		
+		alert($('input#accion').val());
+		
+	});
 
 /************** CAMPOS CORRESPONDIENTES AL DIA 1: LUNES  **************/
 	
@@ -109,16 +115,17 @@ $(document).ready(function() {
 		var sector = $("input#txtSector1").val();
 		var aula = $("input#txtAula1").val();
 		
-		if((orig_horaInicio1 != horaInicio) || (orig_horaFin1 != horaFin) || (orig_sector1 != sector) || (orig_aula1 != aula)){
+		if((orig_horaInicio1 != horaInicio) || (orig_horaFin1 != horaFin) || (orig_sector1 != sector) || (orig_aula1 != aula)) {
 			/* SE ENCONTRARON MODIFICACIONES EN LOS CAMPOS DEL DIA */
-			var mensaje = "\u00BFEst\u00E1 seguro que desea modificar este horario de clase?";
-			
+			var titulo = "\u00BFEst\u00E1 seguro que desea modificar el horario de clase correspondiente al Lunes?";
+			var contenido = "Confirme la modificaci\u00F3n del horario de clase: Desde "+horaInicio+" hs hasta "+horaFin+" hs en "+sector+"-"+aula;
 			$.confirm({
-			    title: 'Confirme la modificaci\u00F3n del horario de clase',
-			    content: mensaje,
+			    title: titulo,
+			    content: contenido,
 			    buttons: {
 			        confirmar: function () {
-			           
+			        	$('input#accion').val('modificarclase');
+			        	$('form#formModificarCursada').submit();
 			        },
 			        cancelar: function () {
 			            return true;
@@ -127,10 +134,55 @@ $(document).ready(function() {
 			});
 		} else {
 			/* NO SE ENCONTRARON MODIFICACIONES EN LOS CAMPOS DEL DIA */
+			$("h3#mensaje" ).remove();
 			var mensaje = "No se realizaron modificaciones al horario de clases del dia lunes";
 			$("<h3 id='mensaje' class='letraNaranja'>"+mensaje+"</h3>").insertAfter( "#content h2" );
 			$('html,body').animate({scrollTop: $("#content").offset().top}, 300);
+			return false;
 		}
+	});
+	
+	$('img#imgBorrar1').click(function() {
+		var titulo = "\u00BFEst\u00E1 seguro que desea borrar el horario de clase correspondiente al Lunes?";
+		var contenido = "Confirme la eliminaci\u00F3n del horario de clase";
+		$.confirm({
+		    title: titulo,
+		    content: contenido,
+		    buttons: {
+		        confirmar: function () {
+		        	$('input#accion').val('borrarclase');
+		        	$('form#formModificarCursada').submit();
+		        },
+		        cancelar: function () {
+		            return true;
+		        }
+		    }
+		});
+	});
+	
+	$('img#imgCrear1').click(function() {
+		var sector = $("input#txtSector1").val();
+		var aula = $("input#txtAula1").val();
+		if(sector != null && aula != null) {
+			var titulo = "\u00BFEst\u00E1 seguro que desea crear el horario de clase correspondiente al Lunes?";
+			var contenido = "Confirme la creaci\u00F3n del horario de clase";
+			$.confirm({
+			    title: titulo,
+			    content: contenido,
+			    buttons: {
+			        confirmar: function () {
+			        	$('input#accion').val('crearclase');
+			        	$('form#formModificarCursada').submit();
+			        },
+			        cancelar: function () {
+			            return true;
+			        }
+			    }
+			});
+		} else {
+			
+		}
+		
 	});
 
 /************** CAMPOS CORRESPONDIENTES AL DIA 2: MARTES  **************/
@@ -148,6 +200,58 @@ $(document).ready(function() {
 		var fin = parseInt(tope) + 1;
 		$("select#selectHoraFin2 option[value='"+fin+":00']").prop('selected',true);
 	});
+	
+	$('img#imgModificar2').click(function() {
+		var horaInicio = $("select#selectHoraInicio2").val();
+		var horaFin = $("select#selectHoraFin2").val();
+		var sector = $("input#txtSector2").val();
+		var aula = $("input#txtAula2").val();
+		
+		if((orig_horaInicio2 != horaInicio) || (orig_horaFin2 != horaFin) || (orig_sector2 != sector) || (orig_aula2 != aula)) {
+			/* SE ENCONTRARON MODIFICACIONES EN LOS CAMPOS DEL DIA */
+			var titulo = "\u00BFEst\u00E1 seguro que desea modificar el horario de clase correspondiente al Martes?";
+			var contenido = "Confirme la modificaci\u00F3n del horario de clase: Desde "+horaInicio+" hs hasta "+horaFin+" hs en "+sector+"-"+aula;
+			$.confirm({
+			    title: titulo,
+			    content: contenido,
+			    buttons: {
+			        confirmar: function () {
+			        	$('input#accion').val('modificarclase');
+			        	$('form#formModificarCursada').submit();
+			        },
+			        cancelar: function () {
+			            return true;
+			        }
+			    }
+			});
+		} else {
+			/* NO SE ENCONTRARON MODIFICACIONES EN LOS CAMPOS DEL DIA */
+			$("h3#mensaje" ).remove();
+			var mensaje = "No se realizaron modificaciones al horario de clases del dia martes";
+			$("<h3 id='mensaje' class='letraNaranja'>"+mensaje+"</h3>").insertAfter( "#content h2" );
+			$('html,body').animate({scrollTop: $("#content").offset().top}, 300);
+			return false;
+		}
+	});
+	
+	$('img#imgBorrar2').click(function() {
+		var titulo = "\u00BFEst\u00E1 seguro que desea borrar el horario de clase correspondiente al Martes?";
+		var contenido = "Confirme la eliminaci\u00F3n del horario de clase";
+		$.confirm({
+		    title: titulo,
+		    content: contenido,
+		    buttons: {
+		        confirmar: function () {
+		        	$('input#accion').val('borrarclase');
+		        	$('form#formModificarCursada').submit();
+		        },
+		        cancelar: function () {
+		            return true;
+		        }
+		    }
+		});
+	});
+	
 
 /************** CAMPOS CORRESPONDIENTES AL DIA 3: MIERCOLES  ***********/
 	
@@ -164,6 +268,57 @@ $(document).ready(function() {
 		var fin = parseInt(tope) + 1;
 		$("select#selectHoraFin3 option[value='"+fin+":00']").prop('selected',true);
 	});
+	
+	$('img#imgModificar3').click(function() {
+		var horaInicio = $("select#selectHoraInicio3").val();
+		var horaFin = $("select#selectHoraFin3").val();
+		var sector = $("input#txtSector3").val();
+		var aula = $("input#txtAula3").val();
+		
+		if((orig_horaInicio3 != horaInicio) || (orig_horaFin3 != horaFin) || (orig_sector3 != sector) || (orig_aula3 != aula)) {
+			/* SE ENCONTRARON MODIFICACIONES EN LOS CAMPOS DEL DIA */
+			var titulo = "\u00BFEst\u00E1 seguro que desea modificar el horario de clase correspondiente al Miercoles?";
+			var contenido = "Confirme la modificaci\u00F3n del horario de clase: Desde "+horaInicio+" hs hasta "+horaFin+" hs en "+sector+"-"+aula;
+			$.confirm({
+			    title: titulo,
+			    content: contenido,
+			    buttons: {
+			        confirmar: function () {
+			        	$('input#accion').val('modificarclase');
+			        	$('form#formModificarCursada').submit();
+			        },
+			        cancelar: function () {
+			            return true;
+			        }
+			    }
+			});
+		} else {
+			/* NO SE ENCONTRARON MODIFICACIONES EN LOS CAMPOS DEL DIA */
+			$("h3#mensaje" ).remove();
+			var mensaje = "No se realizaron modificaciones al horario de clases del dia Miercoles";
+			$("<h3 id='mensaje' class='letraNaranja'>"+mensaje+"</h3>").insertAfter( "#content h2" );
+			$('html,body').animate({scrollTop: $("#content").offset().top}, 300);
+			return false;
+		}
+	});
+	
+	$('img#imgBorrar3').click(function() {
+		var titulo = "\u00BFEst\u00E1 seguro que desea borrar el horario de clase correspondiente al Miercoles?";
+		var contenido = "Confirme la eliminaci\u00F3n del horario de clase";
+		$.confirm({
+		    title: titulo,
+		    content: contenido,
+		    buttons: {
+		        confirmar: function () {
+		        	$('input#accion').val('borrarclase');
+		        	$('form#formModificarCursada').submit();
+		        },
+		        cancelar: function () {
+		            return true;
+		        }
+		    }
+		});
+	});
 
 /************** CAMPOS CORRESPONDIENTES AL DIA 4: JUEVES  **************/
 	
@@ -179,6 +334,57 @@ $(document).ready(function() {
 		}
 		var fin = parseInt(tope) + 1;
 		$("select#selectHoraFin4 option[value='"+fin+":00']").prop('selected',true);
+	});
+	
+	$('img#imgModificar4').click(function() {
+		var horaInicio = $("select#selectHoraInicio4").val();
+		var horaFin = $("select#selectHoraFin4").val();
+		var sector = $("input#txtSector4").val();
+		var aula = $("input#txtAula4").val();
+		
+		if((orig_horaInicio4 != horaInicio) || (orig_horaFin4 != horaFin) || (orig_sector4 != sector) || (orig_aula4 != aula)) {
+			/* SE ENCONTRARON MODIFICACIONES EN LOS CAMPOS DEL DIA */
+			var titulo = "\u00BFEst\u00E1 seguro que desea modificar el horario de clase correspondiente al Jueves?";
+			var contenido = "Confirme la modificaci\u00F3n del horario de clase: Desde "+horaInicio+" hs hasta "+horaFin+" hs en "+sector+"-"+aula;
+			$.confirm({
+			    title: titulo,
+			    content: contenido,
+			    buttons: {
+			        confirmar: function () {
+			        	$('input#accion').val('modificarclase');
+			        	$('form#formModificarCursada').submit();
+			        },
+			        cancelar: function () {
+			            return true;
+			        }
+			    }
+			});
+		} else {
+			/* NO SE ENCONTRARON MODIFICACIONES EN LOS CAMPOS DEL DIA */
+			$("h3#mensaje" ).remove();
+			var mensaje = "No se realizaron modificaciones al horario de clases del dia Jueves";
+			$("<h3 id='mensaje' class='letraNaranja'>"+mensaje+"</h3>").insertAfter( "#content h2" );
+			$('html,body').animate({scrollTop: $("#content").offset().top}, 300);
+			return false;
+		}
+	});
+	
+	$('img#imgBorrar4').click(function() {
+		var titulo = "\u00BFEst\u00E1 seguro que desea borrar el horario de clase correspondiente al Jueves?";
+		var contenido = "Confirme la eliminaci\u00F3n del horario de clase";
+		$.confirm({
+		    title: titulo,
+		    content: contenido,
+		    buttons: {
+		        confirmar: function () {
+		        	$('input#accion').val('borrarclase');
+		        	$('form#formModificarCursada').submit();
+		        },
+		        cancelar: function () {
+		            return true;
+		        }
+		    }
+		});
 	});
 
 /************** CAMPOS CORRESPONDIENTES AL DIA 5: VIERNES  *************/
@@ -197,6 +403,57 @@ $(document).ready(function() {
 		$("select#selectHoraFin5 option[value='"+fin+":00']").prop('selected',true);
 	});
 	
+	$('img#imgModificar5').click(function() {
+		var horaInicio = $("select#selectHoraInicio5").val();
+		var horaFin = $("select#selectHoraFin5").val();
+		var sector = $("input#txtSector5").val();
+		var aula = $("input#txtAula5").val();
+		
+		if((orig_horaInicio5 != horaInicio) || (orig_horaFin5 != horaFin) || (orig_sector5 != sector) || (orig_aula5 != aula)) {
+			/* SE ENCONTRARON MODIFICACIONES EN LOS CAMPOS DEL DIA */
+			var titulo = "\u00BFEst\u00E1 seguro que desea modificar el horario de clase correspondiente al Viernes?";
+			var contenido = "Confirme la modificaci\u00F3n del horario de clase: Desde "+horaInicio+" hs hasta "+horaFin+" hs en "+sector+"-"+aula;
+			$.confirm({
+			    title: titulo,
+			    content: contenido,
+			    buttons: {
+			        confirmar: function () {
+			        	$('input#accion').val('modificarclase');
+			        	$('form#formModificarCursada').submit();
+			        },
+			        cancelar: function () {
+			            return true;
+			        }
+			    }
+			});
+		} else {
+			/* NO SE ENCONTRARON MODIFICACIONES EN LOS CAMPOS DEL DIA */
+			$("h3#mensaje" ).remove();
+			var mensaje = "No se realizaron modificaciones al horario de clases del dia Viernes";
+			$("<h3 id='mensaje' class='letraNaranja'>"+mensaje+"</h3>").insertAfter( "#content h2" );
+			$('html,body').animate({scrollTop: $("#content").offset().top}, 300);
+			return false;
+		}
+	});
+	
+	$('img#imgBorrar5').click(function() {
+		var titulo = "\u00BFEst\u00E1 seguro que desea borrar el horario de clase correspondiente al Viernes?";
+		var contenido = "Confirme la eliminaci\u00F3n del horario de clase";
+		$.confirm({
+		    title: titulo,
+		    content: contenido,
+		    buttons: {
+		        confirmar: function () {
+		        	$('input#accion').val('borrarclase');
+		        	$('form#formModificarCursada').submit();
+		        },
+		        cancelar: function () {
+		            return true;
+		        }
+		    }
+		});
+	});
+	
 /************** CAMPOS CORRESPONDIENTES AL DIA 6: SABADO  **************/
 	
 	$('select#selectHoraInicio6').change(function() {
@@ -211,6 +468,57 @@ $(document).ready(function() {
 		}
 		var fin = parseInt(tope) + 1;
 		$("select#selectHoraFin6 option[value='"+fin+":00']").prop('selected',true);
+	});
+	
+	$('img#imgModificar6').click(function() {
+		var horaInicio = $("select#selectHoraInicio6").val();
+		var horaFin = $("select#selectHoraFin6").val();
+		var sector = $("input#txtSector6").val();
+		var aula = $("input#txtAula6").val();
+		
+		if((orig_horaInicio6 != horaInicio) || (orig_horaFin6 != horaFin) || (orig_sector6 != sector) || (orig_aula6 != aula)) {
+			/* SE ENCONTRARON MODIFICACIONES EN LOS CAMPOS DEL DIA */
+			var titulo = "\u00BFEst\u00E1 seguro que desea modificar el horario de clase correspondiente al S\u00E1bado?";
+			var contenido = "Confirme la modificaci\u00F3n del horario de clase: Desde "+horaInicio+" hs hasta "+horaFin+" hs en "+sector+"-"+aula;
+			$.confirm({
+			    title: titulo,
+			    content: contenido,
+			    buttons: {
+			        confirmar: function () {
+			        	$('input#accion').val('modificarclase');
+			        	$('form#formModificarCursada').submit();
+			        },
+			        cancelar: function () {
+			            return true;
+			        }
+			    }
+			});
+		} else {
+			/* NO SE ENCONTRARON MODIFICACIONES EN LOS CAMPOS DEL DIA */
+			$("h3#mensaje" ).remove();
+			var mensaje = "No se realizaron modificaciones al horario de clases del dia S\u00E1bado";
+			$("<h3 id='mensaje' class='letraNaranja'>"+mensaje+"</h3>").insertAfter( "#content h2" );
+			$('html,body').animate({scrollTop: $("#content").offset().top}, 300);
+			return false;
+		}
+	});
+	
+	$('img#imgBorrar6').click(function() {
+		var titulo = "\u00BFEst\u00E1 seguro que desea borrar el horario de clase correspondiente al Sabado?";
+		var contenido = "Confirme la eliminaci\u00F3n del horario de clase";
+		$.confirm({
+		    title: titulo,
+		    content: contenido,
+		    buttons: {
+		        confirmar: function () {
+		        	$('input#accion').val('borrarclase');
+		        	$('form#formModificarCursada').submit();
+		        },
+		        cancelar: function () {
+		            return true;
+		        }
+		    }
+		});
 	});
 		
 });

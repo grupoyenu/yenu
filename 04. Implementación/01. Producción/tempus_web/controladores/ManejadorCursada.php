@@ -14,9 +14,7 @@
     $redireccion = Constantes::HOMEURL;
     
     $accion = $_POST['accion'];
-    
-    
-    
+      
     switch ($accion) {
         case "importar":
             $redireccion = "/tempus/vistas/cursadas/cursada_resultado_importar.php";
@@ -72,7 +70,7 @@
                                 $aula = new Aula();
                                 $nombresector = $_POST['txtSector'.$i];
                                 $nombreaula = $_POST['txtAula'.$i];
-                                $aula->crear($nombresector, $nombresector);
+                                $aula->crear($nombreaula, $nombresector);
                                 if ($aula->getIdaula()) {
                                     $desde = $_POST['selectHoraInicio'.$i];
                                     $hasta = $_POST['selectHoraFin'.$i];
@@ -121,11 +119,110 @@
             
             break;
         case "modificar":
+            $redireccion = Constantes::APPURL."/vistas/cursadas/cursada_modificar.php";
+            $resultado =  $_SESSION['resultado'];
+            if (isset($resultado)) {
+                if (isset($resultado['datos'])) {
+                    $indice = $_POST['radioCursadas'];
+                    if (isset($indice)) {
+                        $cursadas = $resultado['datos'];
+                        $cursada = $cursadas[$indice];
+                        $resultado = array('resultado'=>TRUE,'mensaje'=>NULL, 'datos'=>$cursada);
+                    } else {
+                        $mensaje = "No se pudo obtener el indice del horario de cursada seleccionado";
+                        $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>NULL);
+                    }
+                } else {
+                    $mensaje = "No se pudo obtener la información de los horarios de cursadas que se han buscado";
+                    $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>NULL);
+                }
+                
+            } else {
+                $mensaje = "No se pudo obtener la información del horario de cursada seleccionado";
+                $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>NULL);
+            }
+            $_SESSION['resultado'] = $resultado;
+            break;
+        case "modificarCursada":
             
             break;
-        case "modificacion":
+        case "crearclase":
+            $redireccion = Constantes::APPURL."/vistas/cursadas/cursada_modificar.php";
+            $resultado =  $_SESSION['resultado'];
+            if(isset($resultado)) {
+                
+                $dia = $_POST['radDias'];
+                
+                $horainicio = $_POST['selectHoraInicio'.$dia];
+                $horafin = $_POST['selectHoraFin'.$dia];
+                $sector = $_POST['txtSector'.$dia];
+                $aula = $_POST['txtAula'.$dia];
+                
+                $cursada = $resultado['datos'];
+                $mensaje = $dia." / ".$horainicio." / ".$horafin." / ".$sector." / ".$aula;
+                $resultado = array('resultado'=>TRUE,'mensaje'=>$mensaje, 'datos'=>$cursada);
+                
+            } else {
+                $mensaje = "No se pudo obtener la información de la clase seleccionada para crear";
+                $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>null);
+            }
             
+            $_SESSION['resultado'] = $resultado;
+            break;
+        case "modificarclase":
+            $redireccion = Constantes::APPURL."/vistas/cursadas/cursada_modificar.php";
+            $resultado =  $_SESSION['resultado'];
+            if(isset($resultado)) {
+               
+                $dia = $_POST['radDias'];
+                $idclase = $_POST['idclase'.$dia];
+                $horainicio = $_POST['selectHoraInicio'.$dia];
+                $horafin = $_POST['selectHoraFin'.$dia];
+                $sector = $_POST['txtSector'.$dia];
+                $nombreaula = $_POST['txtAula'.$dia];
+                
+                $cursada = $resultado['datos'];
+                $clase = $clases[$dia];
+                $aula = $clase->getAula();
+                
+                if(($aula->getSector() != $sector) || ($aula->getNombre() != $nombreaula)) {
+                    $mensaje = "Modifca aula: ".$dia." / ".$idclase." / ".$horainicio." / ".$horafin." / ".$sector." / ".$aula;
+                } else {
+                    $mensaje = $dia." / ".$idclase." / ".$horainicio." / ".$horafin." / ".$sector." / ".$aula;
+                }
+                $resultado = array('resultado'=>TRUE,'mensaje'=>$mensaje, 'datos'=>$cursada);
+                
+            } else {
+                $mensaje = "No se pudo obtener la información de la clase seleccionada para modificar";
+                $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>null);
+            }
+            $_SESSION['resultado'] = $resultado;
+            
+            break;
+        case "borrarclase":
+            $redireccion = Constantes::APPURL."/vistas/cursadas/cursada_modificar.php";
+            $resultado =  $_SESSION['resultado'];
+            if(isset($resultado)) {
+                $dia = $_POST['radDias'];
+                $idclase = $_POST['idclase'.$dia];
+                $cursada = $resultado['datos'];
+                $clases = $cursada->getClases();
+                $clase = $clases[$dia];
+                $clase->borrar($idclase);
+                if($clase->getIdclase()) {
+                    $clases[$dia] = null;
+                    $cursada->setClases($clases);
+                    $mensaje = "Se ha realizado la eliminación de la clase correctamente";
+                } else {
+                    $mensaje = $dia." / ".$idclase." : No se ha eliminado";
+                }
+                $resultado = array('resultado'=>TRUE,'mensaje'=>$mensaje, 'datos'=>$cursada);
+            } else {
+                $mensaje = "No se pudo obtener la información de la clase seleccionada para borrar";
+                $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>null);
+            }
+            $_SESSION['resultado'] = $resultado;
             break;
     }
-    
+   
     header("Location: ".$redireccion);

@@ -192,9 +192,7 @@
         case "modificacion":
             $redireccion = Constantes::APPURL."/vistas/mesas/mesa_resultado_modificar.php";
             
-            $codigocarrera = $_POST['codigoCarrera'];
-            $nombrecarrera = Utilidades::convertirCamelCase($_POST['txtCarrera']);
-            $nombreasignatura = Utilidades::convertirCamelCase($_POST['txtAsignatura']);
+            $idmesa = $_POST['idmesa'];
             $nombrepresidente = Utilidades::convertirCamelCase($_POST['txtNombrePresidente']);
             $nombrevocal1 = Utilidades::convertirCamelCase($_POST['txtNombreVocal1']);
             $nombrevocal2 = Utilidades::convertirCamelCase($_POST['txtNombreVocal2']);
@@ -210,7 +208,6 @@
             $_SESSION['resultado'];
         break;
     }
-
     
     header("Location: ".$redireccion);
     
