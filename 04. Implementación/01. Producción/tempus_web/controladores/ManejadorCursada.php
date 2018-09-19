@@ -150,16 +150,28 @@
             $redireccion = Constantes::APPURL."/vistas/cursadas/cursada_modificar.php";
             $resultado =  $_SESSION['resultado'];
             if(isset($resultado)) {
-                
+                $cursada = $resultado['datos'];
                 $dia = $_POST['radDias'];
-                
                 $horainicio = $_POST['selectHoraInicio'.$dia];
                 $horafin = $_POST['selectHoraFin'.$dia];
                 $sector = $_POST['txtSector'.$dia];
-                $aula = $_POST['txtAula'.$dia];
-                
-                $cursada = $resultado['datos'];
-                $mensaje = $dia." / ".$horainicio." / ".$horafin." / ".$sector." / ".$aula;
+                $nombreaula = $_POST['txtAula'.$dia];
+                $aula = new Aula();
+                $aula->crear($nombreaula, $sector);
+                if($aula->getIdaula()) {
+                    $clase = new Clase();
+                    $clase->crear($dia, $horainicio, $horafin, $aula);
+                    if($clase->getIdclase()) {
+                        $clases = $cursada->getClases();
+                        $clases[$dia] = $clase;
+                        $cursada->setClases($clases);
+                        $mensaje = "Se ha realizado la creación de la clase correctamente";
+                    } else {
+                        $mensaje = "No se ha podido realizar la creación de la clase";
+                    }
+                } else {
+                    $mensaje = "No se ha podido realizar la creación de la clase";
+                }
                 $resultado = array('resultado'=>TRUE,'mensaje'=>$mensaje, 'datos'=>$cursada);
                 
             } else {

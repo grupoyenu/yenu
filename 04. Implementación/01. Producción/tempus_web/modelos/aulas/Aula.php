@@ -94,6 +94,17 @@ class Aula
     }
     
     /**
+     * Coloca todos los atributos de la clase en nulo.
+     * */
+    private function limpiar()
+    {
+        $this->idaula = null;
+        $this->nombre = null;
+        $this->sector = null;
+        $this->datos = null;
+    }
+    
+    /**
      * Se realiza la creacion de una nueva aula en la base de datos. Primero se
      * verifica que no exista el aula mediante una busqueda. Si el aula existe,
      * se obtiene la informacion y se asigna a los atributos de clase. En caso
@@ -106,9 +117,13 @@ class Aula
         $this->buscar($nombre, $sector);
         if (is_null($this->idaula)) {
             ObjetoDatos::getInstancia()->ejecutarQuery("INSERT INTO aula VALUES (null,'".$nombre."','".$sector."')");
-            $this->idaula = (Int) ObjetoDatos::getInstancia()->insert_id;
-            $this->nombre = $nombre;
-            $this->sector = $sector;
+            if (ObjetoDatos::getInstancia()->affected_rows > 0) {
+                $this->idaula = (Int) ObjetoDatos::getInstancia()->insert_id;
+                $this->nombre = $nombre;
+                $this->sector = $sector;
+            } else {
+                $this->limpiar();
+            }
         }
     }
     
@@ -130,11 +145,8 @@ class Aula
             $this->idaula = $fila[0];
             $this->nombre = $fila[1];
             $this->sector = $fila[2];
-            
         } else {
-            $this->idaula = null;
-            $this->nombre = null;
-            $this->sector = null;
+            $this->limpiar();
         }
         $this->datos = null;
     }
@@ -145,8 +157,30 @@ class Aula
      * */
     public function verificarDisponibilidad ($idaula, $dia, $desde, $hasta) 
     {
-    
         
+    }
+    
+    /**
+     * Verifica la disponibilidad del aula para un dia determinado. Este metodo controla
+     * que una clase no empiece o termine entre las horas de inicio y fin indicadas. No
+     * muestra si hay una clase que inicie a la misma hora y finalice a la misma hora.
+     * Esto se realiza como opcion intermedia dado que puede haber clases distintas en la
+     * misma aula. El metodo devuelve falso si no esta dispobible y verdadero si esta disponible.
+     * @param intger $idaula Identificador de aula.
+     * @param integer $dia Dia de la semana (1,2,3,4,5,6).
+     * @param string $desde Hora de inicio HH:MM:SS.
+     * @param string $hasta Hora de fin HH:MM:SS.
+     * @return boolean.
+     * */
+    public function verificarDisponibilidadFranja($idaula, $dia, $desde, $hasta)
+    {
+        $consulta = "SELECT * FROM clase WHERE dia=".$dia." AND idaula=".$idaula." AND ((desde>'".$desde."' AND desde<'".$hasta."') OR (hasta>'".$desde."' AND hasta<'".$hasta."'))";
+        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+        if ($this->datos->num_rows > 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
     
 }
