@@ -94,21 +94,43 @@ class Aula
     }
     
     /**
-     * Coloca todos los atributos de la clase en nulo.
+     * Realiza la búsqueda de un aula en la base de datos. Busca un aula usando el sector y nombre.
+     * Si el aula se encuentra cargada en la base de datos, se actualizan los atributos. En caso
+     * contrario, los atributos serán nulos. La busqueda en la base de datos se realiza igualando
+     * los parametros ingresados con los campos de la tabla Aula. No se obtienen similares.
+     * @param string $nombre Nombre del aula (Obligatorio).
+     * @param string $sector Sector donde se ubica el aula (Obligatorio).
      * */
-    private function limpiar()
+    public function buscar($nombre, $sector)
     {
-        $this->idaula = null;
-        $this->nombre = null;
-        $this->sector = null;
+        $consulta = "SELECT * FROM aula WHERE nombre = '".$nombre."' AND sector = '".$sector."' ";
+        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+        if ($this->datos->num_rows > 0) {
+            $fila = $this->datos->fetch_row();
+            $this->cargar($fila[0], $fila[1], $fila[2]);
+        } else {
+            $this->cargar(null,null,null);
+        }
         $this->datos = null;
     }
     
     /**
-     * Se realiza la creacion de una nueva aula en la base de datos. Primero se
-     * verifica que no exista el aula mediante una busqueda. Si el aula existe,
-     * se obtiene la informacion y se asigna a los atributos de clase. En caso
-     * contrario, se crea y se obtiene su identificador.
+     * Asigna los valores indicados por parametro a los atributos de la clase.
+     * @param integer $idaula Identificador de aula. 
+     * @param string $nombre Nombre del aula.
+     * @param string $sector Nombre del sector.
+     * */
+    private function cargar($idaula, $nombre, $sector)
+    {
+        $this->idaula = $idaula;
+        $this->nombre = $nombre;
+        $this->sector = $sector;
+    }
+    
+    /**
+     * Se realiza la creacion de una nueva aula en la base de datos. Primero se verifica que no 
+     * exista el aula mediante una busqueda. Si el aula existe, se obtiene la informacion y se 
+     * asigna a los atributos de clase. En caso contrario, se crea y se obtiene su identificador.
      * @param string $nombre Nombre del Aula (Obligatorio).
      * @param string $sector Nombre del sector donde se ubica el Aula (Obligatorio).
      * */
@@ -116,65 +138,74 @@ class Aula
     {
         $this->buscar($nombre, $sector);
         if (is_null($this->idaula)) {
-            ObjetoDatos::getInstancia()->ejecutarQuery("INSERT INTO aula VALUES (null,'".$nombre."','".$sector."')");
+            $consulta = "INSERT INTO aula VALUES (NULL,'".$nombre."','".$sector."')";
+            ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
             if (ObjetoDatos::getInstancia()->affected_rows > 0) {
-                $this->idaula = (Int) ObjetoDatos::getInstancia()->insert_id;
-                $this->nombre = $nombre;
-                $this->sector = $sector;
+                $idaula = (Int) ObjetoDatos::getInstancia()->insert_id;
+                $this->cargar($idaula, $nombre, $sector);
             } else {
-                $this->limpiar();
+                $this->cargar(null,null,null);
             }
         }
     }
     
     /**
-     * Realiza la búsqueda de un aula en la base de datos. Busca un aula usando
-     * el sector y nombre. Si el aula se encuentra cargada en la base de datos,
-     * se actualizan los atributos. En caso contrario, los atributos serán nulos.
-     * La búsqueda en la base de datos se realiza igualando los parametros ingresados
-     * con los campos de la tabla Aula. No se obtienen similares.
-     * @param string $nombre Nombre del aula (Obligatorio).
-     * @param string $sector Sector donde se ubica el aula (Obligatorio). 
+     * Modifica la informacion del aula. Si la informacion corresponde con otra aula no se modifica
+     * la indicada, se obtiene la informacion de la existente.
+     * @param integer $idaula Identificador del aula.
+     * @param string $nombre Nombre del aula.
+     * @param string $sector Nombre del sector.
      * */
-    public function buscar($nombre, $sector) 
+    public function modificar($idaula, $nombre, $sector)
     {
-        $consulta = "SELECT * FROM aula WHERE nombre = '".$nombre."' AND sector = '".$sector."' ";
-        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
-        if ($this->datos->num_rows > 0) {
-            $fila = $this->datos->fetch_row();
-            $this->idaula = $fila[0];
-            $this->nombre = $fila[1];
-            $this->sector = $fila[2];
-        } else {
-            $this->limpiar();
+        $this->buscar($nombre, $sector);
+        if (is_null($this->idaula)) {
+            $consulta = "UPDATE aula SET nombre='".$nombre."', sector='".$sector."' WHERE idaula=".$idaula;
+            ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+            if (ObjetoDatos::getInstancia()->affected_rows > 0) {
+                $this->cargar($idaula, $nombre, $sector);
+            } else {
+                $this->cargar(null,null,null);
+            }
         }
-        $this->datos = null;
     }
     
     /**
-     * Verifica la disponilidad del aula para un determinado dia y franja de horario.
-     * Para ello controla si existen horarios de cursada para el aula indicada.
-     * */
-    public function verificarDisponibilidad ($idaula, $dia, $desde, $hasta) 
-    {
-        
-    }
-    
-    /**
-     * Verifica la disponibilidad del aula para un dia determinado. Este metodo controla
-     * que una clase no empiece o termine entre las horas de inicio y fin indicadas. No
-     * muestra si hay una clase que inicie a la misma hora y finalice a la misma hora.
-     * Esto se realiza como opcion intermedia dado que puede haber clases distintas en la
-     * misma aula. El metodo devuelve falso si no esta dispobible y verdadero si esta disponible.
-     * @param intger $idaula Identificador de aula.
+     * Verifica la disponilidad del aula para un determinado dia. Se controla que exista una clase 
+     * en el mismo horario que el indicado. Devuelve falso si el aula esta ocupada y verdadero si 
+     * esta disponible en ese horario.
+     * @param integer $idaula Identificador de aula.
      * @param integer $dia Dia de la semana (1,2,3,4,5,6).
      * @param string $desde Hora de inicio HH:MM:SS.
      * @param string $hasta Hora de fin HH:MM:SS.
-     * @return boolean.
+     * @return boolean True o false.
+     * */
+    public function verificarDisponibilidad ($idaula, $dia, $desde, $hasta) 
+    {
+        $consulta = "SELECT idclase FROM clase WHERE dia=".$dia." AND idaula=".$idaula." AND (desde='".$desde."' AND hasta='".$hasta."')";
+        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+        if ($this->datos->num_rows > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
+    /**
+     * Verifica la disponibilidad del aula para un dia determinado. Este metodo controla que una 
+     * clase no empiece o termine entre las horas de inicio y fin indicadas. No muestra si hay una
+     * clase que inicie a la misma hora y finalice a la misma hora. Esto se realiza como opcion 
+     * intermedia dado que puede haber clases distintas en la misma aula. El metodo devuelve falso 
+     * si no esta dispobible y verdadero si esta disponible.
+     * @param integer $idaula Identificador de aula.
+     * @param integer $dia Dia de la semana (1,2,3,4,5,6).
+     * @param string $desde Hora de inicio HH:MM:SS.
+     * @param string $hasta Hora de fin HH:MM:SS.
+     * @return boolean True o false.
      * */
     public function verificarDisponibilidadFranja($idaula, $dia, $desde, $hasta)
     {
-        $consulta = "SELECT * FROM clase WHERE dia=".$dia." AND idaula=".$idaula." AND ((desde>'".$desde."' AND desde<'".$hasta."') OR (hasta>'".$desde."' AND hasta<'".$hasta."'))";
+        $consulta = "SELECT idclase FROM clase WHERE dia=".$dia." AND idaula=".$idaula." AND ((desde>'".$desde."' AND desde<'".$hasta."') OR (hasta>'".$desde."' AND hasta<'".$hasta."'))";
         $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
         if ($this->datos->num_rows > 0) {
             return false;

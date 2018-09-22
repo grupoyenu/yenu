@@ -25,18 +25,16 @@ class Carrera
     private $datos;
     
     /**
-     * Constructor de la clase. Si se ingresa un codigo de carrera, se obtiene la
-     * informacion de la misma consultando la base de datos. En caso contrario, se
-     * crea la carrera con los atributos nulos.
+     * Constructor de la clase. Si se ingresa un codigo de carrera, se obtiene la informacion de la
+     * misma consultando la base de datos. En caso contrario, se crea la carrera con los atributos 
+     * nulos.
      * @param integer $codigo Recibe el codigod de carrera.
      * */
     function __construct($codigo = null)
     {
         if($codigo) {
-            $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery(""
-                ."SELECT * "
-                ."FROM carrera "
-                ."WHERE codigo = ".$codigo);
+            $consulta = "SELECT * FROM carrera WHERE codigo=".$codigo;
+            $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
             if ($this->datos->num_rows > 0) {
                 foreach ($this->datos->fetch_assoc() as $atributo => $valor) {
                     $this->{$atributo} = $valor;
@@ -82,6 +80,12 @@ class Carrera
         $this->nombre = $nombre;
     }
     
+    private function cargar($codigo, $nombre)
+    {
+        $this->codigo = $codigo;
+        $this->nombre = $nombre;
+    }
+    
     /**
      * Realiza la creacion de una nueva carrera en la base de datos. Para ello,
      * se hace una búsqueda para verificar que la carrera no exista. En caso que
@@ -94,9 +98,13 @@ class Carrera
     {
         $this->buscar($codigo, $nombre);
         if (is_null($this->codigo)) {
-            ObjetoDatos::getInstancia()->ejecutarQuery("INSERT INTO carrera VALUES (".$codigo.",'".$nombre."')");
-            $this->codigo = $codigo;
-            $this->nombre = $nombre;
+            $consulta = "INSERT INTO carrera VALUES (".$codigo.",'".$nombre."')";
+            ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+            if (ObjetoDatos::getInstancia()->affected_rows > 0) {
+                $this->cargar($codigo, $nombre);
+            } else {
+                $this->cargar(null, null);
+            }
         }
     }
     
@@ -108,11 +116,11 @@ class Carrera
     public function borrar($codigo)
     {
         try {
-            
-            ObjetoDatos::getInstancia()->ejecutarQuery("DELETE FROM carrera WHERE codigo = ".$codigo);
-            $this->codigo = null;
-            $this->nombre = null;
-            
+            $consulta = "DELETE FROM carrera WHERE codigo = ".$codigo;
+            ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+            if (ObjetoDatos::getInstancia()->affected_rows > 0) {
+                $this->cargar(null, null);
+            }
         } catch(Exception $exception) {
             return 0;
         }
@@ -144,21 +152,33 @@ class Carrera
                 $consulta = $consulta." nombre = '".$nombre."'";
             }
         }
-        
         $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
         if ($this->datos->num_rows > 0) {
             foreach ($this->datos->fetch_assoc() as $atributo => $valor) {
                 $this->{$atributo} = $valor;
             }
         } else {
-            $this->codigo = null;
-            $this->nombre = null;
+            $this->cargar(null, null);
         }
-        $consulta = null;
         $this->datos = null;
+    }
+    
+    /**
+     * Modifica la informacion de la carrera.
+     * @param integer $codigo Codigo de la carrera. 
+     * @param integer $codigonuevo Codigo nuevo de la carrera.
+     * @param string $nombre Nombre de la carrera.
+     * */
+    public function modificar($codigo, $codigonuevo, $nombre)
+    {
+        $consulta = "UPDATE carrera SET codigo=".$codigonuevo.", nombre='".$nombre."' WHERE codigo=".$codigo;
+        ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+        if (ObjetoDatos::getInstancia()->affected_rows > 0) {
+            $this->cargar($codigonuevo, $nombre);
+        } else {
+            $this->cargar(null, null);
+        }
     }
 
 }
-
-
 ?>

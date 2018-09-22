@@ -77,6 +77,13 @@ class Docente
         $this->nombre=$nombre;
     }
     
+    
+    private function cargar($iddocente, $nombre)
+    {
+        $this->iddocente = $iddocente;
+        $this->nombre = $nombre;
+    }
+    
     /**
      * Crea el nuevo docente en la base de datos. Se realiza la busqueda
      * del docente para verificar que no exista. Si no existe el docente
@@ -90,8 +97,8 @@ class Docente
             if (is_null($this->iddocente)) {
                 ObjetoDatos::getInstancia()->ejecutarQuery("INSERT INTO docente VALUES (null,'".$nombre."')");
                 if (ObjetoDatos::getInstancia()->affected_rows > 0) {
-                    $this->iddocente = (Int) ObjetoDatos::getInstancia()->insert_id;
-                    $this->nombre = $nombre;
+                    $iddocente = (Int) ObjetoDatos::getInstancia()->insert_id;
+                    $this->cargar($iddocente, $nombre);
                 }
             }
         }
@@ -108,8 +115,7 @@ class Docente
             $consulta = "DELETE FROM docente WHERE iddocente = ".$iddocente;
             ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
             if (ObjetoDatos::getInstancia()->affected_rows > 0) {
-                $this->iddocente = null;
-                $this->nombre = null;
+                $this->cargar(null, null);
             }
         }
     }
@@ -129,12 +135,9 @@ class Docente
         if ($this->datos->num_rows > 0) {
             /* Se ha encontrado un docente que cumple la condicion de busqueda */
             $fila = $this->datos->fetch_row();
-            $this->iddocente = $fila[0];
-            $this->nombre = $fila[1];
+            $this->cargar($fila[0], $fila[1]);
         } else {
-            /* No se ha encontrado un docente */
-            $this->iddocente = null;
-            $this->nombre = null;
+            $this->cargar(null, null);
         }
         $this->datos = null;
     }
