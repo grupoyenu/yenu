@@ -147,15 +147,40 @@ $(document).ready(function() {
 		var contenido = "Confirme la eliminaci\u00F3n del horario de clase";
 		$.confirm({
 		    title: titulo,
-		    content: contenido,
+		    content: '' +
+		    	'<form action="" class="formName">' +
+			    	'<div class="form-group">' +
+			    	'<label>Indique si desea borrar el horario de clases para todas las carreras</label><br>' +
+			    	'<input type="checkbox" id="checkbox" name="checkbox" required />' +
+			    	'<label>Tildar para aplicar a todas las carreras</label>' +
+			    	'</div>' +
+		    	'</form>',
 		    buttons: {
-		        confirmar: function () {
-		        	$('input#accion').val('borrarclase');
-		        	$('form#formModificarCursada').submit();
-		        },
+		    	formSubmit: {
+	                text: 'Confirmar',
+	                btnClass: 'btn-blue',
+	                action: function () {
+	                    var check = this.$content.find('#checkbox').is(":checked");
+	                    if(check) {
+	                    	$('input#aplicarTodas').val('true');
+	                    } else {
+	                    	$('input#aplicarTodas').val('false');
+	                    }
+	                    $('input#accion').val('borrarclase');
+			        	$('form#formModificarCursada').submit();
+                        return true;
+	                }
+	            },
 		        cancelar: function () {
 		            return true;
 		        }
+		    },
+		    onContentReady: function () {
+		        var jc = this;
+		        this.$content.find('form').on('submit', function (e) {
+		            e.preventDefault();
+		            jc.$$formSubmit.trigger('click');
+		        });
 		    }
 		});
 	});
@@ -182,7 +207,6 @@ $(document).ready(function() {
 		} else {
 			
 		}
-		
 	});
 
 /************** CAMPOS CORRESPONDIENTES AL DIA 2: MARTES  **************/
@@ -239,15 +263,40 @@ $(document).ready(function() {
 		var contenido = "Confirme la eliminaci\u00F3n del horario de clase";
 		$.confirm({
 		    title: titulo,
-		    content: contenido,
+		    content: '' +
+		    	'<form action="" class="formName">' +
+			    	'<div class="form-group">' +
+			    	'<label>Indique si desea borrar el horario de clases para todas las carreras</label><br>' +
+			    	'<input type="checkbox" id="checkbox" name="checkbox" required />' +
+			    	'<label>Tildar para aplicar a todas las carreras</label>' +
+			    	'</div>' +
+		    	'</form>',
 		    buttons: {
-		        confirmar: function () {
-		        	$('input#accion').val('borrarclase');
-		        	$('form#formModificarCursada').submit();
-		        },
+		    	formSubmit: {
+	                text: 'Confirmar',
+	                btnClass: 'btn-blue',
+	                action: function () {
+	                    var check = this.$content.find('#checkbox').is(":checked");
+	                    if(check) {
+	                    	$('input#aplicarTodas').val('true');
+	                    } else {
+	                    	$('input#aplicarTodas').val('false');
+	                    }
+	                    $('input#accion').val('borrarclase');
+			        	$('form#formModificarCursada').submit();
+                        return true;
+	                }
+	            },
 		        cancelar: function () {
 		            return true;
 		        }
+		    },
+		    onContentReady: function () {
+		        var jc = this;
+		        this.$content.find('form').on('submit', function (e) {
+		            e.preventDefault();
+		            jc.$$formSubmit.trigger('click');
+		        });
 		    }
 		});
 	});
@@ -304,18 +353,42 @@ $(document).ready(function() {
 	
 	$('img#imgBorrar3').click(function() {
 		var titulo = "\u00BFEst\u00E1 seguro que desea borrar el horario de clase correspondiente al Miercoles?";
-		var contenido = "Confirme la eliminaci\u00F3n del horario de clase";
 		$.confirm({
 		    title: titulo,
-		    content: contenido,
+		    content: '' +
+		    	'<form action="" class="formName">' +
+			    	'<div class="form-group">' +
+			    	'<label>Indique si desea borrar el horario de clases para todas las carreras</label><br>' +
+			    	'<input type="checkbox" id="checkbox" name="checkbox" required />' +
+			    	'<label>Tildar para aplicar a todas las carreras</label>' +
+			    	'</div>' +
+		    	'</form>',
 		    buttons: {
-		        confirmar: function () {
-		        	$('input#accion').val('borrarclase');
-		        	$('form#formModificarCursada').submit();
-		        },
+		    	formSubmit: {
+	                text: 'Confirmar',
+	                btnClass: 'btn-blue',
+	                action: function () {
+	                    var check = this.$content.find('#checkbox').is(":checked");
+	                    if(check) {
+	                    	$('input#aplicarTodas').val('true');
+	                    } else {
+	                    	$('input#aplicarTodas').val('false');
+	                    }
+	                    $('input#accion').val('borrarclase');
+			        	$('form#formModificarCursada').submit();
+                        return true;
+	                }
+	            },
 		        cancelar: function () {
 		            return true;
 		        }
+		    },
+		    onContentReady: function () {
+		        var jc = this;
+		        this.$content.find('form').on('submit', function (e) {
+		            e.preventDefault();
+		            jc.$$formSubmit.trigger('click');
+		        });
 		    }
 		});
 	});
@@ -371,18 +444,42 @@ $(document).ready(function() {
 	
 	$('img#imgBorrar4').click(function() {
 		var titulo = "\u00BFEst\u00E1 seguro que desea borrar el horario de clase correspondiente al Jueves?";
-		var contenido = "Confirme la eliminaci\u00F3n del horario de clase";
 		$.confirm({
 		    title: titulo,
-		    content: contenido,
+		    content: '' +
+		    	'<form action="" class="formName">' +
+			    	'<div class="form-group">' +
+			    	'<label>Indique si desea borrar el horario de clases para todas las carreras</label><br>' +
+			    	'<input type="checkbox" id="checkbox" name="checkbox" required />' +
+			    	'<label>Tildar para aplicar a todas las carreras</label>' +
+			    	'</div>' +
+		    	'</form>',
 		    buttons: {
-		        confirmar: function () {
-		        	$('input#accion').val('borrarclase');
-		        	$('form#formModificarCursada').submit();
-		        },
+		    	formSubmit: {
+	                text: 'Confirmar',
+	                btnClass: 'btn-blue',
+	                action: function () {
+	                    var check = this.$content.find('#checkbox').is(":checked");
+	                    if(check) {
+	                    	$('input#aplicarTodas').val('true');
+	                    } else {
+	                    	$('input#aplicarTodas').val('false');
+	                    }
+	                    $('input#accion').val('borrarclase');
+			        	$('form#formModificarCursada').submit();
+                        return true;
+	                }
+	            },
 		        cancelar: function () {
 		            return true;
 		        }
+		    },
+		    onContentReady: function () {
+		        var jc = this;
+		        this.$content.find('form').on('submit', function (e) {
+		            e.preventDefault();
+		            jc.$$formSubmit.trigger('click');
+		        });
 		    }
 		});
 	});
@@ -438,19 +535,44 @@ $(document).ready(function() {
 	
 	$('img#imgBorrar5').click(function() {
 		var titulo = "\u00BFEst\u00E1 seguro que desea borrar el horario de clase correspondiente al Viernes?";
-		var contenido = "Confirme la eliminaci\u00F3n del horario de clase";
 		$.confirm({
 		    title: titulo,
-		    content: contenido,
+		    content: '' +
+		    	'<form action="" class="formName">' +
+			    	'<div class="form-group">' +
+			    	'<label>Indique si desea borrar el horario de clases para todas las carreras</label><br>' +
+			    	'<input type="checkbox" id="checkbox" name="checkbox" required />' +
+			    	'<label>Tildar para aplicar a todas las carreras</label>' +
+			    	'</div>' +
+		    	'</form>',
 		    buttons: {
-		        confirmar: function () {
-		        	$('input#accion').val('borrarclase');
-		        	$('form#formModificarCursada').submit();
-		        },
+		    	formSubmit: {
+	                text: 'Confirmar',
+	                btnClass: 'btn-blue',
+	                action: function () {
+	                    var check = this.$content.find('#checkbox').is(":checked");
+	                    if(check) {
+	                    	$('input#aplicarTodas').val('true');
+	                    } else {
+	                    	$('input#aplicarTodas').val('false');
+	                    }
+	                    $('input#accion').val('borrarclase');
+			        	$('form#formModificarCursada').submit();
+                        return true;
+	                }
+	            },
 		        cancelar: function () {
 		            return true;
 		        }
+		    },
+		    onContentReady: function () {
+		        var jc = this;
+		        this.$content.find('form').on('submit', function (e) {
+		            e.preventDefault();
+		            jc.$$formSubmit.trigger('click');
+		        });
 		    }
+		
 		});
 	});
 	
@@ -505,20 +627,56 @@ $(document).ready(function() {
 	
 	$('img#imgBorrar6').click(function() {
 		var titulo = "\u00BFEst\u00E1 seguro que desea borrar el horario de clase correspondiente al Sabado?";
-		var contenido = "Confirme la eliminaci\u00F3n del horario de clase";
 		$.confirm({
 		    title: titulo,
-		    content: contenido,
+		    content: '' +
+		    	'<form action="" class="formName">' +
+			    	'<div class="form-group">' +
+			    	'<label>Indique si desea borrar el horario de clases para todas las carreras</label><br>' +
+			    	'<input type="checkbox" id="checkbox" name="checkbox" required />' +
+			    	'<label>Tildar para aplicar a todas las carreras</label>' +
+			    	'</div>' +
+		    	'</form>',
 		    buttons: {
-		        confirmar: function () {
-		        	$('input#accion').val('borrarclase');
-		        	$('form#formModificarCursada').submit();
-		        },
+		    	formSubmit: {
+	                text: 'Confirmar',
+	                btnClass: 'btn-blue',
+	                action: function () {
+	                    var check = this.$content.find('#checkbox').is(":checked");
+	                    if(check) {
+	                    	$('input#aplicarTodas').val('true');
+	                    } else {
+	                    	$('input#aplicarTodas').val('false');
+	                    }
+	                    $('input#accion').val('borrarclase');
+			        	$('form#formModificarCursada').submit();
+                        return true;
+	                }
+	            },
 		        cancelar: function () {
 		            return true;
 		        }
+		    },
+		    onContentReady: function () {
+		        var jc = this;
+		        this.$content.find('form').on('submit', function (e) {
+		            e.preventDefault();
+		            jc.$$formSubmit.trigger('click');
+		        });
 		    }
 		});
+	});
+	
+	$('img#imgCrear6').click(function() {
+		var sector = $("input#txtSector6").val();
+		var aula = $("input#txtAula6").val();
+		if(sector != null && aula != null) {
+			var titulo = "\u00BFEst\u00E1 seguro que desea crear el horario de clase correspondiente al Viernes?";
+			var contenido = "Confirme la creaci\u00F3n del horario de clase";
+			$.confirm({});
+		} else {
+			
+		}
 	});
 		
 });

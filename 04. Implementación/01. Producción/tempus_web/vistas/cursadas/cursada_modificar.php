@@ -17,16 +17,22 @@
 		<article>
 			<div id="content" class="content">
             	<h2>MODIFICAR HORARIO DE CURSADA</h2>
-            	<form action="" id="formCrearCursada" name="formCrearCursada" method="post" >
+            	<form action="../../controladores/ManejadorCursada.php" id="formModificarCursada" name="formModificarCursada" method="post">
             	
             		<?php	
                 		$resultado = $_SESSION['resultado'];
                 		if (isset($resultado)) {
                 		    /* SE HA DEFINIDO RESULTADO */
-                		    
                 		    if (isset($resultado['datos'])) {
                 		        /* RECUPERA LOS DATOS DEL HORARIO DE CURSADA SELECCIONADO */
                 		        
+                		        if($resultado['resultado']) {
+                		            $mensaje = $resultado['mensaje'];
+                		            echo "<h3 id='mensaje' class='letraVerde'>$mensaje</h3>";
+                		        } else {
+                		            $mensaje = $resultado['mensaje'];
+                		            echo "<h3 id='mensaje' class='letraRoja'>$mensaje</h3>";
+                		        }
                 		        $cursada = $resultado['datos'];
                 		        $plan = $cursada->getPlan();
                 		        $asignatura = $plan->getAsignatura();
@@ -36,7 +42,7 @@
                 		        ?>
                 		        <fieldset>
                         			<fieldset title="Los cambios en alguno de estos campos no genera una notificación en la aplicación movil del sistema">
-                        				<legend>Información de básica</legend>
+                        				<legend>Información básica</legend>
                         				<label for="numCarrera">* Código de carrera:</label>
                         				<input type="number" name="numCarrera" id="numCarrera" value='<?= $carrera->getCodigo(); ?>' required>
                         				<label for="txtCarrera">* Nombre de carrera:</label>
@@ -52,12 +58,13 @@
                         					<option value="5">5</option>
                         				</select>
                         				<br>
-                        				<input class="botonVerde" type="submit" id="btnModificarCursada" name="btnModificarCursada" value="Modificar">
+                        				<p><input class="botonVerde" type="submit" id="btnModificarCursada" name="btnModificarCursada" value="Modificar"></p>
+                        				
                         			</fieldset>
                         			
                         			<fieldset title="Los cambios en alguno de estos campos genera una notificación en la aplicación movil del sistema">
                         				<legend>Horarios de clase</legend>
-                        				<table id="tablaCrearCursada" class="tablaCrearCursada">
+                        				<table id="tablaCrearCursada" class="tablacursada">
                         					<thead>
                         						<tr>
                         							<th></th>
@@ -66,6 +73,7 @@
                         							<th>Hora de fin</th>
                         							<th>Nombre de sector</th>
                         							<th>Nombre de aula</th>
+                        							<th>Modificación</th>
                         							<th></th>
                         							<th></th>
                         						</tr>	
@@ -114,12 +122,17 @@
                         						    echo "<td><select name='selectHoraFin{$i}' id='selectHoraFin{$i}' disabled>";
                         						    for ($horafin = 11; $horafin < 24; ++$horafin) {
                         						        if($clases[$i]) {
+                        						            
                         						            if($clases[$i]->getHasta() == $horafin+":00"){
                         						                echo "<option value='{$horafin}:00' selected>{$horafin}:00 hs</option>";
                         						            } else {
-                        						                echo "<option value='{$horafin}:00'>{$horafin}:00 hs</option>";
+                        						                if($clases[$i]->getDesde().substr(0, 2) < $horafin) {
+                        						                    echo "<option value='{$horafin}:00'>{$horafin}:00 hs</option>";
+                        						                } else {
+                        						                    echo "<option value='{$horafin}:00' disabled >{$horafin}:00 hs</option>";
+                        						                }
                         						            }
-                        						        } else {
+                        						        } else{
                         						            echo "<option value='{$horafin}:00'>{$horafin}:00 hs</option>";
                         						        }
                         						    }
@@ -127,14 +140,22 @@
                         						    if(isset($clases[$i])) {
                         						        /** EXISTE UNA CLASE PARA EL DIA I (0 a 6) */
                         						        $aula = $clases[$i]->getAula();
-                        						        echo "<td><input type='text' id='txtSector{$i}' name='txtSector{$i}' value='{$aula->getSector()}' required title='Nombre del sector' disabled></td>";
+                        						        $fechamod = "";
+                        						        if ($clases[$i]->getFechamod()) {
+                        						            $fechamod = $clases[$i]->getFechamod();
+                        						        } else {
+                        						            $fechamod = "No registra";
+                        						        }
+                        						        echo "<td><input type='text' id='txtSector{$i}' name='txtSector{$i}' value='{$aula->getSector()}' required title='Nombre del sector' maxlength='1' disabled></td>";
                         						        echo "<td><input type='text' id='txtAula{$i}' name='txtAula{$i}' value='{$aula->getNombre()}' required disabled></td>";
+                        						        echo "<td>{$fechamod}</td>";
                         						        echo "<td><img src='../../img/abm_editar.png' id='imgModificar{$i}' name='imgModificar{$i}' title='Modificar clase dia {$dia}' style='display:none;'/></td>";
                         						        echo "<td><img src='../../img/abm_eliminar.png' id='imgBorrar{$i}' name='imgBorrar{$i}' title='Borrar clase dia {$dia}' style='display:none;'/></td>";
                         						        echo "<input type='hidden' id='idclase{$i}' name='idclase{$i}' value='{$clases[$i]->getIdclase()}'>";
                         						    } else {
-                        						        echo "<td><input type='text' id='txtSector{$i}' name='txtSector{$i}' title='Nombre del sector' required disabled></td>";
+                        						        echo "<td><input type='text' id='txtSector{$i}' name='txtSector{$i}' title='Nombre del sector' maxlength='1' required disabled></td>";
                         						        echo "<td><input type='text' id='txtAula{$i}' name='txtAula{$i}' required disabled></td>";
+                        						        echo "<td></td>";
                         						        echo "<td><img src='../../img/abm_ver.png' id='imgCrear{$i}' name='imgCrear{$i}' title='Crear clase dia {$dia}' style='display:none;'/></td>";
                         						        echo "<td></td>";
                         						    }
@@ -143,17 +164,16 @@
                         					?>
                         					</tbody>
                         				</table>
-                        				
                         			</fieldset>
                         		</fieldset>
                 		        
-                		        <?php
+                	<?php
                 		    } else {
                 		        /*if (isset($resultado['datos'])) NO SE HAN OBTENIDO LOS DATOS */
                 		        
                 		        echo "<fieldset>";
                 		        echo "<legend>Resultado</legend>";
-                		        echo "<h6 class='letraRoja letraCentrada'>No se ha obtenido la información del horario de cursada a modificar</h6>";
+                		        echo "<h6 class='letraRoja letraCentrada'>No se han obtenido los datos del horario de cursada modificado</h6>";
                 		        echo "</fieldset>";
                 		        
                 		    }
@@ -162,13 +182,12 @@
                 		    
                 		    echo "<fieldset>";
                 		    echo "<legend>Resultado</legend>";
-                		    echo "<h6 class='letraRoja letraCentrada'>No se ha obtenido la información del horario de cursada a modificar</h6>";
+                		    echo "<h6 class='letraRoja letraCentrada'>No se ha obtenido el resultado de la operación</h6>";
                 		    echo "</fieldset>";
                 		  }
             		?>
-            	
-            		
-            		<input type="hidden" id="accion" name="accion" value="crear">
+            		<input type="hidden" id="accion" name="accion" value="">
+            		<input type="hidden" id="aplicarTodas" name="aplicarTodas" value="">
             	</form>
             	
             </div>
