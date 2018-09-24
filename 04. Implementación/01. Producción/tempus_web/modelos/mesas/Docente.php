@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Esta clase corresponde con la tabla Docente de la base de datos.
  * Contiene los metodos necesarios para crear, borrar, buscar o modificar un docente.
@@ -74,12 +73,18 @@ class Docente
      * */
     public function setNombre($nombre)
     {
-        $this->nombre=$nombre;
+        $nombre = Utilidades::convertirCamelCase($nombre);
+        $this->nombre = $nombre;
     }
     
-    
+    /**
+     * Asigna los datos indicados por parametro a los atributos de clase.
+     * @param integer $iddocente Identificador del docente.
+     * @param string $nombre Nombre del docente.
+     * */
     private function cargar($iddocente, $nombre)
     {
+        $nombre = Utilidades::convertirCamelCase($nombre);
         $this->iddocente = $iddocente;
         $this->nombre = $nombre;
     }
@@ -95,7 +100,8 @@ class Docente
         if ($nombre) {
             $this->buscar($nombre);
             if (is_null($this->iddocente)) {
-                ObjetoDatos::getInstancia()->ejecutarQuery("INSERT INTO docente VALUES (null,'".$nombre."')");
+                $nombre = Utilidades::convertirCamelCase($nombre);
+                ObjetoDatos::getInstancia()->ejecutarQuery("INSERT INTO docente VALUES (null,'{$nombre}')");
                 if (ObjetoDatos::getInstancia()->affected_rows > 0) {
                     $iddocente = (Int) ObjetoDatos::getInstancia()->insert_id;
                     $this->cargar($iddocente, $nombre);
@@ -121,16 +127,15 @@ class Docente
     }
     
     /**
-     * Busca a un docente en la base de datos utilizando su nombre. Si el docente
-     * se encuentra cargado en la base de datos se actualizan los atributos id y 
-     * nombre. En caso contrario, los atributos serán nulos.
-     * La búsqueda en la base de datos se realiza igualando el parametro ingresado
-     * con el campo nombre de la tabla docente. No se obtienen similares.
+     * Busca a un docente en la base de datos utilizando su nombre. Si el docente se encuentra 
+     * cargado en la base de datos se actualizan los atributos id y nombre. En caso contrario, los
+     * atributos serán nulos. La búsqueda en la base de datos se realiza igualando el parametro 
+     * ingresado con el campo nombre de la tabla docente. No se obtienen similares.
      * @param $nombre String Recibe el nombre del docente a buscar.
      * */
     public function buscar($nombre)
     {
-        $consulta = "SELECT * FROM docente WHERE nombre = '".$nombre."' LIMIT 1";
+        $consulta = "SELECT * FROM docente WHERE nombre='{$nombre}' LIMIT 1";
         $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
         if ($this->datos->num_rows > 0) {
             /* Se ha encontrado un docente que cumple la condicion de busqueda */

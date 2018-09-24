@@ -27,21 +27,18 @@ class Llamado {
     private $datos;
 
     /**
-     * Constructor de clase. Cuando recibe el identificador del llamado realiza
-     * la busqueda de la informacion en la base de datos. En caso contrario, se
-     * crear con sus atributos nulos.
+     * Constructor de clase. Cuando recibe el identificador del llamado realiza la busqueda de la 
+     * informacion en la base de datos. En caso contrario, se crea con sus atributos nulos.
      * @param integer $idllamado Identificador del llamado.
-     * @author Marquez Emanuel.
      * */
     function __construct($idllamado = NULL){
         if($idllamado) {
-            $consulta = "SELECT idllamado, DATE_FORMAT(fecha, '%d-%m-%Y'), DATE_FORMAT(hora, '%H:%i'), idaula FROM llamado WHERE idllamado = ".$idllamado;
+            $consulta = "SELECT idllamado, DATE_FORMAT(fecha, '%d/%m/%Y'), DATE_FORMAT(hora, '%H:%i'), idaula FROM llamado WHERE idllamado = ".$idllamado;
             $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
             if ($this->datos->num_rows > 0) {
                 $fila = $this->datos->fetch_row();
                 $this->idllamado = $fila[0];
                 $this->fecha = $fila[1];
-                
                 $this->hora = $fila[2];
                 $this->aula = null;
                 if($fila[3]) {
@@ -53,7 +50,6 @@ class Llamado {
     }
     /**
      * @return integer $idllamado
-     * @author Marquez Emanuel.
      */
     public function getIdllamado()
     {
@@ -62,7 +58,6 @@ class Llamado {
 
     /**
      * @return string $fecha
-     * @author Marquez Emanuel.
      */
     public function getFecha()
     {
@@ -71,7 +66,6 @@ class Llamado {
 
     /**
      * @return string $hora
-     * @author Marquez Emanuel.
      */
     public function getHora()
     {
@@ -80,7 +74,6 @@ class Llamado {
 
     /**
      * @return Aula $aula
-     * @author Marquez Emanuel.
      */
     public function getAula()
     {
@@ -97,7 +90,6 @@ class Llamado {
     
     /**
      * @param integer $idllamado
-     * @author Marquez Emanuel.
      */
     public function setIdllamado($idllamado)
     {
@@ -106,7 +98,6 @@ class Llamado {
 
     /**
      * @param string $fecha
-     * @author Marquez Emanuel.
      */
     public function setFecha($fecha)
     {
@@ -115,7 +106,6 @@ class Llamado {
 
     /**
      * @param string $hora
-     * @author Marquez Emanuel.
      */
     public function setHora($hora)
     {
@@ -124,7 +114,6 @@ class Llamado {
     
     /**
      * @param Aula $aula
-     * @author Marquez Emanuel.
      */
     public function setAula($aula)
     {
@@ -151,8 +140,8 @@ class Llamado {
         if (!$aula) {
             $aula = "NULL";
         }
-        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery("INSERT INTO llamado VALUES (null,'".$fecha."','".$hora."',".$aula.")");
-        if(ObjetoDatos::getInstancia()->affected_rows) {
+        ObjetoDatos::getInstancia()->ejecutarQuery("INSERT INTO llamado VALUES (null,'".$fecha."','".$hora."',".$aula.", NULL)");
+        if (ObjetoDatos::getInstancia()->affected_rows > 0) {
             $this->idllamado = (Int) ObjetoDatos::getInstancia()->insert_id;
             $this->fecha = date('d-m-Y', strtotime($fecha));
             $this->hora = $hora;
@@ -161,9 +150,8 @@ class Llamado {
             } else {
                 $this->aula = null;
             }
-            
         } else {
-            $this->limpiar();
+            $this->cargar(null, null, null, null, null);
         }
     }
     
@@ -173,16 +161,19 @@ class Llamado {
     }
     
     /**
-     * Coloca cada uno de los atributos del llamado en nulo.
-     * @author Marquez Emanuel.
+     * Asigna los valores indicados por parametro a cada uno de los atributos del llamado.
+     * @param integer $idllamado Identificador del llamado.
+     * @param string $fecha Fecha del llamado.
+     * @param string $hora Hora del llamado.
+     * @param string $fechamod Fecha de ultima modificacion.
      * */
-    private function limpiar()
+    private function cargar($idllamado, $fecha, $hora, $aula, $fechamod)
     {
-        $this->idllamado = null;
-        $this->fecha = null;
-        $this->hora = null;
-        $this->aula = null;
-        $this->datos = null;
+        $this->idllamado = $idllamado;
+        $this->fecha = $fecha;
+        $this->hora = $hora;
+        $this->aula = $aula;
+        $this->fechamod = $fechamod;
     }
     
     /**
@@ -221,7 +212,7 @@ class Llamado {
                     }
                     return "Se ha modificado el llamado correctamente";
                 } else {
-                    $this->limpiar();
+                    $this->cargar(null, null, null, null);
                     return "No se ha modificado el llamado correctamente";
                 }
             }

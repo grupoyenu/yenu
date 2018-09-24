@@ -77,11 +77,18 @@ class Carrera
      */
     public function setNombre($nombre)
     {
+        $nombre = Utilidades::convertirCamelCase($nombre);
         $this->nombre = $nombre;
     }
     
+    /**
+     * Asigna los valores indicados por parametro a los atributos de clase.
+     * @param integer $codigo Codigo de la carrera. 
+     * @para string $nombre Nombre de la carrera. 
+     * */
     private function cargar($codigo, $nombre)
     {
+        $nombre = Utilidades::convertirCamelCase($nombre);
         $this->codigo = $codigo;
         $this->nombre = $nombre;
     }
@@ -98,7 +105,8 @@ class Carrera
     {
         $this->buscar($codigo, $nombre);
         if (is_null($this->codigo)) {
-            $consulta = "INSERT INTO carrera VALUES (".$codigo.",'".$nombre."')";
+            $nombre = Utilidades::convertirCamelCase($nombre);
+            $consulta = "INSERT INTO carrera VALUES ({$codigo},'{$nombre}')";
             ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
             if (ObjetoDatos::getInstancia()->affected_rows > 0) {
                 $this->cargar($codigo, $nombre);
@@ -171,6 +179,7 @@ class Carrera
      * */
     public function modificar($codigo, $codigonuevo, $nombre)
     {
+        $nombre = Utilidades::convertirCamelCase($nombre);
         $consulta = "UPDATE carrera SET codigo=".$codigonuevo.", nombre='".$nombre."' WHERE codigo=".$codigo;
         ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
         if (ObjetoDatos::getInstancia()->affected_rows > 0) {

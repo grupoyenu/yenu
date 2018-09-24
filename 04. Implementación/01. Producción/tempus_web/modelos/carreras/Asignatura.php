@@ -130,9 +130,14 @@ class Asignatura
     {
         $this->buscar($nombre);
         if (is_null($this->idasignatura)) {
-            ObjetoDatos::getInstancia()->ejecutarQuery("INSERT INTO asignatura VALUES (null,'".$nombre."')");
-            $idasignatura = (Int) ObjetoDatos::getInstancia()->insert_id;
-            $this->cargar($idasignatura, $nombre);
+            $nombre = Utilidades::convertirCamelCase($nombre);
+            ObjetoDatos::getInstancia()->ejecutarQuery("INSERT INTO asignatura VALUES (null,'{$nombre}')");
+            if (ObjetoDatos::getInstancia()->affected_rows > 0) {
+                $idasignatura = (Int) ObjetoDatos::getInstancia()->insert_id;
+                $this->cargar($idasignatura, $nombre);
+            } else {
+                $this->cargar(null, null);
+            }
         }
     }
     

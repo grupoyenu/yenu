@@ -29,7 +29,6 @@ class Tribunal
     
     /**
      * Constructor de clase.
-     * @author Marquez Emanuel.
      * */
     function __construct($idtribunal = null)
     {
@@ -58,7 +57,6 @@ class Tribunal
     /**
      * Devuelve el identificador del tribunal.
      * @return integer $idtribunal
-     * @author Marquez Emanuel.
      */
     public function getIdtribunal()
     {
@@ -68,7 +66,6 @@ class Tribunal
     /**
      * Devuelve el presidente del tribunal.
      * @return Docente $presidente
-     * @author Marquez Emanuel.
      */
     public function getPresidente()
     {
@@ -78,7 +75,6 @@ class Tribunal
     /**
      * Devuelve el vocal primero del tribunal.
      * @return Docente $vocal1
-     * @author Marquez Emanuel.
      */
     public function getVocal1()
     {
@@ -88,7 +84,6 @@ class Tribunal
     /**
      * Devuelve el vocal segundo del tribunal.
      * @return Docente $vocal2
-     * @author Marquez Emanuel.
      */
     public function getVocal2()
     {
@@ -108,7 +103,6 @@ class Tribunal
     /**
      * Modifica el identificador del tribunal.
      * @param integer $idtribunal
-     * @author Marquez Emanuel.
      */
     public function setIdtribunal($idtribunal)
     {
@@ -118,7 +112,6 @@ class Tribunal
     /**
      * Modifica el presidente del tribuanal.
      * @param Docente $presidente
-     * @author Marquez Emanuel.
      */
     public function setPresidente($presidente)
     {
@@ -128,7 +121,6 @@ class Tribunal
     /**
      * Modifica el vocal primer del tribunal.
      * @param Docente $vocal1
-     * @author Marquez Emanuel.
      */
     public function setVocal1($vocal1)
     {
@@ -138,7 +130,6 @@ class Tribunal
     /**
      * Modifica el vocal segundo del tribunal.
      * @param Docente $vocal2
-     * @author Marquez Emanuel.
      */
     public function setVocal2($vocal2)
     {
@@ -148,7 +139,6 @@ class Tribunal
     /**
      * Modifica el suplente de tribunal.
      * @param Docente $suplente
-     * @author Marquez Emanuel.
      */
     public function setSuplente($suplente)
     {
@@ -183,7 +173,11 @@ class Tribunal
             }
             
             ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
-            $this->idtribunal = (Int) ObjetoDatos::getInstancia()->insert_id;
+            if ( ObjetoDatos::getInstancia()->affected_rows > 0) {
+                $this->idtribunal = (Int) ObjetoDatos::getInstancia()->insert_id;
+            } else {
+                $this->limpiar();
+            }
         }
     }
     
