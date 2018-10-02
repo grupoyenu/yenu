@@ -34,10 +34,8 @@ class Asignatura
     function __construct($idasignatura = null)
     {
         if($idasignatura) {
-            $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery(""
-                ."SELECT * "
-                ."FROM asignatura "
-                ."WHERE idasignatura = ".$idasignatura);
+            $consulta = "SELECT * FROM asignatura WHERE idasignatura=".$idasignatura;
+            $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
             if ($this->datos->num_rows > 0) {
                 foreach ($this->datos->fetch_assoc() as $atributo => $valor) {
                     $this->{$atributo} = $valor;
@@ -82,24 +80,8 @@ class Asignatura
     {
         $this->nombre = $nombre;
     }
-
-    /**
-     * Realiza la creación de una nueva asignatura en la base de datos. Para ello,
-     * primero se realiza la búsqueda de la misma para verificar que no exista ya.
-     * En caso que la asignatura sea creada, se asigna un idasignatura. En caso 
-     * contrario, se obtiene la información de la asignatura existente.
-     * @param string $nombre Recibe el nombre de la Asignatura a crear.
-     * */
-    public function crear($nombre)
-    {
-        $this->buscar($nombre);
-        if (is_null($this->idasignatura)) {
-            ObjetoDatos::getInstancia()->ejecutarQuery("INSERT INTO asignatura VALUES (null,'".$nombre."')");
-            $this->idasignatura = (Int) ObjetoDatos::getInstancia()->insert_id;
-            $this->nombre = $nombre;
-        }
-    }
     
+    /***/
     public function borrar($idasignatura)
     {
         
@@ -116,22 +98,62 @@ class Asignatura
      * */
     public function buscar($nombre)
     {
-        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery(""
-            ."SELECT * "
-            ."FROM asignatura "
-            ."WHERE nombre = '".$nombre."'");
+        $consulta = "SELECT * FROM asignatura WHERE nombre='".$nombre."'";
+        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
         if ($this->datos->num_rows > 0) {
             foreach ($this->datos->fetch_assoc() as $atributo => $valor) {
                 $this->{$atributo} = $valor;
             }
         } else {
-            $this->idasignatura = null;
-            $this->nombre = null;
+            $this->cargar(null, null);
         }
         $this->datos = null;
     }
     
+    /**
+     *
+     * */
+    private function cargar($idasignatura, $nombre)
+    {
+        $this->idasignatura = $idasignatura;
+        $this->nombre = $nombre;
+    }
     
+    /**
+     * Realiza la creación de una nueva asignatura en la base de datos. Para ello,
+     * primero se realiza la búsqueda de la misma para verificar que no exista ya.
+     * En caso que la asignatura sea creada, se asigna un idasignatura. En caso
+     * contrario, se obtiene la información de la asignatura existente.
+     * @param string $nombre Recibe el nombre de la Asignatura a crear.
+     * */
+    public function crear($nombre)
+    {
+        $this->buscar($nombre);
+        if (is_null($this->idasignatura)) {
+            $nombre = Utilidades::convertirCamelCase($nombre);
+            ObjetoDatos::getInstancia()->ejecutarQuery("INSERT INTO asignatura VALUES (null,'{$nombre}')");
+            if (ObjetoDatos::getInstancia()->affected_rows > 0) {
+                $idasignatura = (Int) ObjetoDatos::getInstancia()->insert_id;
+                $this->cargar($idasignatura, $nombre);
+            } else {
+                $this->cargar(null, null);
+            }
+        }
+    }
+    
+    /**
+     * 
+     * */
+    public function modificar($idasignatura, $nombre)
+    {
+        $consulta = "UPDATE asignatura SET nombre='".$nombre."' WHERE idasignatura=".$idasignatura;
+        ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+        if (ObjetoDatos::getInstancia()->affected_rows > 0) {
+            $this->cargar($idasignatura, $nombre);
+        } else {
+            $this->cargar(null, null);
+        }
+    }
 }
 
 ?>

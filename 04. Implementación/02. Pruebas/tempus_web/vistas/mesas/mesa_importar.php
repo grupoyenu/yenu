@@ -180,7 +180,7 @@
                                                     echo "<td ".$mensaje.">$suplente</td>";
                                                 }
                                                 
-                                                if ($primero && $segundo) {
+                                                if ($primero || $segundo) {
                                                     $mensaje = Utilidades::formatoFecha($primero);
                                                     if ($mensaje) {
                                                         $mensaje = $estilo." title='{$mensaje}'";
@@ -218,6 +218,12 @@
                                                         $segundo = str_replace('/', '-', $segundo);
                                                         $segundo = date('Y-m-d', strtotime($segundo));
                                                     }
+                                                    $carrera = Utilidades::convertirCamelCase($carrera);
+                                                    $asignatura = Utilidades::convertirCamelCase($asignatura);
+                                                    $presidente = Utilidades::convertirCamelCase($presidente);
+                                                    $vocal1 = Utilidades::convertirCamelCase($vocal1);
+                                                    $vocal2 = Utilidades::convertirCamelCase($vocal2);
+                                                    $suplente = Utilidades::convertirCamelCase($suplente);
                                                     $sesionmesas [] = array($codigo, $carrera, $asignatura, $presidente, $vocal1, $vocal2, $suplente, $primero, $segundo, $hora);
                                                 }
                                             }
@@ -346,6 +352,12 @@
                                                     /* agrega la fila al array que se almacena en la sesion. */
                                                     $primero = str_replace('/', '-', $primero);
                                                     $primero = date('Y-m-d', strtotime($primero));
+                                                    $carrera = Utilidades::convertirCamelCase($carrera);
+                                                    $asignatura = Utilidades::convertirCamelCase($asignatura);
+                                                    $presidente = Utilidades::convertirCamelCase($presidente);
+                                                    $vocal1 = Utilidades::convertirCamelCase($vocal1);
+                                                    $vocal2 = Utilidades::convertirCamelCase($vocal2);
+                                                    $suplente = Utilidades::convertirCamelCase($suplente);
                                                     $sesionmesas [] = array($codigo, $carrera, $asignatura, $presidente, $vocal1, $vocal2, $suplente, $primero, $hora);
                                                 }
                                             }

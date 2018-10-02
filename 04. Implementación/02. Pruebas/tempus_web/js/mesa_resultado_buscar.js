@@ -1,10 +1,16 @@
 /**
  * Controla los eventos del formulario mesa_resultado_buscar.php
  * 
+ * @author Marquez Emanuel
  */
 
 $(document).ready(function() {
 	
+	/**
+	 * Inicializa la tabla donde se presentan las mesas de examen encontradas.
+	 * Les coloca los botones para realizar las descarga en formatos distintos.
+	 * Les modifica el lenguaje a cada uno de los elementos del DataTable.
+	 * */
 	$("table#tablaBuscarMesas").DataTable({
 		dom: 'Bfrtip',
         buttons: [
@@ -35,5 +41,36 @@ $(document).ready(function() {
             }
        }
 	});
+	
+	/**
+	 * Cuando se presiona el boton modificar mesa, se asigna "modificar" al
+	 * hidden accion del formulario para que el manejador sepa que operación
+	 * desea hacer el usuario.
+	 * */
+	$("#formBuscarMesas").on("click", "#btnModificarMesa", function(event) {
+		
+		$("h3#mensaje" ).remove();
+		if(!$("input[name='radioMesas']").is(":checked")) {
+			$("<h3 id='mensaje' class='letraNaranja'>Debe seleccionar una mesa de examen a modificar</h3>").insertAfter("#content h2");
+			return false;
+		}
+		$("input[name='accion']").val("modificar");
+	});
+	
+	/**
+	 * Cuando se presiona el boton borrar mesa, se asigna "borrar" al
+	 * hidden accion del formulario para que el manejador sepa que operación
+	 * desea hacer el usuario.
+	 * */
+	$("#formBuscarMesas").on("click", "#btnBorrarMesa", function(event) {
+		$("h3#mensaje" ).remove();
+		if(!$("input[name='radioMesas']").is(":checked")) {
+			$("<h3 id='mensaje' class='letraNaranja'>Debe seleccionar una mesa de examen a borrar</h3>").insertAfter("#content h2");
+			return false;
+		}
+		$("input[name='accion']").val("borrar");
+
+	});
+
 	
 });

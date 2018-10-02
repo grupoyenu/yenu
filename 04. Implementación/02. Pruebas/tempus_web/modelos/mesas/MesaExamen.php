@@ -114,9 +114,10 @@ class MesaExamen
      * se crea un nuevo registro. Para ello, tambien se hace la creacion del tribunal, 
      * primer llamado y segundo llamado. 
      * @param Plan $plan El plan debe existir en la base de datos (Obligatorio).
-     * @param Tribunal $tribunal El tribunal se busca. Luego se obtiene o crea (Obligatorio).
+     * @param Tribunal $tribunal El tribunal debe existir en la base de datos (Obligatorio).
      * @param Llamado $primero El llamado se crea (Obligatorio).
      * @param Llamado $segundo El llamado se crea (Opcional).
+     * @return string Mensaje asociado a la operación.
      * */
     public function crear($plan, $tribunal, $primero, $segundo) 
     {
@@ -127,11 +128,15 @@ class MesaExamen
             $idcarrera = $plan->getCarrera()->getCodigo();
             $idprimero = 'null';
             $idsegundo = 'null';
-           
             
             /* Crea el o los llamados para la mesa de examen */
             if ($primero) {
-                $primero->crear($primero->getFecha(), $primero->getHora(), $primero->getAula());
+                $idaula = null;
+                if ($primero->getAula()) {
+                    $idaula = $primero->getAula()->getIdaula();
+                }
+                
+                $primero->crear($primero->getFecha(), $primero->getHora(), $idaula);
                 if ($primero->getIdllamado()) {
                     $idprimero = $primero->getIdllamado();
                 } else {
@@ -139,7 +144,11 @@ class MesaExamen
                 }
             }
             if ($segundo) {
-                $segundo->crear($segundo->getFecha(), $segundo->getHora(), $segundo->getAula());
+                $idaula = null;
+                if ($segundo->getAula()) {
+                    $idaula = $segundo->getAula()->getIdaula();
+                }
+                $segundo->crear($segundo->getFecha(), $segundo->getHora(), $idaula);
                 if ($segundo->getIdllamado()) {
                     $idsegundo = $segundo->getIdllamado();
                 } else {
@@ -147,7 +156,7 @@ class MesaExamen
                 }
             }
             
-            if (isset($primero) || isset($segundo)) {
+            if ($primero || $segundo) {
                 $consulta = "INSERT INTO mesa_examen VALUES ";
                 $consulta = $consulta."(null,".$idasignatura.",".$idcarrera.",".$tribunal->getIdtribunal().",".$idprimero.",".$idsegundo.")";
                 
@@ -159,21 +168,17 @@ class MesaExamen
                     $this->tribunal = $tribunal;
                     $this->primero = $primero;
                     $this->segundo = $segundo;
+                    return "Se ha creado la mesa de examen correctamente";
                 } else {
-                    $this->idmesa = null;
-                    $this->plan = null;
-                    $this->tribunal = null;
-                    $this->primero = null;
-                    $this->segundo = null;
+                    $this->limpiarMesaExamen();
+                    return "No se ha podido realizar la creación de la mesa de examen";
                 }
             } else {
-                $this->idmesa = null;
-                $this->plan = null;
-                $this->tribunal = null;
-                $this->primero = null;
-                $this->segundo = null;
+                $this->limpiarMesaExamen();
+                return "No se ha podido realizar la creación de llamado para la mesa de examen";
             }
         }
+        return "Se ha encontrado una mesa de examen para la asignatura en la carrera indicada";
     }
     
     /**
@@ -200,7 +205,7 @@ class MesaExamen
             
             $fila = $this->datos->fetch_row();
             $this->idmesa = $fila[0];
-            $this->plan = $plan;
+            $this->plan = new Plan($fila[1], $fila[2]);
             $this->tribunal = new Tribunal($fila[3]);
             $this->primero = new Llamado($fila[4]);
             if($fila[5]) {
@@ -208,13 +213,158 @@ class MesaExamen
             }
             
         } else {
-            $this->idmesa = null;
-            $this->plan = null;
-            $this->tribunal = null;
-            $this->primero = null;
-            $this->segundo = null;
+            $this->limpiarMesaExamen();
         }
         $this->datos = null;
+    }
+    
+    /**
+     * Coloca todos los atributos de la mesa de examen en nulo.
+     * */
+    private function limpiarMesaExamen() 
+    {
+        $this->idmesa = null;
+        $this->plan = null;
+        $this->tribunal = null;
+        $this->primero = null;
+        $this->segundo = null;
+    }
+    
+    /**
+     * Realiza la modificación de la mesa de examen. 
+     * @param integer $idmesa Recibe el identificador de la mesa de examen a modificar.
+     * @param Tribunal $tribunal Recibe el tribunal de la mesa de examen.
+     * @param Llamado $primero Recibe el primer llamado de la mesa de examen.
+     * @param Llamado $segundo Recibe el segundo llamado de la mesa de examen.
+     * @return string Mensaje con el resultado de la operación.
+     * */
+    public function modificar($idmesa, $tribunal, $primero, $segundo) 
+    {
+        if ($idmesa && $tribunal) {
+            
+            if ($primero || $segundo) {
+                
+                ObjetoDatos::getInstancia()->autocommit(false);
+                ObjetoDatos::getInstancia()->begin_transaction();
+                try {
+                    
+                    $idtribunal = $tribunal->getIdtribunal();
+                    $presidente = $tribunal->getPresidente();
+                    $vocal1 = $tribunal->getVocal1();
+                    $vocal2 = $tribunal->getVocal2();
+                    $suplente = $tribunal->getSuplente();
+                    
+                    $mensaje = $tribunal->modificar($idtribunal, $presidente, $vocal1, $vocal2, $suplente);
+                    
+                    if ($tribunal->getIdtribunal()) {
+                        
+                        if ($primero) {
+                            
+                            
+                        }
+                        
+                        if ($segundo) {
+                            
+                        }
+                    }
+                    
+                } catch (Exception $exception) {
+                    ObjetoDatos::getInstancia()->rollback();
+                    ObjetoDatos::getInstancia()->autocommit(true);
+                    return "No se ha podido realizar la modificación por un error durante la operación";
+                }
+                ObjetoDatos::getInstancia()->commit();
+                ObjetoDatos::getInstancia()->autocommit(true);
+            }
+            return "No se ha recibido la información correspondiente al llamado";
+        }
+        return "No se ha recibido la información necesaria para modificar la mesa de examen";
+    }
+    
+    /**
+     * Realiza la modificacion del horario para el primer llamado, segundo llamado o ambos. Se debe
+     * recibir por parametro al menos uno de los llamados, el restante puede ser nulo. Al recibir 
+     * dos llamados, ambos tendran la hora indicada. El metodo devuelve verdadero cuando la operacion
+     * en la base de datos se lleva a cabo, en caso contrario, devuelve falso. 
+     * @param Llamado $primero Primer llamado de la mesa de examen.
+     * @param Llamado $segundo Segundo llamado de la mesa de examen.
+     * @param string $hora Recibe el horario a asignar a los llamados.
+     * @return boolean
+     * */
+    public function modificarHora($primero, $segundo, $hora) 
+    {
+        if ($primero && $segundo) {
+            $idprimero = $primero->getIdllamado();
+            $idsegundo = $segundo->getIdllamado();
+            $consulta = "UPDATE llamado SET hora='{$hora}', fechamod=NOW() WHERE idllamado=".$idprimero." OR idllamado=".$idsegundo;
+            ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+            if (ObjetoDatos::getInstancia()->affected_rows > 0) { 
+                $primero->setHora($hora);
+                $segundo->setHora($hora);
+                return true;
+            }
+        } else {
+            if ($primero) {
+                $idprimero = $primero->getIdllamado();
+                $primero->modificarHora($idprimero, $hora);
+                if ($primero->getIdllamado()) {
+                    return true;
+                }
+            } else {
+                $idsegundo = $segundo->getIdllamado();
+                $segundo->modificarHora($idsegundo, $hora);
+                if ($segundo->getIdllamado()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * @param Tribunal $tribunal Tribunal original de la mesa de examen.
+     * @param string $presidente Nombre del nuevo presidente.
+     * @param string $vocal1 Nombre del nuevo vocal1.
+     * @param string $vocal2 Nombre del nuevo vocal2.
+     * @param string $suplente Nombre del nuevo suplente.
+     * */
+    public function modificarTribunal($tribunal, $nombrepresidente, $nombrevocal1, $nombrevocal2, $nombresuplente)
+    {
+        if ($tribunal && $nombrepresidente && $nombrevocal1) {
+            $presidente = new Docente();
+            $vocal1 = new Docente();
+            $vocal2 = null;
+            $suplente  = null;
+            
+            $presidente->crear($nombrepresidente);
+            $vocal1->crear($nombrevocal1);
+            if ($nombrevocal2) {
+                $vocal2 = new Docente();
+                $vocal2->crear($nombrevocal2);
+                if ($nombresuplente) {
+                    $suplente  = new Docente();
+                    $suplente->crear($nombresuplente);
+                }
+            }
+            /* VERIFICA QUE LOS DOS DOCENTES OBLIGATORIOS SE HAYAN CREADO */
+            if ($presidente->getIdDocente() &&  $vocal1->getIdDocente()) {
+                $idtribunal = $tribunal->getIdtribunal();
+                if ($vocal2 && !$vocal2->getIdDocente()) {
+                   /* HAY NOMBRE VOCAL 2, SE CREO EL DOCENTE PERO NO EL REGISTRO */
+                   return false;
+                } else {
+                    if ($suplente && !$suplente->getIdDocente()) {
+                        /* HAY NOMBRE SUPLENTE, SE CREO EL DOCENTE PERO NO EL REGISTRO */
+                        return false;
+                    }
+                }
+                $tribunal->modificar($idtribunal, $presidente, $vocal1, $vocal2, $suplente);
+                if($tribunal->getIdtribunal()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

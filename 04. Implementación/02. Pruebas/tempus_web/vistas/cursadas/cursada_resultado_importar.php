@@ -1,8 +1,10 @@
 <?php
 
     include_once '../../lib/conf/ControlAcceso.php';
-    
-    
+    include_once '../../modelos/carreras/Plan.php';
+    include_once '../../modelos/cursadas/Cursada.php';
+    include_once '../../modelos/cursadas/Clase.php';
+    include_once '../../modelos/aulas/Aula.php';
 ?>
 
 <html>
@@ -17,22 +19,113 @@
                 		<?php 
                 		
                     		$resultado = $_SESSION['resultado'];
-                    		
-                    		echo '<pre>'; print_r($resultado); echo '</pre>';
-		    
                     		session_unset($_SESSION['resultado']);
                 		    
                     		if ($resultado['resultado']) {
                     		    
-                    		    echo "<h3>{$resultado['mensaje']}</h3>";
+                    		    echo "<h6 class='letraVerde letraCentrada'>{$resultado['mensaje']}</h6>";
                     		    
                     		    if ($resultado['datos']) {
-                    		        echo '<pre>'; print_r($resultado['datos']); echo '</pre>';
+                    		    ?>
+                    		    	<table id="tablaCursadasNoCargadas" class="display">
+                    		    		<thead>
+                    		    			<tr>
+                                				<th>Código</th>
+                                				<th>Carrera</th>
+                                				<th>Asignatura</th>
+                                				<th>Año</th>
+                                				<th>Lunes</th>
+                                				<th>Martes</th>
+                                				<th>Miercoles</th>
+                                				<th>Jueves</th>
+                                				<th>Viernes</th>
+                                				<th>Sábado</th>
+                                			</tr>
+                    		    		</thead>
+                    		    		<tbody>
+                    		    		<?php
+                    		    		    $cursadas = $resultado['datos'];
+                    		    		    foreach ($cursadas as $cursada) {
+                    		    		        $plan = $cursada->getPlan();
+                    		    		        $asignatura = $plan->getAsignatura();
+                    		    		        $carrera = $plan->getCarrera();
+                    		    		        $clases = $cursada->getClases();
+                    		    		        echo "<tr>";
+                    		    		        echo "<td>{$carrera->getNombre()}</td>";
+                    		    		        echo "<td>{$asignatura->getNombre()}</td>";
+                    		    		        $cantidad = count($clases);
+                    		    		        
+                    		    		        for ($i=1; $i<7; $i++) {
+                    		    		            if (isset($clases[$i])) {
+                    		    		                
+                    		    		                $aula = $clases[$i]->getAula();
+                    		    		                $dia = $clases[$i]->getDesde()." a ".$clases[$i]->getHasta()." ".$aula->getSector()." ".$aula->getNombre();
+                    		    		                
+                    		    		                echo "<td>{$dia}</td>";
+                    		    		            } else {
+                    		    		                echo "<td></td>";
+                    		    		            }
+                    		    		        }
+                    		    		        echo "</tr>";
+                    		    		    }
+                                            ?>
+                    		    		</tbody>
+                    		    	</table>
+                    		    <?php 
                     		    }
                     		} else {
                     		    /* No se ha realizado la operación */
+                    		    echo "<h6 class='letraRoja letraCentrada'>{$resultado['mensaje']}</h6>";
                     		    
-                    		    echo "<h4 class='letraRoja'>{$resultado['mensaje']}</h4>";
+                    		    if ($resultado['datos']) {
+                    		        
+                    		        ?>
+                    		    	<table id="tablaCursadasNoCargadas" class="display">
+                    		    		<thead>
+                    		    			<tr>
+                                				<th>Código</th>
+                                				<th>Carrera</th>
+                                				<th>Asignatura</th>
+                                				<th>Año</th>
+                                				<th>Lunes</th>
+                                				<th>Martes</th>
+                                				<th>Miercoles</th>
+                                				<th>Jueves</th>
+                                				<th>Viernes</th>
+                                				<th>Sábado</th>
+                                			</tr>
+                    		    		</thead>
+                    		    		<tbody>
+                    		    		<?php
+                    		    		    $cursadas = $resultado['datos'];
+                    		    		    foreach ($cursadas as $cursada) {
+                    		    		        $plan = $cursada->getPlan();
+                    		    		        $asignatura = $plan->getAsignatura();
+                    		    		        $carrera = $plan->getCarrera();
+                    		    		        $clases = $cursada->getClases();
+                    		    		        echo "<tr>";
+                    		    		        echo "<td>{$carrera->getNombre()}</td>";
+                    		    		        echo "<td>{$asignatura->getNombre()}</td>";
+                    		    		        $cantidad = count($clases);
+                    		    		        
+                    		    		        for ($i=1; $i<7; $i++) {
+                    		    		            if (isset($clases[$i])) {
+                    		    		                
+                    		    		                $aula = $clases[$i]->getAula();
+                    		    		                $dia = $clases[$i]->getDesde()." a ".$clases[$i]->getHasta()." ".$aula->getSector()." ".$aula->getNombre();
+                    		    		                
+                    		    		                echo "<td>{$dia}</td>";
+                    		    		            } else {
+                    		    		                echo "<td></td>";
+                    		    		            }
+                    		    		        }
+                    		    		        echo "</tr>";
+                    		    		    }
+                                            ?>
+                    		    		</tbody>
+                    		    	</table>
+                    		    <?php 
+                    		    }
                     		}
                     		
                 		?>

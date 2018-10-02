@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * La clase Cursada corresponde a la tabla "Cursada" de la base de datos. Dicha tabla representa una
+ * relacion muchos a muchos entre un plan (asignatura-carrera) y clases. 
  * 
  * */
 class Cursada 
@@ -54,11 +56,45 @@ class Cursada
         $this->clases = $clases;
     }
 
+    
     /**
-     * Realiza la creación de una cursada. Para ello realiza la creacion de cada
-     * una de las clases del arreglo y luego crea la relación entre el plan y la
-     * clase. Devuelve verdadero cuando ambos registros se crean, falso cuando no
-     * se crea la clase o la relación (tabla cursada de la base de datos).
+     * Se crea la clase y la relacion entre el plan y la nueva clase. Si se crea la clase y la 
+     * relacion devuelve verdadero. En caso de no crearse la clase o la relacion entonces se
+     * retorna falso.
+     * @param Plan $plan Informacion de la carrera y asignatura.
+     * @param Clase $clase Informacion de la clase a crear.
+     * @return integer Identifcador de clase o nulo.
+     * */
+    public function agregarClase($plan, $clase) 
+    {
+        $dia = $clase->getDia();
+        $desde = $clase->getDesde();
+        $hasta = $clase->getHasta();
+        $aula = $clase->getAula();
+        $clase->crear($dia, $desde, $hasta, $aula);
+        if($clase->getIdclase()) {
+            $asignatura = $plan->getAsignatura();
+            $carrera = $plan->getCarrera();
+            $idasignatura = $asignatura->getIdasignatura();
+            $idcarrera = $carrera->getCodigo();
+            $idclase = $clase->getIdclase();
+            $crearelacion = $this->crearRelacion($idasignatura, $idcarrera, $idclase);
+            if($crearelacion){
+                return $idclase;
+            } else {
+                $clase->borrar($idclase);
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Realiza la creación de una cursada. Para ello realiza la creacion de cada una de las clases 
+     * del arreglo y luego crea la relación entre el plan y la clase. Devuelve verdadero cuando 
+     * ambos registros se crean, falso cuando no se crea la clase o la relación (tabla cursada de 
+     * la base de datos).
      * @param Plan $plan Asignatura y Carrera para la Cursada (Obligatorio).
      * @param Clase[] $clases Recibe el conjunto de clases para el plan (Obligatorio).
      * @return boolean true o false.
@@ -67,22 +103,18 @@ class Cursada
     public function crear($plan, $clases = array())
     {
         if (isset($clases)) {
-            
             $tamanio = count($clases);
             $idasignatura = $plan->getAsignatura()->getIdasignatura();
             $idcarrera = $plan->getCarrera()->getCodigo();
             $contadorexitos = 0;
             for ($i=0; $i < $tamanio; $i++) {
-                
                 $clase =  $clases[$i];
-                
                 $dia = $clase->getDia();
                 $desde = $clase->getDesde();
                 $hasta = $clase->getHasta();
                 $aula = $clase->getAula();
                 $clase->crear($dia, $desde, $hasta, $aula);
                 $idclase = $clase->getIdclase();
-                
                 if ($idclase) {
                     /* Se ha creado la clase */
                     $resultado = $this->crearRelacion($idasignatura, $idcarrera, $idclase);
@@ -92,16 +124,13 @@ class Cursada
                     }
                 }
             }
-            
             if ($contadorexitos > 0) {
                 return true;
             } else {
                 return false;
-            }
-            
-        } else {
-            return false;
+            }   
         }
+        return false;
     }
     
     /**
@@ -113,10 +142,9 @@ class Cursada
     private function crearRelacion($idasignatura, $idcarrera, $idclase)
     {
         $resultado = $this->buscarRelacion($idasignatura, $idcarrera, $idclase);
-        
         if (!$resultado) { 
             $consulta = "INSERT INTO cursada VALUES (".$idasignatura.",".$idcarrera.",".$idclase.")";
-            $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+            ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
             if (ObjetoDatos::getInstancia()->affected_rows > 0) {
                 $resultado = true;
             } else {
@@ -131,20 +159,38 @@ class Cursada
         
     }
     
+    
     /**
      * Controla que no exista cargada la relacion entre cursada y clase.
      * @return boolean Verdadero si existe o Falso en caso contrario.
      * */
     private function buscarRelacion($idasignatura, $idcarrera, $idclase)
     {
-        $resultado = false;
         $consulta = "SELECT * FROM cursada WHERE idasignatura = ".$idasignatura." AND idcarrera = ".$idcarrera." AND idclase = ".$idclase."";
         $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
         if ($this->datos->num_rows > 0) {
-            $resultado = true;
+            return true;
         }
-        $this->datos = null;
-        return $resultado;
+        return false;
+    }
+    
+    /**
+     * Elimina una relacion entre asignatura y clase. Se mantiene la clase dado que puede estar
+     * asociada a otras carreras. Cuando se realiza la eliminacion el metodo devuelve true. Si no
+     * se hace la eliminacion, devuelve false.
+     * @param integer $idasignatura Identificador de la Asignatura.
+     * @param integer $idcarrera Identificador de la Carrera.
+     * @param integer $idclase Identificador de la Clase.
+     * @retun boolean true o false.
+     * */
+    private function borrarRelacion($idasignatura, $idcarrera, $idclase)
+    {
+        $consulta = "DELETE FROM cursada WHERE idasignatura=".$idasignatura." AND idcarrera=".$idcarrera." AND idclase=".$idclase;
+        ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+        if (ObjetoDatos::getInstancia()->affected_rows > 0) {
+            return true;
+        }
+        return false;
     }
     
     /**
@@ -152,7 +198,7 @@ class Cursada
      * */
     public function obtenerHorarios($idasignatura, $idcarrera)
     {
-        $consulta = "SELECT `idclase` FROM `cursada` WHERE `idasignatura`={$idasignatura} AND `idcarrera`= ".$idcarrera;
+        $consulta = "SELECT idclase FROM cursada WHERE idasignatura={$idasignatura} AND idcarrera=".$idcarrera;
         $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
         if ($this->datos->num_rows > 0) {
             $this->clases = array(6);
@@ -166,7 +212,31 @@ class Cursada
         $this->datos = null;
     }
     
+    /**
+     * Realiza la eliminacion de una clase para la asignatura correspondiente. Se debe considerar
+     * que la clase puede ser dictada en muchas carreras. Por ello el parametro todas debe indicar
+     * si la eliminacion se aplica a todas las carreras (true) o solo a una (false). En caso de
+     * estar en una sola carrera, se elimina la clase y la relacion (cursada).
+     * @param Plan @plan Informacion de la carrera y asignatura.
+     * @param Clase @clase Informacion de la clase a eliminar.
+     * @param boolean @todas Indica si borrar para todas las clases o solo la del plan.
+     * */
+    public function quitarClase($plan, $clase, $todas) 
+    {
+        $idclase = $clase->getIdclase();
+        $numcarreras = $clase->contarCarreras($idclase);
+        if ($numcarreras > 1) {
+            if (!$todas) {
+                $idasignatura = $plan->getAsignatura()->getIdasignatura();
+                $idcarrera = $plan->getCarrera()->getCodigo();
+                return $this->borrarRelacion($idasignatura, $idcarrera, $idclase);
+            }
+        }
+        $clase->borrar($idclase);
+        if($clase->getIdclase()) {
+            return false;
+        }
+        return true;
+    }
     
-    
-  
 }

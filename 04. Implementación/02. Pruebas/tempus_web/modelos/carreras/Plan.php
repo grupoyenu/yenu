@@ -108,15 +108,23 @@ class Plan
      * @param integer $idasignatura Identificador de la Asignatura
      * @param integer $idcarrera Identificador de la Carrera.
      * @param integer $anio Anio al que pertenece la carrera.
+     * @return boolean true o false.
      * */
     public function crear($idasignatura, $idcarrera, $anio)
     {
+        $resultado = true;
         $this->buscar($idasignatura, $idcarrera);
         if(is_null($this->asignatura) && is_null($this->carrera)) {
             $consulta = "INSERT INTO asignatura_carrera VALUES (".$idasignatura.",".$idcarrera.",".$anio.")";
             ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+            if (ObjetoDatos::getInstancia()->affected_rows > 0) {
+                $resultado = true;
+            } else {
+                $resultado = false;
+            }
         }
         $this->datos = null;
+        return $resultado;
     }
     
     public function borrar($idasignatura, $idcarrera)

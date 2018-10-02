@@ -23,7 +23,7 @@
             			<legend>Asignatura</legend>
             			
             			<label for="txtAsignatura" class="centrado">Nombre:</label>
-            			<input type="text" id="txtAsignatura" name="txtAsignatura" title="Ingrese el nombre de la asignatura">
+            			<input type="text" id="txtAsignatura" name="txtAsignatura" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ0123456789,. ]{0,255}" title="Búsqueda por campo vacio o nombre de la asignatura (Se aceptan letras, números, puntos y/o comas)">
            				
             		</fieldset>
             		<input type="hidden" id="accion" name="accion" value="buscar">

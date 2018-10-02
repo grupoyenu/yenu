@@ -1,4 +1,7 @@
 <?php 
+
+    header('Content-Type: text/html; charset=ISO-8859-1'); 
+
     include_once '../../modelos/carreras/Plan.php'; 
     include_once '../../modelos/aulas/Aula.php'; 
     include_once '../../modelos/cursadas/Clase.php'; 
@@ -12,25 +15,23 @@
 	<script type="text/javascript" src="../../js/cursada_resultado_buscar.js"></script>
 	<section id="main-content">
 		<article>
-			<div class="content">
+			<div id="content" class="content">
             	<h2>BUSCAR HORARIO DE CURSADA</h2>
-            	<form action="" id="formBuscarCursadas" name="formBuscarCursadas" method="post">
+            	<form action="../../Controladores/ManejadorCursada.php" id="formBuscarCursadas" name="formBuscarCursadas" method="post">
                 	
                 	<fieldset>
                 		<legend>Resultado de la búsqueda</legend>
-                		
                 		<?php
                 		    /* Se obtiene el resultado y se elimina de la sesion. */
                     		$resultado = $_SESSION['resultado'];
-                    		session_unset($_SESSION['resultado']);
                     		
-                    		$cursadas = $resultado['datos'];
-                    		
-                    		/* Se elimina la variable de sesion */
-                    		
-                    		
-                    		if ($cursadas) {
-                    		?>
+                    		if ($resultado['resultado']) {
+                    		    
+                    		    $cursadas = $resultado['datos'];
+                    		    
+                    		    /* Se elimina la variable de sesion */
+                    		    if ($cursadas) {
+                    		        ?>
                     			<br>
                     			<table id="tablaBuscarCursadas" class="display">
                     				<thead>
@@ -47,18 +48,18 @@
                     					</tr>
                     				</thead>
                     				<tbody>
-                    				
                     				<?php
                     		        
-                    				foreach ($cursadas as $cursada) {
-                    				    
+                    				$tamanio = count($cursadas);
+                    				for ($indice=0; $indice<$tamanio; ++$indice) {
+                    				    $cursada = $cursadas [$indice];
                     				    $plan = $cursada->getPlan();
                     				    $asignatura = $plan->getAsignatura();
                     				    $carrera = $plan->getCarrera();
                     				    $clases = $cursada->getClases();
                     				    
                     				    echo "<tr>";
-                    				    echo "<td><input type='radio'></td>";
+                    				    echo "<td><input type='radio' id='radioCursadas' name='radioCursadas' value='".$indice."'></td>";
                     				    echo "<td>{$carrera->getNombre()}</td>";
                     				    echo "<td>{$asignatura->getNombre()}</td>";
                     				    
@@ -80,25 +81,30 @@
                     				    
                     				    echo "</tr>";
                     				}
-                		
                                     ?>
-                    				
                     				</tbody>
                     			</table>
-                    		<?php
-                    		} 
-                		
+                        		<?php
+                        		} else {
+                        		    /* No se han encontrado resultados */
+                        		    $mensaje = $resultado['mensaje'];
+                        		    echo "<h6 class='letraVerde letraCentrada'>No se han encontrado resultados</h6>";
+                        		}
+                    		    
+                    		} else {
+                    		    /* El resultado es falso */
+                    		    echo "<h6 class='letraRoja letraCentrada'>No se ha obtenido la información sobre cursadas para la búsqueda ingresada</h6>";
+                    		}
                         ?>
-                		
                 	</fieldset>
                 	<?php
                     	if($cursadas) {
-                        ?>
+                    ?>
                        		<input class="botonRojo" type="submit" id="btnBorrarCursada" name="btnBorrarCursada" value="Borrar">
                         	<input class="botonVerde" type="submit" id="btnModificarCursada" name="btnModificarCursada" value="Modificar">
-                        <?php
+                        	<input type="hidden" id="accion" name="accion" value="">
+                    <?php
                     	}
-                		
                     ?>
             	</form>
             </div>

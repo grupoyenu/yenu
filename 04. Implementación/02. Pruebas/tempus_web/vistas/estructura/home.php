@@ -6,7 +6,6 @@
     include_once '../../modelos/usuarios/UsuarioGoogle.php';
     
     ControlAcceso::requierePermiso(PermisosSistema::PERMISO_AUTH);
-    
 ?>
 
 <html>
@@ -16,16 +15,25 @@
 			<div class="content">
 				<h2>¡LE DAMOS LA BIENVENIDA!</h2>
 				<fieldset>
-					<legend>Perfil de usuario</legend>
-					<p> <img  src="<?= $_SESSION['usuario']->getImagen(); ?>"></p>
-					<p>Nombre: <?= $_SESSION['usuario']->getNombre(); ?></p>
-					<p>E-mail: <?= $_SESSION['usuario']->getEmail(); ?></p>
 					
-					<?php
-    					foreach ($_SESSION['usuario']->getRoles() as $rol) {
-    					    echo "<p>Rol: ".$rol->getNombre()."</p>";
-                        }
-                    ?>
+					<fieldset>
+						<legend><img class="perfil" src="<?= $_SESSION['usuario']->getImagen(); ?>"><?= $_SESSION['usuario']->getEmail();?> :: <?= $_SESSION['usuario']->getNombre();?></legend>
+						<?php
+        					foreach ($_SESSION['usuario']->getRoles() as $rol) {
+        					    echo "<p>Rol: ".$rol->getNombre()."</p>";
+                            }
+                        ?>
+                        <p>
+                        	Ha ingresado al sistema Tempus - Gestión de Horarios de Cursada y Mesas de Examen. Para comenzar 
+                        	a trabajar debe posicionarse sobre el menú horizontal y seleccionar la opción deseada en el 
+                        	sub-menú correspondiente.
+                        </p>
+                        <p>
+                        	Para obtener información detallada sobre la utilización del sistema puede acudir al Manual de Usuario
+                        	que se encuentra disponible a continuación.
+                        </p>
+					</fieldset>
+					
 				</fieldset>
 			</div>
 		</article>

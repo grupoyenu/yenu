@@ -63,28 +63,6 @@ class UsuarioGoogle extends Usuario {
     }
     
     /**
-     * Realiza la creación de un usuario google en la base de datos. Para ello
-     * primero realiza la creacion del usuario y luego inserta un nuevo registro
-     * usuario google. 
-     * @param string $email Correo electronico del usuario (Obligatorio).
-     * @param string $nombre Nombre del usuario (Obligatorio).
-     * @param string $googleid Identificador de Google (Obligatorio).
-     * @param string $imagen Imagen de Google (Obligatorio).
-     * */
-    public function crear ($email, $nombre, $googleid, $imagen)
-    {
-        parent::crear($email, $nombre, Usuario::METODO_GOOGLE);
-        if (is_null($this->getIdusuario())) {
-            $consulta = "INSERT INTO usuario_google VALUES ({$this->getIdusuario()},'{$googleid}','{$imagen}')";
-            ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
-            if (ObjetoDatos::getInstancia()->affected_rows) {
-                $this->googleid = $googleid;
-                $this->imagen = $imagen;
-            }
-        }
-    }
-    
-    /**
      * Realiza la creación de un usuario google en la tabla usuario_google.
      * */
     public function crearUsuarioGoogle($idusuario, $googleid, $imagen)
@@ -106,9 +84,9 @@ class UsuarioGoogle extends Usuario {
      * login Google. 
      * @param string $email Correo electronico del usuario (Obligatorio). 
      * */
-    public function buscar ($email) 
+    public function buscar($email, $metodo = self::METODO_GOOGLE) 
     {
-        parent::buscar($email, Usuario::METODO_GOOGLE);
+        parent::buscar($email, $metodo);
         if ($this->getIdusuario()) {
             $consulta = "SELECT * FROM usuario_google WHERE idusuario = ".$this->getIdusuario();
             $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);

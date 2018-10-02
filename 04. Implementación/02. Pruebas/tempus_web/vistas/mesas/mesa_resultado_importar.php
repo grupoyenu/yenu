@@ -20,11 +20,11 @@
                 		    
                     		if ($resultado['resultado']) {
                     		    
-                    		    echo "<h6 class='letraVerde'>{$resultado['mensaje']}</h6>";
+                    		    echo "<h6 class='letraVerde letraCentrada'>{$resultado['mensaje']}</h6>";
                     		    
                     		    if ($resultado['datos']) {
                     		        
-                    		        echo "<h6 class='letraRoja'>Las siguientes mesas de examen no se han podido crear</h6>";
+                    		        echo "<h6 class='letraRoja letraCentrada'>Las siguientes mesas de examen no se han podido crear</h6>";
                     		        $datos = $resultado['datos'];
                     		        
                     		        if(count($datos[0]) == 10) {

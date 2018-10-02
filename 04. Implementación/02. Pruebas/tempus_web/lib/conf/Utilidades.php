@@ -77,8 +77,8 @@ class Utilidades
             if (($longitud > 4) && ($longitud < 256)) {
                 
                 if (!ctype_digit($nombre)) {
-                    $expresion = "^[A-Za-záéíóúÁÉÍÓÚñÑ0123456789,. ]{5,255}$";
-                    if(ereg($expresion, $nombre))
+                    $expresion = "/^[A-Za-záéíóúÁÉÍÓÚñÑ0123456789,. ]{5,255}$/";
+                    if(preg_match($expresion, $nombre))
                         return null;
                     return "El nombre de asignatura no cumple con el formato (Se aceptan letras, acentos, espacios, puntos y/o comas)";
                 }
@@ -103,8 +103,8 @@ class Utilidades
             if ($codigo != 0) {
                 $longitud = strlen($codigo);
                 if (($longitud > 0) && ($longitud < 4)) {
-                    $expresion = "^[0-9]{1,3}$";
-                    if(ereg($expresion, $codigo)) {
+                    $expresion = "/^[0-9]{1,3}$/";
+                    if(preg_match($expresion, $codigo)) {
                         return null;
                     }
                     return "El código no cumple con el formato númerico";
@@ -130,8 +130,8 @@ class Utilidades
         {
             $longitud = strlen($nombre);
             if (($longitud > 9) && ($longitud < 256)) {
-                $expresion = "^[A-Za-záéíóúÁÉÍÓÚñÑ. ]{10,255}$";
-                if (ereg($expresion, $nombre)) {
+                $expresion = "/^[A-Za-záéíóúÁÉÍÓÚñÑ. ]{10,255}$/";
+                if (preg_match($expresion, $nombre)) {
                     return null;
                 }
                 return "El nombre de carrera no cumple con el formato (Se aceptan letras y espacios)";
@@ -153,8 +153,8 @@ class Utilidades
     {
         $longitud = strlen($nombre);
         if (($longitud > 3) && ($longitud < 256)) {
-            $expresion = "^[A-Za-záéíóúñüÁÉÍÓÚÜÑ,. ]{5,255}$";
-            if (ereg($expresion, $nombre)) {
+            $expresion = "/^[A-Za-záéíóúñüÁÉÍÓÚÜÑ,. ]{4,255}$/";
+            if (preg_match($expresion, $nombre)) {
                 return null;
             }
             return "El nombre de docente no cumple con el formato (Se aceptan letras, acentos, espacios, puntos y comas)";
@@ -206,8 +206,8 @@ class Utilidades
     static function formatoSector($sector) 
     {
         if (strlen($sector) == 1) {
-            $expresion = "^[A-Za-z]$";
-            if (ereg($expresion, $sector)) {
+            $expresion = "/^[A-Za-z]$/";
+            if (preg_match($expresion, $sector)) {
                 return null;
             }
             return "El sector no cumple con el formato (Se acepta solo una letra)";
@@ -224,8 +224,8 @@ class Utilidades
      * */
     static function formatoNombreAula($aula)
     {
-        $expresion = "^[A-Za-záéíóúñüÁÉÍÓÚÜÑ0123456789 ]{1,255}$";
-        if (ereg($expresion, $aula)) {
+        $expresion = "/^[A-Za-záéíóúñüÁÉÍÓÚÜÑ0123456789 ]{1,255}$/";
+        if (preg_match($expresion, $aula)) {
             return null;
         }
         return "El nombre de aula no cumple con el formato (Se aceptan letras, acentos, espacios)";
@@ -236,6 +236,11 @@ class Utilidades
      * que no exista una mesa de examen para la misma asignatura en la misma
      * carrera. Para ello, se busca primero el nombre de asignatura, si existe se
      * busca la carrera para ver coincidencias.
+     * @param array $mesas Recibe el arreglo de mesas.
+     * @param string $asignatura Recibe el nombre de la asignatura.
+     * @param integer $codigo Recibe el codigo de la carrera.
+     * @return string Null si no hay duplicadas, mensaje en caso contrario.
+     * @author Márquez Emanuel.
      * */
     static function mesasDuplicadas($mesas, $asignatura, $carrera)
     {
@@ -254,5 +259,55 @@ class Utilidades
             ++$posicion;
         }
         return $mensaje;
+    }
+    
+    /**
+     * Controla que en un arreglo no haya cursadas duplicadas. Se controla que
+     * no exista una cursada para la misma asignatura en la misma carrera. Para
+     * ello, se busca primero el nombre de la asignatura, si existe se busca la
+     * carrera para ver coincidencias.
+     * @param Cursada[] $cursadas Recibe el arreglo de cursadas.
+     * @param string $asignatura Recibe el nombre de la asignatura.
+     * @param integer $codigo Recibe el codigo de la carrera.
+     * @return string Null si no hay duplicadas, mensaje en caso contrario.
+     * @author Márquez Emanuel.
+     * */
+    static function cursadasDuplicadas($cursadas, $asignatura, $codigo)
+    {
+        $mensaje = null;
+        $posicion = 0;
+        $encontrado = false;
+        $tamanio = count($cursadas);
+        while (($posicion < $tamanio) && !$encontrado) {
+            $cursada = $cursadas[$posicion];
+            if ($cursada->getPlan()->getAsignatura()->getNombre() == $asignatura) {
+                if ($cursada->getPlan()->getCarrera()->getCodigo() == $codigo) {
+                    $mensaje = "La cursada ya se encuentra cargada";
+                    $encontrado = true;
+                }
+            }
+            ++$posicion;
+        }
+        return $mensaje;
+    }
+    
+    /**
+     * Realiza la conversión de una cadena de texto a formato Camel Case.
+     * Cada una de las palabras de la cadena de texto recibida será convertida
+     * a un formato donde se inicia la primer letra con mayuscula y luego las 
+     * demas letras con minuscula.
+     * @param string $texto Cadena de texto en cualquier formato.
+     * @return string Devuelve la cadena en formato Camel Case. 
+     * @author Márquez Emanuel.
+     * */
+    static function convertirCamelCase($texto)
+    {
+        if ($texto) {
+            /* Convierta la cadena completa a minuscula */
+            $texto = strtolower($texto);
+            /* Coloca cada letra inicial de palabra en mayuscula */
+            $texto = ucwords($texto);
+        }
+        return $texto;
     }
 }

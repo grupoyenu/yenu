@@ -54,8 +54,9 @@
                         echo "<h4>".$mensaje."</h4>";
                         echo "</fieldset>";
                     } else {
+                        /* Regresa a la primer fila luego de leer para saber la cantidad de columnas */
+                        rewind($cursadas);
                         /* El archivo ha pasado las validaciones. Se puede cargar la tabla. */
-                        
                     ?>
                 		<fieldset>
                     		<legend><?= $nombre ?></legend>
@@ -124,7 +125,13 @@
                         		        $sector6 = (string) $fila[26];
                         		        $aula6 = (string) $fila[27];
                         		        
-                        		        echo "<tr>";
+                        		        
+                        		        $mensaje = Utilidades::cursadasDuplicadas($sesioncursadas, $asignatura, $codigo);
+                        		        if ($mensaje) {
+                        		            $mensaje = $estilo." title='{$mensaje}'";
+                        		            $agregar = FALSE;
+                        		        }
+                        		        echo "<tr {$mensaje}>";
                         		        
                         		        $mensaje = Utilidades::formatoCodigoCarrera($codigo);
                         		        if($codigo == 0) {
@@ -342,9 +349,11 @@
                         		            
                         		            $Carrera = new Carrera();
                         		            $Carrera->setCodigo($codigo);
+                        		            $carrera = Utilidades::convertirCamelCase($carrera);
                         		            $Carrera->setNombre($carrera);
                         		            
                         		            $Asignatura = new Asignatura();
+                        		            $asignatura = Utilidades::convertirCamelCase($asignatura);
                         		            $Asignatura->setNombre($asignatura);
                         		            
                         		            $Plan = new Plan();

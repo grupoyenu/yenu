@@ -305,9 +305,9 @@ class Mesas
             return array('resultado'=>true,'mensaje'=>$mensaje, 'datos'=>$datos);
             
         } else {
-            $mensaje = "No se han encontrado resultados para la asignatura";
+            $mensaje = "No se han encontrado resultados para el campo ingresado";
             if ($asignatura) {
-                $mensaje = $mensaje." '".$asignatura."' ";
+                $mensaje = $mensaje." (".$asignatura.") ";
             }
             return array('resultado'=>true,'mensaje'=>$mensaje, 'datos'=>NULL);
         }
@@ -330,7 +330,7 @@ class Mesas
             ObjetoDatos::getInstancia()->ejecutarQuery("DELETE FROM tribunal WHERE 1");
             ObjetoDatos::getInstancia()->ejecutarQuery("DELETE FROM docente WHERE 1");
             
-        }catch (Exception $exception) {
+        } catch (Exception $exception) {
             return false;
         }
         ObjetoDatos::getInstancia()->commit();
