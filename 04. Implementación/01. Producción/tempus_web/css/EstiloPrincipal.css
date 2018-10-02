@@ -11,12 +11,10 @@
 	    font-family: "Century Gothic", Century, "Calibri Light", Arial;;
 	    color: #666;
 	    background: #e2e2e2; 
-	    font-size: 1em;
+	    font-size: 12px;
 	    line-height: 1.5em;
 	    padding-top: 65px;
 	}
-
-	
 
 /**** #MAIN-HEADER ****/
 	
@@ -71,7 +69,7 @@
 	#logo-header .site-name {
 	    display: block;
 	    font-weight: 700;
-	    font-size: 1.2em;
+	    font-size: 1.7em;
 	}
 	
 	#logo-header .site-desc {
@@ -102,6 +100,7 @@
         text-align: center;
         padding: 14px 16px;
         text-decoration: none;
+        font-size: 13px;
     }
     
     li a:hover, .dropdown:hover .dropbtn {
@@ -195,22 +194,22 @@
 	}
 	
 	h3 {
-		font-size: 1.4em;
+		font-size: 13px;
 	    color: black;
 	}
 	
 	h4 {
-		font-size: 1.3em;
+		font-size: 12px;
 	    color: black;
 	}
 	
 	h5 {
-		font-size: 1.2em;
+		font-size: 11px;
 		color: black;
 	}
 	
 	h6 {
-		font-size: 1em;
+		font-size: 10px;
 		color: black;
 		margin-top: 10px;
 		margin-bottom: 15px;
@@ -248,7 +247,7 @@
 	form {
 		color: black;
 		font-family: "Century Gothic", Century, "Calibri Light", Arial;
-		font-size: 15px;
+		font-size: 12px;
 		display: block;
 		width: auto;
 		margin-bottom: 20px;
@@ -258,9 +257,9 @@
 	fieldset {
 		border-style: solid;
 		border-radius: 5px;
-		margin-bottom: 20px;
-		margin-top: 20px;
-		padding: 25px 10px 25px 10px;
+		margin-bottom: 10px;
+		margin-top: 10px;
+		padding: 10px 10px 10px 10px;
 		text-align: left;
 		width: auto;
 		vertical-align: top;
@@ -274,7 +273,7 @@
 	legend {
 		color: black;
 		font-weight: bold;
-		font-size: 18px;
+		font-size: 12px;
 	}
 	
 	input[type='submit'] {
@@ -283,10 +282,20 @@
 		border-color: #4e8fa5;
 		border-radius: 5px;
 		color: black;
-		height: 35px !important;
-		margin-top: 10px !important;
+		height: 30px !important;
 		width: 150px !important;
 		margin: 20px;
+	}
+	
+	.botonIcono {
+		height: 25px !important;
+		width: 25px !important;
+		background-color: transparent;
+		color: transparent;
+		border-color: transparent;
+		display: none;
+		margin: 0px 0px 0px 0px;
+		padding: 0px 0px 0px 0px;
 	}
 	
 	.botonRojo:hover {
@@ -335,20 +344,33 @@
 	input[type='text'], input[type='number'], select, input[type='date'] {
 		border: 1px solid;
 		border-color: #CCC;
-		border-radius: 3px;
+		border-radius: 5px;
 		display: inline-block;
-		width: 270px;
-		height: 30px;
-		padding-left: 5px;
+		width: 245px;
+		height: 26px;
+		padding-left: 8px;
+	}
+	
+	input[type='image'] {
+		padding: 0px 0px 0px 0px;
+    	width: 26px;
+    	height: 26px;
+    	margin: 0px 0px -7px 10px;
+	}
+	
+	p.centrado{
+		padding: 0px 0px 0px 0px;
+		margin: 0px 0px 0px 350px;
+		height: 50px;
 	}
 	
 	label {
 		display:inline-block;
-		height: 30px;
-		min-width: 220px;
-		margin-left: 2%;
-		margin-right: 12px;
-		margin-top: 15px;
+		height: 26px;
+		min-width: 170px;
+		margin-left: 5px;
+		margin-right: 5px;
+		margin-top: 10px;
 	}
 	
 	.centrado {
@@ -366,16 +388,35 @@
 	  	border-color: #7fb2c3;
 	}
 	
+	input[type='text']:disabled, input[type='number']:disabled, select:disabled {
+	  	background: #dddddd;
+	}
+	
+	table {
+		font-size: 12px;
+	}
+	
 	td input[type='checkbox'] {
-  		margin-left: 40px;
+  		margin-left: 30px;
 	}
 
 	td input[type='text'] {
-	    width: 270px;
-	    margin: 10px;
+	    width: 240px;
+	    margin: 5px;
 	}
 	
 	td select {
-	    width: 150px;
-	    margin: 10px;
+	    width: 100px;
+	    margin: 5px;
 	}
+	
+	table.tablacursada td input[type='text'] {
+		width: 145px;
+	    margin: 5px;
+	}
+	
+	table.tablacursada td select {
+		width: 145px;
+	    margin: 5px;
+	}
+	

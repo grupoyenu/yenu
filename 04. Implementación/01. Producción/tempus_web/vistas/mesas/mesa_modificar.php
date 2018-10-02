@@ -5,6 +5,7 @@ include_once '../../modelos/mesas/Mesas.php';
 include_once '../../modelos/carreras/Carrera.php';
 include_once '../../modelos/carreras/Asignatura.php';
 include_once '../../modelos/carreras/Plan.php';
+include_once '../../modelos/mesas/Docentes.php';
 include_once '../../modelos/mesas/Tribunal.php';
 include_once '../../modelos/mesas/MesaExamen.php';
 include_once '../../modelos/mesas/Llamado.php';
@@ -14,6 +15,7 @@ include_once '../../lib/conf/ControlAcceso.php';
 echo "<html>";
 include_once '../estructura/encabezado.php';
 echo "<script type='text/javascript' src='../../js/mesa_modificar.js'></script>";
+echo "<script type='text/javascript' src='../../js/jquery-confirm-master/js/jquery-confirm.js'></script>";
 echo "<section id='main-content'>";
 echo "<article>";
 echo "<div id='content' class='content'>";
@@ -22,13 +24,12 @@ echo "<form action='../../Controladores/ManejadorMesa.php' id='formModificarMesa
 
 $resultado = $_SESSION['resultado'];
 if (isset($resultado) && isset($resultado['datos'])) {
-    
     if($resultado['resultado']) {
         $mensaje = $resultado['mensaje'];
-        echo "<h3 id='mensaje' class='letraVerde letraCentrada'>$mensaje</h3>";
+        echo "<h3 id='mensaje' class='letraVerde letraCentrada'>{$mensaje}</h3>";
     } else {
         $mensaje = $resultado['mensaje'];
-        echo "<h3 id='mensaje' class='letraRoja letraCentrada'>$mensaje</h3>";
+        echo "<h3 id='mensaje' class='letraRoja letraCentrada'>{$mensaje}</h3>";
     }
     
     /* RECUPERA LA INFORMACION DE LA MESA DE EXAMEN */
@@ -60,17 +61,51 @@ if (isset($resultado) && isset($resultado['datos'])) {
     echo "<legend>".$carrera->getCodigo()." - ".$carrera->getNombre()." - ".$asignatura->getNombre()."</legend>";
     echo "<fieldset title='La modificación del tribunal no genera notificaciones'>";
     echo "<legend>Tribunal</legend>";
-    echo "<label for='txtNombrePresidente'>* Presidente:</label>";
-    echo "<input type='text' name='txtNombrePresidente' id='txtNombrePresidente' value='".$presidente."' pattern='[A-Za-záéíóúÁÉÍÓÚñÑ. ]{10,255}' required>";
-    echo "<label for='txtNombreVocal1'>* Vocal 1:</label>";
-    echo "<input type='text' name='txtNombreVocal1' id='txtNombreVocal1' value='".$vocal1."' pattern='[A-Za-záéíóúÁÉÍÓÚñÑ0123456789,. ]{5,255}' required>";
-    echo "<br>";
-    echo "<label for='txtNombreVocal2'>Vocal 2:</label>";
-    echo "<input type='text' name='txtNombreVocal2' id='txtNombreVocal2' value='".$vocal2."' pattern='[A-Za-záéíóúñüÁÉÍÓÚÜÑ,. ]{4,255}'>";
-    echo "<label for='txtNombreSuplente'>Suplente:</label>";
-    echo "<input type='text' name='txtNombreSuplente' id='txtNombreSuplente' value='".$suplente."' pattern='[A-Za-záéíóúñüÁÉÍÓÚÜÑ,. ]{4,255}'>";
-    echo "<p class='centrado'><input class='botonVerde' type='submit' name='btnModificarMesa' id='btnModificarMesa' value='Modificar'></p>";
-    echo "</fieldset>";
+    if(isset($_SESSION['docentes'])) {
+        $docentes = $_SESSION['docentes'];
+        echo "<label for='txtNombrePresidente'>* Presidente:</label>";
+        echo "<input id='txtNombrePresidente' name='txtNombrePresidente' type='text' value='{$presidente}' list='docentesP' pattern='[A-Za-záéíóúÁÉÍÓÚñÑ,. ]{3,255}' required>";
+        echo "<datalist id='docentesP'>";
+        foreach ($docentes as $docente) {
+            echo "<option>{$docente->getNombre()}</option>";
+        }
+        echo "</datalist>";
+        echo "<label for='txtNombreVocal1'>* Vocal 1:</label>";
+        echo "<input type='text' id='txtNombreVocal1' name='txtNombreVocal1' value='{$vocal1}' pattern='[A-Za-záéíóúÁÉÍÓÚñÑ,. ]{3,255}' list='docentesV1' required>";
+        echo "<datalist id='docentesV1'>";
+        foreach ($docentes as $docente) {
+            echo "<option>{$docente->getNombre()}</option>";
+        }
+        echo "</datalist>";
+        echo "<br>";
+        echo "<label for='txtNombreVocal2'>Vocal 2:</label>";
+        echo "<input type='text' id='txtNombreVocal2' name='txtNombreVocal2' value='{$vocal2}' list='docentesV2' pattern='[A-Za-záéíóúñüÁÉÍÓÚÜÑ,. ]{3,255}'>";
+        echo "<datalist id='docentesV2'>";
+        foreach ($docentes as $docente) {
+            echo "<option>{$docente->getNombre()}</option>";
+        }
+        echo "</datalist>";
+        echo "<label for='txtNombreSuplente'>Suplente:</label>";
+        echo "<input type='text' id='txtNombreSuplente' name='txtNombreSuplente' value='{$suplente}' list='docentesS' pattern='[A-Za-záéíóúñüÁÉÍÓÚÜÑ,. ]{3,255}'>";
+        echo "<datalist id='docentesS'>";
+        foreach ($docentes as $docente) {
+            echo "<option>{$docente->getNombre()}</option>";
+        }
+        echo "</datalist>";
+        echo "<p class='centrado'><input class='botonVerde' type='submit' name='btnModificarMesa' id='btnModificarMesa' value='Modificar'></p>";
+    } else {
+        echo "<label for='txtNombrePresidente'>* Presidente:</label>";
+        echo "<input type='text' name='txtNombrePresidente' id='txtNombrePresidente' value='".$presidente."' pattern='[A-Za-záéíóúÁÉÍÓÚñÑ,. ]{3,255}' required>";
+        echo "<label for='txtNombreVocal1'>* Vocal 1:</label>";
+        echo "<input type='text' name='txtNombreVocal1' id='txtNombreVocal1' value='".$vocal1."' pattern='[A-Za-záéíóúÁÉÍÓÚñÑ0123456789,. ]{3,255}' required>";
+        echo "<br>";
+        echo "<label for='txtNombreVocal2'>Vocal 2:</label>";
+        echo "<input type='text' name='txtNombreVocal2' id='txtNombreVocal2' value='".$vocal2."' pattern='[A-Za-záéíóúñüÁÉÍÓÚÜÑ,. ]{3,255}'>";
+        echo "<label for='txtNombreSuplente'>Suplente:</label>";
+        echo "<input type='text' name='txtNombreSuplente' id='txtNombreSuplente' value='".$suplente."' pattern='[A-Za-záéíóúñüÁÉÍÓÚÜÑ,. ]{3,255}'>";
+        echo "<p class='centrado'><input class='botonVerde' type='submit' name='btnModificarTribunal' id='btnModificarTribunal' value='Modificar'></p>";
+    }
+   echo "</fieldset>";
     if ($llamados && $llamados > 0) {
         /* HAY DOS LLAMADOS */
         $hora_disabled = "false";
@@ -186,6 +221,13 @@ if (isset($resultado) && isset($resultado['datos'])) {
                 echo "<label class='letraNaranja'>La fecha para modificar este llamado ya ha pasado</label>";
                 echo "<br>";
             }
+            echo "<label>Modificación:</label>";
+            if($mesa->getPrimero()->getFechamod()) {
+                echo "<label>Ultima modificación {$mesa->getPrimero()->getFechamod()}</label>";
+            } else {
+                echo "<label>No registra</label>";
+            }
+            echo "<br>";
             echo "<label for='datePrimerLlamado'>Fecha:</label>";
             echo "<input type='date' name='datePrimerLlamado' id='datePrimerLlamado' value='{$primero}' {$disabled}>";
             echo "<input type='image' src='../../img/abm_editar.png' id='imgPrimerLlamado' name='imgPrimerLlamado' title='Modificar fecha' {$disabled}/>";
@@ -222,7 +264,8 @@ if (isset($resultado) && isset($resultado['datos'])) {
     }
     echo "</fieldset>";
     echo "<input type='hidden' id='idmesa' name='idmesa' value='".$mesa->getIdmesa()."'>";
-    echo "<input type='hidden' id='accion' name='accion' value='modificacion'>";
+    echo "<input type='hidden' id='llamado' name='llamado' value='1'>";
+    echo "<input type='hidden' id='accion' name='accion' value='modificarTribunal'>";
 } else {
     echo "<fieldset>";
     echo "<legend>Resultado</legend>";

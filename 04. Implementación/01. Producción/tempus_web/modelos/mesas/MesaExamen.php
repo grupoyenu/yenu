@@ -280,5 +280,91 @@ class MesaExamen
         }
         return "No se ha recibido la información necesaria para modificar la mesa de examen";
     }
+    
+    /**
+     * Realiza la modificacion del horario para el primer llamado, segundo llamado o ambos. Se debe
+     * recibir por parametro al menos uno de los llamados, el restante puede ser nulo. Al recibir 
+     * dos llamados, ambos tendran la hora indicada. El metodo devuelve verdadero cuando la operacion
+     * en la base de datos se lleva a cabo, en caso contrario, devuelve falso. 
+     * @param Llamado $primero Primer llamado de la mesa de examen.
+     * @param Llamado $segundo Segundo llamado de la mesa de examen.
+     * @param string $hora Recibe el horario a asignar a los llamados.
+     * @return boolean
+     * */
+    public function modificarHora($primero, $segundo, $hora) 
+    {
+        if ($primero && $segundo) {
+            $idprimero = $primero->getIdllamado();
+            $idsegundo = $segundo->getIdllamado();
+            $consulta = "UPDATE llamado SET hora='{$hora}', fechamod=NOW() WHERE idllamado=".$idprimero." OR idllamado=".$idsegundo;
+            ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+            if (ObjetoDatos::getInstancia()->affected_rows > 0) { 
+                $primero->setHora($hora);
+                $segundo->setHora($hora);
+                return true;
+            }
+        } else {
+            if ($primero) {
+                $idprimero = $primero->getIdllamado();
+                $primero->modificarHora($idprimero, $hora);
+                if ($primero->getIdllamado()) {
+                    return true;
+                }
+            } else {
+                $idsegundo = $segundo->getIdllamado();
+                $segundo->modificarHora($idsegundo, $hora);
+                if ($segundo->getIdllamado()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * @param Tribunal $tribunal Tribunal original de la mesa de examen.
+     * @param string $presidente Nombre del nuevo presidente.
+     * @param string $vocal1 Nombre del nuevo vocal1.
+     * @param string $vocal2 Nombre del nuevo vocal2.
+     * @param string $suplente Nombre del nuevo suplente.
+     * */
+    public function modificarTribunal($tribunal, $nombrepresidente, $nombrevocal1, $nombrevocal2, $nombresuplente)
+    {
+        if ($tribunal && $nombrepresidente && $nombrevocal1) {
+            $presidente = new Docente();
+            $vocal1 = new Docente();
+            $vocal2 = null;
+            $suplente  = null;
+            
+            $presidente->crear($nombrepresidente);
+            $vocal1->crear($nombrevocal1);
+            if ($nombrevocal2) {
+                $vocal2 = new Docente();
+                $vocal2->crear($nombrevocal2);
+                if ($nombresuplente) {
+                    $suplente  = new Docente();
+                    $suplente->crear($nombresuplente);
+                }
+            }
+            /* VERIFICA QUE LOS DOS DOCENTES OBLIGATORIOS SE HAYAN CREADO */
+            if ($presidente->getIdDocente() &&  $vocal1->getIdDocente()) {
+                $idtribunal = $tribunal->getIdtribunal();
+                if ($vocal2 && !$vocal2->getIdDocente()) {
+                   /* HAY NOMBRE VOCAL 2, SE CREO EL DOCENTE PERO NO EL REGISTRO */
+                   return false;
+                } else {
+                    if ($suplente && !$suplente->getIdDocente()) {
+                        /* HAY NOMBRE SUPLENTE, SE CREO EL DOCENTE PERO NO EL REGISTRO */
+                        return false;
+                    }
+                }
+                $tribunal->modificar($idtribunal, $presidente, $vocal1, $vocal2, $suplente);
+                if($tribunal->getIdtribunal()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 }

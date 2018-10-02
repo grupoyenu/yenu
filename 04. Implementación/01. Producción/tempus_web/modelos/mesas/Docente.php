@@ -82,7 +82,7 @@ class Docente
      * @param integer $iddocente Identificador del docente.
      * @param string $nombre Nombre del docente.
      * */
-    private function cargar($iddocente, $nombre)
+    public function cargar($iddocente, $nombre)
     {
         $nombre = Utilidades::convertirCamelCase($nombre);
         $this->iddocente = $iddocente;
@@ -138,7 +138,6 @@ class Docente
         $consulta = "SELECT * FROM docente WHERE nombre='{$nombre}' LIMIT 1";
         $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
         if ($this->datos->num_rows > 0) {
-            /* Se ha encontrado un docente que cumple la condicion de busqueda */
             $fila = $this->datos->fetch_row();
             $this->cargar($fila[0], $fila[1]);
         } else {

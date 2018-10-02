@@ -10,14 +10,14 @@
 <html>
 	
 	<?php include_once '../estructura/encabezado.php'; ?>
-	<script type="text/javascript" src="../../js/cursada_modificar.js"></script>
-	<script type="text/javascript" src="../../js/jquery-confirm-master/js/jquery-confirm.js"></script>
+	<script type='text/javascript' src='../../js/cursada_modificar.js'></script>
+	<script type='text/javascript' src='../../js/jquery-confirm-master/js/jquery-confirm.js'></script>
 	
-	<section id="main-content">
+	<section id='main-content'>
 		<article>
-			<div id="content" class="content">
+			<div id='content' class='content'>
             	<h2>MODIFICAR HORARIO DE CURSADA</h2>
-            	<form action="../../controladores/ManejadorCursada.php" id="formModificarCursada" name="formModificarCursada" method="post">
+            	<form action='../../controladores/ManejadorCursada.php' id='formModificarCursada' name='formModificarCursada' method='post'>
             	
             		<?php	
                 		$resultado = $_SESSION['resultado'];
@@ -41,14 +41,14 @@
                 		        
                 		        ?>
                 		        <fieldset>
-                        			<fieldset title="Los cambios en alguno de estos campos no genera una notificación en la aplicación movil del sistema">
+                        			<fieldset title='Los cambios en alguno de estos campos no genera una notificación en la aplicación movil del sistema'>
                         				<legend>Información básica</legend>
-                        				<label for="numCarrera">* Código de carrera:</label>
-                        				<input type="number" name="numCarrera" id="numCarrera" value='<?= $carrera->getCodigo(); ?>' required>
-                        				<label for="txtCarrera">* Nombre de carrera:</label>
-                        				<input type="text" name="txtCarrera" id="txtCarrera" value='<?= $carrera->getNombre(); ?>' required>
-                        				<label for="txtAsignatura">* Nombre de asignatura:</label>
-                        				<input type="text" name="txtAsignatura" id="txtAsignatura" value='<?= $asignatura->getNombre(); ?>' required>
+                        				<label for='numCarrera'>* Código de carrera:</label>
+                        				<input type='number' name='numCarrera' id='numCarrera' value='<?= $carrera->getCodigo(); ?>' required>
+                        				<label for='txtCarrera'>* Nombre de carrera:</label>
+                        				<input type='text' name='txtCarrera' id='txtCarrera' value='<?= $carrera->getNombre(); ?>' required>
+                        				<label for='txtAsignatura'>* Nombre de asignatura:</label>
+                        				<input type='text' name='txtAsignatura' id='txtAsignatura' value='<?= $asignatura->getNombre(); ?>' required>
                         				<label for="selAnio">* Año:</label>
                         				<select name="selAnio" id="selAnio" required>
                         					<option value="1">1</option>

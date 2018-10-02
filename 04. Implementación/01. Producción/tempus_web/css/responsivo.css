@@ -9,10 +9,12 @@ and open the template in the editor.
 */
 
 @media screen and (max-width: 991px) {
+	
     * {
         font-size: 1.2 em;
         line-height: normal;
     }
+    
     #main-content {
         background: white;
         width: 80%;
@@ -26,4 +28,18 @@ and open the template in the editor.
         display: block;
         float: none;
     }
+    
+	td input[type='checkbox'] {
+  		margin-left: 5px;
+	}
+
+	td input[type='text'] {
+	    width: auto;
+	    margin: 5px;
+	}
+	
+	td select {
+	    width: auto;
+	    margin: 5px;
+	}
 }

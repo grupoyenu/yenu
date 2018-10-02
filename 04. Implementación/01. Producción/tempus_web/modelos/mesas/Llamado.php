@@ -33,7 +33,7 @@ class Llamado {
      * */
     function __construct($idllamado = NULL){
         if($idllamado) {
-            $consulta = "SELECT idllamado, DATE_FORMAT(fecha, '%d/%m/%Y'), DATE_FORMAT(hora, '%H:%i'), idaula FROM llamado WHERE idllamado = ".$idllamado;
+            $consulta = "SELECT idllamado, DATE_FORMAT(fecha, '%d/%m/%Y'), DATE_FORMAT(hora, '%H:%i'), idaula, DATE_FORMAT(fechamod, '%d/%m/%Y') FROM llamado WHERE idllamado = ".$idllamado;
             $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
             if ($this->datos->num_rows > 0) {
                 $fila = $this->datos->fetch_row();
@@ -44,6 +44,7 @@ class Llamado {
                 if($fila[3]) {
                     $this->aula = new Aula($fila[3]);
                 }
+                $this->fechamod = $fila[4];
             }
             $this->datos = null;
         }
@@ -143,7 +144,7 @@ class Llamado {
         ObjetoDatos::getInstancia()->ejecutarQuery("INSERT INTO llamado VALUES (null,'".$fecha."','".$hora."',".$aula.", NULL)");
         if (ObjetoDatos::getInstancia()->affected_rows > 0) {
             $this->idllamado = (Int) ObjetoDatos::getInstancia()->insert_id;
-            $this->fecha = date('d-m-Y', strtotime($fecha));
+            $this->fecha = date('d/m/Y', strtotime($fecha));
             $this->hora = $hora;
             if ($aula) {
                 $this->aula = new Aula($aula);
@@ -165,6 +166,7 @@ class Llamado {
      * @param integer $idllamado Identificador del llamado.
      * @param string $fecha Fecha del llamado.
      * @param string $hora Hora del llamado.
+     * @param Aula $aula Aula donde se dicta la mesa.
      * @param string $fechamod Fecha de ultima modificacion.
      * */
     private function cargar($idllamado, $fecha, $hora, $aula, $fechamod)
@@ -177,48 +179,105 @@ class Llamado {
     }
     
     /**
-     * Realiza la modificación del llamado indicado. Cuando la operación se hace
-     * correctamente, se asignan los parametros recibidos al llamado y se devuelve
-     * un mensaje. En caso contrario, los atributos del llamado serán nulos y se
-     * devuelve un mensaje.
+     * Realiza la modificación del llamado indicado. Cuando la operación se hace correctamente, se 
+     * asignan los parametros recibidos al llamado. En caso contrario, los atributos del llamado 
+     * seran todos nulos.
      * @param integer $idllamado Recibe el identificador del llamado a modificar.
      * @param string $fecha Recibe la fecha en formato YYYY-MM-DD. 
      * @param string $hora Recibe la hora en formato HH:MM. 
      * @param Aula $aula Recibe el aula.
-     * @return string Mensaje con el resultado de la operación.
-     * @author Marquez Emanuel.
      * */
     public function modificar($idllamado, $fecha, $hora, $aula)
     {
-        if ($idllamado) {
-            /* Solo la fecha y hora son obligatorios */
-            if ($fecha && $hora) {
-                
-                $idaula = "null";
-                if ($aula) {
-                    $idaula = $aula->getIdaula();
-                }
-                
-                $consulta = "UPDATE llamado SET fecha={$fecha}, hora={$hora}, idaula={$aula} WHERE idllamado=".$idaula;
-                ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
-                if (ObjetoDatos::getInstancia()->affected_rows > 0) {
-                    $this->idllamado = $idllamado;
-                    $this->fecha = $fecha;
-                    $this->hora = $hora;
-                    if ($aula) {
-                        $this->aula = $aula;
-                    } else {
-                        $this->aula = null;
-                    }
-                    return "Se ha modificado el llamado correctamente";
-                } else {
-                    $this->cargar(null, null, null, null);
-                    return "No se ha modificado el llamado correctamente";
-                }
+        if ($idllamado && $fecha && $hora) {
+            $consulta = "UPDATE llamado SET fecha='{$fecha}', hora='{$hora}', fechamod=NOW() WHERE idllamado=".$idllamado;
+            if ($aula && $aula->getIdaula()) {
+                $idaula = $aula->getIdaula();
+                $consulta = "UPDATE llamado SET fecha='{$fecha}', hora='{$hora}', idaula={$idaula}, fechamod=NOW() WHERE idllamado=".$idllamado;
             }
-            return "No se obtuvo la fecha u hora, necesaria para realizar la modificación del llamado";
+            ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+            if (ObjetoDatos::getInstancia()->affected_rows > 0) {
+                if ($aula) {
+                    $this->cargar($idllamado, $fecha, $hora, $aula);
+                } else {
+                    $this->cargar($idllamado, $fecha, $hora, null);
+                }
+            } else {
+                $this->cargar(null, null, null, null);
+            }
+        } else {
+            $this->cargar(null, null, null, null);
         }
-        return "No se obtuvo la información necesaria para realizar la modificación del llamado";
+    }
+    
+    /**
+     * Realiza la modificacion del aula para el llamado que se indica. Cuando la operacion se
+     * hace correctamente se asigna la nueva aula al objeto, en caso contrario los atributos del
+     * mismo seran nulos. La modificacion del horario actualiza la fechamod en la base de datos
+     * con la fecha actual.
+     * @param integer $idllamado Identificador del llamado a modificar.
+     * @param Aula $aula Horario del llamado en formato HH:MM.
+     * */
+    public function modificarAula($idllamado, $aula) {
+        if ($idllamado && $aula) {
+            $idaula = $aula->getIdaula();
+            $consulta = "UPDATE llamado SET idaula={$idaula}, fechamod=NOW() WHERE idllamado=".$idllamado;
+            ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+            if (ObjetoDatos::getInstancia()->affected_rows > 0) {
+                $this->aula = $aula;
+            } else {
+                $this->cargar(null, null, null, null);
+            }
+        } else {
+            $this->cargar(null, null, null, null);
+        }
+    }
+    
+    /**
+     * Realiza la modificacion del horario para el llamado que se indica. Cuando la operacion se 
+     * hace correctamente se asigna el nuevo horario al objeto, en caso contrario los atributos
+     * del mismo seran nulos. La modificacion del horario actualiza la fechamod en la base de datos
+     * con la fecha actual.
+     * @param integer $idllamado Identificador del llamado a modificar.
+     * @param string $hora Horario del llamado en formato HH:MM.  
+     * */
+    public function modificarHora($idllamado, $hora) {
+        if ($idllamado && $hora) {
+            $consulta = "UPDATE llamado SET hora='{$hora}', fechamod=NOW() WHERE idllamado=".$idllamado;
+            ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+            if (ObjetoDatos::getInstancia()->affected_rows > 0) { 
+                $this->hora = $hora;
+                $this->fechamod = date("d/m/Y",time());
+            } else {
+                $this->cargar(null, null, null, null);
+            }
+        } else {
+            $this->cargar(null, null, null, null);
+        }
+    }
+    
+    /**
+     * Realiza la modificacion de la fecha para el llamado que se indica. Cuando la operacion se
+     * hace correctamente se asigna la nueva fecha al objeto, en caso contrario, los atributos del
+     * mismo seran nulos. La modificacion de la fecha para un llamado actualiza la fechamod en la
+     * base de datos con la fecha actual.
+     * @param integer $idllamado Identificador del llamado a modificar.
+     * @param string $fecha Nueva fecha en formato AAAA-MM-DD.  
+     * */
+    public function modificarFecha($idllamado, $fecha) 
+    {
+        if ($idllamado && $fecha) {
+            $consulta = "UPDATE llamado SET fecha='{$fecha}', fechamod=NOW() WHERE idllamado=".$idllamado;
+            ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+            if (ObjetoDatos::getInstancia()->affected_rows > 0) {
+                $this->fecha = date('d/m/Y', strtotime($fecha));
+                $this->fechamod = date("d/m/Y",time());
+            } else {
+                $this->cargar(null, null, null, null);
+            }
+        } else {
+            $this->cargar(null, null, null, null);
+        }
     }
 
 }

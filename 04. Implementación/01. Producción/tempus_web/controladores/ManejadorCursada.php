@@ -113,7 +113,6 @@
             $cursadas = new Cursadas();
             $asignatura = $_POST['txtAsignatura'];
             $_SESSION['resultado'] = $cursadas->buscar($asignatura);
-            
             break;
         case "borrar":
             
@@ -144,12 +143,29 @@
             $_SESSION['resultado'] = $resultado;
             break;
         case "modificarCursada":
+            $redireccion = Constantes::APPURL."/vistas/cursadas/cursada_modificar.php";
+            $resultado =  $_SESSION['resultado'];
+            if (isset($resultado) && isset($resultado['datos'])) {
+                
+                $cursada = $resultado['datos'];
+                $codigocarrera = $_POST['numCarrera'];
+                $nombrecarrera = $_POST['txtCarrera'];
+                $nombreasignatura = $_POST['txtAsignatura'];
+                $anio = $_POST['selAnio'];
+                
+                
+                
+            } else {
+                $mensaje = "No se pudo obtener la información de la cursada a modificar";
+                $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>NULL);
+            }
             
+            $_SESSION['resultado'] = $resultado;
             break;
         case "crearclase":
             $redireccion = Constantes::APPURL."/vistas/cursadas/cursada_modificar.php";
             $resultado =  $_SESSION['resultado'];
-            if(isset($resultado)) {
+            if (isset($resultado) && isset($resultado['datos'])) {
                 $cursada = $resultado['datos'];
                 $dia = $_POST['radDias'];
                 $horainicio = $_POST['selectHoraInicio'.$dia];
@@ -159,32 +175,43 @@
                 $aula = new Aula();
                 $aula->crear($nombreaula, $sector);
                 if($aula->getIdaula()) {
-                    $clase = new Clase();
-                    $clase->crear($dia, $horainicio, $horafin, $aula);
-                    if($clase->getIdclase()) {
-                        $clases = $cursada->getClases();
-                        $clases[$dia] = $clase;
-                        $cursada->setClases($clases);
-                        $mensaje = "Se ha realizado la creación de la clase correctamente";
+                    $idaula = $aula->getIdaula();
+                    if($aula->verificarDisponibilidadFranja($idaula, $dia,  $horainicio, $horafin)) {
+                        $plan = $cursada->getPlan();
+                        $clase = new Clase();
+                        $clase->cargar(null, $dia, $horainicio, $horafin, $aula, null);
+                        $idclase = $cursada->agregarClase($plan, $clase);
+                        if($idclase) {
+                            $clase->setIdclase($idclase);
+                            $clases = $cursada->getClases();
+                            $clases[$dia] = $clase;
+                            $cursada->setClases($clases);
+                            $mensaje = "Se ha realizado la creación de la clase correctamente";
+                            if($aula->verificarDisponibilidad($idaula, $dia, $horainicio, $horafin)) {
+                                $mensaje = $mensaje.". El aula es compartida con otra clase";
+                            }
+                        } else {
+                            $mensaje = "No se ha podido realizar la creación de la clase";
+                        }
                     } else {
-                        $mensaje = "No se ha podido realizar la creación de la clase";
+                        $mensaje = "No se ha podido realizar la creación de la clase. ";
+                        $mensaje = $mensaje."El aula tiene una clase que comienza o finaliza en el horario indicado";
                     }
+                    $resultado = array('resultado'=>TRUE,'mensaje'=>$mensaje, 'datos'=>$cursada);
                 } else {
                     $mensaje = "No se ha podido realizar la creación de la clase";
+                    $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>$cursada);
                 }
-                $resultado = array('resultado'=>TRUE,'mensaje'=>$mensaje, 'datos'=>$cursada);
-                
             } else {
                 $mensaje = "No se pudo obtener la información de la clase seleccionada para crear";
-                $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>null);
+                $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>NULL);
             }
-            
             $_SESSION['resultado'] = $resultado;
             break;
         case "modificarclase":
             $redireccion = Constantes::APPURL."/vistas/cursadas/cursada_modificar.php";
             $resultado =  $_SESSION['resultado'];
-            if(isset($resultado)) {
+            if(isset($resultado) && isset($resultado['datos'])) {
                
                 $dia = $_POST['radDias'];
                 $idclase = $_POST['idclase'.$dia];
@@ -194,16 +221,35 @@
                 $nombreaula = $_POST['txtAula'.$dia];
                 
                 $cursada = $resultado['datos'];
+                $clases = $cursada->getClases();
                 $clase = $clases[$dia];
                 $aula = $clase->getAula();
                 
-                if(($aula->getSector() != $sector) || ($aula->getNombre() != $nombreaula)) {
-                    $mensaje = "Modifca aula: ".$dia." / ".$idclase." / ".$horainicio." / ".$horafin." / ".$sector." / ".$aula;
-                } else {
-                    $mensaje = $dia." / ".$idclase." / ".$horainicio." / ".$horafin." / ".$sector." / ".$aula;
+                $modificaaula = true;
+                if (($aula->getSector() != $sector) || ($aula->getNombre() != $nombreaula)) {
+                    $idaula = $aula->getIdaula();
+                    $sector = strtoupper($sector);
+                    $nombreaula = Utilidades::convertirCamelCase($nombreaula);
+                    $aula->modificar($idaula, $nombreaula, $sector);
+                    if (!$aula->getIdaula()) {
+                        $modificaaula = false;
+                    }
                 }
-                $resultado = array('resultado'=>TRUE,'mensaje'=>$mensaje, 'datos'=>$cursada);
-                
+                $clase->modificar($idclase, $dia, $horainicio, $horafin, $aula);
+                if ($modificaaula) {
+                    if ($clase->getIdclase()) {
+                        $clases[$dia] = $clase;
+                        $cursada->setClases($clases);
+                        $mensaje = "Se ha realizado la modificación de la clase correctamente";
+                        $resultado = array('resultado'=>TRUE,'mensaje'=>$mensaje, 'datos'=>$cursada);
+                    } else {
+                        $mensaje = "No se ha podido realizar la modificación de la clase";
+                        $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>$cursada);
+                    }
+                } else {
+                    $mensaje = "No se ha podido realizar la modificación del aula para la clase";
+                    $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>$cursada);
+                }
             } else {
                 $mensaje = "No se pudo obtener la información de la clase seleccionada para modificar";
                 $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>null);
@@ -214,23 +260,26 @@
         case "borrarclase":
             $redireccion = Constantes::APPURL."/vistas/cursadas/cursada_modificar.php";
             $resultado =  $_SESSION['resultado'];
-            if(isset($resultado)) {
+            if(isset($resultado) && isset($resultado['datos'])) {
+                $todas = $_POST['aplicarTodas'];
                 $dia = $_POST['radDias'];
                 $idclase = $_POST['idclase'.$dia];
                 $cursada = $resultado['datos'];
                 $clases = $cursada->getClases();
                 $clase = $clases[$dia];
-                $clase->borrar($idclase);
-                if($clase->getIdclase()) {
+                $plan = $cursada->getPlan();
+                $borrada = $cursada->quitarClase($plan, $clase, $todas);
+                if ($borrada) {
                     $clases[$dia] = null;
                     $cursada->setClases($clases);
                     $mensaje = "Se ha realizado la eliminación de la clase correctamente";
+                    $resultado = array('resultado'=>TRUE,'mensaje'=>$mensaje, 'datos'=>$cursada);
                 } else {
-                    $mensaje = $dia." / ".$idclase." : No se ha eliminado";
+                    $mensaje = "No se pudo realizar la eliminación de la clase";
+                    $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>$cursada);
                 }
-                $resultado = array('resultado'=>TRUE,'mensaje'=>$mensaje, 'datos'=>$cursada);
             } else {
-                $mensaje = "No se pudo obtener la información de la clase seleccionada para borrar";
+                $mensaje = "No se pudo obtener la información de la clase seleccionada para borrar. Intente nuevamente";
                 $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>null);
             }
             $_SESSION['resultado'] = $resultado;
