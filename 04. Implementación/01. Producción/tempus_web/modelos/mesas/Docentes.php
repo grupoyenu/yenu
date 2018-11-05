@@ -9,8 +9,8 @@ class Docentes
     private $datos;
     
     /**
-     * Constructor de la clase. Obtiene todos los docentes que se encuentren cargados en la base de
-     * datos. Los registros se encuentran ordenados por nombre en forma ascendente.
+     * Constructor de la clase Docentes. Obtiene todos los docentes que se encuentren cargados en la
+     * base de datos. Los registros se encuentran ordenados por nombre en forma ascendente.
      * */
     function __construct()
     {

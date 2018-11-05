@@ -160,14 +160,14 @@ switch ($accion) {
         $redireccion = Constantes::APPURL."/vistas/mesas/mesa_resultado_buscar.php";
         $asignatura = $_POST['txtAsignatura'];
         $mesas_examen = new Mesas();
-        $_SESSION['resultado'] = $mesas_examen->buscar($asignatura);
+        $_SESSION['mesaBuscarResultado'] = $mesas_examen->buscar($asignatura);
         break;
     case "borrar":
         
         break;
     case "modificar":
         $redireccion = Constantes::APPURL."/vistas/mesas/mesa_modificar.php";
-        $resultado =  $_SESSION['resultado'];
+        $resultado =  $_SESSION['mesaBuscarResultado'];
         if (isset($resultado) && isset($resultado['datos'])) {
             $indice = $_POST['radioMesas'];
             if (isset($indice)) {

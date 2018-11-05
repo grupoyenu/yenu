@@ -33,7 +33,6 @@ class Aula
                 $this->idaula = $fila[0];
                 $this->nombre = $fila[1];
                 $this->sector = $fila[2];
-                
             }
             $this->datos = null;
         }
@@ -120,7 +119,7 @@ class Aula
      * @param string $nombre Nombre del aula.
      * @param string $sector Nombre del sector.
      * */
-    private function cargar($idaula, $nombre, $sector)
+    public function cargar($idaula, $nombre, $sector)
     {
         $this->idaula = $idaula;
         $this->nombre = $nombre;
@@ -168,6 +167,53 @@ class Aula
                 $this->cargar(null,null,null);
             }
         }
+    }
+    
+    public function obtenerHorarios($idaula)
+    {
+        $consulta = "SELECT DISTINCT(a.idasignatura), cl.dia, a.nombre, DATE_FORMAT(cl.desde, '%H:%i'), DATE_FORMAT(cl.hasta, '%H:%i') 
+                    FROM asignatura a, cursada cu, clase cl 
+                    WHERE a.idasignatura = cu.idasignatura AND cu.idclase = cl.idclase AND cl.idaula = {$idaula} 
+                    ORDER BY cl.dia ASC, cl.desde ASC";
+        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+        $filas = $this->datos->num_rows;
+        if ($filas > 0) {
+            $lunes = array();
+            $martes = array();
+            $miercoles = array();
+            $jueves = array();
+            $viernes = array();
+            $horarios = array();
+            
+            while ($fila = mysqli_fetch_array($this->datos)) {
+                
+                switch ($fila[1]) {
+                    case 1:
+                        $lunes[] = array ('nombre'=>$fila[2], 'inicio'=>$fila[3], 'fin'=>$fila[4]);
+                        break;
+                    case 2:
+                        $martes[] = array ('nombre'=>$fila[2], 'inicio'=>$fila[3], 'fin'=>$fila[4]);
+                        break;
+                    case 3:
+                        $miercoles[] = array ('nombre'=>$fila[2], 'inicio'=>$fila[3], 'fin'=>$fila[4]);
+                        break;
+                    case 4:
+                        $jueves[] = array ('nombre'=>$fila[2], 'inicio'=>$fila[3], 'fin'=>$fila[4]);
+                        break;
+                    case 5:
+                        $viernes[] = array ('nombre'=>$fila[2], 'inicio'=>$fila[3], 'fin'=>$fila[4]);
+                        break;
+                }
+            }
+            $horarios[] = new Aula($idaula);
+            $horarios[] = $lunes;
+            $horarios[] = $martes;
+            $horarios[] = $miercoles;
+            $horarios[] = $jueves;
+            $horarios[] = $viernes;
+            return $horarios;
+        }
+        return null;
     }
     
     /**

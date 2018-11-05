@@ -355,4 +355,45 @@ class Mesas
         }
         return 0;
     }
+   
+    /**
+     * @param string $fecha Fecha de las mesas a consultar.
+     * @param string $hora Hora de las mesas a consultar.
+     * @param string $sector Sector de las mesas a consultar.
+     * */
+    public function informe($fecha, $hora, $sector)
+    {
+        
+    }
+    
+    /**
+     *
+     * */
+    public function obtenerMesasDeHoy() 
+    {
+        $this->mesas = null;
+        $consulta = "SELECT m.idmesa, m.idasignatura, m.idcarrera, m.idtribunal, m.primero, m.segundo 
+                     FROM mesa_examen m, llamado l 
+                     WHERE (m.primero=l.idllamado OR m.segundo=l.idllamado) AND l.fecha=CURDATE()";
+        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+        if ($this->datos->num_rows > 0) {
+            $this->mesas = array();
+            $tamanio = $this->datos->num_rows;
+            for ($i = 0; $i < $tamanio; $i++) {
+                $mesa = new MesaExamen();
+                $fila = $this->datos->fetch_row();
+                $plan = new Plan($fila[1], $fila[2]);
+                $tribunal = new Tribunal($fila[3]);
+                $primero = $segundo = null;
+                if($fila[4]) {
+                    $primero = new Llamado($fila[4]);
+                }
+                if($fila[5]) {
+                    $segundo = new Llamado($fila[5]);
+                }
+                $mesa->cargar($fila[0], $plan, $tribunal, $primero, $segundo);
+                $this->mesas[] = $mesa;
+            }
+        }
+    }
 }

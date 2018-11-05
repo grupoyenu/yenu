@@ -86,7 +86,7 @@ class Carrera
      * @param integer $codigo Codigo de la carrera. 
      * @para string $nombre Nombre de la carrera. 
      * */
-    private function cargar($codigo, $nombre)
+    public function cargar($codigo, $nombre)
     {
         $nombre = Utilidades::convertirCamelCase($nombre);
         $this->codigo = $codigo;
@@ -104,7 +104,7 @@ class Carrera
     public function crear($codigo, $nombre)
     {
         $this->buscar($codigo, $nombre);
-        if (is_null($this->codigo)) {
+        if (!$this->codigo) {
             $nombre = Utilidades::convertirCamelCase($nombre);
             $consulta = "INSERT INTO carrera VALUES ({$codigo},'{$nombre}')";
             ObjetoDatos::getInstancia()->ejecutarQuery($consulta);

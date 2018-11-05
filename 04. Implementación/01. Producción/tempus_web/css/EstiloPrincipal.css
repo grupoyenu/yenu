@@ -239,7 +239,7 @@
     	margin-right: 5px;
 	}
 	
-	input, textarea, select {
+	input, textarea, select, button {
     	font-size: 100%;
     	font-family: inherit;
 	}
@@ -276,7 +276,7 @@
 		font-size: 12px;
 	}
 	
-	input[type='submit'] {
+	input[type='submit'], button {
 		background-color: #7fb2c3;
 		border: 2px solid;
 		border-color: #4e8fa5;

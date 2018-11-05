@@ -109,6 +109,54 @@ class MesaExamen
     }
     
     /**
+     * */
+    public function borrar()
+    {
+        
+    }
+    
+    /**
+     * Realiza la búsqueda de una mesa de examen. Cuando se encuentra la mesa de examen
+     * se obtiene toda la información asociada. En caso contrario, cada uno de sus atributos
+     * seran nulos.
+     * @param Plan $plan Recibe la asignatura y carrera de la mesa de examen (Obligatorio).
+     * */
+    public function buscar($plan)
+    {
+        $idasignatura = $plan->getAsignatura()->getIdasignatura();
+        $idcarrera = $plan->getCarrera()->getCodigo();
+        $consulta = "SELECT * FROM mesa_examen WHERE ";
+        $consulta = $consulta."idasignatura = ".$idasignatura." AND idcarrera = ".$idcarrera;
+        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+        if ($this->datos->num_rows > 0) {
+            
+            $fila = $this->datos->fetch_row();
+            $this->idmesa = $fila[0];
+            $this->plan = new Plan($fila[1], $fila[2]);
+            $this->tribunal = new Tribunal($fila[3]);
+            $this->primero = new Llamado($fila[4]);
+            if($fila[5]) {
+                $this->segundo = new Llamado($fila[5]);
+            }
+            
+        } else {
+            $this->cargar(null, null, null, null, null);
+        }
+        $this->datos = null;
+    }
+    
+    /**
+     *
+     * */
+    public function cargar($idmesa, $plan, $tribunal, $primero, $segundo) {
+        $this->idmesa = $idmesa;
+        $this->plan = $plan;
+        $this->tribunal = $tribunal;
+        $this->primero = $primero;
+        $this->segundo = $segundo;
+    }
+    
+    /**
      * Realiza la creacion de una nueva mesa de examen. Primero se realiza la búsqueda de 
      * mesa de examen. En caso que exista, se obtiene su información. En caso contrario, 
      * se crea un nuevo registro. Para ello, tambien se hace la creacion del tribunal, 
@@ -170,66 +218,17 @@ class MesaExamen
                     $this->segundo = $segundo;
                     return "Se ha creado la mesa de examen correctamente";
                 } else {
-                    $this->limpiarMesaExamen();
+                    $this->cargar(null, null, null, null, null);
                     return "No se ha podido realizar la creación de la mesa de examen";
                 }
             } else {
-                $this->limpiarMesaExamen();
+                $this->cargar(null, null, null, null, null);
                 return "No se ha podido realizar la creación de llamado para la mesa de examen";
             }
         }
         return "Se ha encontrado una mesa de examen para la asignatura en la carrera indicada";
     }
-    
-    /**
-     * */
-    public function borrar()
-    {
-        
-    }
-    
-    /**
-     * Realiza la búsqueda de una mesa de examen. Cuando se encuentra la mesa de examen
-     * se obtiene toda la información asociada. En caso contrario, cada uno de sus atributos
-     * seran nulos. 
-     * @param Plan $plan Recibe la asignatura y carrera de la mesa de examen (Obligatorio).
-     * */
-    public function buscar($plan)
-    {
-        $idasignatura = $plan->getAsignatura()->getIdasignatura();
-        $idcarrera = $plan->getCarrera()->getCodigo();
-        $consulta = "SELECT * FROM mesa_examen WHERE ";
-        $consulta = $consulta."idasignatura = ".$idasignatura." AND idcarrera = ".$idcarrera;
-        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
-        if ($this->datos->num_rows > 0) {
-            
-            $fila = $this->datos->fetch_row();
-            $this->idmesa = $fila[0];
-            $this->plan = new Plan($fila[1], $fila[2]);
-            $this->tribunal = new Tribunal($fila[3]);
-            $this->primero = new Llamado($fila[4]);
-            if($fila[5]) {
-                $this->segundo = new Llamado($fila[5]);
-            }
-            
-        } else {
-            $this->limpiarMesaExamen();
-        }
-        $this->datos = null;
-    }
-    
-    /**
-     * Coloca todos los atributos de la mesa de examen en nulo.
-     * */
-    private function limpiarMesaExamen() 
-    {
-        $this->idmesa = null;
-        $this->plan = null;
-        $this->tribunal = null;
-        $this->primero = null;
-        $this->segundo = null;
-    }
-    
+
     /**
      * Realiza la modificación de la mesa de examen. 
      * @param integer $idmesa Recibe el identificador de la mesa de examen a modificar.

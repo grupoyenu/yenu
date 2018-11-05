@@ -19,6 +19,33 @@
 $(document).ready(function() {
 	
 	
+	/** Al modificar el nombre de la carrera se recorre la lista
+	 * de seleccion para asignar el codigo correspondiente.
+	 * */
+	$('input#txtCarrera').change(function() {
+		var carrera = $(this).val();
+		alert(carrera);
+		$("#carreras option").each(function() {
+			var codigo = $(this).text();
+			var nombre = $(this).attr('value');
+			if(nombre == carrera) {
+				$('input#codigoCarrera').val(codigo);
+			}
+		});
+	});
+	
+	$('input#codigoCarrera').change(function() {
+		var carrera = $(this).val();
+		alert(carrera);
+		$("#carreras option").each(function() {
+			var codigo = $(this).text();
+			var nombre = $(this).attr('value');
+			if(codigo == carrera) {
+				$('input#txtCarrera').val(nombre);
+			}
+		});
+	});
+	
 	/** 
 	 * Se habilitan o deshabilitan los campos del dia lunes 
 	 * cuando se hace click sobre el checkbox correspondiente.
