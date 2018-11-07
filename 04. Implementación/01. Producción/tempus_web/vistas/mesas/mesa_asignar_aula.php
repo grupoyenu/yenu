@@ -8,59 +8,85 @@ include_once '../../modelos/mesas/Tribunal.php';
 include_once '../../modelos/mesas/MesaExamen.php';
 include_once '../../modelos/mesas/Llamado.php';
 include_once '../../modelos/aulas/Aula.php';
+include_once '../../modelos/aulas/Aulas.php';
 include_once '../../lib/conf/ControlAcceso.php';
 include_once '../../lib/conf/PermisosSistema.php';
 include_once '../../lib/conf/Utilidades.php';
 ?>
 <html>
 <?php include_once '../estructura/encabezado.php'; ?>
-<script type='text/javascript' src='../../js/aula_buscar.js'></script>
+<script type='text/javascript' src='../../js/mesa_asignar_aula.js'></script>
 <section id='main-content'>
 <article>
 <div id='content' class='content'>
 <h2>ASIGNAR AULA</h2>
 <form action='' id='' name='' method='post'>
     <?php 
-    $resultado =  $_SESSION['mesaBuscarResultado'];
-    $indice = $_POST['radioMesas'];
-    $fecha_actual = strtotime(date("d-m-Y",time()));
-    if(isset($resultado) && isset($resultado['datos'])) {
-        $mesas = $resultado['datos'];
+    $mesas =  $_SESSION['mesasSinAsignar'];
+    $indice = $_POST['radMesa'];
+    $aulas = new Aulas();
+    if(isset($mesas)) {
+        $fecha_actual = strtotime(date("d-m-Y",time()));
         $mesa = $mesas[$indice];
-        echo "<fieldset>";
-        echo "<legend>{$mesa->getPlan()->getCarrera()->getNombre()} - {$mesa->getPlan()->getAsignatura()->getNombre()}</legend>";
+        $carrera = $mesa->getPlan()->getCarrera()->getNombre();
+        $asignatura = $mesa->getPlan()->getAsignatura()->getNombre();
+        $dia = "";
+        $llamado = "";
+        $fecha = "";
+        $hora = "";
         if($mesa->getPrimero()) {
-            echo "<fieldset>";
-            echo "<legend>Primer llamado</legend>";
-            $primero = $mesa->getPrimero()->getFecha();
-            $fecha_primero =  strtotime($primero);
-            if ($fecha_primero >= $fecha_actual) {
-                
-            } else {
-                $dia = str_replace("/", "-", $primero);
-                $dia = Utilidades::nombreDeDia(date("N",strtotime($dia)));
-                echo "<label>Observacion:</label>";
-                echo "<label>El primer llamado de esta mesa se dictó el día {$dia} {$primero}. Ya no se puede asignar un aula.</label>";
+            $fechaprimero = $mesa->getPrimero()->getFecha();
+            $fechaprimero = str_replace("/", "-", $fechaprimero);
+            $fechaprimero =  strtotime($fechaprimero);
+            if($fechaprimero = $fecha_actual) {
+                $llamado = "Primer llamado: ";
+                $dia = Utilidades::nombreDeDia(date("N", $fechaprimero))." ";
+                $fecha = $mesa->getPrimero()->getFecha()." ";
+                $hora = $mesa->getPrimero()->getHora()." hs";
             }
-            echo "</fieldset>";
+        } else {
+            $fechasegundo = $mesa->getSegundo()->getFecha();
+            $fechasegundo = str_replace("/", "-", $fechasegundo);
+            $fechaprimero =  strtotime($fechasegundo);
+            $llamado = "Segundo llamado: ";
+            $dia = Utilidades::nombreDeDia(date("N", $fechasegundo))." ";
+            $fecha = $mesa->getSegundo()->getFecha()." ";
+            $hora = $mesa->getSegundo()->getHora()." hs";
         }
         
-        if($mesa->getSegundo()) {
-            echo "<fieldset>";
-            echo "<legend>Segundo llamado</legend>";
-            $segundo = $mesa->getSegundo()->getFecha();
-            $fecha_segundo =  strtotime($segundo);
-            if ($fecha_segundo >= $fecha_actual) {
-                
-            } else {
-                $dia = str_replace("/", "-", $segundo);
-                $dia = Utilidades::nombreDeDia(date("N",strtotime($dia)));
-                echo "<label>Observacion:</label>";
-                echo "<label>El segundo llamado de esta mesa se dictó el día {$dia} {$segundo}. Ya no se puede asignar un aula.</label>";
-            }
-            echo "</fieldset>";
-        }
+        
+        echo "<fieldset>";
+        echo "<legend>{$carrera} - {$asignatura}</legend>";
+        echo "<label>{$llamado}</label>";
+        echo "<label>{$dia} {$fecha} {$hora}</label><br>";
+        echo "<fieldset>";
+        echo "<legend><input type='radio' id='radTipoAsignacion' name='radTipoAsignacion' value='0' checked> Seleccionar aula libre </legend>";
+        echo "<div id='divDisponible'>";
+        
+        echo "<label>Observacion:</label>";
+        echo "<label>Esta opción permite seleccionar un aula disponible en una franja horaria de 3 hs a partir de la hora de inicio</label><br>";
+        echo "</div>";
         echo "</fieldset>";
+       
+        echo "<fieldset title='Esta opción permite seleccionar un aula aunque este ocupada por una clase'>";
+        echo "<legend><input type='radio' id='radTipoAsignacion' name='radTipoAsignacion' value='1'> Seleccionar aula ocupada </legend>";
+        echo "<div id='divOcupada' style='display:none;'>";
+        if($aulas->getAulas()) {
+            echo "<label>Aula:</label>";
+            echo "<select>";
+            foreach ($aulas->getAulas() as $aula) {
+                echo "<option value='{$aula->getIdaula()}'>{$aula->getSector()} - {$aula->getNombre()}</option>";
+            }
+            echo "</select>";
+            echo "<input type='image' src='../../img/abm_confirmar.png' title='Asignar aula a mesa de examen'/>";
+        } else {
+            
+        }
+        echo "</div>";
+        echo "</fieldset>";
+        
+        echo "</fieldset>";
+    
     } else {
         echo "<fieldset>";
         echo "<legend></legend>";

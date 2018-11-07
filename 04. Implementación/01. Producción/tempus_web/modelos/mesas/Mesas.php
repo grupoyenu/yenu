@@ -367,14 +367,14 @@ class Mesas
     }
     
     /**
-     *
+     * Se obtienen las mesas del dia y que no tengan asignada un aula.
      * */
     public function obtenerMesasDeHoy() 
     {
         $this->mesas = null;
         $consulta = "SELECT m.idmesa, m.idasignatura, m.idcarrera, m.idtribunal, m.primero, m.segundo 
                      FROM mesa_examen m, llamado l 
-                     WHERE (m.primero=l.idllamado OR m.segundo=l.idllamado) AND l.fecha=CURDATE()";
+                     WHERE (m.primero=l.idllamado OR m.segundo=l.idllamado) AND l.idaula IS NULL AND l.fecha=CURDATE()";
         $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
         if ($this->datos->num_rows > 0) {
             $this->mesas = array();

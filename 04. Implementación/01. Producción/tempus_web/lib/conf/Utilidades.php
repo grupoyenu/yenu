@@ -298,7 +298,6 @@ class Utilidades
      * demas letras con minuscula.
      * @param string $texto Cadena de texto en cualquier formato.
      * @return string Devuelve la cadena en formato Camel Case. 
-     * @author Márquez Emanuel.
      * */
     static function convertirCamelCase($texto)
     {
@@ -309,5 +308,30 @@ class Utilidades
             $texto = ucwords($texto);
         }
         return $texto;
+    }
+    
+    /**
+     * Devuelve el nombre de un dia a partir del numero de la semana donde
+     * 0 es lunes y 6 es sabado.
+     * @param integer $dia Recibe el dia 0, 1, 2, 3, 4, 5 o 6.
+     * @return string Nombre del dia.
+     * */
+    static function nombreDeDia($dia)
+    {
+        switch ($dia) {
+            case 1:
+                return "Lunes";
+            case 2:
+                return "Martes";
+            case 3:
+                return "Miercoles";
+            case 4:
+                return "Jueves";
+            case 5:
+                return "Viernes";
+            case 6:
+                return "Sabado";
+        }
+        return null;
     }
 }
