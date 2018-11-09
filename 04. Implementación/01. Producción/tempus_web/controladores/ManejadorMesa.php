@@ -28,13 +28,14 @@ include_once '../modelos/aulas/Aula.php';
 
 session_start();
 
+$url = Constantes::APPURL."/vistas/mesas/";
 $redireccion = Constantes::HOMEURL;
 
 $accion = $_POST['accion'];
 
 switch ($accion) {
     case "importar":
-        $redireccion = "/tempus/vistas/mesas/mesa_resultado_importar.php";
+        $redireccion = $url."mesa_resultado_importar.php";
         $filas = $_SESSION['mesas'];
         $resultado = null;
         if ($filas) {
@@ -49,7 +50,7 @@ switch ($accion) {
         $_SESSION['resultado'] = $resultado;
         break;
     case "crear":
-        $redireccion = Constantes::APPURL."/vistas/mesas/mesa_resultado_crear.php";
+        $redireccion = $url."mesa_resultado_crear.php";
         
         $codigocarrera = $_POST['codigoCarrera'];
         $nombrecarrera = Utilidades::convertirCamelCase($_POST['txtCarrera']);
@@ -157,7 +158,7 @@ switch ($accion) {
         
         break;
     case "buscar":
-        $redireccion = Constantes::APPURL."/vistas/mesas/mesa_resultado_buscar.php";
+        $redireccion = $url."mesa_resultado_buscar.php";
         $asignatura = $_POST['txtAsignatura'];
         $mesas_examen = new Mesas();
         $_SESSION['mesaBuscarResultado'] = $mesas_examen->buscar($asignatura);
@@ -165,8 +166,22 @@ switch ($accion) {
     case "borrar":
         
         break;
+    case "informe":
+        $redireccion = $url."mesa_resultado_informe.php";
+        $fecha = $_POST['selectFecha'];
+        $hora = $_POST['selectHora'];
+        $sector = $_POST['selectSector'];
+        $modificada = $_POST['selectModificada'];
+        $mesas = new Mesas();
+        $mesas->informe($fecha, $hora, $sector, $modificada);
+        $mensaje = "Fecha: {$fecha}, Hora: {$hora}, Sector: {$sector}, Modificada: si";
+        if(!$modificada) {
+            $mensaje = "Fecha: {$fecha}, Hora: {$hora}, Sector: {$sector}, Modificada: no";
+        }
+        $_SESSION['mesaInformeResultado'] =  array('mensaje'=>$mensaje, 'datos'=>$mesas->getMesas()) ;
+        break;
     case "modificar":
-        $redireccion = Constantes::APPURL."/vistas/mesas/mesa_modificar.php";
+        $redireccion = $url."mesa_modificar.php";
         $resultado =  $_SESSION['mesaBuscarResultado'];
         if (isset($resultado) && isset($resultado['datos'])) {
             $indice = $_POST['radioMesas'];
@@ -187,7 +202,7 @@ switch ($accion) {
         $_SESSION['resultado'] = $resultado;
         break;
     case "modificarTribunal":
-        $redireccion = Constantes::APPURL."/vistas/mesas/mesa_modificar.php";
+        $redireccion = $url."mesa_modificar.php";
         $resultado =  $_SESSION['resultado'];
         if (isset($resultado) && isset($resultado['datos'])) { 
             $mesa = $resultado['datos'];
@@ -213,7 +228,7 @@ switch ($accion) {
         $_SESSION['resultado'] = $resultado;
     break;
     case "modificarLlamado":
-        $redireccion = Constantes::APPURL."/vistas/mesas/mesa_modificar.php";
+        $redireccion = $url."mesa_modificar.php";
         $resultado =  $_SESSION['resultado'];
         if (isset($resultado) && isset($resultado['datos'])) {
             $mesa = $resultado['datos'];
@@ -252,7 +267,7 @@ switch ($accion) {
         $_SESSION['resultado'] = $resultado;
         break;
     case "modificarHora":
-        $redireccion = Constantes::APPURL."/vistas/mesas/mesa_modificar.php";
+        $redireccion = $url."mesa_modificar.php";
         $resultado =  $_SESSION['resultado'];
         if (isset($resultado) && isset($resultado['datos'])) {
             $mesa = $resultado['datos'];
@@ -278,7 +293,29 @@ switch ($accion) {
         }
         $_SESSION['resultado']  = $resultado;
         break;
-    case "modificarAula":
+    case "asignarAula":
+        $redireccion = $url."mesa_asignar.php";
+        $tipoasig = $_POST['radTipoAsignacion'];
+        $idllamado = $_POST['idllamado'];
+        $idaula = $_POST['selectAulaDisp'];
+        if($tipoasig == 1) {
+            $idaula = $_POST['selectAulaOcup'];
+        }
+        $mensaje = "No se pudo obtener la información necesaria para realizar la asignación. Intente nuevamente";
+        $resultado = false;
+        if($idllamado && $idaula) {
+            $mensaje = "No se pudo realizar la asignación del aula para la mesa de examen";
+            $llamado = new Llamado();
+            $aula = new Aula();
+            $aula->setIdaula($idaula);
+            $llamado->modificarAula($idllamado, $aula);
+            if($llamado->getAula()) {
+                $resultado = true;
+                $mensaje = "Se ha asignado el aula para la mesa de examen correctamente";
+            }
+        }
+        $_SESSION['mesasSinAsignar'] = null;
+        $_SESSION['mesaAsignarResultado'] = array('resultado'=>$resultado,'mensaje'=>$mensaje);
         break;
 }
 

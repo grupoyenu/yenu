@@ -343,7 +343,6 @@ class Mesas
      * Cuando el conteo es cero significa que no hay mesas con dos llamados, por lo
      * tanto la cantidad de llamados para el turno será uno.
      * @return integer Cero si tiene un llamado, entero mayor a cero en caso contrario.
-     * @author Marquez Emanuel.
      * */
     public function cantidadLlamados()
     {
@@ -360,10 +359,51 @@ class Mesas
      * @param string $fecha Fecha de las mesas a consultar.
      * @param string $hora Hora de las mesas a consultar.
      * @param string $sector Sector de las mesas a consultar.
+     * @param boolean $modificada Mesa que ha sido modificada.
      * */
-    public function informe($fecha, $hora, $sector)
+    public function informe($fecha, $hora, $sector, $modificada)
     {
-        
+        $this->mesas = null;
+        $consulta = "SELECT * FROM mesa_examen WHERE 1";
+        if($fecha != "todas" || $hora != "todas" || $sector!= "todos" || $modificada) {
+            $consulta = "SELECT * FROM mesa_examen m, llamado l ";
+            $confecha = $conhora = $conmod = "";
+            if($fecha != "todas") {
+                $confecha = "AND l.fecha='{$fecha}' ";
+            }
+            if($hora != "todas") {
+                $conhora = "AND l.hora='{$hora}' ";
+            }
+            if($modificada) {
+                $conmod = "AND l.fechamod IS NOT NULL ";
+            }
+            if($sector != "todos") {
+                $consulta = $consulta.", aula a WHERE (m.primero=l.idllamado OR m.segundo=l.idllamado) AND l.idaula=a.idaula AND a.sector='{$sector}' ";
+                
+            } else {
+                $consulta =$consulta."WHERE (m.primero=l.idllamado OR m.segundo=l.idllamado) ";
+            }
+            $consulta = $consulta.$confecha.$conhora.$conmod;
+        }
+        echo "<br>".$consulta;
+        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+        if($this->datos->num_rows > 0) {
+            $this->mesas = array();
+            while ($fila = mysqli_fetch_array($this->datos)) {
+                $mesa = new MesaExamen();
+                $plan = new Plan($fila[1], $fila[2]);
+                $tribunal = new Tribunal($fila[3]);
+                $primero = $segundo = null;
+                if($fila[4]) {
+                    $primero = new Llamado($fila[4]);
+                }
+                if($fila[5]) {
+                    $segundo = new Llamado($fila[5]);
+                }
+                $mesa->cargar($fila[0], $plan, $tribunal, $primero, $segundo);
+                $this->mesas[] = $mesa;
+            }   
+        }
     }
     
     /**

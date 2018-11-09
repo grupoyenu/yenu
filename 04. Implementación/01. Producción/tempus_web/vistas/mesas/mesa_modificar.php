@@ -1,5 +1,4 @@
 <?php
-
 header('Content-Type: text/html; charset=ISO-8859-1');
 include_once '../../modelos/mesas/Mesas.php';
 include_once '../../modelos/carreras/Carrera.php';
@@ -11,17 +10,17 @@ include_once '../../modelos/mesas/MesaExamen.php';
 include_once '../../modelos/mesas/Llamado.php';
 include_once '../../modelos/aulas/Aula.php';
 include_once '../../lib/conf/ControlAcceso.php';
-
-echo "<html>";
-include_once '../estructura/encabezado.php';
-echo "<script type='text/javascript' src='../../js/mesa_modificar.js'></script>";
-echo "<script type='text/javascript' src='../../js/jquery-confirm-master/js/jquery-confirm.js'></script>";
-echo "<section id='main-content'>";
-echo "<article>";
-echo "<div id='content' class='content'>";
-echo "<h2>MODIFICAR MESA DE EXAMEN</h2>";
-echo "<form action='../../Controladores/ManejadorMesa.php' id='formModificarMesa' name='formModificarMesa' method='post'>";
-
+?>
+<html>
+<?php include_once '../estructura/encabezado.php';?>
+<script type='text/javascript' src='../../js/mesas/mesa_modificar.js'></script>
+<script type='text/javascript' src='../../js/jquery-confirm-master/js/jquery-confirm.js'></script>
+<section id='main-content'>
+<article>
+<div id='content' class='content'>
+<h2>MODIFICAR MESA DE EXAMEN</h2>
+<form action='../../Controladores/ManejadorMesa.php' id='formModificarMesa' name='formModificarMesa' method='post'>
+<?php
 $resultado = $_SESSION['resultado'];
 if (isset($resultado) && isset($resultado['datos'])) {
     if($resultado['resultado']) {
@@ -272,10 +271,10 @@ if (isset($resultado) && isset($resultado['datos'])) {
     echo "<h6 class='letraRoja letraCentrada'>No se ha obtenido la información de la mesa de examen a modificar</h6>";
     echo "</fieldset>";
 }
-echo "</form>";
-echo "</div>";
-echo "</article>";
-echo "</section>";
-include_once '../estructura/pie.php';
-echo "</html>";
 ?>
+</form>
+</div>
+</article>
+</section>
+<?php include_once '../estructura/pie.php';?>
+</html>

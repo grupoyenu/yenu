@@ -25,7 +25,7 @@
 
 <html>
 	<?php include_once '../estructura/encabezado.php'; ?>
-	<script type="text/javascript" src="../../js/mesa_crear.js"></script>
+	<script type="text/javascript" src="../../js/mesas/mesa_crear.js"></script>
 	<section id="main-content">
 		<article>
 			<div id="content" class="content">

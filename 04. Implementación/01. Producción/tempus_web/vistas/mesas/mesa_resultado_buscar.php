@@ -12,7 +12,7 @@ include_once '../../lib/conf/ControlAcceso.php';
 ?>
 <html>
 <?php include_once '../estructura/encabezado.php'; ?>
-<script type="text/javascript" src="../../js/mesa_resultado_buscar.js"></script>
+<script type="text/javascript" src="../../js/mesas/mesa_resultado_buscar.js"></script>
 <section id="main-content">
 <article>
 <div id="content" class="content">
