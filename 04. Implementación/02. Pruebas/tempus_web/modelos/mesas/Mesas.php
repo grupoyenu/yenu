@@ -343,7 +343,6 @@ class Mesas
      * Cuando el conteo es cero significa que no hay mesas con dos llamados, por lo
      * tanto la cantidad de llamados para el turno será uno.
      * @return integer Cero si tiene un llamado, entero mayor a cero en caso contrario.
-     * @author Marquez Emanuel.
      * */
     public function cantidadLlamados()
     {
@@ -354,5 +353,87 @@ class Mesas
             return $fila[0];
         }
         return 0;
+    }
+   
+    /**
+     * @param string $fecha Fecha de las mesas a consultar.
+     * @param string $hora Hora de las mesas a consultar.
+     * @param string $sector Sector de las mesas a consultar.
+     * @param boolean $modificada Mesa que ha sido modificada.
+     * */
+    public function informe($fecha, $hora, $sector, $modificada)
+    {
+        $this->mesas = null;
+        $consulta = "SELECT * FROM mesa_examen WHERE 1";
+        if($fecha != "todas" || $hora != "todas" || $sector!= "todos" || $modificada) {
+            $consulta = "SELECT * FROM mesa_examen m, llamado l ";
+            $confecha = $conhora = $conmod = "";
+            if($fecha != "todas") {
+                $confecha = "AND l.fecha='{$fecha}' ";
+            }
+            if($hora != "todas") {
+                $conhora = "AND l.hora='{$hora}' ";
+            }
+            if($modificada) {
+                $conmod = "AND l.fechamod IS NOT NULL ";
+            }
+            if($sector != "todos") {
+                $consulta = $consulta.", aula a WHERE (m.primero=l.idllamado OR m.segundo=l.idllamado) AND l.idaula=a.idaula AND a.sector='{$sector}' ";
+                
+            } else {
+                $consulta =$consulta."WHERE (m.primero=l.idllamado OR m.segundo=l.idllamado) ";
+            }
+            $consulta = $consulta.$confecha.$conhora.$conmod;
+        }
+        echo "<br>".$consulta;
+        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+        if($this->datos->num_rows > 0) {
+            $this->mesas = array();
+            while ($fila = mysqli_fetch_array($this->datos)) {
+                $mesa = new MesaExamen();
+                $plan = new Plan($fila[1], $fila[2]);
+                $tribunal = new Tribunal($fila[3]);
+                $primero = $segundo = null;
+                if($fila[4]) {
+                    $primero = new Llamado($fila[4]);
+                }
+                if($fila[5]) {
+                    $segundo = new Llamado($fila[5]);
+                }
+                $mesa->cargar($fila[0], $plan, $tribunal, $primero, $segundo);
+                $this->mesas[] = $mesa;
+            }   
+        }
+    }
+    
+    /**
+     * Se obtienen las mesas del dia y que no tengan asignada un aula.
+     * */
+    public function obtenerMesasDeHoy() 
+    {
+        $this->mesas = null;
+        $consulta = "SELECT m.idmesa, m.idasignatura, m.idcarrera, m.idtribunal, m.primero, m.segundo 
+                     FROM mesa_examen m, llamado l 
+                     WHERE (m.primero=l.idllamado OR m.segundo=l.idllamado) AND l.idaula IS NULL AND l.fecha=CURDATE()";
+        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+        if ($this->datos->num_rows > 0) {
+            $this->mesas = array();
+            $tamanio = $this->datos->num_rows;
+            for ($i = 0; $i < $tamanio; $i++) {
+                $mesa = new MesaExamen();
+                $fila = $this->datos->fetch_row();
+                $plan = new Plan($fila[1], $fila[2]);
+                $tribunal = new Tribunal($fila[3]);
+                $primero = $segundo = null;
+                if($fila[4]) {
+                    $primero = new Llamado($fila[4]);
+                }
+                if($fila[5]) {
+                    $segundo = new Llamado($fila[5]);
+                }
+                $mesa->cargar($fila[0], $plan, $tribunal, $primero, $segundo);
+                $this->mesas[] = $mesa;
+            }
+        }
     }
 }

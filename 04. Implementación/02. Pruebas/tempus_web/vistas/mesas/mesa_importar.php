@@ -6,7 +6,7 @@
 ?>
 <html>
 	<?php include_once '../estructura/encabezado.php'; ?>
-	<script type="text/javascript" src="../../js/mesa_importar.js"></script>
+	<script type="text/javascript" src="../../js/mesas/mesa_importar.js"></script>
 	<section id="main-content">
 		<article>
 			<div class="content">

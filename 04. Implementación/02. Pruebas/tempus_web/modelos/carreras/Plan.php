@@ -102,6 +102,18 @@ class Plan
     {
         $this->anio = $anio;
     }
+    
+    /**
+     * @param Asignatura $asignatura Asignatura del plan para la carrera. 
+     * @param Carrera $carrera Carrera del plan. 
+     * @param integer $anio Anio al que pertenece la carrera.
+     * */
+    public function cargar($asignatura, $carrera, $anio)
+    {
+        $this->asignatura = $asignatura;
+        $this->carrera = $carrera;
+        $this->anio = $anio;
+    }
 
     /**
      * Realiza la creación de una nueva relación asignatura-carrera.
@@ -114,7 +126,7 @@ class Plan
     {
         $resultado = true;
         $this->buscar($idasignatura, $idcarrera);
-        if(is_null($this->asignatura) && is_null($this->carrera)) {
+        if(!$this->asignatura && !$this->carrera) {
             $consulta = "INSERT INTO asignatura_carrera VALUES (".$idasignatura.",".$idcarrera.",".$anio.")";
             ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
             if (ObjetoDatos::getInstancia()->affected_rows > 0) {
@@ -147,9 +159,7 @@ class Plan
             $this->carrera = new Carrera($fila[1]);
             $this->anio = $fila[2];
         } else {
-            $this->asignatura = null;
-            $this->carrera = null;
-            $this->anio = null;
+            $this->cargar(null, null, null);
         }
         $this->datos = null;
     }

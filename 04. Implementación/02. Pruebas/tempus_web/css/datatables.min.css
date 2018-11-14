@@ -49,7 +49,7 @@ table.dataTable thead .sorting,table.dataTable thead .sorting_asc,table.dataTabl
 		}
 		
 		table.dataTable thead .sorting_asc{
-		background-image:url("DataTables-1.10.16/images/sort_asc.png")}
+		background-image:url("/js/DataTables-1.10.16/images/sort_asc.png")}
 		
 		table.dataTable thead .sorting_desc{
 		background-image:url("DataTables-1.10.16/images/sort_desc.png")}
@@ -64,8 +64,8 @@ table.dataTable thead .sorting,table.dataTable thead .sorting_asc,table.dataTabl
 		
 		table.dataTable tbody tr.selected{background-color:#B0BED9}
 		
-		table.dataTable tbody th,table.dataTable tbody td{
-		padding:8px 10px}
+		table.dataTable tbody th,table.dataTable tbody td {
+		padding: 10px 2px }
 		
 		table.dataTable.row-border tbody th,table.dataTable.row-border tbody td,table.dataTable.display tbody th,table.dataTable.display tbody td{
 		border-top:1px solid #ddd}

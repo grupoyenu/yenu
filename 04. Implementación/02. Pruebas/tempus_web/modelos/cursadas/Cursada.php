@@ -90,6 +90,60 @@ class Cursada
         }
     }
     
+    public function cargar($plan, $clases)
+    {
+        $this->plan = $plan;
+        $this->clases = $clases;
+    }
+    
+    /**
+     * Realiza la creacion completa de una cursada. Este metodo se encarga de crear la carrera, la 
+     * asignatura, plan, clases y cursada. Si la creacion exitosa el objeto tendra asignado el plan
+     * y horarios de clase, en caso contrario seran nulos. Cuando la cursada solo contenga un plan
+     * y no las clases significa que ya existia la cursasa entre la asignatura y carrera.
+     * @param integer $codigoCarrera Codigo de la nueva o existente Carrera.
+     * @param string $nombreCarrera Nombre de la nueva o exitente Carrera.
+     * @param string $nombreAsignatura Nombre de la nueva o existente Asignatura.
+     * @param integer $anio Anio al que pertenece la Asignatura en la Carrera.
+     * @param array $clases Horarios de clases.
+     * */
+    public function crearCursada($codigoCarrera, $nombreCarrera, $nombreAsignatura, $anio, $clases)
+    {
+        if ($codigoCarrera && $nombreCarrera && $nombreAsignatura && $anio && $clases) {
+            $carrera = new Carrera();
+            $asignatura = new Asignatura();
+            $carrera->crear($codigoCarrera, $nombreCarrera);
+            $asignatura->crear($nombreAsignatura);
+            if ($asignatura->getIdasignatura() && $carrera->getCodigo()) {
+                $idasignatura = $asignatura->getIdasignatura();
+                $idcarrera = $carrera->getCodigo();
+                $plan = new Plan();
+                $plan->buscar($idasignatura, $idcarrera);
+                if(!$plan->getAsignatura() && !$plan->getCarrera()) {
+                    /* NO EXISTE UN PLAN ENTRE LA ASIGNATRA Y CARRERA*/
+                    $creacion = $plan->crear($idasignatura, $idcarrera, $anio);
+                    if ($creacion) {
+                        $plan->cargar($asignatura, $carrera, $anio);
+                        $creaClases = $this->crear($plan, $clases);
+                        if($creaClases) {
+                            $this->cargar($plan, $clases);
+                        } else {
+                            $this->cargar(null, null);
+                        }
+                    } else {
+                        $this->cargar(null, null);
+                    }
+                } else {
+                    $this->cargar($plan, null);
+                }
+            } else {
+                $this->cargar(null, null);
+            }
+        } else {
+            $this->cargar(null, null);
+        }
+    }
+    
     /**
      * Realiza la creación de una cursada. Para ello realiza la creacion de cada una de las clases 
      * del arreglo y luego crea la relación entre el plan y la clase. Devuelve verdadero cuando 
@@ -98,10 +152,10 @@ class Cursada
      * @param Plan $plan Asignatura y Carrera para la Cursada (Obligatorio).
      * @param Clase[] $clases Recibe el conjunto de clases para el plan (Obligatorio).
      * @return boolean true o false.
-     * @author Márquez Emanuel.
      * */
     public function crear($plan, $clases = array())
     {
+        $creacion = false;
         if (isset($clases)) {
             $tamanio = count($clases);
             $idasignatura = $plan->getAsignatura()->getIdasignatura();
@@ -116,21 +170,15 @@ class Cursada
                 $clase->crear($dia, $desde, $hasta, $aula);
                 $idclase = $clase->getIdclase();
                 if ($idclase) {
-                    /* Se ha creado la clase */
                     $resultado = $this->crearRelacion($idasignatura, $idcarrera, $idclase);
                     if ($resultado) {
-                        $contadorexitos = $contadorexitos + 1;
+                        $creacion = true;
                         $this->clases [] = $clase;
                     }
                 }
             }
-            if ($contadorexitos > 0) {
-                return true;
-            } else {
-                return false;
-            }   
         }
-        return false;
+        return $creacion;
     }
     
     /**

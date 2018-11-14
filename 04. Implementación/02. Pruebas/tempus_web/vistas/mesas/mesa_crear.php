@@ -3,7 +3,6 @@
     header('Content-Type: text/html; charset=ISO-8859-1');
     include_once '../../lib/conf/ControlAcceso.php';
     include_once '../../lib/conf/PermisosSistema.php';
-    
     include_once '../../modelos/mesas/Mesas.php';
 
     /*
@@ -26,7 +25,7 @@
 
 <html>
 	<?php include_once '../estructura/encabezado.php'; ?>
-	<script type="text/javascript" src="../../js/mesa_crear.js"></script>
+	<script type="text/javascript" src="../../js/mesas/mesa_crear.js"></script>
 	<section id="main-content">
 		<article>
 			<div id="content" class="content">

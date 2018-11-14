@@ -111,9 +111,11 @@ class Asignatura
     }
     
     /**
-     *
+     * Asigna los valores indicados a los atributos del objeto.
+     * @param integer $idasignatura Identificador de la Asignatura.
+     * @param string $nombre Nombre de la Asignatura.
      * */
-    private function cargar($idasignatura, $nombre)
+    public function cargar($idasignatura, $nombre)
     {
         $this->idasignatura = $idasignatura;
         $this->nombre = $nombre;
