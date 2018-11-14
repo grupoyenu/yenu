@@ -13,13 +13,11 @@
 include_once '../lib/conf/ObjetoDatos.php';
 include_once '../lib/conf/Constantes.php';
 include_once '../lib/conf/Utilidades.php';
-
 include_once '../modelos/mesas/Mesas.php';
 include_once '../modelos/mesas/MesaExamen.php';
 include_once '../modelos/carreras/Plan.php';
 include_once '../modelos/mesas/Tribunal.php';
 include_once '../modelos/mesas/Llamado.php';
-
 include_once '../modelos/carreras/Carrera.php';
 include_once '../modelos/carreras/Asignatura.php';
 include_once '../modelos/mesas/Docente.php';
@@ -164,7 +162,31 @@ switch ($accion) {
         $_SESSION['mesaBuscarResultado'] = $mesas_examen->buscar($asignatura);
         break;
     case "borrar":
-        
+        $redireccion = $url."mesa_resultado_borrar.php";
+        $resultado =  $_SESSION['mesaBuscarResultado'];
+        if (isset($resultado) && isset($resultado['datos'])) {
+            $indice = $_POST['radioMesas'];
+            if (isset($indice)) {
+                $mesas = $resultado['datos'];
+                $mesa = $mesas[$indice];
+                $borrado = $mesa->borrar($mesa);
+                if($borrado) {
+                    $mensaje = "Se ha realizado la eliminación de la mesa de examen correctamente";
+                    $resultado = array('resultado'=>TRUE,'mensaje'=>$mensaje, 'datos'=>$mesa);
+                } else {
+                    $mensaje = "No se ha realizado la eliminación de la mesa de examen";
+                    $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>$mesa);
+                }
+            } else {
+                $mensaje = "No se pudo obtener el indice la mesa seleccionada";
+                $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>NULL);
+            }
+        } else {
+            $mensaje = "No se pudo obtener la información de la mesa seleccionada";
+            $resultado = array('resultado'=>FALSE,'mensaje'=>$mensaje, 'datos'=>NULL);
+        }
+        $_SESSION['mesaBuscarResultado'] = null;
+        $_SESSION['mesaBorrarResultado'] = $resultado;
         break;
     case "informe":
         $redireccion = $url."mesa_resultado_informe.php";

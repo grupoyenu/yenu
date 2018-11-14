@@ -24,20 +24,21 @@ $pat_carrera = " pattern='[A-Za-z·ÈÌÛ˙¡…Õ”⁄Ò—. ]{10,255}' ";
 $pat_asignatura = " pattern='[A-Za-z·ÈÌÛ˙¡…Õ”⁄Ò—0123456789,. ]{5,255}' ";
 $pat_sector = " pattern='[A-Z]{1}' ";
 $pat_aula = " pattern='[A-Za-z·ÈÌÛ˙¡…Õ”⁄Ò—0123456789 ]{1,255}' ";
-
-echo "<html>";
-include_once '../estructura/encabezado.php';
-echo "<script type='text/javascript' src='../../js/cursada_crear.js'></script>";
-echo "<section id='main-content'>";
-echo "<article>";
-echo "<div id='content' class='content'>";
-echo "<h2>CREAR HORARIO DE CURSADA</h2>";
-echo "<form action='../../controladores/ManejadorCursada.php' id='formCrearCursada' name='formCrearCursada' method='post'>";
+?>
+<html>
+<?php include_once '../estructura/encabezado.php';?>
+<script type='text/javascript' src='../../js/cursadas/cursada_crear.js'></script>
+<section id='main-content'>
+<article>
+<div id='content' class='content'>
+<h2>CREAR HORARIO DE CURSADA</h2>
+<form action='../../controladores/ManejadorCursada.php' id='formCrearCursada' name='formCrearCursada' method='post'>
    
-    echo "<fieldset>";
-    echo "<legend>Horario</legend>";            			
-    echo "<fieldset>";
-    echo "<legend>InformaciÛn b·sica</legend>";
+	<fieldset>
+	<legend>Horario</legend>      			
+	<fieldset>
+	<legend>InformaciÛn b·sica</legend>
+	<?php 
     if ($carreras->getCarreras()) {
         echo "<label for='codigoCarrera'>* CÛdigo de carrera:</label>";
         echo "<input type='number' {$nam_codigo} list='codigos' required>";
@@ -151,15 +152,15 @@ echo "<form action='../../controladores/ManejadorCursada.php' id='formCrearCursa
 	    echo "</tr>";
 	}
 	echo "</tbody>";
-	echo "</table>";
-	echo "</fieldset>";			
-    echo "</fieldset>";
-    echo "<input type='hidden' id='accion' name='accion' value='crear'>";
-    echo "<input class='botonVerde' type='submit' id='btnCrearCursada' name='btnCrearCursada' value='Crear'>";
-echo "</form>";        	
-echo "</div>";
-echo "</article>";
-echo "</section>";
-include_once '../estructura/pie.php';
-echo "</html>";
-?>
+	echo "</table>";	
+    ?>
+	</fieldset>
+    </fieldset>
+    <input type='hidden' id='accion' name='accion' value='crear'>
+    <input class='botonVerde' type='submit' id='btnCrearCursada' name='btnCrearCursada' value='Crear'>
+</form>      	
+</div>
+</article>
+</section>
+<?php include_once '../estructura/pie.php'; ?>
+</html>

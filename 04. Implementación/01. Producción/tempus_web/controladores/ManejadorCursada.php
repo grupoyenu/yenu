@@ -78,6 +78,17 @@ switch ($accion) {
         $redireccion = Constantes::APPURL."/vistas/cursadas/cursada_borrar.php";
         
         break;
+    case "informe":
+        $redireccion = Constantes::APPURL."/vistas/cursadas/cursada_resultado_informe.php";
+        $carrera = $_POST['selectCarrera'];
+        $dia = $_POST['selectDia'];
+        $inicio = $_POST['selectHoraInicio'];
+        $fin = $_POST['selectHoraFin'];
+        $cursadas = new Cursadas();
+        $cursadas->informe($carrera, $dia, $inicio, $fin);
+        $filtro = array('carrera'=>$carrera,'dia'=>$dia,'inicio'=>$inicio,'fin'=>$fin);
+        $_SESSION['cursadaInformeResultado'] =  array('filtro'=>$filtro, 'datos'=>$cursadas->getCursadas()) ;
+        break;
     case "modificar":
         $redireccion = Constantes::APPURL."/vistas/cursadas/cursada_modificar.php";
         $resultado =  $_SESSION['resultado'];

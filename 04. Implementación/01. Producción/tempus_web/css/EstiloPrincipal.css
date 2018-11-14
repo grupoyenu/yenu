@@ -287,6 +287,16 @@
 		margin: 20px;
 	}
 	
+	.content-columnas {
+		float: right;
+		width: auto;
+		padding: 5px;
+	}
+	.columnas {
+		font-weight: bold;
+		padding: 5px;
+	}
+	
 	.botonIcono {
 		height: 25px !important;
 		width: 25px !important;

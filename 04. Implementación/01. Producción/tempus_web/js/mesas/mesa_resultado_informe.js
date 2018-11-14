@@ -13,7 +13,7 @@ $(document).ready(function() {
 	            pageSize: 'LEGAL',
 	            download: 'open',
 	            text: 'Descargar PDF',
-	            title: ' Mesas de examen '
+	            title: ' Informe mesas de examen '
         	}
         ],
         language: {
@@ -30,14 +30,18 @@ $(document).ready(function() {
                 previous: "Anterior",
                 next: "Siguiente"
             }
-       },
-        scrollY: "200px"
+       }
     } );
  
-    $('a.toggle-vis').on('click', function (e) {
+    $('a.columnas').on('click', function (e) {
         e.preventDefault();
         var column = table.column($(this).attr('data-column'));
         column.visible( ! column.visible() );
+        if(column.visible()){
+        	$(this).addClass("letraVerde");
+        } else {
+        	$(this).removeClass("letraVerde");
+        }
     });
 	
 });

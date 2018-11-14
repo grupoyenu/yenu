@@ -27,6 +27,22 @@ class Cursadas
     }
     
     /**
+     * @return multitype:Cursada 
+     */
+    public function getCursadas()
+    {
+        return $this->cursadas;
+    }
+
+    /**
+     * @param multitype:Cursada  $cursadas
+     */
+    public function setCursadas($cursadas)
+    {
+        $this->cursadas = $cursadas;
+    }
+
+    /**
      * Realiza la creacion de un conjunto de horarios de cursada.
      * @param Cursada[] $cursadas
      * */
@@ -186,6 +202,41 @@ class Cursadas
             }
             return array('resultado'=>true,'mensaje'=>$mensaje, 'datos'=>NULL);
         }
+    }
+    
+    
+    public function informe($idcarrera, $dia, $inicio, $fin) 
+    {
+        $this->cursadas = null;
+        $consulta = "SELECT idcarrera, idasignatura FROM cursada WHERE 1 GROUP BY idcarrera, idasignatura";
+        if($idcarrera != 'todas' || $dia != 'todos' || $inicio != 'todas' || $fin != 'todas') {
+            $consulta = "SELECT cu.idcarrera, cu.idasignatura FROM cursada cu, clase cl WHERE cu.idclase=cl.idclase ";
+            if($idcarrera != 'todas') {
+                $consulta = $consulta."AND cu.idcarrera=".$idcarrera." ";
+            }
+            if($dia != 'todos') {
+                $consulta = $consulta."AND cl.dia=".$dia." ";
+            }
+            if($inicio != 'todas') {
+                $consulta = $consulta."AND cl.desde='".$inicio."' ";
+            }
+            if($fin != 'todas') {
+                $consulta = $consulta."AND cl.hasta='".$fin."' ";
+            }
+            $consulta = $consulta."GROUP BY cu.idcarrera, cu.idasignatura";
+        }
+        $this->datos = ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+        if($this->datos->num_rows > 0) {
+            $this->cursadas = array();
+            while ($fila = mysqli_fetch_array($this->datos)) {
+                $plan = new Plan($fila[1], $fila[0]);
+                $cursada = new Cursada();
+                $cursada->setPlan($plan);
+                $cursada->obtenerHorarios($fila[1], $fila[0]);
+                $this->cursadas[]=$cursada;
+            }
+        }
+        
     }
     
 }

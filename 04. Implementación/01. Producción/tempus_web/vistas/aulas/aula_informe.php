@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: text/html; charset=ISO-8859-1');
 include_once '../../modelos/aulas/Aula.php';
 include_once '../../modelos/aulas/Aulas.php';
 include_once '../../lib/conf/ControlAcceso.php';
@@ -7,12 +8,12 @@ include_once '../../lib/conf/ObjetoDatos.php';
 ?>
 <html>
 <?php include_once '../estructura/encabezado.php'; ?>
-<script type='text/javascript' src='../../js/aula_informe.js'></script>
+<script type='text/javascript' src='../../js/aulas/aula_informe.js'></script>
 <section id='main-content'>
 <article>
 <div id='content' class='content'>
 <h2>INFORME DE AULA</h2>
-<form>
+<form action="aula_buscar.php">
 	<fieldset>
 	<?php
 	$informe = $_SESSION['aulaInformeResultado']; // Resultado enviado por el manejador aula
@@ -55,6 +56,7 @@ include_once '../../lib/conf/ObjetoDatos.php';
 	}
     ?>
     </fieldset>
+    <input class="botonVerde" type="submit" value='Regresar'>
 </form>
 </div>
 </article>

@@ -29,6 +29,11 @@ and open the template in the editor.
         float: none;
     }
     
+    fieldset {
+     	width: auto;
+	    margin: 5px;
+    }
+    
 	td input[type='checkbox'] {
   		margin-left: 5px;
 	}

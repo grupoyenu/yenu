@@ -33,11 +33,11 @@ echo "<body>";
       echo "<li class='dropdown'>";
       echo "<a class='dropbtn'>Cursada</a>";
         echo "<div class='dropdown-content'>";
+        echo "<a href='../cursadas/cursada_buscar.php'>Buscar</a>";
+        echo "<a href='../cursadas/cursada_crear.php'>Crear</a>";
         echo "<a href='../cursadas/cursada_seleccionar.php'>Importar</a>";
-          echo "<a href='../cursadas/cursada_crear.php'>Crear</a>";
-          echo "<a href='../cursadas/cursada_buscar.php'>Borrar o Modificar</a>";
-          echo "<a href='../cursadas/cursada_informe.php'>Informe</a>";
-          echo "</div>";
+        echo "<a href='../cursadas/cursada_informe.php'>Informe</a>";
+        echo "</div>";
       echo "</li>";
     } 
               
@@ -45,10 +45,10 @@ echo "<body>";
       echo "<li class='dropdown'>";
       echo "<a class='dropbtn'>Mesas de examen</a>";
       echo "<div class='dropdown-content'>";
-      echo "<a href='../mesas/mesa_seleccionar.php'>Importar</a>";
-      echo "<a href='../mesas/mesa_crear.php'>Crear</a>";
-      echo "<a href='../mesas/mesa_buscar.php'>Borrar o Modificar</a>";
       echo "<a href='../mesas/mesa_asignar.php'>Asignar aulas</a>";
+      echo "<a href='../mesas/mesa_buscar.php'>Buscar</a>";
+      echo "<a href='../mesas/mesa_crear.php'>Crear</a>";
+      echo "<a href='../mesas/mesa_seleccionar.php'>Importar</a>";
       echo "<a href='../mesas/mesa_informe.php'>Informe</a>";
       echo "</div>";
       echo "</li>";
@@ -58,7 +58,7 @@ echo "<body>";
       echo "<li class='dropdown'>";
       echo "<a class='dropbtn'>Aulas</a>";
       echo "<div class='dropdown-content'>";
-      echo "<a href='../aulas/aula_buscar.php'>Borrar o Modificar</a>";
+      echo "<a href='../aulas/aula_buscar.php'>Buscar</a>";
       echo "</div>";
       echo "</li>";
     }

@@ -10,7 +10,7 @@
 <html>
 	
 	<?php include_once '../estructura/encabezado.php'; ?>
-	<script type='text/javascript' src='../../js/cursada_modificar.js'></script>
+	<script type='text/javascript' src='../../js/cursadas/cursada_modificar.js'></script>
 	<script type='text/javascript' src='../../js/jquery-confirm-master/js/jquery-confirm.js'></script>
 	
 	<section id='main-content'>

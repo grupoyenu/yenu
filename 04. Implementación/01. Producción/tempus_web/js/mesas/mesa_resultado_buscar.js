@@ -11,7 +11,7 @@ $(document).ready(function() {
 	 * Les coloca los botones para realizar las descarga en formatos distintos.
 	 * Les modifica el lenguaje a cada uno de los elementos del DataTable.
 	 * */
-	$("table#tablaBuscarMesas").DataTable({
+	var table = $("table#tablaBuscarMesas").DataTable({
 		dom: 'Bfrtip',
         buttons: [
         	{
@@ -42,6 +42,17 @@ $(document).ready(function() {
        }
 	});
 	
+	$('a.columnas').click(function(evento) {
+		evento.preventDefault();
+		var column = table.column($(this).attr('data-column'));
+		column.visible( ! column.visible() );
+	    if(column.visible()){
+	    	$(this).addClass("letraVerde");
+        } else {
+        	$(this).removeClass("letraVerde");
+        }
+	});
+	
 	/**
 	 * Cuando se presiona el boton modificar mesa, se asigna "modificar" al
 	 * hidden accion del formulario para que el manejador sepa que operación
@@ -52,6 +63,7 @@ $(document).ready(function() {
 		$("h3#mensaje" ).remove();
 		if(!$("input[name='radioMesas']").is(":checked")) {
 			$("<h3 id='mensaje' class='letraNaranja'>Debe seleccionar una mesa de examen a modificar</h3>").insertAfter("#content h2");
+			$('html,body').animate({scrollTop: $("#content").offset().top}, 300);
 			return false;
 		}
 		$("input[name='accion']").val("modificar");
@@ -66,11 +78,26 @@ $(document).ready(function() {
 		$("h3#mensaje" ).remove();
 		if(!$("input[name='radioMesas']").is(":checked")) {
 			$("<h3 id='mensaje' class='letraNaranja'>Debe seleccionar una mesa de examen a borrar</h3>").insertAfter("#content h2");
+			$('html,body').animate({scrollTop: $("#content").offset().top}, 300);
 			return false;
+		} else {
+			event.preventDefault();
+			var titulo = "\u00BFEst\u00E1 seguro que desea borrar la mesa de examen?";
+			var contenido = "Confirme la eliminaci\u00F3n:";
+			$.confirm({
+			    title: titulo,
+			    content: contenido,
+			    buttons: {
+			        confirmar: function () {
+			        	$("input[name='accion']").val("borrar");
+			        	$('form#formBuscarMesas').submit();
+			        },
+			        cancelar: function () {
+			            return true;
+			        }
+			    }
+			});
 		}
-		$("input[name='accion']").val("borrar");
-
 	});
 
-	
 });

@@ -13,6 +13,7 @@ include_once '../../lib/conf/ControlAcceso.php';
 <html>
 <?php include_once '../estructura/encabezado.php'; ?>
 <script type="text/javascript" src="../../js/mesas/mesa_resultado_buscar.js"></script>
+<script type='text/javascript' src='../../js/jquery-confirm-master/js/jquery-confirm.js'></script>
 <section id="main-content">
 <article>
 <div id="content" class="content">
@@ -30,7 +31,18 @@ include_once '../../lib/conf/ControlAcceso.php';
           $Mesas = new Mesas();
           if ($Mesas->cantidadLlamados() > 0) {
             // Se muestra la tabla con dos llamados
-            echo "<table id='tablaBuscarMesas' class='display'>
+            echo "
+            <div class='content-columnas'>
+            <a class='columnas letraVerde' data-column='3'>PRESIDENTE</a>
+    	    <a class='columnas letraVerde' data-column='4'>VOCAL 1</a>
+    	    <a class='columnas letraVerde' data-column='5'>VOCAL 2</a>
+    	    <a class='columnas letraVerde' data-column='6'>SUPLENTE</a>
+            <a class='columnas letraVerde' data-column='7'>FECHA</a>
+            <a class='columnas letraVerde' data-column='8'>LLAMADO 1</a>
+            <a class='columnas letraVerde' data-column='9'>LLAMADO 2</a>
+            <a class='columnas letraVerde' data-column='10'>LUGAR</a>
+    	    </div>
+            <table id='tablaBuscarMesas' class='display' style='width:100%'>
             <thead>
     		<tr> <th></th> <th>Carrera</th> <th>Asignatura</th> <th>Presidente</th> <th>Vocal1</th> <th>Vocal2</th> 
             <th>Suplente</th> <th>Llamado 1</th> <th>Llamado 2</th> <th>Hora</th> <th>Lugar</th> </tr>
@@ -93,10 +105,20 @@ include_once '../../lib/conf/ControlAcceso.php';
            </table>";
         } else {
             // Se muestra la tabla con un llamado
-            echo "<table id='tablaBuscarMesas' class='display'>
+            echo "
+            <div class='content-columnas'>
+            <a class='columnas letraVerde' data-column='3'>PRESIDENTE</a>
+    	    <a class='columnas letraVerde' data-column='4'>VOCAL 1</a>
+    	    <a class='columnas letraVerde' data-column='5'>VOCAL 2</a>
+    	    <a class='columnas letraVerde' data-column='6'>SUPLENTE</a>
+            <a class='columnas letraVerde' data-column='7'>FECHA</a>
+            <a class='columnas letraVerde' data-column='8'>HORA</a>
+            <a class='columnas letraVerde' data-column='9'>LUGAR</a>
+    	    </div>
+            <table id='tablaBuscarMesas' class='display'>
     	    <thead>
             <tr> <th></th> <th>Carrera</th> <th>Asignatura</th> <th>Presidente</th> <th>Vocal1</th>
-        	<th>Vocal2</th> <th>Suplente</th> <th>Llamado 1</th> <th>Hora</th> <th>Lugar</th> </tr>
+        	<th>Vocal2</th> <th>Suplente</th> <th>Fecha</th> <th>Hora</th> <th>Lugar</th> </tr>
     	    </thead>
             <tbody>";
             $tamanio = count($mesas);
@@ -150,20 +172,22 @@ include_once '../../lib/conf/ControlAcceso.php';
       } else {
         /* No se han encontrado resultados */
     	$mensaje = $resultado['mensaje'];
-    	echo "<h6 class='letraVerde letraCentrada'>{$mensaje}</h6>";
+    	echo "<h3 class='letraVerde letraCentrada'>{$mensaje}</h3>";
         }
     } else {
         /* El resultado es falso */
         $mensaje = "No se ha obtenido la información sobre mesas de examen para la búsqueda ingresada";
-        echo "<h6 class='letraRoja letraCentrada'>{$mensaje}</h6>";
+        echo "<h3 class='letraRoja letraCentrada'>{$mensaje}</h3>";
     }
     ?>
     </fieldset>
-    <?php  if ($mesas) { ?>
-        <input class="botonRojo" type="submit" id="btnBorrarMesa" name="btnBorrarMesa" value="Borrar">
-        <input class="botonVerde" type="submit" id="btnModificarMesa" name="btnModificarMesa" value="Modificar">
-        <input type="hidden" id="accion" name="accion" value="">
-    <?php } ?>
+    <?php  
+    if ($mesas) { 
+        echo "<input class='botonRojo' type='submit' id='btnBorrarMesa' name='btnBorrarMesa' value='Borrar'>
+        <input class='botonVerde' type='submit' id='btnModificarMesa' name='btnModificarMesa' value='Modificar'>
+        <input type='hidden' id='accion' name='accion' value=''>";
+    }
+    ?>
 </form>
 </div>
 </article>

@@ -1,42 +1,65 @@
 <?php
-
 header('Content-Type: text/html; charset=ISO-8859-1');
 include_once '../../lib/conf/ControlAcceso.php';
 include_once '../../lib/conf/PermisosSistema.php';
+include_once '../../lib/conf/Utilidades.php';
+include_once '../../modelos/carreras/Carrera.php';
+include_once '../../modelos/carreras/Carreras.php';
 
-if (isset($_SESSION['resultado'])) {
-    $resultado = $_SESSION['resultado'];
-}
-
-echo "<html>";
-include_once '../estructura/encabezado.php';
-echo "<script type='text/javascript' src='../../js/mesa_modificar.js'></script>";
-echo "<script type='text/javascript' src='../../js/jquery-confirm-master/js/jquery-confirm.js'></script>";
-echo "<section id='main-content'>";
-echo "<article>";
-echo "<div id='content' class='content'>";
-echo "<h2>INFORME MESA DE EXAMEN</h2>";
-echo "<form action='../../Controladores/ManejadorMesa.php' id='formInformeCursada' name='formInformeCursada' method='post'>";
-
-echo "<fieldset>";
-echo "<legend>Información básica</legend>";
-
-echo "</fieldset>";
-echo "<input type='hidden' id='accion' name='accion' value='buscar'>";
-echo "<input class='botonVerde' type='submit' id='btnInformeCursada' name='btnInformeCursada' value='Buscar'>";
-echo "</form>";
-
-if (isset($resultado) && isset($resultado['resultado']) && isset($resultado['mensaje']) && isset($resultado['datos'])) {
-    echo "<fieldset>";
-    echo "<legend>Resultado</legend>";
-    echo "</fieldset>";
-}
-
-$_SESSION['resultado'] = null;
-
-echo "</div>";
-echo "</article>";
-echo "</section>";
-include_once '../estructura/pie.php';
-echo "</html>";
+$carreras = new Carreras();
 ?>
+<html>
+<?php include_once '../estructura/encabezado.php';?>
+<script type='text/javascript' src='../../js/mesa_modificar.js'></script>
+<section id='main-content'>
+<article>
+<div id='content' class='content'>
+<h2>INFORME HORARIOS DE CURSADA</h2>
+<form action='../../Controladores/ManejadorCursada.php' id='formInformeCursada' name='formInformeCursada' method='post'>
+    <fieldset>
+    <legend>Información básica</legend>
+    <?php
+    echo "<label>Carrera:</label>
+    <select id='selectCarrera' name='selectCarrera'>
+    <option value='todas'>Todos las carreras</option>";
+    foreach ($carreras->getCarreras() as $carrera) {
+        echo "<option value='{$carrera->getCodigo()}'>{$carrera->getNombre()}</option>";
+    }
+    echo "</select>
+    <label>Día:</label>
+    <select id='selectDia' name='selectDia'>
+    	<option value='todos'>Todos los días</option>
+        <option value='1'>Lunes</option>
+        <option value='2'>Martes</option>
+        <option value='3'>Miercoles</option>
+        <option value='4'>Jueves</option>
+        <option value='5'>Viernes</option>
+        <option value='6'>Sabado</option>
+    </select>
+    <br><label>Hora de inicio:</label>
+    <select id='selectHoraInicio' name='selectHoraInicio'>
+    <option value='todas'>Todas las horas</option>";
+    for ($horainicio = 10; $horainicio < 23; ++$horainicio) {
+        echo "<option value='{$horainicio}:00'>{$horainicio}:00 hs</option>
+        <option value='{$horainicio}:30'>{$horainicio}:30 hs</option>";
+    }
+    echo "</select>
+    <label>Hora de fin:</label>
+    <select id='selectHoraFin' name='selectHoraFin'>
+    <option value='todas'>Todas las horas</option>";
+    for ($horafin = 10; $horafin < 24; ++$horafin) {
+        echo "<option value='{$horafin}:00'>{$horafin}:00 hs</option>
+        <option value='{$horafin}:30'>{$horafin}:30 hs</option>";
+    }
+    echo "</select>";
+    ?>  
+    </fieldset>
+    <input type='hidden' id='accion' name='accion' value='informe'>
+    <input class='botonVerde' type='submit' id='btnInformeCursada' name='btnInformeCursada' value='Informe'>
+    </form>
+</div>
+</article>
+</section> 
+<?php include_once '../estructura/pie.php'; ?>
+</html>
+

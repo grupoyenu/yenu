@@ -24,18 +24,17 @@ include_once '../../lib/conf/ControlAcceso.php';
 	$resultado = $_SESSION['mesaInformeResultado'];
 	$mensaje = $resultado['mensaje'];
 	$mesas = $resultado['datos'];
-	echo "<label>Filtro:</label>";
-	echo "<label>{$mensaje}</label>";
+	echo "<label>Filtro aplicado:</label>";
+	echo "<label>{$mensaje}</label><br>";
 	$cantidad = count($mesas);
 	if($cantidad > 0) {
-	    echo "<div>
-        <label>Ocultar/Visualizar:</label>
-        <a class='toggle-vis' data-column='2'>Presidente</a>
-	    <a class='toggle-vis' data-column='3'>Vocal 1</a>
-	    <a class='toggle-vis' data-column='4'>Vocal 2</a>
-	    <a class='toggle-vis' data-column='5'>Suplente</a>
-	    </div>
-        <table id='tablaInformeMesas' class='display' style='width:100%'>
+	    echo "<div class='content-columnas'>
+        <a class='columnas letraVerde' data-column='2'>PRESIDENTE</a>
+	    <a class='columnas letraVerde' data-column='3'>VOCAL 1</a>
+	    <a class='columnas letraVerde' data-column='4'>VOCAL 2</a>
+	    <a class='columnas letraVerde' data-column='5'>SUPLENTE</a>
+	    </div>";
+        echo "<table id='tablaInformeMesas' class='display' style='width:100%'>
         <thead> <tr> 
         <th>Carrera</th> <th>Asignatura</th> <th>Presidente</th> <th>Vocal1</th> <th>Vocal2</th> <th>Suplente</th> 
         </tr> </thead>
@@ -61,7 +60,7 @@ include_once '../../lib/conf/ControlAcceso.php';
         </table>";
 	} else {
 	    $mensaje = "No se obtuvieron resultados para el filtro que se ha indicado";
-	    echo "<h6 class='letraNaranja letraCentrada'>{$mensaje}</h6>";
+	    echo "<h3 class='letraNaranja letraCentrada'>{$mensaje}</h3>";
 	}
 	?>
 	</fieldset>

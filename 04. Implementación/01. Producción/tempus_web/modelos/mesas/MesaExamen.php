@@ -109,10 +109,32 @@ class MesaExamen
     }
     
     /**
+     * Realiza la eliminacion de una mesa de examen. Junto con ella se deben eliminar los llamados
+     * de la mesa indicada. El tribunal no se elimina porque puede estar relacionado con otra mesa
+     * de examen.
+     * @param MesaExamen $mesa Mesa de examen a eliminar.
+     * @return boolean true o false.
      * */
-    public function borrar()
+    public function borrar($mesa)
     {
-        
+        if($mesa && $mesa->getIdmesa()) {
+            $idmesa = $mesa->getIdmesa();
+            $consulta = "DELETE FROM mesa_examen WHERE idmesa=".$idmesa;
+            ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+            if (ObjetoDatos::getInstancia()->affected_rows > 0) {
+                $llamado = new Llamado();
+                if($mesa->getPrimero() && $mesa->getPrimero()->getIdllamado()) {
+                    $idllamado = $mesa->getPrimero()->getIdllamado();
+                    $llamado->borrar($idllamado);
+                }
+                if($mesa->getSegundo() && $mesa->getSegundo()->getIdllamado()) {
+                    $idllamado = $mesa->getSegundo()->getIdllamado();
+                    $llamado->borrar($idllamado);
+                }
+                return true;
+            }
+        }
+        return false;
     }
     
     /**

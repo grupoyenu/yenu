@@ -156,9 +156,22 @@ class Llamado {
         }
     }
     
+    /**
+     * Realiza la eliminacion de un llamado en la base de datos a partir de su identificador. Se
+     * devuelve verdadero en caso de realizar la eliminacion correctamente y falso en caso contrario.
+     * @param integer $idllamado Identificador del llamado.
+     * @return boolean true o false.
+     * */
     public function borrar($idllamado)
     {
-        
+        if($idllamado) {
+            $consulta = "DELETE FROM llamado WHERE idllamado=".$idllamado;
+            ObjetoDatos::getInstancia()->ejecutarQuery($consulta);
+            if (ObjetoDatos::getInstancia()->affected_rows > 0) {
+                return true;
+            }
+        }
+        return false;
     }
     
     /**
