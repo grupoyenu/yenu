@@ -1,6 +1,12 @@
 <?php
 
-    include_once '/lib/conf/Constantes.php';
-    header("Location: " . Constantes::HOMEURL);
+require_once './app/controladores/Autoload.php';
+$autoload = new Autoload();
 
-?>
+$ruta = isset($_GET['ruta']) ? $_GET['ruta'] : "home";
+$controlador = new ControladorPrincipal($ruta);
+
+
+
+
+
