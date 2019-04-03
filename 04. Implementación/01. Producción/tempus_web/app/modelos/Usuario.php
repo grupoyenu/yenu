@@ -52,26 +52,32 @@ class Usuario {
             $rows = Conexion::getInstancia()->executeQuery($consulta);
             if (!empty($rows)) {
                 $usuario = $rows[0];
-                $this->idusuario = $usuario['idusuario'];
-                $this->email = $usuario['email'];
-                $this->nombre = $usuario['nombre'];
-                $this->metodo = $usuario['metodologin'];
-                $this->estado = $usuario['estado'];
                 $rol = new Rol();
-                $rol->constructor($usuario['rol'], $usuario['idrol']);
-                $this->rol = $rol;
-                $this->valido = true;
+                $rol->cargar($usuario['rol'], $usuario['idrol']);
+                $this->cargar($usuario['idusuario'], $usuario['email'], $usuario['nombre'], $rol, $usuario['metodologin'], $usuario['estado']);
             }
         }
     }
 
     public function constructor($email, $nombre, $rol, $metodo = "Google", $estado = "Activo", $idusuario = null) {
+        $this->valido = true;
+        if ($this->setNombre($nombre) && $this->setMetodo($metodo) && $this->setRol($rol)) {
+            $this->idusuario = $idusuario;
+            $this->email = $email;
+            $this->estado = $estado;
+            $this->valido = true;
+        }
+        return $this->valido;
+    }
+
+    public function cargar($idusuario, $email, $nombre, $rol, $metodo, $estado) {
         $this->idusuario = $idusuario;
         $this->email = $email;
         $this->nombre = $nombre;
         $this->rol = $rol;
         $this->metodo = $metodo;
         $this->estado = $estado;
+        $this->valido = true;
     }
 
     /**
@@ -135,7 +141,7 @@ class Usuario {
      * @return boolean Validez del usuario.
      */
     public function getValido() {
-        return $this->valido;
+        return $this->estado;
     }
 
     /**
@@ -159,13 +165,19 @@ class Usuario {
      * @param string $nombre Nombre del usuario.
      */
     public function setNombre($nombre) {
-        $this->nombre = $nombre;
+        if ($this->validarNombre($nombre)) {
+            $this->nombre = $nombre;
+            return true;
+        }
+        return false;
     }
 
     public function setMetodo($metodo) {
         if ($this->validarMetodo($metodo)) {
             $this->metodo = $metodo;
+            return true;
         }
+        return false;
     }
 
     /**
@@ -181,21 +193,32 @@ class Usuario {
      * @param Rol $rol Rol del usuario.
      */
     public function setRol($rol) {
-        $this->rol = $rol;
+        if ($this->validarRol($rol)) {
+            $this->rol = $rol;
+            return true;
+        }
+        return false;
     }
 
     public function borrar() {
         if ($this->idusuario) {
-            $this->descripcion = "No se realizó la eliminación del usuario";
-            $consulta = "DELETE FROM usuario WHERE idusuario=" . $this->idusuario;
-            $this->valido = Conexion::getInstancia()->executeUpdate($consulta);
-            if ($this->valido) {
-                $this->descripcion = "Se realizó la eliminación del usuario";
+            $where = "idusuario=" . $this->idusuario;
+            $borrar = Conexion::getInstancia()->executeDelete("usuario", $where);
+            if($borrar == 2) {
+                return $this->borrarRelacionConRol();
             }
-            return $this->valido;
+            $this->descripcion = Conexion::getInstancia()->getDescripcion . " de usuario";
+            return $borrar;
         }
         $this->descripcion = "El usuario no contiene toda la información";
-        return false;
+        return 0;
+    }
+
+    private function borrarRelacionConRol() {
+        $where = "idusuario=" . $this->idusuario;
+        $borrar = Conexion::getInstancia()->executeDelete("usuario_rol", $where);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion . " de usuario";
+        return $borrar;
     }
 
     public function buscar() {
@@ -205,48 +228,41 @@ class Usuario {
                         WHERE u.idusuario = ur.idusuario AND r.idrol = ur.idrol AND 
                         u.email = '$this->email' AND u.metodologin = '$this->metodo'";
             $rows = Conexion::getInstancia()->executeQuery($consulta);
+            $this->descripcion = (empty($rows)) ? "" : "Se encontró un usuario que coincide con el indicado";
             return $rows;
         }
         $this->descripcion = "El usuario no contiene toda la información";
-        return null;
+        return NULL;
     }
-    
-    
-    private function creacion() {
-        if (!$this->rol || !$this->rol->getIdrol()) {
-            return false;
-        }
-        Conexion::getInstancia()->setAutocommit(false);
-        $consulta = "INSERT INTO usuario VALUES (null,'$this->email','$this->nombre','$this->metodo','Activo')";
-        echo $consulta;
-        if (Conexion::getInstancia()->executeUpdate($consulta)) {
-            $this->idusuario = (Int) Conexion::getInstancia()->insert_id;
-            $consulta = "INSERT INTO usuario_rol VALUES ($this->idusuario, {$this->rol->getIdrol()})";
-            if (Conexion::getInstancia()->executeUpdate($consulta)) {
-                Conexion::getInstancia()->executeCommit();
-                return true;
-            }
-        }
-        Conexion::getInstancia()->executeRollback();
-        return false;
-    }
-    
 
     public function crear() {
         $rows = $this->buscar();
-        if (!is_null($rows)) {
-            if (!empty($rows)) {
-                $this->descripcion = "Se encontró un usuario que coincide con el indicado";
-                $this->idusuario = $rows[0]['idusuario'];
-                return 3;
-            }
-            $this->descripcion = "No se realizó la creación del usuario";
-            if($this->creacion()) {
-                $this->descripcion = "Se realizó la creación del usuario";
-                return 2;
-            }
-            return 1;
+        if (!empty($rows)) {
+            $this->idusuario = $rows[0]['idusuario'];
+            return 3;
         }
+        if (!is_null($rows)) {
+            $values = "(null,'$this->email','$this->nombre','$this->metodo','Activo')";
+            $creacion = Conexion::getInstancia()->executeInsert("usuario", $values);
+            if ($creacion == 2) {
+                $this->idusuario = (Int) Conexion::getInstancia()->insert_id;
+                return $this->crearRelacionConRol();
+            }
+            $this->descripcion = Conexion::getInstancia()->getDescripcion() . " del usuario";
+            return $creacion;
+        }
+        $this->descripcion = "No se pudo realizar la búsqueda de usuario";
+        return 0;
+    }
+
+    private function crearRelacionConRol() {
+        if ($this->rol) {
+            $values = "($this->idusuario , {$this->rol->getIdrol()})";
+            $creacion = Conexion::getInstancia()->executeInsert("usuario_rol", $values);
+            $this->descripcion = Conexion::getInstancia()->getDescripcion() . " del usuario";
+            return $creacion;
+        }
+        $this->descripcion = "El usuario no contiene la información de rol";
         return 0;
     }
 
@@ -266,12 +282,23 @@ class Usuario {
         return false;
     }
 
+    public function modificarRelacionConRol() {
+        
+    }
+
     private function validarMetodo($metodo) {
-        if ($metodo == "Manual" || $metodo = "Google") {
-            return true;
-        }
         $this->descripcion = "El método de login no es válido";
-        return false;
+        return ($metodo == "Manual" || $metodo = "Google") ? true : false;
+    }
+
+    private function validarNombre($nombre) {
+        $expresion = "/^[A-Za-zÑñ ]{5,30}$/";
+        $this->descripcion = "El nombre del usuario no cumple con el formato";
+        return preg_match($expresion, $nombre) ? true : false;
+    }
+
+    private function validarRol($rol) {
+        return ($rol && $rol->getIdrol()) ? true : false;
     }
 
 }

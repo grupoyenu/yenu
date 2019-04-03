@@ -68,6 +68,13 @@ class Rol {
         return $this->valido;
     }
 
+    public function cargar($nombre, $idrol, $permisos) {
+        $this->idrol = $idrol;
+        $this->nombre = $nombre;
+        $this->permisos = $permisos;
+        $this->valido = true;
+    }
+
     /**
      * Devuelve el identificador del rol.
      * @return integer $idrol
@@ -144,11 +151,11 @@ class Rol {
             foreach ($this->permisos as $permiso) {
                 $values = $values . " ($this->idrol, $permiso),";
             }
-            $values =  substr($values, 0, -1);
+            $values = substr($values, 0, -1);
             if (Conexion::getInstancia()->executeInsert("rol_permiso", $values)) {
                 return 2;
             }
-            $this->descripcion = Conexion::getInstancia()->getDescripcion()." de los permisos";
+            $this->descripcion = Conexion::getInstancia()->getDescripcion() . " de los permisos";
             return 1;
         }
         $this->descripcion = "El rol no contiene toda la información";
@@ -171,7 +178,7 @@ class Rol {
                 $this->descripcion = "El rol no se puede eliminar porque está asociado a un usuario";
                 return 1;
             }
-            if($this->borrarRelacion() != 2) {
+            if ($this->borrarRelacion() != 2) {
                 return 1;
             }
             $eliminacion = Conexion::getInstancia()->executeDelete("rol", "idrol={$this->idrol}");
@@ -231,9 +238,9 @@ class Rol {
         $this->descripcion = "El rol no contiene toda la información";
         return null;
     }
-    
+
     private function buscarRelacionUsuario() {
-        $consulta = "SELECT * FROM usuario_rol WHERE idrol=".$this->idrol;
+        $consulta = "SELECT * FROM usuario_rol WHERE idrol=" . $this->idrol;
         return Conexion::getInstancia()->executeQueryBoolean($consulta);
     }
 

@@ -151,6 +151,22 @@ class Aula {
         return false;
     }
 
+    public function borrar() {
+        $rows = $this->obtenerHorarios();
+        if (is_null($rows)) {
+            $this->descripcion = "El aula no se puede borrar porque está asociado a una clase";
+            return 0;
+        }
+        if (empty($rows)) {
+            $where = "idaula=" . $this->idaula;
+            $borrar = Conexion::getInstancia()->executeDelete("aula", $where);
+            $this->descripcion = Conexion::getInstancia()->getDescripcion() . " del aula";
+            return $borrar;
+        }
+        $this->descripcion = "El aula no se puede borrar porque está asociado a una clase";
+        return 1;
+    }
+
     /**
      * Realiza la busqueda de un aula por su nombre y sector solo si es valida. 
      * Se retorna un arreglo asociativo que solo es vacio en caso de no encontrar
@@ -190,7 +206,7 @@ class Aula {
             $values = "(NULL,'" . $this->nombre . "','" . $this->sector . "')";
             $creacion = Conexion::getInstancia()->executeInsert("aula", $values);
             $this->idaula = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
-            $this->descripcion = Conexion::getInstancia()->getDescripcion()." del aula";
+            $this->descripcion = Conexion::getInstancia()->getDescripcion() . " del aula";
             return $creacion;
         }
         $this->descripcion = "No pudo realizar la búsqueda de aula";
@@ -217,30 +233,35 @@ class Aula {
      */
     public function modificar() {
         if ($this->completa() && $this->idaula) {
-           $set = "nombre='{$this->nombre}', sector='{$this->sector}'";
-           $where = "idaula={$this->idaula}";
-           $modificacion = Conexion::getInstancia()->executeUpdate("aula", $set, $where);
-           $this->descripcion = Conexion::getInstancia()->getDescripcion()." del aula";
-           return $modificacion;
+            $set = "nombre='{$this->nombre}', sector='{$this->sector}'";
+            $where = "idaula={$this->idaula}";
+            $modificacion = Conexion::getInstancia()->executeUpdate("aula", $set, $where);
+            $this->descripcion = Conexion::getInstancia()->getDescripcion() . " del aula";
+            return $modificacion;
         }
         $this->descripcion = "El aula no contiene toda la información";
         return 0;
     }
 
-    public function obtenerHorarios($idaula) {
-        $consulta = "SELECT DISTINCT(a.idasignatura), cl.dia, a.nombre, DATE_FORMAT(cl.desde, '%H:%i') desde, DATE_FORMAT(cl.hasta, '%H:%i') hasta
+    public function obtenerHorarios() {
+        if ($this->idaula) {
+            $consulta = "SELECT DISTINCT(a.idasignatura), cl.dia, a.nombre, DATE_FORMAT(cl.desde, '%H:%i') desde, DATE_FORMAT(cl.hasta, '%H:%i') hasta
                     FROM asignatura a, cursada cu, clase cl 
-                    WHERE a.idasignatura = cu.idasignatura AND cu.idclase = cl.idclase AND cl.idaula = {$idaula} 
+                    WHERE a.idasignatura = cu.idasignatura AND cu.idclase = cl.idclase AND cl.idaula = {$this->idaula} 
                     ORDER BY cl.dia ASC, cl.desde ASC";
-        $rows = Conexion::getInstancia()->executeQuery($consulta);
-        if(!empty($rows)) {
-            $horarios = array();
-            foreach ($rows as $fila) {
-                $horarios[$fila[1]][] = array('nombre' => $fila[2], 'inicio' => $fila[3], 'fin' => $fila[4]);
+            $rows = Conexion::getInstancia()->executeQuery($consulta);
+            if (!empty($rows)) {
+                $horarios = array();
+                foreach ($rows as $fila) {
+                    $columna = substr($fila['desde'], 0, 2);
+                    $horarios[$fila['dia']][$columna] = array('nombre' => $fila['nombre'], 'inicio' => $fila['desde'], 'fin' => $fila['hasta']);
+                }
+                return $horarios;
             }
-            return $horarios;
+            return is_null($rows) ? NULL : $rows;
         }
-        return is_null($rows) ? NULL : $rows;
+        $this->descripcion = "El aula no contiene toda la información";
+        return 0;
     }
 
     /**

@@ -3,14 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/tempus3/app/modelos/Clase.php</file>
-            <file>file:/C:/xampp/htdocs/tempus3/app/modelos/Asignatura.php</file>
-            <file>file:/C:/xampp/htdocs/tempus3/app/modelos/Llamado.php</file>
-            <file>file:/C:/xampp/htdocs/tempus3/app/modelos/Conexion.php</file>
-            <file>file:/C:/xampp/htdocs/tempus3/app/modelos/Cursada.php</file>
+            <file>file:/C:/xampp/htdocs/tempus3/app/controladores/ControladorPrincipal.php</file>
+            <file>file:/C:/xampp/htdocs/tempus3/app/vistas/header.php</file>
+            <file>file:/C:/xampp/htdocs/tempus3/app/vistas/FormImportarMesa.php</file>
+            <file>file:/C:/xampp/htdocs/tempus3/app/vistas/cursada_importar.php</file>
+            <file>file:/C:/xampp/htdocs/tempus3/app/vistas/FormImportarCursada.php</file>
             <file>file:/C:/xampp/htdocs/tempus3/app/modelos/Aula.php</file>
-            <file>file:/C:/xampp/htdocs/tempus3/app/modelos/Carrera.php</file>
-            <file>file:/C:/xampp/htdocs/tempus3/app/modelos/Plan.php</file>
+            <file>file:/C:/xampp/htdocs/tempus3/app/modelos/Utilidades.php</file>
         </group>
     </open-files>
 </project-private>

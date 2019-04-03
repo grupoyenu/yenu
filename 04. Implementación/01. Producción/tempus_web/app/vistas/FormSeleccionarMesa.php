@@ -2,7 +2,7 @@
     <h4 class="text-center p-4">IMPORTAR MESAS DE EXAMEN</h4>
     <div id="resultado"></div>
     <div id="contenido">
-        <form id="formSeleccionarMesa" name="formSeleccionarMesa" method="POST">
+        <form action="mesa_importar" enctype="multipart/form-data" id="formSeleccionarMesa" name="formSeleccionarMesa" method="POST">
             <fieldset class="border p-2">
                 <legend class="w-auto h6" title="Seleccione un archivo con mesas de examen">Información básica</legend>
                 <div class="input-group">
@@ -23,8 +23,6 @@
                            value="Cancelar"></a>
                 </div>
             </div>
-
-
         </form>
     </div>  
 </div>

@@ -10,78 +10,11 @@
  * */
 class Utilidades {
 
-    /**
-     * Verifica que una cadena cumpla con el formato de hora HH:MM. Para ello
-     * controla la longitud de la cadena y el formato. Las cadenas vac�as y 
-     * nulas no cumplen con el formato.
-     * @param string $hora Cadena con la hora.
-     * @return string Devuelve un mensaje indicando un error o null si es correcto.
-     * @author M�rquez Emanuel.
-     * @see ereg().
-     * */
-    static function formatoHora($hora) {
-        if ($hora) {
-            $longitud = strlen($hora);
-            if ($longitud == 5) {
-                $expresion = "^(1[0-9]|2[0-3]):[0-5][0-9]$";
-                if (ereg($expresion, $hora)) {
-                    return null;
-                }
-                return "La hora no cumple con el formato o rango";
-            }
-            return "La longitud de la hora debe ser de cinco caracteres (HH:MM)";
+    static function formatoAnio($anio) {
+        if ($anio) {
+            return null;
         }
-        return "Se debe indicar un horario";
-    }
-
-    /**
-     * Verifica que una cadena cumpla con el formato de fecha DD/MM/AAAA. Para 
-     * ello controla la longitud de la cadena y el formato. Las cadenas vac�as 
-     * y nulas no cumplen con el formato.
-     * @param string $fecha Cadena con la fecha.
-     * @return string Null si es correcta, mensaje en caso contrario.
-     * @author M�rquez Emanuel.
-     * @see DateTime.
-     * */
-    static function formatoFecha($fecha) {
-        if ($fecha) {
-            $longitud = strlen($fecha);
-            if ($longitud == 10) {
-                $date = DateTime::createFromFormat('d/m/Y', $fecha);
-                if (($date !== false) && ($date) && ($date->format('d/m/Y') == $fecha)) {
-                    return null;
-                }
-                return "La fecha no cumple con el formato";
-            }
-            return "La longitud de la fecha debe ser de 10 caracteres (DD/MM/AAAA)";
-        }
-        return null;
-    }
-
-    /**
-     * Controla el formato del nombre de una asignatura. El nombre de asignatura
-     * tiene un rango de 5 a 255 car�cteres. Ademas, puede contener espacio en
-     * blanco, letras con y sin acento, y n�meros.
-     * @param string $nombre Nombre de la asignatura.
-     * @return string Null si es correcto, mensaje en caso contrario.
-     * @author M�rquez Emanuel.
-     * */
-    static function formatoNombreAsignatura($nombre) {
-        if ($nombre) {
-            $longitud = strlen($nombre);
-            if (($longitud > 4) && ($longitud < 256)) {
-
-                if (!ctype_digit($nombre)) {
-                    $expresion = "/^[A-Za-z������������0123456789,. ]{5,255}$/";
-                    if (preg_match($expresion, $nombre))
-                        return null;
-                    return "El nombre de asignatura no cumple con el formato (Se aceptan letras, acentos, espacios, puntos y/o comas)";
-                }
-                return "El nombre de asignatura est� completamente compuesto de n�meros";
-            }
-            return "La longitud del nombre debe ser entre 5 y 255 caracteres";
-        }
-        return "Se debe indicar un nombre de asignatura";
+        return "style='background-color: #c50000; color: white;' title='Se debe indicar un año'";
     }
 
     /**
@@ -94,20 +27,91 @@ class Utilidades {
      * */
     static function formatoCodigoCarrera($codigo) {
         if ($codigo) {
-            if ($codigo != 0) {
-                $longitud = strlen($codigo);
-                if (($longitud > 0) && ($longitud < 4)) {
-                    $expresion = "/^[0-9]{1,3}$/";
-                    if (preg_match($expresion, $codigo)) {
-                        return null;
-                    }
-                    return "El c�digo no cumple con el formato n�merico";
-                }
-                return "La longitud del c�digo debe ser de 1 a 3 digitos";
-            }
-            return "No se ha indicado un c�digo de carrera o no es n�merico";
+            $expresion = "/^[0-9]{1,3}$/";
+            return preg_match($expresion, $codigo) ? NULL : "style='background-color: #c50000; color: white;' title='No cumple el formato [0-9]{1,3}'";
         }
-        return "Se debe indicar un c�digo de carrera";
+        return "style='background-color: #c50000; color: white;' title='Se debe indicar un código de carrera'";
+    }
+
+    /**
+     * Verifica que una cadena cumpla con el formato de fecha DD/MM/AAAA. Para 
+     * ello controla la longitud de la cadena y el formato. Las cadenas vac�as 
+     * y nulas no cumplen con el formato.
+     * @param string $fecha Cadena con la fecha.
+     * @return string Null si es correcta, mensaje en caso contrario.
+     * @author M�rquez Emanuel.
+     * @see DateTime.
+     * */
+    static function formatoFechaNoObligatorio($fecha) {
+        if ($fecha) {
+            if (strlen($fecha) != 10) {
+                return "style='background-color: #c50000; color: white;' title='No cumple el formato DD/MM/AAAA'";
+            }
+            $date = DateTime::createFromFormat('d/m/Y', $fecha);
+            if (($date !== false) && ($date) && ($date->format('d/m/Y') == $fecha)) {
+                return null;
+            }
+            return "style='background-color: #c50000; color: white;' title='No cumple con el formato DD/MM/AAAA'";
+        }
+        return NULL;
+    }
+
+    static function formatoFechaObligatorio($fecha) {
+        if ($fecha) {
+            if (strlen($fecha) != 10) {
+                return "style='background-color: #c50000; color: white;' title='No cumple el formato DD/MM/AAAA'";
+            }
+            $date = DateTime::createFromFormat('d/m/Y', $fecha);
+            if (($date !== false) && ($date) && ($date->format('d/m/Y') == $fecha)) {
+                return null;
+            }
+            return "style='background-color: #c50000; color: white;' title='No cumple con el formato DD/MM/AAAA'";
+        }
+        return "style='background-color: #c50000; color: white;' title='Se debe indicar una fecha'";
+    }
+
+    /**
+     * Verifica que una cadena cumpla con el formato de hora HH:MM. Para ello
+     * controla la longitud de la cadena y el formato. Las cadenas vac�as y 
+     * nulas no cumplen con el formato.
+     * @param string $hora Cadena con la hora.
+     * @return string Devuelve un mensaje indicando un error o null si es correcto.
+     * @author M�rquez Emanuel.
+     * @see ereg().
+     * */
+    static function formatoHora($hora) {
+        if ($hora) {
+            $expresion = "/^(1[0-9]|2[0-3]):[0-5][0-9]$/";
+            return (preg_match($expresion, $hora)) ? NULL : "style='background-color: #c50000; color: white;' title='No cumple el formato HH:MM'";
+        }
+        return "style='background-color: #c50000; color: white;' title='Se debe indicar un horario'";
+    }
+
+    static function formatoNombreAula($nombre) {
+        if ($nombre) {
+            $expresion = "/^[A-Za-zÁÉÍÓÚÑáéíóúñ0123456789 ]{1,40}$/";
+            return (preg_match($expresion, $nombre)) ? NULL : "style='background-color: #c50000; color: white;' title='No cumple el formato [A-Za-z ]{1,40}'";
+        }
+        return "style='background-color: #c50000; color: white;' title='Se debe indicar un nombre de aula'";
+    }
+
+    /**
+     * Controla el formato del nombre de una asignatura. El nombre de asignatura
+     * tiene un rango de 5 a 255 car�cteres. Ademas, puede contener espacio en
+     * blanco, letras con y sin acento, y n�meros.
+     * @param string $nombre Nombre de la asignatura.
+     * @return string Null si es correcto, mensaje en caso contrario.
+     * @author M�rquez Emanuel.
+     * */
+    static function formatoNombreAsignatura($nombre) {
+        if ($nombre) {
+            if (!ctype_digit($nombre)) {
+                $expresion = "/^[A-Za-zÁÉÍÓÚÑáéíóúñ0123456789,. ]{5,255}$/";
+                return preg_match($expresion, $nombre) ? NULL : "style='background-color: #c50000; color: white;' title='No cumple el formato [A-Za-z0-9,. ]{5,255}'";
+            }
+            return "style='background-color: #c50000; color: white;' title='El nombre de asignatura está completamente compuesto de números'";
+        }
+        return "style='background-color: #c50000; color: white;' title='Se debe indicar un nombre de asignatura'";
     }
 
     /**
@@ -120,17 +124,10 @@ class Utilidades {
      * */
     static function formatoNombreCarrera($nombre) {
         if ($nombre) {
-            $longitud = strlen($nombre);
-            if (($longitud > 9) && ($longitud < 256)) {
-                $expresion = "/^[A-Za-z������������. ]{10,255}$/";
-                if (preg_match($expresion, $nombre)) {
-                    return null;
-                }
-                return "El nombre de carrera no cumple con el formato (Se aceptan letras y espacios)";
-            }
-            return "La longitud del nombre debe ser de 10 a 255 caracteres";
+            $expresion = "/^[A-Za-zÁÉÍÓÚÑáéíóúñ. ]{10,255}$/";
+            return preg_match($expresion, $nombre) ? NULL : "style='background-color: #c50000; color: white;' title='No cumple el formato [A-Za-z. ]{10,255}'";
         }
-        return "Se debe indicar un nombre de carrera";
+        return "style='background-color: #c50000; color: white;' title='Se debe indicar un nombre de carrera'";
     }
 
     /**
@@ -141,111 +138,71 @@ class Utilidades {
      * @return string Null si es correcto, mensaje en caso contrario.
      * @author M�rquez Emanuel.
      * */
-    static function formatoNombreDocente($nombre) {
-        $longitud = strlen($nombre);
-        if (($longitud > 3) && ($longitud < 256)) {
-            $expresion = "/^[A-Za-z��������������,. ]{4,255}$/";
-            if (preg_match($expresion, $nombre)) {
-                return null;
-            }
-            return "El nombre de docente no cumple con el formato (Se aceptan letras, acentos, espacios, puntos y comas)";
+    static function formatoNombreDocenteObligatorio($nombre) {
+        if ($nombre) {
+            $expresion = "/^[A-Za-zÁÉÍÓÚÑáéíóúñ,. ]{4,255}$/";
+            return preg_match($expresion, $nombre) ? NULL : "style='background-color: #c50000; color: white;' title='No cumple el formato [A-Za-z,. ]{4,255}'";
         }
-        return "La longitud del nombre de docente debe ser de 3 a 255 caracteres";
+        return "style='background-color: #c50000; color: white;' title='Se debe indicar un nombre de docente'";
+    }
+
+    static function formatoNombreDocenteNoObligatorio($nombre) {
+        if ($nombre) {
+            $expresion = "/^[A-Za-zÁÉÍÓÚÑáéíóúñ,. ]{4,255}$/";
+            return preg_match($expresion, $nombre) ? NULL : "style='background-color: #c50000; color: white;' title='No cumple el formato [A-Za-z,. ]{4,255}'";
+        }
+        return NULL;
+    }
+
+    static function formatoNombreSector($sector) {
+        if ($sector) {
+            $expresion = "/^[A-Za-z]$/";
+            return (preg_match($expresion, $sector)) ? NULL : "style='background-color: #c50000; color: white;' title='No cumple el formato [A-Za-z]'";
+        }
+        return "style='background-color: #c50000; color: white;' title='Se debe indicar un nombre de sector'";
     }
 
     /**
-     * Controla que no se repita el mismo docente en el tribunal. Para ello
-     * compara cada nombre en cada posici�n.
+     * Valida la repeticion de docentes dentro del tribunal.
      * @param string $presidente Nombre del presidente.
      * @param string $vocal1 Nombre del vocal 1.
      * @param string $vocal2 Nombre del vocal 2.
      * @param string $suplente Nombre del suplente.
-     * @return string Null si es correcto, mensaje en caso contrario.
-     * @author M�rquez Emanuel.
+     * @return string NULL si es correcto, mensaje en caso contrario.
      * */
-    static function verificarTribunal($presidente, $vocal1, $vocal2, $suplente) {
-        if ($presidente == $vocal1) {
-            return "El docente que es presidente tambien es vocal primero";
-        }
-        if ($vocal2) {
-            if ($presidente == $vocal2) {
-                return "El docente que es presidente tambien es vocal segundo";
-            }
-            if ($vocal1 == $vocal2) {
-                return "El docente que es vocal primero tambien es vocal segundo";
-            }
-            if ($suplente) {
-                if ($presidente == $suplente) {
-                    return "El docente que es presidente tambien es suplente";
-                }
-                if ($vocal1 == $suplente) {
-                    return "El docente que es vocal primero tambien es suplente";
-                }
+    static function validarTribunal($presidente, $vocal1, $vocal2, $suplente) {
+        $mensaje = ($presidente == $vocal1) ? "style='background-color: #c50000; color: white;' title='El docente que es presidente tambien es vocal primero'" : NULL;
+        if ($vocal2 && !$mensaje) {
+            $mensaje = ($presidente == $vocal2) ? "style='background-color: #c50000; color: white;' title='El docente que es presidente tambien es vocal segundo'" : $mensaje;
+            $mensaje = ($vocal1 == $vocal2) ? "style='background-color: #c50000; color: white;' title='El docente que es vocal primero tambien es vocal segundo'" : $mensaje;
+            if ($suplente && !$mensaje) {
+                $mensaje = ($presidente == $suplente) ? "style='background-color: #c50000; color: white;' title='El docente que es presidente tambien es suplente'" : $mensaje;
+                $mensaje = ($vocal1 == $suplente) ? "style='background-color: #c50000; color: white;' title='El docente que es vocal primero tambien es suplente'" : $mensaje;
+                $mensaje = ($vocal2 == $suplente) ? "style='background-color: #c50000; color: white;' title='El docente que es vocal segundo tambien es suplente'" : $mensaje;
             }
         }
-        return null;
+        return $mensaje;
     }
 
     /**
-     * Controla el formato del nombre de sector. Este debe ser de un solo
-     * caracter y de una letra.
-     * @param string $sector Sector donde se ubica el aula.
-     * @return string Null si es correcto, mensaje en caso contrario.
-     * @author M�rquez Emanuel.
-     * */
-    static function formatoSector($sector) {
-        if (strlen($sector) == 1) {
-            $expresion = "/^[A-Za-z]$/";
-            if (preg_match($expresion, $sector)) {
-                return null;
-            }
-            return "El sector no cumple con el formato (Se acepta solo una letra)";
-        }
-        return "La longitud del sector debe ser de 1";
-    }
-
-    /**
-     * Controla el formato del nombre del aula. Este puede contener letras
-     * espacios y n�meros.
-     * @param string $aula Aula donde se dicta la clase.
-     * @return string Null si es correcto, mensaje en caso contrario.
-     * @author M�rquez Emanuel.
-     * */
-    static function formatoNombreAula($aula) {
-        $expresion = "/^[A-Za-z��������������0123456789 ]{1,255}$/";
-        if (preg_match($expresion, $aula)) {
-            return null;
-        }
-        return "El nombre de aula no cumple con el formato (Se aceptan letras, acentos, espacios)";
-    }
-
-    /**
-     * Controla que en un arreglo no haya mesas de examen duplicadas. Se controla
-     * que no exista una mesa de examen para la misma asignatura en la misma
-     * carrera. Para ello, se busca primero el nombre de asignatura, si existe se
-     * busca la carrera para ver coincidencias.
+     * Controla que en un arreglo no haya mesas de examen duplicadas. Se busca
+     * dentro del arreglo que no se repita el par Asignatura-Carrera.
      * @param array $mesas Recibe el arreglo de mesas.
      * @param string $asignatura Recibe el nombre de la asignatura.
-     * @param integer $codigo Recibe el codigo de la carrera.
-     * @return string Null si no hay duplicadas, mensaje en caso contrario.
-     * @author M�rquez Emanuel.
+     * @param string $carrera Recibe el codigo de la carrera.
+     * @return string NULL si no hay duplicadas, mensaje en caso contrario.
      * */
     static function mesasDuplicadas($mesas, $asignatura, $carrera) {
-        $mensaje = null;
         $posicion = 0;
-        $encontrado = false;
         $tamanio = count($mesas);
-        while (($posicion < $tamanio) && !$encontrado) {
+        while ($posicion < $tamanio) {
             $mesa = $mesas[$posicion];
-            if (in_array($asignatura, $mesa)) {
-                if (in_array($carrera, $mesa)) {
-                    $mensaje = "La mesa de examen ya se encuentra cargada";
-                    $encontrado = true;
-                }
+            if (in_array($asignatura, $mesa) && in_array($carrera, $mesa)) {
+                return "style='background-color: #c50000; color: white;' title='La mesa de examen ya se encuentra cargada'";
             }
             ++$posicion;
         }
-        return $mensaje;
+        return NULL;
     }
 
     /**
@@ -279,9 +236,6 @@ class Utilidades {
 
     /**
      * Realiza la conversion de una cadena de texto a formato Camel Case.
-     * Cada una de las palabras de la cadena de texto recibida ser� convertida
-     * a un formato donde se inicia la primer letra con mayuscula y luego las 
-     * demas letras con minuscula.
      * @param string $texto Cadena de texto en cualquier formato.
      * @return string Devuelve la cadena en formato Camel Case. 
      * */
@@ -319,9 +273,9 @@ class Utilidades {
         return "";
     }
 
-    static function obtenerClassCreacion($creacion) {
+    static function obtenerClassOperacion($resultado) {
         $class = 'class="alert alert-info text-center"';
-        switch ($creacion) {
+        switch ($resultado) {
             case 0:
                 $class = 'class="alert alert-warning text-center"';
                 break;
@@ -336,6 +290,42 @@ class Utilidades {
                 break;
         }
         return $class;
+    }
+
+    static function validarArchivoCursadas() {
+        if (isset($_FILES['fileCursadas'])) {
+            $tamanio = $_FILES['fileCursadas']['size'];
+            $nombre_temporal = $_FILES['fileCursadas']['tmp_name'];
+            if ($tamanio > 0) {
+                $cursadas = fopen($nombre_temporal, "r");
+                if ($cursadas) {
+                    $fila = fgetcsv($cursadas, 2000, ";");
+                    $columnas = count($fila);
+                    return ($columnas != 28) ? "El archivo seleccionado tiene una cantidad de columnas inválidas (" . $columnas . " columnas)" : NULL;
+                }
+                return "El archivo seleccionado no se pudo abrir";
+            }
+            return "El archivo seleccionado está vacío";
+        }
+        return "No se recibió el archivo de cursadas";
+    }
+
+    static function validarArchivoMesas() {
+        if (isset($_FILES['fileMesas'])) {
+            $tamanio = $_FILES['fileMesas']['size'];
+            $nombre_temporal = $_FILES['fileMesas']['tmp_name'];
+            if ($tamanio > 0) {
+                $mesas = fopen($nombre_temporal, "r");
+                if ($mesas) {
+                    $fila = fgetcsv($mesas, 2000, ";");
+                    $columnas = count($fila);
+                    return (($columnas < 9) || ($columnas > 10)) ? "El archivo seleccionado tiene una cantidad de columnas inválidas (" . $columnas . " columnas)" : NULL;
+                }
+                return "El archivo seleccionado no se pudo abrir";
+            }
+            return "El archivo seleccionado está vacío";
+        }
+        return "No se recibió el archivo de mesas de examen";
     }
 
 }

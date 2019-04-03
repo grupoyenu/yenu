@@ -27,9 +27,9 @@ $(document).ready(function () {
                     $('#resultado').html(data[0]['div']);
                 }
             },
-            error: function () {
-                var mensaje = "Solicita creación: no se pudo procesar la petición";
-                $("#resultado").html('<div class="alert alert-danger text-center" role="alert">' + mensaje + '</div>');
+            error: function (data) {
+                console.log(data);
+                imprimirAlerta("No se procesó la petición por un error interno");
             }
         });
     });
@@ -47,6 +47,14 @@ $(document).ready(function () {
         var valor = ($(this).val().length === 0) ? "1px solid red" : "";
         $(this).css("border", valor);
     });
+    
+    /* Imprime un alerta en el div resultado */
+
+    function imprimirAlerta(mensaje) {
+        $("#resultado").empty();
+        var div = '<div class="alert alert-danger text-center" role="alert">' + mensaje + '</div>';
+        $("#resultado").html(div);
+    }
 
 });
 

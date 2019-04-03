@@ -3,7 +3,7 @@
 
 require_once './app/vistas/header.php';
     echo '
-    <meta name="google-signin-client_id" content="356408280239-7airslbg59lt2nped9l4dtqm2rf25aii.apps.googleusercontent.com" />
+    <meta name="google-signin-client_id" content="1056974432246-kulm9sqknp35v7l9a317al9pmsiejaja.apps.googleusercontent.com" />
     <div class="container">
         <h2 class="text-center p-4">SISTEMA TEMPUS</h2>
         <div class="container">

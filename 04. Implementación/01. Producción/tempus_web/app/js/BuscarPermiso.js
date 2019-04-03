@@ -40,7 +40,7 @@ $(document).ready(function () {
                 $("#FormBuscarPermiso").html(data[0]['div']);
             },
             error: function () {
-                imprimirAlerta("Error durante la petición por AJAX");
+                imprimirAlerta("No se procesó la petición por un error interno");
             }
         });
         $("#mdBorrar").modal("toggle");
@@ -59,7 +59,7 @@ $(document).ready(function () {
                 $("#FormBuscarPermiso").html(data);
             },
             error: function () {
-                imprimirAlerta("Error durante la petición por AJAX");
+                imprimirAlerta("No se procesó la petición por un error interno");
             }
         });
     });

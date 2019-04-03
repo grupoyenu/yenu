@@ -8,15 +8,13 @@
         <link rel="stylesheet" type='text/css' href="./lib/css/EstiloPrincipal.css">
         <link rel='stylesheet' type='text/css' href='./lib/css/dataTables-1.10.16/jquery.dataTables.min.css'/>
         <link rel='stylesheet' type='text/css' href='./lib/css/buttons-1.4.2/buttons.dataTables.min.css'/>
-        <link rel='stylesheet' type='text/css' href='./lib/css/jquery-confirm/jquery-confirm.css'>
 
         <script type='text/javascript' src='./lib/js/jquery-3.3.1/jquery-3.3.1.min.js'></script>
         <script type='text/javascript' src='./lib/js/bootstrap/bootstrap.min.js'></script>
-        <script type='text/javascript' src='./lib/js/jquery-confirm/jquery-confirm.js'></script>
         <script type='text/javascript' src='./lib/js/dataTables-1.10.16/jquery.dataTables.min.js'></script>
-        <script type='text/javascript' src='./lib/js/Buttons-1.4.2/buttons.html5.min.js'></script>
-        <script type='text/javascript' src='./lib/js/Buttons-1.4.2/buttons.print.min.js'></script>
-        <script type='text/javascript' src='./lib/js/Buttons-1.4.2/dataTables.buttons.min.js'></script>
+        <script type='text/javascript' src='./lib/js/buttons-1.4.2/buttons.html5.min.js'></script>
+        <script type='text/javascript' src='./lib/js/buttons-1.4.2/buttons.print.min.js'></script>
+        <script type='text/javascript' src='./lib/js/buttons-1.4.2/dataTables.buttons.min.js'></script>
         <script type='text/javascript' src='./lib/js/pdfmake-0.1.32/pdfmake.min.js'></script>
         <script type='text/javascript' src='./lib/js/pdfmake-0.1.32/vfs_fonts.js'></script>
     </head>
@@ -43,7 +41,7 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="cursada_buscar">Buscar</a>
                                 <a class="dropdown-item" href="cursada_crear">Crear</a>
-                                <a class="dropdown-item" href="cursada_importar">Importar</a>
+                                <a class="dropdown-item" href="cursada_seleccionar">Importar</a>
                                 <a class="dropdown-item" href="cursada_informe">Informe</a>
                             </div>
                         </li>
@@ -54,7 +52,7 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="mesa_buscar">Buscar</a>
                                 <a class="dropdown-item" href="mesa_crear">Crear</a>
-                                <a class="dropdown-item" href="mesa_importar">Importar</a>
+                                <a class="dropdown-item" href="mesa_seleccionar">Importar</a>
                                 <a class="dropdown-item" href="mesa_informe">Informe</a>
                             </div>
                         </li>

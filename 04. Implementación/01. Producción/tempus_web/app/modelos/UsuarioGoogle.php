@@ -95,11 +95,8 @@ class UsuarioGoogle extends Usuario {
         if (!empty($rows)) {
             $usuario = $rows[0];
             $rol = new Rol();
-            $rol->constructor($usuario['rol'], $usuario['idrol']);
-            $this->setRol($rol);
-            $this->setIdusuario($usuario['idusuario']);
-            $this->setNombre($usuario['nombre']);
-            $this->setEstado($usuario['estado']);
+            $rol->cargar($usuario['rol'], $usuario['idrol'], NULL);
+            $this->cargar($usuario['idusuario'], $usuario['email'], $usuario['nombre'], $rol, "Google", $usuario['estado']);
             $consulta = "SELECT * FROM usuario_google WHERE idusuario = " . $usuario['idusuario'];
             $rowsGoogle = Conexion::getInstancia()->executeQuery($consulta);
             if (!empty($rowsGoogle)) {

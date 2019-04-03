@@ -26,11 +26,14 @@ class ControladorUsuario {
         $this->usuario->crear();
     }
     
-    public function modificar() {
+    public function modificar($idusuario, $email, $nombre, $rol) {
         
     }
     
-    public function borrar() {
+    /**
+     * @param integer $idusuario Identificador del usuario a eliminar.
+     */
+    public function borrar($idusuario) {
         
     }
         

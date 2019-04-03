@@ -2,7 +2,7 @@
     <h4 class="text-center p-4">IMPORTAR HORARIOS DE CURSADA</h4>
     <div id="resultado"></div>
     <div id="contenido">
-        <form id="formSeleccionarCursada" name="formSeleccionarCursada" method="POST">
+        <form action="cursada_importar" enctype="multipart/form-data" id="formSeleccionarCursada" name="formSeleccionarCursada" method="POST">
             <fieldset class="border p-2">
                 <legend class="w-auto h6" title="Seleccione un archivo con horarios de cursada">Información básica</legend>
                 <div class="input-group">

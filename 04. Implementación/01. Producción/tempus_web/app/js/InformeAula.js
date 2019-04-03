@@ -5,3 +5,12 @@
  */
 
 
+$(document).ready(function () {
+    
+    $("table#tablaInformeAula").DataTable({
+        dom: 'Bfrtip',
+        responsive: true,
+        language: {url: "./app/js/Spanish.json"}
+    });
+    
+});

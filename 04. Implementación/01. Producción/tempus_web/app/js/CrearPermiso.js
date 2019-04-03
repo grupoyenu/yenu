@@ -27,8 +27,9 @@ $(document).ready(function () {
                     $('#resultado').html(data[0]['div']);
                 }
             },
-            error: function () {
-                $("#resultado").html('<div class="alert alert-danger text-center" role="alert">No se pudo procesar la creación</div>');
+            error: function (data) {
+                console.log(data);
+                imprimirAlerta("No se procesó la petición por un error interno");
             }
         });
     });
@@ -39,5 +40,13 @@ $(document).ready(function () {
         var valor = ($(this).val().length < 5) ? "1px solid red" : "";
         $(this).css("border", valor);
     });
+    
+    /* Imprime un alerta en el div resultado */
+
+    function imprimirAlerta(mensaje) {
+        $("#resultado").empty();
+        var div = '<div class="alert alert-danger text-center" role="alert">' + mensaje + '</div>';
+        $("#resultado").html(div);
+    }
 
 });

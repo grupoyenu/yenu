@@ -39,8 +39,9 @@ $(document).ready(function () {
                 $("#FormBuscarRol").empty();
                 $("#FormBuscarRol").html(data[0]['div']);
             },
-            error: function () {
-                imprimirAlerta("Error durante la petición por AJAX");
+            error: function (data) {
+                console.log(data);
+                imprimirAlerta("No se procesó la petición por un error interno");
             }
         });
         $("#mdBorrar").modal("toggle");
@@ -58,8 +59,9 @@ $(document).ready(function () {
                 $("#FormBuscarRol").empty();
                 $("#FormBuscarRol").html(data);
             },
-            error: function () {
-                $("#resultado").html('<div class="alert alert-danger text-center" role="alert">Error durante la petición por AJAX</div>');
+            error: function (data) {
+                console.log(data);
+                imprimirAlerta("No se procesó la petición por un error interno");
             }
         });
     });
@@ -84,5 +86,13 @@ $(document).ready(function () {
             });
         }
     });
+
+    /* Imprime un alerta en el div resultado */
+
+    function imprimirAlerta(mensaje) {
+        $("#resultado").empty();
+        var div = '<div class="alert alert-danger text-center" role="alert">' + mensaje + '</div>';
+        $("#resultado").html(div);
+    }
 
 });

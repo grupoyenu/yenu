@@ -43,8 +43,11 @@ class ControladorPrincipal {
                 case 'cursada_crear':
                     $controlador->cargarVista('FormCrearCursada');
                     break;
-                case 'cursada_importar':
+                case 'cursada_seleccionar':
                     $controlador->cargarVista('FormSeleccionarCursada');
+                    break;
+                case 'cursada_importar':
+                    $controlador->cargarVista('FormImportarCursada');
                     break;
                 case 'cursada_informe':
                     $controlador->cargarVista('FormInformeCursada');
@@ -55,8 +58,11 @@ class ControladorPrincipal {
                 case 'mesa_crear':
                     $controlador->cargarVista('FormCrearMesa');
                     break;
-                case 'mesa_importar':
+                case 'mesa_seleccionar':
                     $controlador->cargarVista('FormSeleccionarMesa');
+                    break;
+                case 'mesa_importar':
+                    $controlador->cargarVista('FormImportarMesa');
                     break;
                 case 'mesa_informe':
                     $controlador->cargarVista('FormInformeMesa');

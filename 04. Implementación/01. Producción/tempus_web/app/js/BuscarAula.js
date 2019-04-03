@@ -9,6 +9,8 @@
  * @author Marquez Emanuel
  */
 $(document).ready(function () {
+    
+    var idaula = null;
 
     /* Inicializa la tabla con DataTable */
 
@@ -21,10 +23,29 @@ $(document).ready(function () {
     /* Abre el modal de confirmacion para eliminar aula */
 
     $('img.borrarAula').click(function () {
+        idaula = $(this).attr('name');
         $("#mdBorrar").modal();
     });
 
     /* Solicitud AJAX para procesar la eliminacion */
+    
+    $('#btnConfirmarEliminacion').click(function () {
+        $.ajax({
+            type: "POST",
+            url: "./app/vistas/procesaBorrarAula.php",
+            dataType: 'json',
+            data: "idaula=" + idaula,
+            success: function (data) {
+                $("#FormBuscarAula").empty();
+                $("#FormBuscarAula").html(data[0]['div']);
+            },
+            error: function (data) {
+                console.log(data);
+                imprimirAlerta("No se procesó la petición por un error interno");
+            }
+        });
+        $("#mdBorrar").modal("toggle");
+    });
 
     /* Solicitud AJAX para cargar el formulario de modificacion */
 
@@ -38,8 +59,9 @@ $(document).ready(function () {
                 $("#FormBuscarAula").empty();
                 $("#FormBuscarAula").html(data);
             },
-            error: function () {
-                imprimirAlerta("Error durante la petición por AJAX");
+            error: function (data) {
+                console.log(data);
+                imprimirAlerta("No se procesó la petición por un error interno");
             }
         });
     });
@@ -56,8 +78,9 @@ $(document).ready(function () {
                 $("#FormBuscarAula").empty();
                 $("#FormBuscarAula").html(data);
             },
-            error: function () {
-                imprimirAlerta("Error durante la petición por AJAX");
+            error: function (data) {
+                console.log(data);
+                imprimirAlerta("No se procesó la petición por un error interno");
             }
         });
     });

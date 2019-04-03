@@ -11,7 +11,7 @@
 $(document).ready(function () {
 
     /* Captura el formulario antes de su envio y realiza solicitud AJAX */
-    
+
     $('#formCrearRol').submit(function (event) {
         event.preventDefault();
         $.ajax({
@@ -29,21 +29,20 @@ $(document).ready(function () {
             },
             error: function (data) {
                 console.log(data);
-                var mensaje = "Solicita creación: no se pudo procesar la petición";
-                $("#resultado").html('<div class="alert alert-danger text-center" role="alert">'+mensaje+'</div>');
+                imprimirAlerta("No se procesó la petición por un error interno");
             }
         });
     });
-    
+
     /* Agrega un borde cuando el nombre de permiso esta vacio */
-    
+
     $('#nombre').change(function () {
         var valor = ($(this).val().length < 5) ? "1px solid red" : "";
         $(this).css("border", valor);
     });
 
     /* Marca o desmarca todos los permisos de la tabla */
-    
+
     $('#todosPermisos').change(function () {
         if ($(this).is(':checked')) {
             $("input[name='permisos[]']").each(function () {
@@ -55,7 +54,13 @@ $(document).ready(function () {
             });
         }
     });
-    
-    
+
+    /* Imprime un alerta en el div resultado */
+
+    function imprimirAlerta(mensaje) {
+        $("#resultado").empty();
+        var div = '<div class="alert alert-danger text-center" role="alert">' + mensaje + '</div>';
+        $("#resultado").html(div);
+    }
 
 });

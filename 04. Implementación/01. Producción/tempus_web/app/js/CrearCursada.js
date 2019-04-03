@@ -27,8 +27,9 @@ $(document).ready(function () {
                     $('#resultado').html(data[0]['div']);
                 }
             },
-            error: function () {
-                $("#resultado").html('<div class="alert alert-danger text-center" role="alert"> Error durante la petición por AJAX</div>');
+            error: function (data) {
+                console.log(data);
+                imprimirAlerta("No se procesó la petición por un error interno");
             }
         });
         return false;
@@ -144,6 +145,14 @@ $(document).ready(function () {
         $("#nombreSector" + dia).val(nombreSector);
         $("#nombreAula" + dia).val(nombreAula);
     });
+    
+    /* Imprime un alerta en el div resultado */
+
+    function imprimirAlerta(mensaje) {
+        $("#resultado").empty();
+        var div = '<div class="alert alert-danger text-center" role="alert">' + mensaje + '</div>';
+        $("#resultado").html(div);
+    }
 
 
 });

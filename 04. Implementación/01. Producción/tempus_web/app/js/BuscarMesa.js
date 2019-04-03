@@ -11,7 +11,7 @@
 $(document).ready(function () {
 
     /* Captura el formulario al momento de su envio */
-    
+
     $('#formBuscarMesas').submit(function (event) {
         event.preventDefault();
         $.ajax({
@@ -21,11 +21,19 @@ $(document).ready(function () {
             success: function (data) {
                 $("#resultado").html(data);
             },
-            error: function () {
-                $("#resultado").html('<div class="alert alert-danger text-center" role="alert">Error durante la petición por AJAX</div>');
+            error: function (data) {
+                console.log(data);
+                imprimirAlerta("No se procesó la petición por un error interno");
             }
         });
     });
-    
-   
+
+    /* Imprime un alerta en el div resultado */
+
+    function imprimirAlerta(mensaje) {
+        $("#resultado").empty();
+        var div = '<div class="alert alert-danger text-center" role="alert">' + mensaje + '</div>';
+        $("#resultado").html(div);
+    }
+
 });
