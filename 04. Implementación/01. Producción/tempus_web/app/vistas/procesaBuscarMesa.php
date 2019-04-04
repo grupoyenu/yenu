@@ -16,7 +16,7 @@ if (is_null($mesas) || ($llamados == 0)) {
     if (empty($mesas)) {
         echo '<div class="alert alert-warning text-center" role="alert">No se obtuvieron resultados</div>';
     } else {
-        echo '<form id="formBuscarMesa" name="formBuscarMesa" method="POST">';
+        echo '<form id="formProcesaBuscarMesa" name="formProcesaBuscarMesa" method="POST">';
         if ($llamados == 1) {
             echo '
             

@@ -180,6 +180,9 @@ $docentes = $docente->buscarDocentes();
                         <div class="form-row"> 
                             <div class="col text-center p-4">
                                 <input class="btn btn-success" type="submit" value="Crear">
+                                <a href="home"><input type="button" class="btn btn-outline-secondary" 
+                                                           title="Cancelar la creación de la nueva aula"
+                                                           value="Cancelar"></a>
                             </div>
                         </div>
                     </form>';

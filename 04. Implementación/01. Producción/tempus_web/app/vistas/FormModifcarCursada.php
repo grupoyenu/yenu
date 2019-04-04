@@ -9,7 +9,7 @@
  * que permiten la seleccion de planes y aulas.
  */
 
-$idcursada = $_POST[''];
+$idcursada = $_POST['radioCursadas'];
 
 $controladorPlan = new ControladorPlan();
 $controladorAula = new ControladorAula();

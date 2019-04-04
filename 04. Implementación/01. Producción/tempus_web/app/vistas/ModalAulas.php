@@ -41,6 +41,7 @@
                     if(isset($aulas)) {
                         echo '<button type="button" class="btn btn-success"
                         id="btnElegirAula" name="btnElegirAula"
+                        data-dismiss="modal"
                         title="Elegir aula">Seleccionar</button>';
                     }
                  ?>

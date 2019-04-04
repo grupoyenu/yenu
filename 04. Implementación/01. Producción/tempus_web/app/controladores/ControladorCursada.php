@@ -18,7 +18,7 @@ class ControladorCursada {
     public function getDescripcion() {
         return $this->descripcion;
     }
-    
+
     public function buscar($nombreAsignatura) {
         $cursadas = new Cursadas();
         return $cursadas->buscar($nombreAsignatura);
@@ -26,18 +26,26 @@ class ControladorCursada {
 
     public function crear($plan, $clases) {
         Conexion::getInstancia()->setAutocommit(false);
-        $creacion = $this->cursada->crear($plan, $clases);
-        $this->descripcion = $this->mesa->getDescripcion();
-        switch ($creacion) {
+        $this->cursada->cargar($plan, $clases);
+        $creacion = $this->cursada->crear();
+        $this->descripcion = $this->cursada->getDescripcion();
+        $this->procesarTransaccion($creacion);
+        Conexion::getInstancia()->setAutocommit(true);
+        return $creacion;
+    }
+
+    private function procesarTransaccion($resultado) {
+        switch ($resultado) {
             case 1:
                 Conexion::getInstancia()->executeRollback();
                 break;
             case 2:
                 Conexion::getInstancia()->executeCommit();
                 break;
+            default:
+                Conexion::getInstancia()->executeRollback();
+                break;
         }
-        Conexion::getInstancia()->setAutocommit(true);
-        return $creacion;
     }
 
 }

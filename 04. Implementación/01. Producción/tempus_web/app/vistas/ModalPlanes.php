@@ -40,6 +40,7 @@
                 if (isset($planes)) {
                     echo '<button type="button" class="btn btn-success"
                                   id="btnElegirPlan" name="btnElegirPlan" 
+                                  data-dismiss="modal"
                                   title="Elegir plan">Seleccionar</button>';
                 }
                 ?>

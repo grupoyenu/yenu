@@ -38,6 +38,7 @@
                     if(isset($carreras)) {
                         echo '<button type="button" class="btn btn-success"
                                       id="btnElegirCarrera" name="btnElegirCarrera"
+                                      data-dismiss="modal"
                                       title="Elegir carrera">Seleccionar</button>';
                     }
                  ?>

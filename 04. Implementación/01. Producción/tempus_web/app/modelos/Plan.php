@@ -19,7 +19,7 @@ class Plan {
     /** @var string Descripcion para mostrar mensajes */
     private $descripcion;
 
-    /** @var boolean $valido Indica la validez del plan */
+    /** @var boolean $estado Indica la validez del plan */
     private $estado;
 
     function __construct($idasignatura = null, $idcarrera = null) {
@@ -38,7 +38,7 @@ class Plan {
     }
 
     public function constructor($asignatura, $carrera, $anio) {
-        $this->valido = false;
+        $this->estado = false;
         if ($this->setAsignatura($asignatura) && $this->setCarrera($carrera) && $this->setAnio($anio)) {
              $this->estado = true;
         }
@@ -83,7 +83,7 @@ class Plan {
     }
 
     public function getEstado() {
-        return $this->valido;
+        return $this->estado;
     }
 
     /**

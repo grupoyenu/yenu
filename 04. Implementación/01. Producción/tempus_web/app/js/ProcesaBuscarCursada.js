@@ -21,14 +21,14 @@ $(document).ready(function () {
     });
 
     $('#btnModificarCursada').click(function (event) {
-        event.preventDefaul();
+        event.preventDefault();
         if (!$("input[name='radioCursadas']").is(":checked")) {
              $("#modalSeleccione").modal();
         } else {
             $.ajax({
                 type: "POST",
                 url: "./app/vistas/FormModificarCursada.php",
-                data: $("#formBuscarCursada").serialize(),
+                data: $("#formProcesaBuscarCursada").serialize(),
                 success: function (data) {
                     $("#FormBuscarCursada").empty();
                     $("#FormBuscarCursada").html(data);

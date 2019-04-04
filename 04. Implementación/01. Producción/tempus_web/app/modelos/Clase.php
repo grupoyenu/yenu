@@ -336,13 +336,13 @@ class Clase {
     }
 
     private function validarFormatoDia($dia) {
-        $expresion = "^[1-6]$";
+        $expresion = "/^[1-6]$/";
         $this->descripcion = "El dia no cumple con el formato";
         return (preg_match($expresion, $dia)) ? true : false;
     }
 
     private function validarFormatoHora($hora) {
-        $expresion = "^(1[0-9]|2[0-3]):[0-5][0-9]$";
+        $expresion = "/^(1[0-9]|2[0-3]):[0-5][0-9]$/";
         $this->descripcion = "La hora no cumple con el formato HH:MM";
         return (preg_match($expresion, $hora)) ? true : false;
     }

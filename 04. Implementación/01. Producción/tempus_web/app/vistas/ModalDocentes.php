@@ -38,6 +38,7 @@
                     if($docentes) {
                         echo '<button type="button" class="btn btn-success"
                                       id="btnElegirDocente" name="btnElegirDocente"
+                                      data-dismiss="modal"
                                       title="Elegir docente">Seleccionar</button>';
                     }
                  ?>

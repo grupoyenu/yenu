@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
     <h4 class="text-center p-4">CREAR AULA</h4>
     <div id="resultado"></div>
     <div id="contenido">

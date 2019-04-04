@@ -81,12 +81,16 @@ class Cursada {
             if ($this->buscarRelacion()) {
                 return 1;
             }
-            if (!$this->crearCursada()) {
-                $this->descripcion = "No se realizó la creación de la cursada";
-                return 1;
+            $values = "";
+            $idasignatura = $this->plan->getAsignatura()->getIdasignatura();
+            $codigo = $this->plan->getCarrera()->getCodigo();
+            foreach ($this->clases as $clase) {
+                $values = $values . "({$idasignatura},{$codigo}, {$clase->getIdclase()}),";
             }
-            $this->descripcion = "Se realizó la creación de la cursada";
-            return 2;
+            $values = substr($values, 0, -1);
+            $creacion = Conexion::getInstancia()->executeInsert("cursada", $values);
+            $this->descripcion = Conexion::getInstancia()->getDescripcion()." de la cursada";
+            return $creacion;
         }
         $this->descripcion = "La cursada no contiene toda la información";
         return 0;
@@ -109,30 +113,12 @@ class Cursada {
     }
 
     /**
-     * Crea una nueva relacion entre cursada y clase.
-     * @param integer $idasignatura Identificador de la asignatura.
-     * @param integer $idcarrera Identificador de la carrera.
-     * @param integer $idclase Identificador de la clase.
-     * */
-    private function crearCursada() {
-        $consulta = "INSERT INTO clase VALUES ";
-        $values = "";
-        $idasignatura = $this->plan->getAsignatura()->getIdasignatura();
-        $codigo = $this->plan->getCarrera()->getCodigo();
-        foreach ($this->clases as $clase) {
-            $values = $values . "({$idasignatura},{$codigo}, {$clase->getIdclase()}),";
-        }
-        $consulta = $consulta . substr($values, 0, -1);
-        return Conexion::getInstancia()->executeUpdate($consulta);
-    }
-
-    /**
      * 
      * */
     public function borrar($idasignatura, $idcarrera) {
         $where = "idasignatura={$idasignatura} AND idcarrera={$idcarrera}";
-        $eliminacion = Conexion::getInstancia()->executeDelete("cursada",$where);
-        $this->descripcion = Conexion::getInstancia()->getDescripcion()." de la cursada";
+        $eliminacion = Conexion::getInstancia()->executeDelete("cursada", $where);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion() . " de la cursada";
         return $eliminacion;
     }
 
@@ -141,7 +127,7 @@ class Cursada {
      * @return boolean Verdadero si existe o Falso en caso contrario.
      * */
     private function buscarRelacion() {
-        if ($this->plan && $this->plan->validarParaActualizar()) {
+        if ($this->plan && $this->plan->validar()) {
             $idasignatura = $this->plan->getAsignatura()->getIdasignatura();
             $idcarrera = $this->plan->getCarrera()->getCodigo();
             $consulta = "SELECT * FROM cursada WHERE idasignatura = {$idasignatura} AND idcarrera = {$idcarrera}";
@@ -175,7 +161,7 @@ class Cursada {
      * Obtiene las clases de una asignatura para una determinada carrera.
      * */
     public function obtenerHorarios() {
-        if ($this->plan && $this->plan->validarParaActualizar()) {
+        if ($this->plan && $this->plan->validar()) {
             $idasignatura = $this->plan->getAsignatura()->getIdasignatura();
             $idcarrera = $this->plan->getCarrera()->getCodigo();
             $consulta = "SELECT cl.idclase, cl.dia, DATE_FORMAT(cl.desde, '%H:%i') desde,DATE_FORMAT(cl.hasta, '%H:%i') hasta, cl.idaula FROM cursada cu, clase cl WHERE cu.idclase=cl.idclase AND cu.idasignatura={$idasignatura} AND cu.idcarrera={$idcarrera}";
@@ -187,7 +173,7 @@ class Cursada {
             foreach ($rows as $fila) {
                 $clase = new Clase();
                 $aula = new Aula($fila['idaula']);
-                $clase->cargarSinValidacion($fila['idclase'], $fila['dia'], $fila['desde'], $fila['hasta'], $aula, NULL);
+                $clase->cargar($fila['idclase'], $fila['dia'], $fila['desde'], $fila['hasta'], $aula, NULL);
                 $this->clases[$fila['dia']] = $clase;
             }
             return empty($this->clases) ? 0 : 2;

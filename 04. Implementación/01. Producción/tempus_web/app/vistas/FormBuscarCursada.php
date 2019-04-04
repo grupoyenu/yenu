@@ -30,4 +30,8 @@
     </div>
     <div id="resultado"></div>
 </div>
+<?php
+include_once './app/vistas/ModalBorrar.php';
+include_once './app/vistas/ModalSeleccion.php';
+?>
 <script type="text/javascript" src="./app/js/BuscarCursada.js"></script>

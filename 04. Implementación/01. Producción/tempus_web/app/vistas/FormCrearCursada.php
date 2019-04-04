@@ -102,8 +102,11 @@ $aulas = $controladorAula->buscarAulas();
                     echo '</fieldset>
                         <div class="row">
                             <div class="col">
-                                <div class="text-center">
-                                    <br><input class="btn btn-success" type="submit" id="btnCrearCursada" name="btnCrearCursada" value="Crear">
+                                <div class="text-center p-4">
+                                    <input class="btn btn-success" type="submit" id="btnCrearCursada" name="btnCrearCursada" value="Crear">
+                                    <a href="home"><input type="button" class="btn btn-outline-secondary" 
+                                                           title="Cancelar la creación de la nueva aula"
+                                                           value="Cancelar"></a>
                                 </div>
                             </div>
                         </div>

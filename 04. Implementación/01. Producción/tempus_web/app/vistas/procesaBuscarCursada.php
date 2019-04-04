@@ -18,8 +18,9 @@ $controladorCursada = new ControladorCursada();
 $cursadas = $controladorCursada->buscar($nombreAsignatura);
 
 if (!empty($cursadas)) {
-    echo '<form id="formBuscarMesa" name="formBuscarMesa" method="POST">
-        <table id="tablaCursadas" class="table table-bordered table-hover">
+    echo '<form id="formProcesaBuscarCursada" name="formProcesaBuscarCursada" method="POST">
+        
+        <br><table id="tablaCursadas" class="table table-bordered table-hover">
             <thead class="thead-dark">
                 <tr>	
                     <th></th>
@@ -54,9 +55,9 @@ if (!empty($cursadas)) {
 	</table>
         <div class="row">
             <div class="col">
-                <div class="text-center">
-                    <input type="submit" class="btn btn-danger" id="btnBorrarMesa" name="btnBorrarMesa" value="Borrar">
-                    <input type="submit" class="btn btn-success"  id="btnModificarMesa" name="btnModificarMesa" value="Modificar">
+                <div class="text-center p-4">
+                    <input type="submit" class="btn btn-danger" id="btnBorrarCursada" name="btnBorrarCursada" value="Borrar">
+                    <input type="submit" class="btn btn-success"  id="btnModificarCursada" name="btnModificarCursada" value="Modificar">
                 </div>
             </div>
         </div>

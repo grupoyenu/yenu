@@ -13,7 +13,8 @@
             </div>
             <div class="modal-footer">
                 <input type='submit' class='btn btn-success' 
-                       id='btnConfirmarEliminacion' name='btnConfirmarEliminacion' 
+                       id='btnConfirmarEliminacion' name='btnConfirmarEliminacion'
+                       data-dismiss="modal"
                        title='Confirmar la eliminación del registro seleccionado' value='Confirmar'>
                 <input type='submit' class='btn btn-outline-secondary' 
                        id='btnCancelarEliminacion' name="btnCancelarEliminacion" 
