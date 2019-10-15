@@ -1,0 +1,97 @@
+[2019-08-03 20:51:15][IP: ::1][SCRIPT: /tempus5/app/test/test.php][METODO: insertarSinObtenerId][ERROR: Error al insertar registro (QUERY: INSERT INTO docente VALUES (NULL, 'Marquez Emanuel Alberto'))
+[2019-08-03 20:56:36][IP: ::1][SCRIPT: /tempus5/app/test/test.php][METODO: insertarSinObtenerId][ERROR: Error al insertar registro (QUERY: INSERT INTO docente VALUES (NULL, 'Marquez Emanuel Alberto'))
+[2019-08-03 20:57:43][IP: ::1][SCRIPT: /tempus5/app/test/test.php][METODO: insertarSinObtenerId][ERROR: Error al insertar registro (QUERY: INSERT INTO docente VALUES (NULL, 'Marquez Emanuel Alberto'))
+[2019-08-03 21:18:57][IP: ::1][SCRIPT: /tempus5/app/test/test.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT * FROM docente WHERE nombre LIKE = '%Marquez Emanuel Alberto%' )
+[2019-08-03 21:44:17][IP: ::1][SCRIPT: /tempus5/app/test/test.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT * FROM docente WHERE iddocente '%Marquez Emanuel Alberto%' )
+[2019-08-12 01:13:53][IP: ::1][SCRIPT: /tempus5/app/test/cursadas/crearClase.php][METODO: borrar][ERROR: Error al borrar registro (QUERY: UPDATE clase SET SET desde='16:00', hasta='17:00', idaula=44, fechamod=NOW() WHERE  WHERE idclase=70)
+[2019-08-12 01:14:34][IP: ::1][SCRIPT: /tempus5/app/test/cursadas/crearClase.php][METODO: borrar][ERROR: Error al borrar registro (QUERY: UPDATE clase SET SET desde='16:00', hasta='17:00', idaula=44, fechamod=NOW() WHERE  WHERE idclase=71)
+[2019-08-12 01:15:12][IP: ::1][SCRIPT: /tempus5/app/test/cursadas/crearClase.php][METODO: borrar][ERROR: Error al borrar registro (QUERY: UPDATE clase SET desde='16:00', hasta='17:00', idaula=44, fechamod=NOW() WHERE  WHERE idclase=72)
+[2019-08-13 02:41:28][IP: ::1][SCRIPT: /tempus5/app/test/planes/crearCursada.php][METODO: insertarSinObtenerId][ERROR: Error al insertar registro (QUERY: INSERT INTO cursada VALUES (81, 72, 87),(81, 72, 9),(81, 72, 90),(81, 72, 91),(81, 72, 92))
+[2019-08-15 03:06:37][IP: ::1][SCRIPT: /tempus5/index.php] EVALUAR MODULO: principal
+[2019-08-15 03:07:00][IP: ::1][SCRIPT: /tempus5/index.php] EVALUAR MODULO: principal
+[2019-08-15 03:07:04][IP: ::1][SCRIPT: /tempus5/index.php] EVALUAR MODULO: aulas
+[2019-08-15 03:07:07][IP: ::1][SCRIPT: /tempus5/index.php] EVALUAR MODULO: aulas
+[2019-08-15 03:07:08][IP: ::1][SCRIPT: /tempus5/index.php] EVALUAR MODULO: aulas
+[2019-08-15 03:07:10][IP: ::1][SCRIPT: /tempus5/index.php] EVALUAR MODULO: aulas
+[2019-08-15 03:07:17][IP: ::1][SCRIPT: /tempus5/index.php] EVALUAR MODULO: principal
+[2019-08-15 03:07:23][IP: ::1][SCRIPT: /tempus5/index.php] EVALUAR MODULO: aulas
+[2019-08-15 03:08:47][IP: ::1][SCRIPT: /tempus5/index.php] EVALUAR MODULO: aulas
+[2019-08-15 03:08:47][IP: ::1][SCRIPT: /tempus5/index.php]EVALUAR VISTA: buscar_aula
+[2019-08-15 03:09:32][IP: ::1][SCRIPT: /tempus5/index.php] EVALUAR MODULO: aulas
+[2019-08-15 03:09:32][IP: ::1][SCRIPT: /tempus5/index.php]EVALUAR VISTA: buscar_aulas
+[2019-08-15 03:10:14][IP: ::1][SCRIPT: /tempus5/index.php] EVALUAR MODULO: aulas
+[2019-08-15 03:10:14][IP: ::1][SCRIPT: /tempus5/index.php]EVALUAR VISTA: crear_aulas
+[2019-08-15 03:10:35][IP: ::1][SCRIPT: /tempus5/index.php] EVALUAR MODULO: aulas
+[2019-08-15 03:10:35][IP: ::1][SCRIPT: /tempus5/index.php]EVALUAR VISTA: crear_aulas
+[2019-08-15 03:10:37][IP: ::1][SCRIPT: /tempus5/index.php] EVALUAR MODULO: aulas
+[2019-08-15 03:10:37][IP: ::1][SCRIPT: /tempus5/index.php]EVALUAR VISTA: buscar_aulas
+[2019-08-15 03:11:27][IP: ::1][SCRIPT: /tempus5/index.php] EVALUAR MODULO: aulas
+[2019-08-15 03:11:27][IP: ::1][SCRIPT: /tempus5/index.php]EVALUAR VISTA: crear_aulas
+[2019-08-15 03:12:12][IP: ::1][SCRIPT: /tempus5/index.php] EVALUAR MODULO: usuarios
+[2019-08-15 03:12:12][IP: ::1][SCRIPT: /tempus5/index.php]EVALUAR VISTA: buscarPermiso_usuarios
+[2019-08-15 03:12:14][IP: ::1][SCRIPT: /tempus5/index.php] EVALUAR MODULO: usuarios
+[2019-08-15 03:12:14][IP: ::1][SCRIPT: /tempus5/index.php]EVALUAR VISTA: crearPermiso_usuarios
+[2019-08-15 03:12:15][IP: ::1][SCRIPT: /tempus5/index.php] EVALUAR MODULO: usuarios
+[2019-08-15 03:12:15][IP: ::1][SCRIPT: /tempus5/index.php]EVALUAR VISTA: buscarRol_usuarios
+[2019-08-15 03:12:18][IP: ::1][SCRIPT: /tempus5/index.php] EVALUAR MODULO: aulas
+[2019-08-15 03:12:18][IP: ::1][SCRIPT: /tempus5/index.php]EVALUAR VISTA: buscar_aulas
+[2019-08-16 03:05:37][IP: ::1][SCRIPT: /tempus5/app/test/aulas/buscarAulas.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT * FROM aula WHERE sectora LIKE '%xxx%')
+[2019-08-25 17:45:03][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:45:22][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:45:24][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:45:24][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:45:24][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:45:24][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:45:24][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:45:25][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:45:25][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:45:25][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:45:27][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:02][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:17][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:19][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:20][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:20][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:20][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:20][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:20][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:21][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:21][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:21][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:21][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:22][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:22][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:22][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:22][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:23][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:23][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:23][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:23][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:23][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:24][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 17:46:24][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarAgregarAsignatura.php]No se recibio el arreglo de POST
+[2019-08-25 20:18:09][IP: ::1][SCRIPT: /tempus5/app/asignaturas/vistas/ProcesarBuscarAsignatura.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT ma.*, ca.cantidad FROM asignatura ma LEFT JOIN (SELECT idasignatura, COUNT(idasignatura) cantidad FROM asignatura_carrera GROUP BY idasignatura) ca on ma.idasignatura = ca.idasignatura WHERE ma.nombre LIKE '%'base'%')
+[2019-08-30 02:13:10][IP: ::1][SCRIPT: /tempus5/app/aulas/vistas/ProcesarBuscarAula.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT * FROM aula WHERE sector LIKE '%A%')
+[2019-08-30 02:13:30][IP: ::1][SCRIPT: /tempus5/app/aulas/vistas/ProcesarBuscarAula.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT * FROM aula WHERE sector LIKE '%A%')
+[2019-08-30 02:13:38][IP: ::1][SCRIPT: /tempus5/app/aulas/vistas/ProcesarBuscarAula.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT * FROM aula WHERE sector LIKE '%A%')
+[2019-08-30 02:13:44][IP: ::1][SCRIPT: /tempus5/app/aulas/vistas/ProcesarBuscarAula.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT * FROM aula WHERE sector LIKE '%a%')
+[2019-08-30 02:14:06][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarBuscarCarrera.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT ca.*, ma.cantidad FROM carrera ca LEFT JOIN (SELECT idcarrera, COUNT(idasignatura) cantidad FROM asignatura_carrera GROUP BY idcarrera) ma ON ca.codigo = ma.idcarrera WHERE ca.nombre LIKE '%lic%')
+[2019-10-07 23:30:45][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarBuscarCarrera.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT ca.*, ma.cantidad FROM carrera ca LEFT JOIN (SELECT idcarrera, COUNT(idasignatura) cantidad FROM asignatura_carrera GROUP BY idcarrera) ma ON ca.codigo = ma.idcarrera WHERE ca.nombre LIKE '%ana%')
+[2019-10-07 23:30:47][IP: ::1][SCRIPT: /tempus5/app/carreras/vistas/ProcesarBuscarCarrera.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT ca.*, ma.cantidad FROM carrera ca LEFT JOIN (SELECT idcarrera, COUNT(idasignatura) cantidad FROM asignatura_carrera GROUP BY idcarrera) ma ON ca.codigo = ma.idcarrera WHERE ca.nombre LIKE '%ana%')
+[2019-10-12 17:09:00][IP: ::1][SCRIPT: /tempus5/app/aulas/vistas/ProcesarBuscarAula.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT * FROM aula WHERE nombre LIKE '%A%')
+[2019-10-12 17:09:40][IP: ::1][SCRIPT: /tempus5/app/aulas/vistas/ProcesarBuscarAula.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT * FROM aula WHERE sector LIKE '%%')
+[2019-10-12 17:09:40][IP: ::1][SCRIPT: /tempus5/app/aulas/vistas/ProcesarBuscarAula.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT * FROM aula WHERE sector LIKE '%%')
+[2019-10-12 17:09:50][IP: ::1][SCRIPT: /tempus5/app/aulas/vistas/ProcesarBuscarAula.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT * FROM aula WHERE sector LIKE '%%')
+[2019-10-12 18:09:34][IP: ::1][SCRIPT: /tempus5/app/test/aulas/consultas.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT * FROM aula where id=57575)
+[2019-10-12 18:09:50][IP: ::1][SCRIPT: /tempus5/app/test/aulas/consultas.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT * FROM aula where id=57575)
+[2019-10-12 19:25:42][IP: ::1][SCRIPT: /tempus5/index.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT TOP(10) * FROM aula ORDER BY idaula DESC)
+[2019-10-12 19:25:48][IP: ::1][SCRIPT: /tempus5/index.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT TOP(10) * FROM aula ORDER BY idaula DESC)
+[2019-10-12 19:32:42][IP: ::1][SCRIPT: /tempus5/index.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT TOP(10) * FROM aula ORDER BY idaula DESC)
+[2019-10-12 19:38:01][IP: ::1][SCRIPT: /tempus5/index.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT TOP(10) * FROM aula ORDER BY idaula DESC)
+[2019-10-12 19:39:04][IP: ::1][SCRIPT: /tempus5/index.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT TOP(10) * FROM aula ORDER BY idaula DESC)
+[2019-10-12 19:39:21][IP: ::1][SCRIPT: /tempus5/index.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT TOP(10) * FROM aula ORDER BY idaula DESC)
+[2019-10-12 19:40:14][IP: ::1][SCRIPT: /tempus5/index.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT TOP(10) * FROM aula ORDER BY idaula DESC)
+[2019-10-12 21:49:12][IP: ::1][SCRIPT: /tempus5/app/aulas/vistas/ProcesarModificarAula.php][METODO: borrar][ERROR: Error al borrar registro (QUERY: UPDATE aula SET nombre = '543', sector = 'A' WHERE idaula=49)
+[2019-10-13 19:49:25][IP: ::1][SCRIPT: /tempus5/index.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT * FROM aula WHERE carrera LIKE '%Universitaria%')
+[2019-10-13 19:50:12][IP: ::1][SCRIPT: /tempus5/index.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT * FROM vista_mesas WHERE carrera LIKE '%Universitaria%')
+[2019-10-13 19:50:17][IP: ::1][SCRIPT: /tempus5/index.php][METODO: seleccionar][ERROR: Error al buscar registros (QUERY: SELECT * FROM vista_mesas WHERE carrera LIKE '%Universitaria%')

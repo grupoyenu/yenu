@@ -1,12 +1,16 @@
 <?php
 
-require_once './app/controladores/Autoload.php';
-$autoload = new Autoload();
+/* Incluye el archivo con las constantes del sistema y el autocargador */
+require_once './app/principal/modelos/Constantes.php';
+require_once './app/principal/modelos/AutoCargador.php';
 
-$ruta = isset($_GET['ruta']) ? $_GET['ruta'] : "home";
+session_start();
+
+/* Se cargan los modulos que sean necesarios */
+AutoCargador::cargarModulos();
+
+/* Define la ruta a la cual se redirecciona */
+$ruta = isset($_GET['ruta']) ? $_GET['ruta'] : "principal_home";
+
+/* El controlador principal continua con el flujo de tareas */
 $controlador = new ControladorPrincipal($ruta);
-
-
-
-
-
