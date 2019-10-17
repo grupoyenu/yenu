@@ -139,11 +139,15 @@ class Conexion extends mysqli {
     public function obtener($consulta) {
         $result = $this->query($consulta);
         if ($result) {
-            return $result->fetch_assoc();
+            if ($result->num_rows > 0) {
+                return $result->fetch_assoc();
+            }
+            $this->descripcion = "No se obtuvo la información";
+            return 1;
         }
         $this->descripcion = "Error en la operación. Intente nuevamente";
         Log::escribirLineaError("[METODO: obtener][ERROR: Error al obtener registro (QUERY: $consulta)");
-        return NULL;
+        return 0;
     }
 
     public function seleccionar($consulta) {
@@ -161,16 +165,13 @@ class Conexion extends mysqli {
         return 0;
     }
 
-    function setAutocommit($commit) {
-        $this->autocommit($commit);
+    public function iniciarTransaccion() {
+        return $this->autocommit(true);
     }
 
-    function executeCommit() {
-        $this->commit();
+    public function finalizarTransaccion($resultado = TRUE) {
+        ($resultado) ? $this->commit() : $this->rollback();
     }
 
-    function executeRollback() {
-        $this->rollback();
-    }
 
 }

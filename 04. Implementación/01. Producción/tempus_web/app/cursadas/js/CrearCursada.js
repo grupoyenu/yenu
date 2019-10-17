@@ -14,6 +14,7 @@ $(document).ready(function () {
     /* Captura el formulario antes de su envio y realiza solicitud AJAX */
 
     $('#formCrearCursada').submit(function (evento) {
+        console.log($("#formCrearCursada").serialize());
         evento.preventDefault();
         $.ajax({
             type: "POST",
@@ -28,7 +29,7 @@ $(document).ready(function () {
             },
             error: function (data) {
                 console.log(data);
-                $('#seccionResultado').html("ERE");
+                $('#seccionResultado').html("<div class='alert alert-danger text-center' role='alert'><i class='fas fa-exclamation-triangle'></i> <strong>No se procesó la petición</strong></div>");
             }
         });
     });
@@ -68,7 +69,8 @@ $(document).ready(function () {
         });
     });
 
-    $('.seleccionarAula').click(function () {
+    $('.seleccionarAula').click(function (evento) {
+        evento.preventDefault();
         var dia = $(this).attr("name");
         var horaInicio = $("select#horaInicio" + dia + " option:selected").text();
         var horaFin = $("select#horaFin" + dia + " option:selected").text();

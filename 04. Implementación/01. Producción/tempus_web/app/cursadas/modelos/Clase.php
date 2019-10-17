@@ -11,13 +11,7 @@ class Clase {
     private $descripcion;
     private $TABLA = "clase";
 
-    public function __construct($parametros = NULL) {
-        $idClase = ($parametros) ? $parametros[0] : NULL;
-        $dia = ($parametros) ? $parametros[1] : NULL;
-        $horaInicio = ($parametros) ? $parametros[2] : NULL;
-        $horaFin = ($parametros) ? $parametros[3] : NULL;
-        $aula = ($parametros) ? $parametros[4] : NULL;
-        $fechaModificacion = ($parametros) ? $parametros[5] : NULL;
+    public function __construct($idClase = NULL, $dia = NULL, $horaInicio = NULL, $horaFin = NULL, $aula = NULL, $fechaModificacion = NULL) {
         $this->setId($idClase);
         $this->setDia($dia);
         $this->setHoraInicio($horaInicio);
@@ -106,18 +100,15 @@ class Clase {
 
     public function crear() {
         if ($this->dia && $this->horaInicio && $this->horaFin && $this->aula) {
-            if (!$this->validarHorario() || $this->evaluarSolapamiento()) {
-                return 1;
+            $existencia = $this->evaluarExistencia();
+            if ($existencia == 1) {
+                $values = "(NULL, {$this->dia}, '{$this->horaInicio}', '{$this->horaFin}', {$this->aula}, NULL)";
+                $creacion = Conexion::getInstancia()->insertar($this->TABLA, $values);
+                $this->idClase = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
+                $this->descripcion = Conexion::getInstancia()->getDescripcion();
+                return $creacion;
             }
-            if ($this->evaluarExistencia() == 2) {
-                $this->descripcion = "La clase indicada ya existe";
-                return 2;
-            }
-            $values = "(NULL, {$this->dia}, '{$this->horaInicio}', '{$this->horaFin}', {$this->aula}, NULL)";
-            $creacion = Conexion::getInstancia()->insertar($this->TABLA, $values);
-            $this->idClase = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
-            $this->descripcion = Conexion::getInstancia()->getDescripcion();
-            return $creacion;
+            return $existencia;
         }
         return 1;
     }
@@ -134,41 +125,16 @@ class Clase {
     }
 
     private function evaluarExistencia() {
-        $consulta = "SELECT idclase FROM {$this->TABLA} WHERE dia ={$this->dia} AND desde = '{$this->horaInicio}' AND hasta = '{$this->horaFin}' AND idaula={$this->aula}";
+        $consulta = "SELECT idclase FROM {$this->TABLA} "
+                . "WHERE dia ={$this->dia} AND desde = '{$this->horaInicio}' "
+                . "AND hasta = '{$this->horaFin}' AND idaula={$this->aula}";
         $fila = Conexion::getInstancia()->obtener($consulta);
-        if (!is_null($fila)) {
+        if (gettype($fila) == "array") {
             $this->idClase = $fila['idclase'];
             return 2;
         }
-        return 1;
-    }
-
-    private function evaluarSolapamiento() {
-        $consulta = "SELECT idclase FROM {$this->TABLA} "
-                . "WHERE dia={$this->dia} AND idaula={$this->aula} "
-                . "AND ((desde > '{$this->horaInicio}' AND desde < '{$this->horaFin}') "
-                . "OR (hasta > '{$this->horaInicio}' AND hasta < '{$this->horaFin}'))";
-        $evaluacion = Conexion::getInstancia()->evaluar($consulta);
-        if ($evaluacion != 1) {
-            $this->descripcion = ($evaluacion == 2) ? "El horario indicado se solapa con una clase existente" : Conexion::getInstancia()->getDescripcion();
-            return true;
-        }
-        return false;
-    }
-
-    private function validarHorario() {
-        $inicio = substr($this->horaInicio, 0, 2);
-        $fin = substr($this->horaFin, 0, 2);
-        if ($inicio < $fin) {
-            return true;
-        }
-        if ($inicio == $fin) {
-            $minutosInicio = substr($this->horaInicio, 3, 2);
-            $minutosFin = substr($this->horaFin, 3, 2);
-            $this->descripcion = ($minutosInicio < $minutosFin) ? "" : "La hora de fin debe ser posterior a la hora de inicio";
-            return ($minutosInicio < $minutosFin) ? true : false;
-        }
-        return false;
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $fila;
     }
 
 }

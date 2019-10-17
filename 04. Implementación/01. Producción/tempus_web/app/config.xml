@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<conexiones>
-    <conexion>
-        <host>localhost</host>
-        <baseDatos>tempus</baseDatos>
-        <usuario>root</usuario>
-        <clave></clave>
-    </conexion>
-</conexiones>

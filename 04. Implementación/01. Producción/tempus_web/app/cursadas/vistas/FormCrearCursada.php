@@ -24,14 +24,14 @@ for ($horafin = 11; $horafin < 24; ++$horafin) {
         <div id="seccionResultado"></div>
         <div id="seccionFormulario">
             <form id="formCrearCursada" name="formCrearCursada" method="POST">
-                <input type="hidden" name="idAsignatura" name="idAsignatura">
-                <input type="hidden" name="idCarrera" name="idCarrera">
-                <input type="hidden" name="idAula1" name="idAula1">
-                <input type="hidden" name="idAula2" name="idAula2">
-                <input type="hidden" name="idAula3" name="idAula3">
-                <input type="hidden" name="idAula4" name="idAula4">
-                <input type="hidden" name="idAula5" name="idAula5">
-                <input type="hidden" name="idAula6" name="idAula6">
+                <input type="hidden" name="idAsignatura" id="idAsignatura">
+                <input type="hidden" name="idCarrera" id="idCarrera">
+                <input type="hidden" name="idAula1" id="idAula1">
+                <input type="hidden" name="idAula2" id="idAula2">
+                <input type="hidden" name="idAula3" id="idAula3">
+                <input type="hidden" name="idAula4" id="idAula4">
+                <input type="hidden" name="idAula5" id="idAula5">
+                <input type="hidden" name="idAula6" id="idAula6">
                 <div class="card">
                     <div class="card-header">Seleccione asignatura</div>
                     <div class="card-body">

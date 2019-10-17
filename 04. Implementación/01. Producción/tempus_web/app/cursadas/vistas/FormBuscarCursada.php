@@ -18,8 +18,8 @@
                         <div class="form-row">
                             <div class="col">
                                 <select id="campo" name="campo" class="form-control mb-2" >
-                                    <option value="carrera">Por carrera</option>
-                                    <option value="nombre">Por asignatura</option>
+                                    <option value="nombreCarrera">Por carrera</option>
+                                    <option value="nombreAsignatura">Por asignatura</option>
                                 </select>
                             </div>
                             <div class="col">
