@@ -9,38 +9,31 @@ class Permisos {
 
     private $descripcion;
 
-    public function __construct() {
-        ;
-    }
-
     public function getDescripcion() {
         return $this->descripcion;
     }
 
-    public function setDescripcion($descripcion) {
-        $this->descripcion = $descripcion;
-    }
-
     public function buscar($nombre) {
-        $permisos = array();
-        if ($nombre) {
-            $consulta = "SELECT pe.*, ro.cantidad "
-                    . "FROM permiso pe "
-                    . "LEFT JOIN (SELECT idpermiso, COUNT(*) cantidad "
-                    . "FROM rol_permiso GROUP BY idpermiso) ro ON ro.idpermiso = pe.idpermiso "
-                    . "WHERE nombre LIKE '%{$nombre}%'";
-            $permisos = Conexion::getInstancia()->seleccionar($consulta);
-            if (!empty($permisos)) {
-                return $permisos;
-            }
-            $this->descripcion = (is_null($permisos)) ? "No se pudo realizar la consulta de permisos" : "No se encontraron resultados";
-        }
-        return $permisos;
+        $consulta = "SELECT PER.*, (CASE WHEN CAN.cantidad IS NULL THEN 0 ELSE CAN.cantidad END) cantidad "
+                . "FROM permiso PER LEFT JOIN (SELECT idpermiso, COUNT(*) cantidad FROM rol_permiso GROUP BY idpermiso) CAN "
+                . "ON CAN.idpermiso = PER.idpermiso WHERE PER.nombre LIKE '%{$nombre}%'";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
     }
 
     public function listar() {
         $consulta = "SELECT * FROM permiso";
         return Conexion::getInstancia()->seleccionar($consulta);
+    }
+
+    public function listarUltimosCreados() {
+        $consulta = "SELECT PER.*, (CASE WHEN CAN.cantidad IS NULL THEN 0 ELSE CAN.cantidad END) cantidad "
+                . "FROM permiso PER LEFT JOIN (SELECT idpermiso, COUNT(*) cantidad FROM rol_permiso GROUP BY idpermiso) CAN "
+                . "ON CAN.idpermiso = PER.idpermiso ORDER BY PER.idpermiso DESC LIMIT 10";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
     }
 
 }

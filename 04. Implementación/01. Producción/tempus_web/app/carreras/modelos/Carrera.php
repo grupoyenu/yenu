@@ -17,13 +17,9 @@ class Carrera {
     /** @var string Nombre de la tabla en la base de datos. */
     private $TABLA = "carrera";
 
-    public function __construct($parametros = NULL) {
-        $codigo = ($parametros) ? $parametros[0] : NULL;
-        $nombre = ($parametros) ? $parametros[1] : NULL;
-        $asignaturas = ($parametros) ? $parametros[2] : NULL;
+    public function __construct($codigo = NULL, $nombre = NULL) {
         $this->setCodigo($codigo);
         $this->setNombre($nombre);
-        $this->setAsignaturas($asignaturas);
     }
 
     public function getCodigo() {

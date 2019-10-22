@@ -33,7 +33,7 @@
         </div>
         <br>
         <div id="seccionInferior" class="mt-4 mb-2">
-            <?php require_once './app/permisos/vistas/ProcesarBuscarPermiso.php'; ?>
+            <?php require_once './app/usuarios/vistas/ProcesarBuscarRol.php'; ?>
         </div>
     </div>
     <div class="modal fade" id="ModalDetalleRol" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

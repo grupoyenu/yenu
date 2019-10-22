@@ -9,37 +9,31 @@ class Roles {
 
     private $descripcion;
 
-    public function __construct() {
-        ;
-    }
-
     public function getDescripcion() {
         return $this->descripcion;
     }
 
-    public function setDescripcion($descripcion) {
-        $this->descripcion = $descripcion;
-    }
-
     public function buscar($nombre) {
-        $roles = array();
-        if ($nombre) {
-            $consulta = "SELECT ro.*, rp.cantidad "
-                    . "FROM rol ro LEFT JOIN (SELECT idrol, COUNT(idrol) cantidad "
-                    . "FROM rol_permiso GROUP BY idrol) rp ON rp.idrol = ro.idrol "
-                    . "WHERE nombre LIKE '%{$nombre}%'";
-            $roles = Conexion::getInstancia()->seleccionar($consulta);
-            if (!empty($roles)) {
-                return $roles;
-            }
-            $this->descripcion = (is_null($roles)) ? "No se pudo realizar la consulta de roles" : "No se encontraron resultados";
-        }
-        return $roles;
+        $consulta = "SELECT ROL.*, CAN.cantidad FROM rol ROL "
+                . "LEFT JOIN (SELECT idrol, COUNT(*) cantidad FROM rol_permiso GROUP BY idrol) CAN "
+                . "ON CAN.idrol = ROL.idrol WHERE ROL.nombre LIKE '%{$nombre}%'";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
     }
 
     public function listar() {
         $consulta = "SELECT * FROM rol";
         return Conexion::getInstancia()->seleccionar($consulta);
+    }
+
+    public function listarUltimosCreados() {
+        $consulta = "SELECT ROL.*, CAN.cantidad FROM rol ROL "
+                . "LEFT JOIN (SELECT idrol, COUNT(*) cantidad FROM rol_permiso GROUP BY idrol) CAN "
+                . "ON CAN.idrol = ROL.idrol ORDER BY ROL.idrol DESC LIMIT 10";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
     }
 
 }

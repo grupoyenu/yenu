@@ -1,57 +1,74 @@
 <?php
 
-require_once '../../principal/modelos/Constantes.php';
-require_once '../../principal/modelos/AutoCargador.php';
+require_once './app/principal/modelos/Constantes.php';
+require_once './app/principal/modelos/AutoCargador.php';
 
 AutoCargador::cargarModulos();
-$html = "";
 
-if (isset($_POST['nombre'])) {
-    $controlador = new ControladorPermisos();
+$controlador = new ControladorPermisos();
+
+if (isset($_POST['btnBuscarPermiso'])) {
+    /* SE COMPLETO EL FORMULARIO Y SE PRESIONO EL BOTON */
     $nombre = $_POST['nombre'];
-    $rows = $controlador->buscar($nombre);
-    if (!empty($rows)) {
-        $html = '
-            <form id="fmBuscarPermiso" id="fmBuscarPermiso" method="POST">
-                <div class="table-responsive mb-4 mt-4">
-                    <table id="tablaBuscarPermisos" class="table table-bordered table-hover">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Roles</th>
-                                <th class="text-center">Operaciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>';
-        foreach ($rows as $permiso) {
-            $cantidad = ($permiso['cantidad']) ? $permiso['cantidad'] : 0;
-            $html .= '
-                <tr> 
-                    <td class="align-middle">' . $permiso['nombre'] . '</td> 
-                    <td class="align-middle">' . $cantidad . '</td>
-                    <td class="text-center">
-                        <div class="btn-group btn-group-sm" role="group">
-                            <a class="btn btn-outline-warning editarPermiso" name="' . $permiso['idpermiso'] . '"><img src="./lib/img/edit.svg"/></a>
-                            <a class="btn btn-outline-info detallePermiso" name="' . $permiso['idpermiso'] . '"><img src="./lib/img/search.svg"/></a>
-                            <a class="btn btn-outline-danger borrarPermiso" name="' . $permiso['idpermiso'] . '"><img src="./lib/img/trash-2.svg"/></a>
-                        </div>
-                    </td>   
-                </tr>';
-        }
-        $html .= '
-                    </tbody>
-                </table>
-            </div>
-        </form>';
-    } else {
-        $class = (is_null($rows)) ? 'class="alert alert-danger text-center"' : 'class="alert alert-warning text-center"';
-        $html = '<div ' . $class . ' role="alert">' . $controlador->getDescripcion() . '</div>';
-    }
+    $datos = ($nombre) ? "'{$nombre}'" : "TODOS";
+    $filtro = "Resultado de la búsqueda: " . $datos;
+    $permisos = $controlador->buscar($nombre);
+    $_SESSION['BUSPER'] = array($nombre, $datos);
 } else {
-    $html = '<div class="alert alert-danger text-center" role="alert">No se obtuvo la información del formulario</div>';
+    if (isset($_SESSION['BUSPER'])) {
+        /* SE INGRESO AL FORMULARIO Y HAY UNA BUSQUEDA ALMACENADA */
+        $parametros = $_SESSION['BUSPER'];
+        $nombre = $parametros[0];
+        $filtro = "Última búsqueda realizada: " . $parametros[1];
+        $permisos = $controlador->buscar($nombre);
+        $_SESSION['BUSPER'] = NULL;
+    } else {
+        /* SE INGRESA POR PRIMERA VEZ */
+        $permisos = $controlador->listarUltimosCreados();
+        $filtro = "Últimos permisos creados";
+        $_SESSION['BUSPER'] = NULL;
+    }
+}
+$html = "";
+if (gettype($permisos) == "object") {
+    $filas = "";
+    while ($permiso = $permisos->fetch_assoc()) {
+        if ($permiso['cantidad'] > 0) {
+            $operaciones = "<button class='btn btn-outline-warning editar' 
+                                    name='{$permiso['idpermiso']}' title='Editar'><i class='far fa-edit'></i>
+                            </button>";
+        } else {
+            $operaciones = "<button class='btn btn-outline-warning editar' 
+                                    name='{$permiso['idpermiso']}' title='Editar'><i class='far fa-edit'></i>
+                            </button>
+                            <button class='btn btn-outline-danger baja' 
+                                    name='{$permiso['idpermiso']}' title='Dar de baja'><i class='fas fa-trash'></i>
+                            </button>";
+        }
+        $filas .= "
+            <tr> 
+                <td class='align-middle'>{$permiso['nombre']}</td>
+                <td class='align-middle text-center'>{$permiso['cantidad']}</td>
+                <td class='text-center'>
+                    <div class='btn-group btn-group-sm'>{$operaciones}</div>
+                </td>
+            </tr>";
+    }
+    $html = '
+        <div class="table-responsive mt-4">
+            <table id="tablaBuscarPermisos" class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Cantidad</th>
+                        <th class="text-center">Operaciones</th>
+                    </tr>
+                </thead>
+                <tbody>' . $filas . '</tbody>
+            </table>
+        </div>';
+} else {
+    $html = ControladorHTML::mostrarAlertaResultadoBusqueda($permisos, $controlador->getDescripcion());
 }
 
-echo '<div class="card text-center">
-        <div class="card-header text-left">Resultado de la búsqueda</div>
-        <div class="card-body">' . $html . '</div>
-     </div>';
+echo ControladorHTML::mostrarCardResultadoBusqueda($filtro, $html);

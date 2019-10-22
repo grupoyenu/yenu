@@ -81,4 +81,17 @@ class Cursada {
         return $creacion;
     }
 
+    public function obtener() {
+        if ($this->asignatura && $this->carrera) {
+            $consulta = "SELECT * FROM vista_cursadas WHERE idCarrera = {$this->carrera} AND idAsignatura = {$this->asignatura}";
+            $fila = Conexion::getInstancia()->obtener($consulta);
+            if (gettype($fila) == "array") {
+                return $fila;
+            }
+            $this->descripcion = "No se obtuvo la información de la cursada";
+            return 1;
+        }
+        return 0;
+    }
+
 }

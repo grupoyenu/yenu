@@ -13,11 +13,34 @@ $(document).ready(function () {
 
 
     $(".detalle").click(function () {
-        $(this).parents("tr").each(function (i) {
-            alert(i + " " + $(this).find('td').text());
+        $("#mdcCodigoCarrera").val($(this).parents("tr").find('td:eq(0)').text());
+        $("#mdcNombreCarrera").val($(this).parents("tr").find('td:eq(1)').text());
+        $("#mdcNombreAsignatura").val($(this).parents("tr").find('td:eq(2)').text());
+        $("#mdcLunes").val($(this).parents("tr").find('td:eq(3)').text());
+        $("#mdcMartes").val($(this).parents("tr").find('td:eq(4)').text());
+        $("#mdcMiercoles").val($(this).parents("tr").find('td:eq(5)').text());
+        $("#mdcJueves").val($(this).parents("tr").find('td:eq(6)').text());
+        $("#mdcViernes").val($(this).parents("tr").find('td:eq(7)').text());
+        $("#mdcSabado").val($(this).parents("tr").find('td:eq(8)').text());
+        $("#ModalDetalleCursada").modal({});
+    });
+
+    $(".editar").click(function () {
+        var idCarrera = $(this).attr("name");
+        var idAsignatura = $(this).attr("id");
+        $.ajax({
+            type: "POST",
+            url: "./app/cursadas/vistas/FormModificarCursada.php",
+            data: "idCarrera=" + idCarrera + "&idAsignatura=" + idAsignatura,
+            success: function (data) {
+                $('#contenido').html(data);
+            },
+            error: function (data) {
+                console.log(data);
+                $("#contenido").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
+            }
         });
 
-      
     });
 });
 

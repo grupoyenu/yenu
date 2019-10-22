@@ -5,27 +5,12 @@
  */
 $(document).ready(function () {
 
-    $("#formBuscarRol").submit(function (evento) {
-        evento.preventDefault();
-        $.ajax({
-            type: "POST",
-            url: "./app/usuarios/vistas/ProcesarBuscarRol.php",
-            data: $("#formBuscarRol").serialize(),
-            success: function (data) {
-                $('#seccionCentral').html(data);
-                $("table#tablaBuscarRoles").DataTable({
-                    dom: 'Bfrtip',
-                    responsive: true,
-                    language: {url: "./lib/js/Spanish.json"}
-                });
-            },
-            error: function (data) {
-                console.log(data);
-                $("#seccionCentral").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
-            }
-        });
+    $("table#tablaBuscarRoles").DataTable({
+        dom: 'Bfrtip',
+        responsive: true,
+        language: {url: "./lib/js/Spanish.json"}
     });
-    
+
     $("#seccionCentral").on("click", "a.detalleRol", function (evento) {
         evento.preventDefault();
         var id = $(this).attr("name");
@@ -43,6 +28,6 @@ $(document).ready(function () {
             }
         });
     });
-    
+
 });
 

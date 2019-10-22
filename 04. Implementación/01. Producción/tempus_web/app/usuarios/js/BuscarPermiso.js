@@ -1,25 +1,10 @@
 
 $(document).ready(function () {
 
-    $("#formBuscarPermiso").submit(function (evento) {
-        evento.preventDefault();
-        $.ajax({
-            type: "POST",
-            url: "./app/usuarios/vistas/ProcesarBuscarPermiso.php",
-            data: $("#formBuscarPermiso").serialize(),
-            success: function (data) {
-                $('#seccionCentral').html(data);
-                $("table#tablaBuscarPermisos").DataTable({
-                    dom: 'Bfrtip',
-                    responsive: true,
-                    language: {url: "./lib/js/Spanish.json"}
-                });
-            },
-            error: function (data) {
-                console.log(data);
-                $("#seccionCentral").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
-            }
-        });
+    $("table#tablaBuscarPermisos").DataTable({
+        dom: 'Bfrtip',
+        responsive: true,
+        language: {url: "./lib/js/Spanish.json"}
     });
 
     $("#btnCrearPermiso").click(function (evento) {

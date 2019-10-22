@@ -45,6 +45,7 @@ if (gettype($cursadas) == "object") {
         $sabado = ($cursada['idClase6']) ? $cursada['desde6'] . " " . $cursada['hasta6'] . " " . $cursada['sector6'] . " " . $cursada['aula6'] : "";
         $filas .= "
             <tr>
+                <td style='display: none;' class='align-middle'>{$cursada['idCarrera']}</td>
                 <td class='align-middle'>" . utf8_encode($cursada['nombreCarrera']) . "</td>
                 <td class='align-middle'>" . utf8_encode($cursada['nombreAsignatura']) . "</td>
                 <td class='align-middle'>{$lunes}</td>
@@ -59,7 +60,7 @@ if (gettype($cursadas) == "object") {
                             name='' title='Ver detalle'><i class='fas fa-eye'></i>
                         </button>
                         <button class='btn btn-outline-warning editar' 
-                                name='' title='Editar'><i class='far fa-edit'></i>
+                                name='{$cursada['idCarrera']}' id='{$cursada['idAsignatura']}' title='Editar'><i class='far fa-edit'></i>
                         </button>
                         <button class='btn btn-outline-danger baja' 
                                 name='' title='Dar de baja'><i class='fas fa-trash'></i>
@@ -73,7 +74,8 @@ if (gettype($cursadas) == "object") {
             <table id="tablaBuscarCursadas" class="table table-bordered table-hover">
                 <thead class="thead-dark">
                     <tr>
-                        <th>Carrera</th>
+                        <th style="display: none;">Código carrera</th>
+                        <th>Nombre carrera</th>
                         <th>Asignatura</th>
                         <th>Lunes</th>
                         <th>Martes</th>

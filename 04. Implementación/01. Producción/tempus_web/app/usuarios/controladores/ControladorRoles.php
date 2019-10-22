@@ -13,21 +13,17 @@
  */
 class ControladorRoles {
 
-    private $rol;
-    private $roles;
     private $descripcion;
-
-    public function __construct() {
-
-        ;
-    }
 
     public function getDescripcion() {
         return $this->descripcion;
     }
 
-    public function setDescripcion($descripcion) {
-        $this->descripcion = $descripcion;
+    public function buscar($nombre) {
+        $roles = new Roles();
+        $resultado = $roles->buscar($nombre);
+        $this->descripcion = $roles->getDescripcion();
+        return $resultado;
     }
 
     public function crear($nombre, $permisos) {
@@ -38,10 +34,10 @@ class ControladorRoles {
         return $creacion;
     }
 
-    public function buscar($nombre) {
-        $this->roles = new Roles();
-        $resultado = $this->roles->buscar($nombre);
-        $this->descripcion = $this->roles->getDescripcion();
+    public function listarUltimosCreados() {
+        $roles = new Roles();
+        $resultado = $roles->listarUltimosCreados();
+        $this->descripcion = $roles->getDescripcion();
         return $resultado;
     }
 
