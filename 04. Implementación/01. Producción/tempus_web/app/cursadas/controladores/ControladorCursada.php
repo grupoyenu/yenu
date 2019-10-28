@@ -42,4 +42,11 @@ class ControladorCursada {
         return $resultado;
     }
 
+    public function listarResumenInicial() {
+        $cursadas = new Cursadas();
+        $resultado = $cursadas->listarResumenInicial();
+        $this->descripcion = $cursadas->getDescripcion();
+        return $resultado;
+    }
+
 }

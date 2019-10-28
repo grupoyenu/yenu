@@ -27,11 +27,23 @@ class ControladorRoles {
     }
 
     public function crear($nombre, $permisos) {
-        $parametros = array(NULL, $nombre, $permisos);
-        $this->rol = new Rol($parametros);
-        $creacion = $this->rol->crear();
-        $this->descripcion = $this->permiso->getDescripcion();
-        return $creacion;
+        if (Conexion::getInstancia()->iniciarTransaccion()) {
+            $rol = new Rol(NULL, $nombre, $permisos);
+            $creacion = $rol->crear();
+            $this->descripcion = $rol->getDescripcion();
+            $confirmar = ($creacion == 2) ? TRUE : FALSE;
+            Conexion::getInstancia()->finalizarTransaccion($confirmar);
+            return $creacion;
+        }
+        $this->mensaje = "No se pudo inicializar la transacción para operar";
+        return 0;
+    }
+
+    public function listar() {
+        $roles = new Roles();
+        $resultado = $roles->listar();
+        $this->descripcion = $roles->getDescripcion();
+        return $resultado;
     }
 
     public function listarUltimosCreados() {

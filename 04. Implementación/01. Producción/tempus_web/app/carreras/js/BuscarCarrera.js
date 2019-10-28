@@ -5,25 +5,10 @@
  */
 $(document).ready(function () {
 
-    $("#formBuscarCarrera").submit(function (evento) {
-        evento.preventDefault();
-        $.ajax({
-            type: "POST",
-            url: "./app/carreras/vistas/ProcesarBuscarCarrera.php",
-            data: $("#formBuscarCarrera").serialize(),
-            success: function (data) {
-                $('#seccionCentral').html(data);
-                $("table#tablaBuscarCarreras").DataTable({
-                    dom: 'Bfrtip',
-                    responsive: true,
-                    language: {url: "./lib/js/Spanish.json"}
-                });
-            },
-            error: function (data) {
-                console.log(data);
-                $("#seccionCentral").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
-            }
-        });
+    $("table#tablaBuscarCarreras").DataTable({
+        dom: 'Bfrtip',
+        responsive: true,
+        language: {url: "./lib/js/Spanish.json"}
     });
 
     $("#seccionCentral").on("click", "a.detalleCarrera", function (evento) {

@@ -12,11 +12,11 @@
         </div>
         <div class="mt-4 mb-4">
             <form name="formBuscarAsignatura" id="formBuscarAsignatura" method="POST">
-                <div class="card">
-                    <div class="card-header">Formulario de búsqueda</div>
+                <div class="card border-dark">
+                    <div class="card-header bg-dark text-white">Formulario de búsqueda</div>
                     <div class="card-body">
                         <div class="form-row">
-                            <label for="nombre" class="col-sm-2 col-form-label text-left">Nombre:</label>
+                            <label for="nombre" class="col-sm-2 col-form-label">Nombre:</label>
                             <div class="col">
                                 <input type="text" class="form-control mb-2" 
                                        name="nombre" id="nombre"

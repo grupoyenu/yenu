@@ -51,7 +51,7 @@ if (gettype($asignaturas) == "object") {
     $html = '
         <div class="table-responsive">
             <table id="tablaBuscarAsignaturas" class="table table-bordered table-hover">
-                <thead class="thead-dark">
+                <thead>
                     <tr>
                         <th>Nombre</th>
                         <th>Carreras</th>

@@ -23,7 +23,7 @@ class Roles {
     }
 
     public function listar() {
-        $consulta = "SELECT * FROM rol";
+        $consulta = "SELECT * FROM rol ORDER BY nombre";
         return Conexion::getInstancia()->seleccionar($consulta);
     }
 

@@ -20,12 +20,10 @@ class Rol {
     /** @var string Descripcion para mostrar mensajes */
     private $descripcion;
 
-    public function __construct($parametros = NULL) {
-        if ($parametros) {
-            $this->setIdRol($parametros[0]);
-            $this->setNombre($parametros[1]);
-            $this->setPermisos($parametros[2]);
-        }
+    public function __construct($id = NULL, $nombre = NULL, $permisos = NULL) {
+        $this->setIdRol($id);
+        $this->setNombre($nombre);
+        $this->setPermisos($permisos);
     }
 
     public function getIdRol() {
@@ -67,7 +65,7 @@ class Rol {
     private function agregarPermiso() {
         if (!empty($this->permisos)) {
             foreach ($this->permisos as $permiso) {
-                $values = "({$this->idRol},{$permiso})";
+                $values = "({$this->idRol}, {$permiso})";
                 $creacion = Conexion::getInstancia()->insertar("rol_permiso", $values);
                 if ($creacion != 2) {
                     $this->descripcion = "No se realizó la creación del registro asociado al rol";
@@ -77,7 +75,7 @@ class Rol {
             return 2;
         }
         $this->descripcion = "Se debe indicar al menos un permiso para crear el rol";
-        return 1;
+        return 0;
     }
 
     public function borrar() {
@@ -94,11 +92,12 @@ class Rol {
             $this->descripcion = Conexion::getInstancia()->getDescripcion();
             if ($creacion == 2) {
                 $this->idRol = (Int) Conexion::getInstancia()->insert_id;
-                return $this->agregarPermiso();
+                $creacion = $this->agregarPermiso();
+                $this->descripcion = ($creacion == 2) ? $this->nombre . ": Se realizó la creación del registro correctamente" : $this->descripcion;
             }
             return $creacion;
         }
-        return 1;
+        return 0;
     }
 
     public function modificar() {

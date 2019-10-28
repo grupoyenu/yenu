@@ -23,8 +23,10 @@ class Permisos {
     }
 
     public function listar() {
-        $consulta = "SELECT * FROM permiso";
-        return Conexion::getInstancia()->seleccionar($consulta);
+        $consulta = "SELECT * FROM permiso ORDER BY nombre";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
     }
 
     public function listarUltimosCreados() {

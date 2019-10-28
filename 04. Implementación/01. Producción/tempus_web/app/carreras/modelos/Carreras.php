@@ -15,22 +15,23 @@ class Carreras {
     }
 
     public function buscar($nombre) {
-        $carreras = array();
-        if ($nombre) {
-            $consulta = "SELECT ca.*, ma.cantidad "
-                    . "FROM carrera ca "
-                    . "LEFT JOIN (SELECT idcarrera, COUNT(idasignatura) cantidad "
-                    . "FROM asignatura_carrera GROUP BY idcarrera) ma ON ca.codigo = ma.idcarrera "
-                    . "WHERE ca.nombre LIKE '%{$nombre}%'";
-            $carreras = Conexion::getInstancia()->seleccionar($consulta);
-            if (!empty($carreras)) {
-                return $carreras;
-            }
-            $this->descripcion = (is_null($carreras)) ? "No se pudo realizar la consulta de carreras" : "No se encontraron resultados";
-            return $carreras;
-        }
-        $this->descripcion = "El nombre de la carrera no cumple con el formato requerido";
-        return $carreras;
+        $consulta = "SELECT ca.*, (CASE WHEN ma.cantidad IS NULL THEN 0 ELSE ma.cantidad END) cantidad "
+                . "FROM carrera ca "
+                . "LEFT JOIN (SELECT idcarrera, COUNT(idasignatura) cantidad "
+                . "FROM asignatura_carrera GROUP BY idcarrera) ma ON ca.codigo = ma.idcarrera "
+                . "WHERE ca.nombre LIKE '%{$nombre}%'";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
+    }
+
+    public function listarUltimasCreadas() {
+        $consulta = "SELECT ca.*, (CASE WHEN ma.cantidad IS NULL THEN 0 ELSE ma.cantidad END) cantidad "
+                . "FROM carrera ca LEFT JOIN (SELECT idcarrera, COUNT(idasignatura) cantidad "
+                . "FROM asignatura_carrera GROUP BY idcarrera) ma ON ca.codigo = ma.idcarrera LIMIT 10";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
     }
 
 }

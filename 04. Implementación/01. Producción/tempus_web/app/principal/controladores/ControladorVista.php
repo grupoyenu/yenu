@@ -10,7 +10,7 @@ class ControladorVista {
             "FormCrearAula" => "crear_aulas",
             "FormBuscarCursada" => "buscar_cursadas",
             "FormCrearCursada" => "crear_cursadas",
-            "FormSeleccionarCursada" => "importar_cursadas",
+            "FormSeleccionarCursada" => "seleccionar_cursadas",
             "FormBuscarMesa" => "buscar_mesas",
             "FormBuscarCarrera" => "buscar_carreras",
             "FormAgregarAsignatura" => "agregar_carreras",
@@ -20,7 +20,9 @@ class ControladorVista {
             "FormBuscarUsuario" => "buscarUsuario_usuarios",
             "FormBuscarRol" => "buscarRol_usuarios",
             "FormBuscarPermiso" => "buscarPermiso_usuarios",
-            "FormCrearPermiso" => "crearPermiso_usuarios");
+            "FormCrearPermiso" => "crearPermiso_usuarios",
+            "FormCrearRol" => "crearRol_usuarios",
+            "FormCrearUsuario" => "crearUsuario_usuarios");
     }
 
     public function evaluarVista($modulo, $vista) {

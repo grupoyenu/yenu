@@ -24,11 +24,50 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <label for="asignatura" class="col-sm-2 col-form-label">Carrera:</label>
+                            <label for="asignatura" class="col-sm-2 col-form-label">Asignatura:</label>
                             <div class="col">
                                 <input type="text" class="form-control mb-2" 
                                        name="asignatura" id="asignatura"
-                                       placeholder="Nombre de carrera">
+                                       placeholder="Nombre de asignatura">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label for="dia" class="col-sm-2 col-form-label">Día:</label>
+                            <div class="col">
+                                <select class="form-control mb-2">
+                                    <option value="TODOS">No aplicar filtro</option>
+                                    <option value="1">Lunes</option>
+                                    <option value="2">Martes</option>
+                                    <option value="3">Miercoles</option>
+                                    <option value="4">Jueves</option>
+                                    <option value="5">Viernes</option>
+                                    <option value="6">Sábado</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label for="dia" class="col-sm-2 col-form-label">Franja horaria:</label>
+                            <div class="col">
+                                <select class="form-control mb-2">
+                                    <option value="TODOS">No aplicar filtro para hora de inicio</option>
+                                    <option value="1">Lunes</option>
+                                    <option value="2">Martes</option>
+                                    <option value="3">Miercoles</option>
+                                    <option value="4">Jueves</option>
+                                    <option value="5">Viernes</option>
+                                    <option value="6">Sábado</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <select class="form-control mb-2">
+                                    <option value="TODOS">No aplicar filtro para hora de fin</option>
+                                    <option value="1">Lunes</option>
+                                    <option value="2">Martes</option>
+                                    <option value="3">Miercoles</option>
+                                    <option value="4">Jueves</option>
+                                    <option value="5">Viernes</option>
+                                    <option value="6">Sábado</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-row">

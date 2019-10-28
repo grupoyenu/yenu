@@ -29,8 +29,7 @@ class ControladorPermisos {
     }
 
     public function crear($nombre) {
-        $parametros = array(NULL, $nombre);
-        $permiso = new Permiso($parametros);
+        $permiso = new Permiso(NULL, $nombre);
         $creacion = $permiso->crear();
         $this->descripcion = $permiso->getDescripcion();
         return $creacion;

@@ -23,11 +23,9 @@ class Permiso {
     /** @var string Descripcion para mostrar mensajes */
     private $descripcion;
 
-    public function __construct($parametros = NULL) {
-        if ($parametros) {
-            $this->setIdPermiso($parametros[0]);
-            $this->setNombre($parametros[1]);
-        }
+    public function __construct($id = NULL, $nombre = NULL) {
+        $this->setIdPermiso($id);
+        $this->setNombre($nombre);
     }
 
     public function getIdPermiso() {
@@ -55,8 +53,8 @@ class Permiso {
     }
 
     public function setNombre($nombre) {
-        if (preg_match("/^[A-Z ]{5,30}$/", $nombre)) {
-            $this->nombre = $nombre;
+        if (preg_match("/^[A-Za-z ]{5,30}$/", $nombre)) {
+            $this->nombre = strtoupper($nombre);
         } else {
             $this->descripcion = "El nombre del permiso no cumple con el formato requerido";
         }
@@ -82,10 +80,10 @@ class Permiso {
             $values = "(NULL, '$this->nombre')";
             $creacion = Conexion::getInstancia()->insertar("permiso", $values);
             $this->idPermiso = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
-            $this->descripcion = Conexion::getInstancia()->getDescripcion();
+            $this->descripcion = $this->nombre . ": " . Conexion::getInstancia()->getDescripcion();
             return $creacion;
         }
-        return 1;
+        return 0;
     }
 
     public function modificar() {

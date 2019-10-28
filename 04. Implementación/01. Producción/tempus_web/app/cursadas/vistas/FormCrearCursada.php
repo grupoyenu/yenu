@@ -32,8 +32,8 @@ for ($horafin = 11; $horafin < 24; ++$horafin) {
                 <input type="hidden" name="idAula4" id="idAula4">
                 <input type="hidden" name="idAula5" id="idAula5">
                 <input type="hidden" name="idAula6" id="idAula6">
-                <div class="card">
-                    <div class="card-header">Seleccione asignatura</div>
+                <div class="card border-dark">
+                    <div class="card-header bg-dark text-white">Seleccione asignatura</div>
                     <div class="card-body">
                         <div class="form-row">
                             <label for="carrera" class="col-sm-2 col-form-label">* Carrera:</label>
@@ -59,8 +59,8 @@ for ($horafin = 11; $horafin < 24; ++$horafin) {
                         </div>
                     </div>
                 </div>
-                <div class="card mt-2">
-                    <div class="card-header">Complete los horarios de cursada</div>
+                <div class="card mt-2 border-dark">
+                    <div class="card-header bg-dark text-white">Complete los horarios de cursada</div>
                     <div class="card-body">
                         <table class="table table table-bordered table-hover" cellspacing="0" style="width:100%">
                             <thead>

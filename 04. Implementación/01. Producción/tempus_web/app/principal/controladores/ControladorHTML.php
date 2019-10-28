@@ -40,11 +40,19 @@ class ControladorHTML {
     }
 
     static function mostrarCardResultadoBusqueda($titulo, $contenido) {
-        $html = "<div class='card'>
-                    <div class='card-header'><i class='fas fa-table'></i> {$titulo}</div>
+        $html = "<div class='card border-dark'>
+                    <div class='card-header bg-dark text-white'><i class='fas fa-table'></i> {$titulo}</div>
                     <div class='card-body'>{$contenido}</div>
                  </div>";
         return $html;
+    }
+
+    static function mostrarBotonBusqueda($referencia) {
+        return '<a href="' . $referencia . '">
+                    <button type="button" class="btn btn-outline-info">
+                        <i class="fas fa-search"></i> BUSCAR
+                    </button>
+                </a>';
     }
 
 }

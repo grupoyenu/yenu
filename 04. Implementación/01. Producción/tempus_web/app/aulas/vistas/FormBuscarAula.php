@@ -41,7 +41,7 @@
             <?php require_once './app/aulas/vistas/ProcesarBuscarAula.php'; ?>
         </div>
         <div class="modal fade" id="modalBorrarAula" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" id="myModalLabel"><i class='fas fa-trash'></i> CONFIRME ELIMINACIÓN</h4>

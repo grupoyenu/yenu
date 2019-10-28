@@ -60,7 +60,7 @@ if (gettype($permisos) == "object") {
                 <thead class="thead-dark">
                     <tr>
                         <th>Nombre</th>
-                        <th>Cantidad</th>
+                        <th>Roles</th>
                         <th class="text-center">Operaciones</th>
                     </tr>
                 </thead>

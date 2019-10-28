@@ -1,5 +1,4 @@
 <div class="container-fluid">
-
     <div id="seccionSuperior" class="container mt-2 mb-2">
         <div class="row mt-sm-3 mb-4">
             <div class="col align-middle">

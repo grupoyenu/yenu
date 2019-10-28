@@ -1,58 +1,71 @@
 <?php
 
-require_once '../../principal/modelos/Constantes.php';
-require_once '../../principal/modelos/AutoCargador.php';
+require_once './app/principal/modelos/Constantes.php';
+require_once './app/principal/modelos/AutoCargador.php';
 
 AutoCargador::cargarModulos();
 
-$html = "";
-if (isset($_POST['nombre'])) {
-    $controlador = new ControladorCarreras();
+$controlador = new ControladorCarreras();
+
+if (isset($_POST['btnBuscarCarrera'])) {
+    /* SE COMPLETO EL FORMULARIO Y SE PRESIONO EL BOTON */
     $nombre = $_POST['nombre'];
-    $rows = $controlador->buscar($nombre);
-    if (!empty($rows)) {
-        $html = '
-        <form id="fmBuscarCarrera" id="fmBuscarCarrera" method="POST" action="carrera_agregar">
-            <input type="hidden" id="codigo" name="codigo">
-            <div class="table-responsive mb-4 mt-4">
-                <table id="tablaBuscarCarreras" class="table table-bordered table-hover" cellspacing="0" style="width:100%">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Código</th>
-                            <th>Nombre</th>
-                            <th>Asignaturas</th>
-                            <th class="text-center">Operaciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>';
-        foreach ($rows as $carrera) {
-            $codigo = str_pad($carrera['codigo'], 3, "0", STR_PAD_LEFT);
-            $html .= '
-                <tr> 
-                    <td class="align-middle">' . $codigo . '</td> 
-                    <td class="align-middle">' . $carrera['nombre'] . '</td> 
-                    <td class="align-middle">' . $carrera['cantidad'] . '</td>
-                    <td class="text-center">
-                        <div class="btn-group btn-group-sm" role="group">
-                            <a class="btn btn-outline-success agregarAsignatura" name="' . $carrera['codigo'] . '"><img src="./lib/img/plus-circle.svg"/></a>
-                            <a class="btn btn-outline-info detalleCarrera" name="' . $carrera['codigo'] . '"><img src="./lib/img/search.svg"/></a>
-                        </div>
-                    </td>   
-                </tr>';
-        }
-        $html .= '  </tbody>
-                </table>
-            </div>
-        </form>';
-    } else {
-        $class = (is_null($rows)) ? 'class="alert alert-danger text-center"' : 'class="alert alert-warning text-center"';
-        $html = '<div ' . $class . ' role="alert">' . $controlador->getDescripcion() . '</div>';
-    }
+    $datos = ($nombre) ? "'{$nombre}'" : "TODAS";
+    $filtro = "Resultado de la búsqueda: " . $datos;
+    $carreras = $controlador->buscar($nombre);
+    $_SESSION['BUSCAR'] = array($nombre, $datos);
 } else {
-    $html = '<div class="alert alert-danger text-center" role="alert">No se obtuvo la información del formulario</div>';
+    if (isset($_SESSION['BUSCAR'])) {
+        /* SE INGRESO AL FORMULARIO Y HAY UNA BUSQUEDA ALMACENADA */
+        $parametros = $_SESSION['BUSCAR'];
+        $nombre = $parametros[0];
+        $filtro = "Última búsqueda realizada: " . $parametros[1];
+        $carreras = $controlador->buscar($nombre);
+        $_SESSION['BUSCAR'] = NULL;
+    } else {
+        /* SE INGRESA POR PRIMERA VEZ */
+        $carreras = $controlador->listarUltimasCreadas();
+        $filtro = "Últimas carreras creadas";
+        $_SESSION['BUSCAR'] = NULL;
+    }
+}
+$html = "";
+if (gettype($carreras) == "object") {
+    $filas = "";
+    while ($carrera = $carreras->fetch_assoc()) {
+        $filas .= " 
+            <tr> 
+                <td class='align-middle'>" . str_pad($carrera['codigo'], 3, "0", STR_PAD_LEFT) . "</td> 
+                <td class='align-middle'>" . utf8_encode($carrera['nombre']) . "</td> 
+                <td class='align-middle'>{$carrera['cantidad']}</td>
+                <td class='text-center'>
+                    <div class='btn-group btn-group-sm'>
+                        <button class='btn btn-outline-info detalle' 
+                            name='{$carrera['codigo']}' title='Ver detalle'><i class='fas fa-eye'></i>
+                        </button>
+                        <button class='btn btn-outline-success agregar' 
+                            name='{$carrera['codigo']}' title='Agregar a carrera'><i class='fas fa-plus-circle'></i>
+                        </button>
+                    </div>
+                </td>   
+            </tr>";
+    }
+    $html = '
+        <div class="table-responsive">
+            <table id="tablaBuscarCarreras" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th>Asignaturas</th>
+                        <th class="text-center">Operaciones</th>
+                    </tr>
+                </thead>
+                <tbody>' . $filas . '</tbody>
+            </table>
+        </div>';
+} else {
+    $html = ControladorHTML::mostrarAlertaResultadoBusqueda($carreras, $controlador->getDescripcion());
 }
 
-echo '<div class="card text-center">
-        <div class="card-header text-left">Resultado de la búsqueda</div>
-        <div class="card-body"> ' . $html . '</div>
-     </div>';
+echo ControladorHTML::mostrarCardResultadoBusqueda($filtro, $html);

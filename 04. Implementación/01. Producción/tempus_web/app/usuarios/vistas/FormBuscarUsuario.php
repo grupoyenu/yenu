@@ -12,8 +12,8 @@
         </div>
         <div class="mt-4 mb-4">
             <form name="formBuscarUsuario" id="formBuscarUsuario" method="POST">
-                <div class="card text-center">
-                    <div class="card-header text-left">Formulario de búsqueda</div>
+                <div class="card border-dark">
+                    <div class="card-header bg-dark text-white">Formulario de búsqueda</div>
                     <div class="card-body">
                         <div class="form-row">
                             <label for="nombre" class="col-sm-2 col-form-label text-left">Nombre:</label>

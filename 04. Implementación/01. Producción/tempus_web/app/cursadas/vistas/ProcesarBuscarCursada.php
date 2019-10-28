@@ -53,7 +53,7 @@ if (gettype($cursadas) == "object") {
                 <td class='align-middle'>{$miercoles}</td>
                 <td class='align-middle'>{$jueves}</td>
                 <td class='align-middle'>{$viernes}</td>
-                <td style='display: none;' class='align-middle'>{$sabado}</td>
+                <td class='align-middle'>{$sabado}</td>
                 <td class='text-center'>
                     <div class='btn-group btn-group-sm'>
                         <button class='btn btn-outline-info detalle' 
@@ -72,7 +72,7 @@ if (gettype($cursadas) == "object") {
     $html = '
         <div class="table-responsive mt-4">
             <table id="tablaBuscarCursadas" class="table table-bordered table-hover">
-                <thead class="thead-dark">
+                <thead>
                     <tr>
                         <th style="display: none;">Código carrera</th>
                         <th>Nombre carrera</th>
@@ -82,7 +82,7 @@ if (gettype($cursadas) == "object") {
                         <th>Miercoles</th>
                         <th>Jueves</th>
                         <th>Viernes</th>
-                        <th style="display: none;">Sábado</th>
+                        <th>Sábado</th>
                         <th class="text-center">Operaciones</th>
                     </tr>
                 </thead>

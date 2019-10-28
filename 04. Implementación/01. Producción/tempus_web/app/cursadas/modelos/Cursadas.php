@@ -33,7 +33,7 @@ class Cursadas {
     }
 
     public function listarResumenInicial() {
-        $consulta = "SELECT 'Total de cursadas' nombre,COUNT(DISTINCT idasignatura, idcarrera) cantidad FROM vista_cursadas";
+        $consulta = "SELECT 'Total de asignaturas con cursada' nombre, COUNT(DISTINCT idasignatura, idcarrera) cantidad FROM vista_cursadas";
         $resultado = Conexion::getInstancia()->seleccionar($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
         return $resultado;
