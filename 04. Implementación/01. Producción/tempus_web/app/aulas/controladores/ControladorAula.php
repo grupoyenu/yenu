@@ -45,6 +45,13 @@ class ControladorAula {
         $this->descripcion = $aulas->getDescripcion();
         return $resultado;
     }
+    
+    public function listarHorariosClase($id) {
+        $aulas = new Aulas();
+        $resultado = $aulas->listarHorariosClase($id);
+        $this->descripcion = $aulas->getDescripcion();
+        return $resultado;
+    }
 
     public function modificar($id, $sector, $nombre) {
         $this->aula = new Aula($id, $sector, $nombre);

@@ -43,4 +43,13 @@ class Aulas {
         return $resultado;
     }
 
+    public function listarHorariosClase($id) {
+        $consulta = "SELECT DISTINCT idAsignatura, nombreAsignatura, idClase, "
+                . "numeroDia, nombreDia, desde, hasta, idAula, fechaMod "
+                . "FROM vista_aulascursadas WHERE idAula = {$id} ORDER BY numeroDia, desde";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
+    }
+
 }

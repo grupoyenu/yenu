@@ -56,7 +56,7 @@ if (gettype($aulas) == "object") {
     $html = '
         <div class="table-responsive mt-4">
             <table id="tablaBuscarAulas" class="table table-bordered table-hover">
-                <thead class="thead-dark">
+                <thead>
                     <tr>
                         <th>Sector</th>
                         <th>Nombre</th>

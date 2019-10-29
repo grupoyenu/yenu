@@ -1,3 +1,14 @@
+<?php
+$opcionesInicio = $opcionesFin = "";
+for ($horainicio = 10; $horainicio < 23; ++$horainicio) {
+    $opcionesInicio .= "<option value='{$horainicio}:00'>{$horainicio}:00 hs</option>
+                        <option value='{$horainicio}:30'>{$horainicio}:30 hs</option>";
+}
+for ($horafin = 11; $horafin < 24; ++$horafin) {
+    $opcionesFin .= "<option value='{$horafin}:00'>{$horafin}:00 hs</option>
+                     <option value='{$horafin}:30'>{$horafin}:30 hs</option>";
+}
+?>
 <div class="container-fluid" id="contenido">
     <div class="container">
         <div class="form-row mt-4 mb-4">
@@ -50,23 +61,13 @@
                             <div class="col">
                                 <select class="form-control mb-2">
                                     <option value="TODOS">No aplicar filtro para hora de inicio</option>
-                                    <option value="1">Lunes</option>
-                                    <option value="2">Martes</option>
-                                    <option value="3">Miercoles</option>
-                                    <option value="4">Jueves</option>
-                                    <option value="5">Viernes</option>
-                                    <option value="6">Sábado</option>
+                                    <?= $opcionesInicio; ?>
                                 </select>
                             </div>
                             <div class="col">
                                 <select class="form-control mb-2">
                                     <option value="TODOS">No aplicar filtro para hora de fin</option>
-                                    <option value="1">Lunes</option>
-                                    <option value="2">Martes</option>
-                                    <option value="3">Miercoles</option>
-                                    <option value="4">Jueves</option>
-                                    <option value="5">Viernes</option>
-                                    <option value="6">Sábado</option>
+                                    <?= $opcionesFin; ?>
                                 </select>
                             </div>
                         </div>

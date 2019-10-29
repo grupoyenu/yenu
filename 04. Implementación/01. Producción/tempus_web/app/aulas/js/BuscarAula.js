@@ -22,7 +22,7 @@ $(document).ready(function () {
         var idAula = $(this).attr("name");
         $.ajax({
             type: "POST",
-            url: "./app/aulas/vistas/formModificarAula.php",
+            url: "./app/aulas/vistas/FormModificarAula.php",
             data: "idAula=" + idAula,
             success: function (data) {
                 $('#contenido').html(data);
@@ -43,5 +43,24 @@ $(document).ready(function () {
         $("#modalDetalle").text("Presione CONFIRMAR para borrar el aula " + nombre + " del sector " + sector);
         $("#modalBorrarAula").modal({backdrop: 'static', keyboard: false});
     });
+    
+    /* CARGA EL FORMULARIO DE MODIFICACION CUANDO SE PRESIONA EL BOTON EN LA TABLA */
+
+    $('.detalle').click(function () {
+        var idAula = $(this).attr("name");
+        $.ajax({
+            type: "POST",
+            url: "./app/aulas/vistas/FormDetalleAula.php",
+            data: "idAula=" + idAula,
+            success: function (data) {
+                $('#contenido').html(data);
+            },
+            error: function (data) {
+                console.log(data);
+                $("#contenido").html('<div class="alert alert-danger text-center" role="alert"><strong>No se procesó la petición<strong></div>');
+            }
+        });
+    });
+    
 
 });
