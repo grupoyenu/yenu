@@ -76,4 +76,14 @@ class Asignaturas {
         return $resultado;
     }
 
+    public function listarCarrerasAsignatura($idAsignatura) {
+        $consulta = "SELECT ac.anio, ac.idcarrera, ca.nombre "
+                . "FROM asignatura_carrera ac "
+                . "LEFT JOIN carrera ca ON ca.codigo = ac.idcarrera "
+                . "WHERE ac.idasignatura = {$idAsignatura} ORDER BY ac.anio, ca.nombre";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
+    }
+
 }

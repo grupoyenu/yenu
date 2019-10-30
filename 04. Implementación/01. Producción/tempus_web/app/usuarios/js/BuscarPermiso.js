@@ -7,18 +7,23 @@ $(document).ready(function () {
         language: {url: "./lib/js/Spanish.json"}
     });
 
-    $("#btnCrearPermiso").click(function (evento) {
+    $(".editar").click(function (evento) {
         evento.preventDefault();
-        $("#operacion").val("crear");
-        $("#ModalActualizarPermiso").modal({});
+        var idPermiso = $(this).attr("name");
+        $.ajax({
+            type: "POST",
+            url: "./app/usuarios/vistas/FormModificarPermiso.php",
+            data: "idPermiso=" + idPermiso,
+            success: function (data) {
+                $("#contenido").html(data);
+            },
+            error: function (data) {
+                console.log(data);
+                $("#contenido").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
+            }
+        });
     });
 
-
-    $("#seccionCentral").on("click", "a.editarPermiso", function (evento) {
-        evento.preventDefault();
-        $("#operacion").val("modificar");
-        $("#ModalActualizarPermiso").modal({});
-    });
 
     $("#seccionCentral").on("click", "a.detallePermiso", function (evento) {
         evento.preventDefault();

@@ -85,14 +85,4 @@ class Asignatura {
         return 0;
     }
 
-    public function obtenerCarreras() {
-        $consulta = "SELECT ac.anio, ac.idcarrera, ca.nombre "
-                . "FROM asignatura_carrera ac "
-                . "LEFT JOIN carrera ca ON ca.codigo = ac.idcarrera "
-                . "WHERE ac.idasignatura = {$this->idAsignatura}";
-        $this->carreras = Conexion::getInstancia()->seleccionar($consulta);
-        $this->descripcion = Conexion::getInstancia()->getDescripcion();
-        return (gettype($this->carreras) == 'object') ? 2 : 1;
-    }
-
 }

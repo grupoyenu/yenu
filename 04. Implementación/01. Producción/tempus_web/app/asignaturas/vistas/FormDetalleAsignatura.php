@@ -1,17 +1,16 @@
 <?php
 require_once '../../principal/modelos/Constantes.php';
 require_once '../../principal/modelos/AutoCargador.php';
+
 AutoCargador::cargarModulos();
-$contenido = $filas = "";
-$titulo = "Información detalla de asignatura";
+
 if (isset($_POST['idAsignatura']) && isset($_POST['nombre'])) {
     $id = $_POST['idAsignatura'];
     $nombre = $_POST['nombre'];
-    $asignatura = new Asignatura($id);
-    $obtenerCarreras = $asignatura->obtenerCarreras();
-    if ($obtenerCarreras == 2) {
-        $titulo .= ": " . $nombre;
-        $carreras = $asignatura->getCarreras();
+    $controlador = new ControladorAsignaturas();
+    $carreras = $controlador->listarCarrerasAsignatura($id);
+    if (gettype($carreras) == "object") {
+        $titulo = "Información detallada de asignatura: " . $nombre;
         while ($carrera = $carreras->fetch_assoc()) {
             $filas .= "
                 <tr>
@@ -23,7 +22,7 @@ if (isset($_POST['idAsignatura']) && isset($_POST['nombre'])) {
         $contenido = '
             <div class="table-responsive">
                 <table id="tablaDetalleAsignatura" class="table table-bordered table-hover">
-                    <thead class="thead-dark">
+                    <thead>
                         <tr>
                             <th>Código</th>
                             <th>Nombre</th>
@@ -34,13 +33,12 @@ if (isset($_POST['idAsignatura']) && isset($_POST['nombre'])) {
                 </table>
             </div>';
     } else {
-        
+        $contenido = ControladorHTML::mostrarAlertaResultadoOperacion(0, $controlador->getDescripcion());
     }
 } else {
-    $contenido = '<div class="alert alert-danger text-center" role="alert"> 
-                    <i class="fas fa-exclamation-triangle"></i> 
-                    <strong>No se obtuvo la informaciòn desde el formulario</strong>
-                </div>';
+    $titulo = "Información detallada de asignatura";
+    $mensaje = "No se obtuvo la información desde el formulario";
+    $contenido = ControladorHTML::mostrarAlertaResultadoOperacion(0, $mensaje);
 }
 ?>
 <div class="container">
@@ -54,13 +52,18 @@ if (isset($_POST['idAsignatura']) && isset($_POST['nombre'])) {
             </a>
         </div>
     </div>
-    <div id="seccionResultado"></div>
-    <div id="seccionFormulario">
-        <form id="formDetalleAsignatura" name="formDetalleAsignatura" method="POST">
-            <div class="card">
-                <div class="card-header"><?= $titulo; ?></div>
-                <div class="card-body"><?= $contenido; ?></div>
-            </div>
-        </form>
+    <div class="card border-dark">
+        <div class="card-header bg-dark text-white"><?= $titulo; ?></div>
+        <div class="card-body"><?= $contenido; ?></div>
+    </div>
+    <div class="form-row"> 
+        <div class="col text-right mt-2">
+            <a href="asignatura_buscar">
+                <button type="button" class="btn btn-outline-info">
+                    <i class="fas fa-search"></i> BUSCAR
+                </button>
+            </a>
+        </div>
     </div>
 </div>
+<script type="text/javascript" src="./app/asignaturas/js/DetalleAsignatura.js"></script>

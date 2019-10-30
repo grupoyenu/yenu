@@ -63,4 +63,11 @@ class ControladorAsignaturas {
         return $resultado;
     }
 
+    public function listarCarrerasAsignatura($id) {
+        $asignaturas = new Asignaturas();
+        $resultado = $asignaturas->listarCarrerasAsignatura($id);
+        $this->descripcion = $asignaturas->getDescripcion();
+        return $resultado;
+    }
+
 }
