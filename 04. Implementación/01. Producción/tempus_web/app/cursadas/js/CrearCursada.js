@@ -14,7 +14,6 @@ $(document).ready(function () {
     /* Captura el formulario antes de su envio y realiza solicitud AJAX */
 
     $('#formCrearCursada').submit(function (evento) {
-        console.log($("#formCrearCursada").serialize());
         evento.preventDefault();
         $.ajax({
             type: "POST",

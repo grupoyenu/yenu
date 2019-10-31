@@ -23,8 +23,8 @@ for ($horafin = 11; $horafin < 24; ++$horafin) {
         </div> 
         <div class="mt-4 mb-4">
             <form name="formInformeCursada" id="formInformeCursada" method="POST">
-                <div class="card">
-                    <div class="card-header">Formulario de búsqueda</div>
+                <div class="card border-dark">
+                    <div class="card-header bg-dark text-white">Formulario de búsqueda</div>
                     <div class="card-body">
                         <div class="form-row">
                             <label for="carrera" class="col-sm-2 col-form-label">Carrera:</label>
