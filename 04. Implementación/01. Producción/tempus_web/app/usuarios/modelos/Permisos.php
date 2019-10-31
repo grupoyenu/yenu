@@ -38,4 +38,14 @@ class Permisos {
         return $resultado;
     }
 
+    /* Devuelve todos los permisos de un determinado rol */
+
+    public function listarPorRol($idRol) {
+        $consulta = "SELECT pe.* FROM permiso pe "
+                . "INNER JOIN rol_permiso rp ON rp.idpermiso = pe.idpermiso AND rp.idrol = {$idRol}";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
+    }
+
 }

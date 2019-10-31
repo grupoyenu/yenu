@@ -18,7 +18,6 @@ class Permiso {
 
     /** @var string Nombre del permiso */
     private $nombre;
-    private $roles;
 
     /** @var string Descripcion para mostrar mensajes */
     private $descripcion;
@@ -34,10 +33,6 @@ class Permiso {
 
     public function getNombre() {
         return $this->nombre;
-    }
-
-    public function getRoles() {
-        return $this->roles;
     }
 
     public function getDescripcion() {
@@ -60,19 +55,14 @@ class Permiso {
         }
     }
 
-    public function setRoles($roles) {
-        $this->roles = $roles;
-    }
-
-    public function setDescripcion($descripcion) {
-        $this->descripcion = $descripcion;
-    }
-
     public function borrar() {
         if ($this->idPermiso) {
-            
+            $condicion = "idpermiso = {$this->idPermiso}";
+            $eliminacion = Conexion::getInstancia()->borrar("permiso", $condicion);
+            $this->descripcion = Conexion::getInstancia()->getDescripcion();
+            return $eliminacion;
         }
-        return 1;
+        return 0;
     }
 
     public function crear() {
@@ -87,7 +77,14 @@ class Permiso {
     }
 
     public function modificar() {
-        
+        if ($this->idPermiso && $this->nombre) {
+            $campos = "nombre = '{$this->nombre}'";
+            $condicion = "idpermiso={$this->idPermiso}";
+            $modificacion = Conexion::getInstancia()->modificar("permiso", $campos, $condicion);
+            $this->descripcion = Conexion::getInstancia()->getDescripcion();
+            return $modificacion;
+        }
+        return 0;
     }
 
 }

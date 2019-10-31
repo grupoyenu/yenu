@@ -14,11 +14,10 @@ class ControladorPermisos {
     }
 
     public function borrar($idPermiso) {
-        $parametros = array($idPermiso, NULL);
-        $permiso = new Permiso($parametros);
-        $creacion = $permiso->borrar();
+        $permiso = new Permiso($idPermiso);
+        $eliminacion = $permiso->borrar();
         $this->descripcion = $permiso->getDescripcion();
-        return $creacion;
+        return $eliminacion;
     }
 
     public function buscar($nombre) {
@@ -48,7 +47,10 @@ class ControladorPermisos {
     }
 
     public function modificar($idPermiso, $nombre) {
-        
+        $permiso = new Permiso($idPermiso, $nombre);
+        $modificacion = $permiso->modificar();
+        $this->descripcion = $permiso->getDescripcion();
+        return $modificacion;
     }
 
 }

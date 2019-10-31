@@ -19,62 +19,35 @@ $(document).ready(function () {
             },
             error: function (data) {
                 console.log(data);
-                $("#contenido").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
+                $("#contenido").html('<div class="alert alert-danger text-center" role="alert"><strong>No se procesó la petición</strong></div>');
             }
         });
     });
-
-
-    $("#seccionCentral").on("click", "a.detallePermiso", function (evento) {
+    
+    $(".borrar").click(function (evento) {
         evento.preventDefault();
-        var id = $(this).attr("name");
-        $("#ModalDetallePermiso").modal({});
-        $.ajax({
-            type: "POST",
-            url: "./app/usuarios/vistas/ProcesarDetallePermiso.php",
-            data: "id=" + id,
-            success: function (data) {
-                $("#cuerpoModalDetalle").html(data);
-            },
-            error: function (data) {
-                console.log(data);
-                $("#cuerpoModal").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
-            }
-        });
-    });
-
-    $("#seccionCentral").on("click", "a.borrarPermiso", function (evento) {
-        evento.preventDefault();
+        $("#modalIdPermisos").val($(this).attr("name"));
         $("#ModalBorrarPermiso").modal({});
     });
-
-
-    $("#formActualizarPermiso").submit(function (evento) {
-        evento.preventDefault();
+    
+    $('#btnBorrarPermiso').click(function () {
         $.ajax({
             type: "POST",
-            dataType: 'json',
-            url: "./app/usuarios/vistas/ProcesarActualizarPermiso.php",
-            data: $("#formActualizarPermiso").serialize(),
+            url: "./app/usuarios/vistas/ProcesarBorrarPermiso.php",
+            data: $("#formBorrarPermiso").serialize(),
             success: function (data) {
-                console.log(data);
-                if (data[0]['exito'] === true) {
-                    $("#seccionSuperiorModal").html(data[0]['div']);
-                    $("#seccionCentralModal").empty();
-                    $("#seccionInferiorModal").css("display", "block");
-                } else {
-                    $("#seccionSuperiorModal").html(data);
-                }
+                $('#cuerpoModal').html(data);
+                $('#btnBorrarPermiso').hide();
+                $('#btnRefrescarPantalla').show();
             },
             error: function (data) {
                 console.log(data);
-                $("#seccionInferiorModal").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
+                $("#cuerpoModal").html('<div class="alert alert-danger text-center" role="alert"><strong>No se procesó la petición</strong></div>');
             }
         });
     });
 
-    $("#btnRefrescar").click(function (evento) {
-        evento.preventDefault();
+    $("#btnRefrescar").click(function () {
         setTimeout(function () {
             location.reload();
         }, 1000);

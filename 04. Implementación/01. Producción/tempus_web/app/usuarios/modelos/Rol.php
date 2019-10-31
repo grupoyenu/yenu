@@ -51,7 +51,11 @@ class Rol {
     }
 
     public function setNombre($nombre) {
-        $this->nombre = $nombre;
+        if (preg_match("/^[A-Za-z ]{5,30}$/", $nombre)) {
+            $this->nombre = $nombre;
+        } else {
+            $this->descripcion = "El nombre del rol no cumple con el formato requerido";
+        }
     }
 
     public function setPermisos($permisos) {
@@ -80,9 +84,12 @@ class Rol {
 
     public function borrar() {
         if ($this->idRol) {
-            
+            $condicion = "idrol = {$this->idRol}";
+            $eliminacion = Conexion::getInstancia()->borrar("rol", $condicion);
+            $this->descripcion = Conexion::getInstancia()->getDescripcion();
+            return $eliminacion;
         }
-        return 1;
+        return 0;
     }
 
     public function crear() {
@@ -102,9 +109,18 @@ class Rol {
 
     public function modificar() {
         if ($this->idRol && $this->nombre) {
-            
+            $campos = "nombre = '{$this->nombre}'";
+            $condicion = "idrol = {$this->idRol}";
+            $modificacion = Conexion::getInstancia()->modificar("rol", $campos, $condicion);
+            $this->descripcion = Conexion::getInstancia()->getDescripcion();
+            if ($modificacion == 2) {
+                $borrarPermisos = $this->quitarPermisos();
+                $agregarPermisos = $this->agregarPermiso();
+                $modificacion = ($borrarPermisos == 2 && $agregarPermisos == 2) ? 2 : 1;
+            }
+            return $modificacion;
         }
-        return 1;
+        return 0;
     }
 
     public function obtener() {
@@ -113,19 +129,30 @@ class Rol {
             $fila = Conexion::getInstancia()->obtener($consulta);
             if (!is_null($fila)) {
                 $this->nombre = $fila['nombre'];
-                $this->permisos = $this->obtenerPermisos();
-                return 2;
+                $obtenerPermisos = $this->obtenerPermisos();
+                return $obtenerPermisos;
             }
             $this->descripcion = Conexion::getInstancia()->getDescripcion();
         }
-        return 1;
+        return 0;
     }
 
     private function obtenerPermisos() {
-        $consulta = "SELECT pe.* FROM permiso pe "
-                . "INNER JOIN rol_permiso rp ON rp.idpermiso = pe.idpermiso "
-                . "AND rp.idrol = {$this->idRol}";
-        return Conexion::getInstancia()->seleccionar($consulta);
+        $permisos = new Permisos();
+        $resultado = $permisos->listarPorRol($this->idRol);
+        if (gettype($resultado) == "resource") {
+            $this->permisos = $resultado;
+            return 2;
+        }
+        $this->descripcion = "Permisos del rol: " . $permisos->getDescripcion();
+        return 0;
+    }
+
+    private function quitarPermisos() {
+        $condicion = "idrol = {$this->idRol}";
+        $eliminacion = Conexion::getInstancia()->borrar("rol_permiso", $condicion);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $eliminacion;
     }
 
 }
