@@ -10,25 +10,6 @@ $(document).ready(function () {
         responsive: true,
         language: {url: "./lib/js/Spanish.json"}
     });
-    
-    $(".editar").click(function (evento) {
-        
-        evento.preventDefault();
-        var id = $(this).attr("name");
-        $("#ModalDetalleRol").modal({});
-        $.ajax({
-            type: "POST",
-            url: "./app/usuarios/vistas/ProcesarDetalleRol.php",
-            data: "id=" + id,
-            success: function (data) {
-                $("#cuerpoModalDetalle").html(data);
-            },
-            error: function (data) {
-                console.log(data);
-                $("#cuerpoModalDetalle").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
-            }
-        });
-    });
 
     $("#seccionCentral").on("click", "a.detalleRol", function (evento) {
         evento.preventDefault();

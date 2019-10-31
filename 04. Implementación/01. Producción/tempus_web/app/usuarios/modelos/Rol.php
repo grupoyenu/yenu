@@ -5,7 +5,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 class Rol {
 
     /** @var integer Identificador del rol en la base de datos */
