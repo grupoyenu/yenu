@@ -19,6 +19,19 @@ class ControladorRoles {
         return $this->descripcion;
     }
 
+    public function borrar($idRol) {
+        if (Conexion::getInstancia()->iniciarTransaccion()) {
+            $rol = new Rol($idRol);
+            $eliminacion = $rol->borrar();
+            $this->descripcion = $rol->getDescripcion();
+            $confirmar = ($eliminacion == 2) ? TRUE : FALSE;
+            Conexion::getInstancia()->finalizarTransaccion($confirmar);
+            return $eliminacion;
+        }
+        $this->mensaje = "No se pudo inicializar la transacción para operar";
+        return 0;
+    }
+
     public function buscar($nombre) {
         $roles = new Roles();
         $resultado = $roles->buscar($nombre);

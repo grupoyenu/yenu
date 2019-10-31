@@ -11,22 +11,50 @@ $(document).ready(function () {
         language: {url: "./lib/js/Spanish.json"}
     });
 
-    $("#seccionCentral").on("click", "a.detalleRol", function (evento) {
+    $(".editar").click(function (evento) {
         evento.preventDefault();
-        var id = $(this).attr("name");
-        $("#ModalDetalleRol").modal({});
+        var idRol = $(this).attr("name");
         $.ajax({
             type: "POST",
-            url: "./app/usuarios/vistas/ProcesarDetalleRol.php",
-            data: "id=" + id,
+            url: "./app/usuarios/vistas/FormModificarRol.php",
+            data: "idRol=" + idRol,
             success: function (data) {
-                $("#cuerpoModalDetalle").html(data);
+                $("#contenido").html(data);
             },
             error: function (data) {
                 console.log(data);
-                $("#cuerpoModalDetalle").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
+                $("#contenido").html('<div class="alert alert-danger text-center" role="alert"><strong>No se procesó la petición</strong></div>');
             }
         });
+    });
+
+    $(".borrar").click(function (evento) {
+        evento.preventDefault();
+        $("#modalIdRol").val($(this).attr("name"));
+        $("#ModalBorrarRol").modal({});
+    });
+
+    $('#btnBorrarRol').click(function () {
+        $.ajax({
+            type: "POST",
+            url: "./app/usuarios/vistas/ProcesarBorrarRol.php",
+            data: $("#formBorrarRol").serialize(),
+            success: function (data) {
+                $('#cuerpoModal').html(data);
+                $('#btnBorrarRol').hide();
+                $('#btnRefrescarPantalla').show();
+            },
+            error: function (data) {
+                console.log(data);
+                $("#cuerpoModal").html('<div class="alert alert-danger text-center" role="alert"><strong>No se procesó la petición</strong></div>');
+            }
+        });
+    });
+
+    $("#btnRefrescarPantalla").click(function () {
+        setTimeout(function () {
+            location.reload();
+        }, 600);
     });
 
 });

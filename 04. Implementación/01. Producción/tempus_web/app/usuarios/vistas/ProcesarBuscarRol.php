@@ -33,31 +33,26 @@ $html = "";
 if (gettype($roles) == "object") {
     $filas = "";
     while ($rol = $roles->fetch_assoc()) {
-        if ($rol['cantidad'] > 0) {
-            $operaciones = "<button class='btn btn-outline-warning editar' 
-                                    name='{$rol['idrol']}' title='Editar'><i class='far fa-edit'></i>
-                            </button>";
-        } else {
-            $operaciones = "<button class='btn btn-outline-warning editar' 
-                                    name='{$rol['idrol']}' title='Editar'><i class='far fa-edit'></i>
-                            </button>
-                            <button class='btn btn-outline-danger baja' 
-                                    name='{$rol['idrol']}' title='Dar de baja'><i class='fas fa-trash'></i>
-                            </button>";
-        }
         $filas .= "
             <tr> 
                 <td class='align-middle'>{$rol['nombre']}</td>
                 <td class='align-middle text-center'>{$rol['cantidad']}</td>
                 <td class='text-center'>
-                    <div class='btn-group btn-group-sm'>{$operaciones}</div>
+                    <div class='btn-group btn-group-sm'>
+                        <button class='btn btn-outline-warning editar' 
+                                    name='{$rol['idrol']}' title='Editar'><i class='far fa-edit'></i>
+                            </button>
+                            <button class='btn btn-outline-danger borrar' 
+                                    name='{$rol['idrol']}' title='Borrar'><i class='fas fa-trash'></i>
+                            </button>
+                    </div>
                 </td>
             </tr>";
     }
     $html = '
         <div class="table-responsive mt-4">
             <table id="tablaBuscarRoles" class="table table-bordered table-hover">
-                <thead class="thead-dark">
+                <thead>
                     <tr>
                         <th>Nombre</th>
                         <th>Cantidad</th>

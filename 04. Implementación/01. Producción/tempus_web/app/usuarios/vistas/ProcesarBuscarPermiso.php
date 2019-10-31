@@ -41,7 +41,7 @@ if (gettype($permisos) == "object") {
             $operaciones = "<button class='btn btn-outline-warning editar' 
                                     name='{$permiso['idpermiso']}' title='Editar'><i class='far fa-edit'></i>
                             </button>
-                            <button class='btn btn-outline-danger baja' 
+                            <button class='btn btn-outline-danger borrar' 
                                     name='{$permiso['idpermiso']}' title='Dar de baja'><i class='fas fa-trash'></i>
                             </button>";
         }
@@ -57,7 +57,7 @@ if (gettype($permisos) == "object") {
     $html = '
         <div class="table-responsive mt-4">
             <table id="tablaBuscarPermisos" class="table table-bordered table-hover">
-                <thead class="thead-dark">
+                <thead>
                     <tr>
                         <th>Nombre</th>
                         <th>Roles</th>

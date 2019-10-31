@@ -12,8 +12,8 @@
         </div>
         <div class="mt-4 mb-4">
             <form name="formBuscarRol" id="formBuscarRol" method="POST">
-                <div class="card text-center">
-                    <div class="card-header text-left">Formulario de búsqueda</div>
+                <div class="card border-dark">
+                    <div class="card-header bg-dark text-white">Formulario de búsqueda</div>
                     <div class="card-body">
                         <div class="form-row">
                             <label for="nombre" class="col-sm-2 col-form-label text-left">Nombre:</label>
@@ -36,17 +36,27 @@
             <?php require_once './app/usuarios/vistas/ProcesarBuscarRol.php'; ?>
         </div>
     </div>
-    <div class="modal fade" id="ModalDetalleRol" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="ModalBorrarRol" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title text-center" id="myModalLabel">DETALLE DEL ROL</h4>
+                    <h4 class="modal-title text-center" id="myModalLabel"> <i class='fas fa-trash'></i> ELIMINACIÓN DE ROL</h4>
                 </div>
-                <div class="modal-body">
-                    <div class="container" id="cuerpoModalDetalle"></div>
+                <div class="modal-body" id="cuerpoModal">
+                    <form id="formBorrarRol" name="formBorrarRol" method="POST">
+                        <input type="hidden" name="modalIdRol" id="modalIdRol">
+                        <div class="container">
+                            <p><strong> Presione GUARDAR para confirmar la eliminación del rol </strong></p>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
-                    <input type='submit' class='btn btn-outline-secondary' data-dismiss="modal" value='Aceptar'>
+                    <button type="submit" class="btn btn-success"
+                            name="btnBorrarRol" id="btnBorrarRol">
+                        <i class="far fa-save"></i> GUARDAR</button>
+                    <input type='submit' class='btn btn-outline-secondary' 
+                           style="display: none;"
+                           name="btnRefrescarPantalla" id="btnRefrescarPantalla" value='Aceptar'>
                 </div>
             </div>
         </div>

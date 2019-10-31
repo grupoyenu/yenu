@@ -5,6 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 class Rol {
 
     /** @var integer Identificador del rol en la base de datos */
@@ -42,11 +43,7 @@ class Rol {
     }
 
     public function setIdRol($idRol) {
-        if ($idRol) {
-            $this->idRol = $idRol;
-        } else {
-            $this->descripcion = "No se pudo hacer referencia al rol";
-        }
+        $this->idRol = $idRol;
     }
 
     public function setNombre($nombre) {
@@ -83,11 +80,15 @@ class Rol {
 
     public function borrar() {
         if ($this->idRol) {
-            $condicion = "idrol = {$this->idRol}";
-            $eliminacion = Conexion::getInstancia()->borrar("rol", $condicion);
-            $this->descripcion = Conexion::getInstancia()->getDescripcion();
+            $eliminacion = $this->quitarPermisos();
+            if ($eliminacion == 2) {
+                $condicion = "idrol = {$this->idRol}";
+                $eliminacion = Conexion::getInstancia()->borrar("rol", $condicion);
+                $this->descripcion = Conexion::getInstancia()->getDescripcion();
+            }
             return $eliminacion;
         }
+        $this->descripcion = "No se pudo hacer referencia al rol";
         return 0;
     }
 
@@ -119,6 +120,7 @@ class Rol {
             }
             return $modificacion;
         }
+        $this->descripcion = ($this->idRol) ? $this->descripcion : "No se pudo hacer referencia al rol";
         return 0;
     }
 
@@ -150,7 +152,7 @@ class Rol {
     private function quitarPermisos() {
         $condicion = "idrol = {$this->idRol}";
         $eliminacion = Conexion::getInstancia()->borrar("rol_permiso", $condicion);
-        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        $this->descripcion = "Permisos del rol: " . Conexion::getInstancia()->getDescripcion();
         return $eliminacion;
     }
 

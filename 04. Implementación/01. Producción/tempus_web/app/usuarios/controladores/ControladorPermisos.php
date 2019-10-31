@@ -14,8 +14,7 @@ class ControladorPermisos {
     }
 
     public function borrar($idPermiso) {
-        $parametros = array($idPermiso, NULL);
-        $permiso = new Permiso($parametros);
+        $permiso = new Permiso($idPermiso);
         $creacion = $permiso->borrar();
         $this->descripcion = $permiso->getDescripcion();
         return $creacion;

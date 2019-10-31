@@ -26,7 +26,7 @@ $(document).ready(function () {
     
     $(".borrar").click(function (evento) {
         evento.preventDefault();
-        $("#modalIdPermisos").val($(this).attr("name"));
+        $("#modalIdPermiso").val($(this).attr("name"));
         $("#ModalBorrarPermiso").modal({});
     });
     
@@ -47,10 +47,10 @@ $(document).ready(function () {
         });
     });
 
-    $("#btnRefrescar").click(function () {
+    $("#btnRefrescarPantalla").click(function () {
         setTimeout(function () {
             location.reload();
-        }, 1000);
+        }, 600);
     });
 
 });

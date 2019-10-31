@@ -52,60 +52,23 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title text-center" id="myModalLabel">ELIMINACIÓN DE PERMISO</h4>
+                        <h4 class="modal-title text-center" id="myModalLabel"> <i class='fas fa-trash'></i> ELIMINACIÓN DE PERMISO</h4>
                     </div>
-                    <div class="modal-body">
-                        <div class="container">
-                            <div class="alert alert-danger text-center" role="alert"><strong> Confirme la eliminación del permiso </strong></div>
-                        </div>
+                    <div class="modal-body" id="cuerpoModal">
+                        <form id="formBorrarPermiso" name="formBorrarPermiso" method="POST">
+                            <input type="hidden" name="modalIdPermiso" id="modalIdPermiso">
+                            <div class="container">
+                                <p><strong> Presione GUARDAR para confirmar la eliminación del permiso </strong></p>
+                            </div>
+                        </form>
                     </div>
                     <div class="modal-footer">
-                        <input type='submit' class='btn btn-success' value='Eliminar'>
-                        <input type='button' class='btn btn-outline-secondary' data-dismiss="modal" value='Cancelar'>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="ModalActualizarPermiso" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title text-center" id="myModalLabel">FORMULARIO DE PERMISO</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container" id="seccionSuperiorModal"></div>
-                        <div class="container" id="seccionCentralModal">
-                            <form id="formActualizarPermiso" name="formActualizarPermiso">
-                                <input type="hidden" name="idPermiso" id="idPermiso">
-                                <input type="hidden" name="operacion" id="operacion">
-                                <div class="card text-center mb-4">
-                                    <div class="card-header text-left">Complete el formulario</div>
-                                    <div class="card-body">
-                                        <div class="form-row"> 
-                                            <label for="nombre" class="col-sm-2 col-form-label text-left">Nombre:</label>
-                                            <div class="col">
-                                                <input type="text" class="form-control mb-2" 
-                                                       name="nombre" id="nombre"
-                                                       placeholder="Nombre del permiso" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-row mb-4">
-                                    <div class="col text-right">
-                                        <input type='submit' class='btn btn-success' value='Guardar'>
-                                        <input type='button' class='btn btn-outline-secondary' data-dismiss="modal" value='Cancelar'>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="container" id="seccionInferiorModal" style="display: none;">
-                            <div class="form-row mb-4">
-                                <div class="col text-right">
-                                    <input type="button" name="btnRefrescar" id="btnRefrescar" class="btn btn-outline-secondary" value="Aceptar">
-                                </div>
-                            </div>
-                        </div>
+                        <button type="submit" class="btn btn-success"
+                                name="btnBorrarPermiso" id="btnBorrarPermiso">
+                            <i class="far fa-save"></i> GUARDAR</button>
+                        <input type='submit' class='btn btn-outline-secondary' 
+                               style="display: none;"
+                               name="btnRefrescarPantalla" id="btnRefrescarPantalla" value='Aceptar'>
                     </div>
                 </div>
             </div>
