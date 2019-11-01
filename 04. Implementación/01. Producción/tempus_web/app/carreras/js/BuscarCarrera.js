@@ -11,25 +11,24 @@ $(document).ready(function () {
         language: {url: "./lib/js/Spanish.json"}
     });
 
-    $("#seccionCentral").on("click", "a.detalleCarrera", function (evento) {
-        evento.preventDefault();
-        var id = $(this).attr("name");
-        $("#ModalDetalleCarrera").modal({});
+    $(".detalle").click(function () {
+        var codigo = $(this).attr("name");
+        var nombre = $(this).parents("tr").find("td").eq(1).html();
         $.ajax({
             type: "POST",
-            url: "./app/carreras/vistas/ProcesarDetalleCarrera.php",
-            data: "id=" + id,
+            url: "./app/carreras/vistas/FormDetalleCarrera.php",
+            data: "codigo=" + codigo + "&nombre=" + nombre,
             success: function (data) {
-                $("#cuerpoModal").html(data);
+                $('#contenido').html(data);
             },
             error: function (data) {
                 console.log(data);
-                $("#cuerpoModal").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
+                $("#contenido").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
             }
         });
     });
 
-    $("#seccionCentral").on("click", "a.agregarAsignatura", function (evento) {
+    $(".agregarAsignatura").click(function (evento) {
         evento.preventDefault();
         $("#codigo").val($(this).attr("name"));
         $("#fmBuscarCarrera").submit();

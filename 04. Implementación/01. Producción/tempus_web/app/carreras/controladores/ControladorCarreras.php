@@ -39,4 +39,11 @@ class ControladorCarreras {
         return $resultado;
     }
 
+    public function listarAsignaturasDeCarrera($codigo) {
+        $carreras = new Carreras();
+        $resultado = $carreras->listarAsignaturasDeCarrera($codigo);
+        $this->descripcion = $carreras->getDescripcion();
+        return $resultado;
+    }
+
 }
