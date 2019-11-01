@@ -20,6 +20,13 @@ class ControladorMesa {
         return $resultado;
     }
 
+    public function listarInforme($carrera, $asignatura) {
+        $mesas = new MesasExamen();
+        $resultado = $mesas->listarInforme();
+        $this->descripcion = $mesas->getDescripcion();
+        return $resultado;
+    }
+
     public function listarUltimasCreadas() {
         $mesas = new MesasExamen();
         $resultado = $mesas->listarUltimasCreadas();

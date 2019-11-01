@@ -67,11 +67,7 @@ class Llamado {
     }
 
     public function setIdLlamado($idLlamado) {
-        if ($idLlamado) {
-            $this->idLlamado = $idLlamado;
-        } else {
-            $this->descripcion = "No fue posible hacer referencia al llamado";
-        }
+        $this->idLlamado = $idLlamado;
     }
 
     public function setFecha($fecha) {
@@ -105,7 +101,8 @@ class Llamado {
             $this->descripcion = Conexion::getInstancia()->getDescripcion() . " del llamado";
             return $eliminacion;
         }
-        return 1;
+        $this->descripcion = "No se pudo hacer referencia al llamado";
+        return 0;
     }
 
     public function crear() {
@@ -116,7 +113,7 @@ class Llamado {
             $this->descripcion = Conexion::getInstancia()->getDescripcion();
             return $creacion;
         }
-        return 1;
+        return 0;
     }
 
     public function modificar() {

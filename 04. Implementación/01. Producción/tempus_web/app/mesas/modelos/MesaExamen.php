@@ -8,7 +8,6 @@ class MesaExamen {
     private $primero;
     private $segundo;
     private $descripcion;
-    private $TABLA = "mesa_examen";
 
     public function __construct($id = NULL, $plan = NULL, $tribunal = NULL, $primero = NULL, $segundo = NULL) {
         $this->setIdMesa($id);

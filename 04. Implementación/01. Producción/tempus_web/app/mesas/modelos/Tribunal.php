@@ -63,11 +63,21 @@ class Tribunal {
     }
 
     public function crear() {
-        
+        if ($this->presidente && $this->vocalPrimero) {
+            $values = "({$this->presidente}, {$this->vocalPrimero},{$this->vocalSegundo}, {$this->suplente})";
+            $creacion = Conexion::getInstancia()->insertar("tribunal", $values);
+            $this->idTribunal = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
+            $this->descripcion = Conexion::getInstancia()->getDescripcion();
+            return $creacion;
+        }
+        return 0;
     }
 
     public function modificar() {
-        
+        if ($this->presidente && $this->vocalPrimero) {
+            
+        }
+        return 0;
     }
 
     public function obtener() {

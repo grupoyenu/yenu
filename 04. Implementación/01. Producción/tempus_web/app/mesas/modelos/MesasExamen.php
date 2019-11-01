@@ -8,7 +8,7 @@
 class MesasExamen {
 
     private $descripcion;
-    
+
     public function getDescripcion() {
         return $this->descripcion;
     }
@@ -22,6 +22,13 @@ class MesasExamen {
         }
         $this->descripcion = "El campo es obligatorio";
         return 0;
+    }
+
+    public function listarInforme($carrera, $asignatura, $fecha, $modificada) {
+        $consulta = "SELECT * FROM vista_mesas WHERE ";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
     }
 
     public function listarUltimasCreadas() {
