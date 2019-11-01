@@ -19,7 +19,8 @@ class Llamados {
         $resultado = Conexion::getInstancia()->seleccionar($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
         if (gettype($resultado) == "object") {
-            return ($resultado['cantidad'] > 0) ? 2 : 1;
+            $fila = $resultado->fetch_assoc();
+            return ($fila['cantidad'] > 0) ? 2 : 1;
         }
         return 0;
     }

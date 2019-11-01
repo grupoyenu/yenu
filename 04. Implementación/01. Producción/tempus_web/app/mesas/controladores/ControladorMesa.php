@@ -34,4 +34,11 @@ class ControladorMesa {
         return $resultado;
     }
 
+    public function obtenerCantidadLlamados() {
+        $llamados = new Llamados();
+        $cantidad = $llamados->obtenerNumeroLlamados();
+        $this->descripcion = $llamados->getDescripcion();
+        return $cantidad;
+    }
+
 }
