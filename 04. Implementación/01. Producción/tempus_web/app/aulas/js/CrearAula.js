@@ -12,26 +12,29 @@ $(document).ready(function () {
 
     /* Captura el formulario antes de su envio y realiza solicitud AJAX */
 
-     $('#formCrearAula').submit(function (evento) {
-        evento.preventDefault();
+    $('#formCrearAula').submit(function (event) {
+        event.preventDefault();
         $.ajax({
             type: "POST",
             dataType: 'json',
             url: "./app/aulas/vistas/ProcesarCrearAula.php",
             data: $("#formCrearAula").serialize(),
             success: function (data) {
-                $('#seccionResultado').html(data[0]['resultado']);
                 if (data[0]['exito'] === true) {
-                    $("#formCrearAula")[0].reset();
+                    $('#seccionCentral').html(data[0]['div']);
+                    $("#seccionInferior").empty();
+                } else {
+                    $('#seccionCentral').html(data[0]['div']);
                 }
             },
             error: function (data) {
                 console.log(data);
-                $('#seccionResultado').html("<div class='alert alert-danger text-center' role='alert'><i class='fas fa-exclamation-triangle'></i> <strong>No se procesó la petición</strong></div>");
+                var div = '<div class="alert alert-danger text-center" role="alert">No se procesó la petición por un error interno</div>';
+                $("#seccionCentral").html(div);
             }
         });
     });
-   
+
     /* Agrega un borde cuando el sector de aula esta vacio */
 
     $('#sector').change(function () {
