@@ -13,6 +13,22 @@ class ControladorMesa {
         return $this->descripcion;
     }
 
+    /**
+     * Realiza la eliminacion de la mesa de examen en la base de datos.
+     */
+    public function borrar($idMesa) {
+        $mesa = new MesaExamen($idMesa);
+        if (Conexion::getInstancia()->iniciarTransaccion()) {
+            $eliminacion = $mesa->borrar();
+            $this->descripcion = $mesa->getDescripcion();
+            $confirmar = ($eliminacion == 2) ? TRUE : FALSE;
+            Conexion::getInstancia()->finalizarTransaccion($confirmar);
+            return $eliminacion;
+        }
+        $this->descripcion = "No se pudo inicializar la transacción para operar";
+        return 0;
+    }
+
     public function buscar($campo, $valor) {
         $mesas = new MesasExamen();
         $resultado = $mesas->buscar($campo, $valor);

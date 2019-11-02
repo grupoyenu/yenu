@@ -31,9 +31,6 @@ class Llamado {
     /** @var string Descripcion para mostrar mensajes */
     private $descripcion;
 
-    /** @var string Nombre de la tabla en la base de datos. */
-    private $TABLA = "llamado";
-
     public function __construct($id = NULL, $fecha = NULL, $hora = NULL, $aula = NULL, $fechaModificacion = NULL) {
         $this->setIdLlamado($id);
         $this->setFecha($fecha);
@@ -97,8 +94,8 @@ class Llamado {
     public function borrar() {
         if ($this->idllamado) {
             $condicion = "idllamado=" . $this->idllamado;
-            $eliminacion = Conexion::getInstancia()->borrar($this->TABLA, $condicion);
-            $this->descripcion = Conexion::getInstancia()->getDescripcion() . " del llamado";
+            $eliminacion = Conexion::getInstancia()->borrar("llamado", $condicion);
+            $this->descripcion = Conexion::getInstancia()->getDescripcion();
             return $eliminacion;
         }
         $this->descripcion = "No se pudo hacer referencia al llamado";
@@ -107,8 +104,8 @@ class Llamado {
 
     public function crear() {
         if ($this->fecha && $this->hora) {
-            $values = "(NULL,'{$this->fecha}','{$this->hora}',{$this->aula}, NULL)";
-            $creacion = Conexion::getInstancia()->insertar($this->TABLA, $values);
+            $values = "(NULL, '{$this->fecha}', '{$this->hora}', {$this->aula}, NULL)";
+            $creacion = Conexion::getInstancia()->insertar("llamado", $values);
             $this->idllamado = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
             $this->descripcion = Conexion::getInstancia()->getDescripcion();
             return $creacion;

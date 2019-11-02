@@ -62,6 +62,33 @@ class Tribunal {
         $this->suplente = $suplente;
     }
 
+    public function borrar() {
+        if ($this->idTribunal) {
+            $consulta = "DELETE t FROM tribunal t JOIN "
+                    . "(SELECT idtribunal FROM tribunal WHERE idtribunal "
+                    . "NOT IN (SELECT DISTINCT idtribunal FROM mesa_examen)) CAN "
+                    . "ON CAN.idtribunal = t.idtribunal AND t.idtribunal = {$this->idTribunal}";
+            $eliminacion = Conexion::getInstancia()->borrarConSubconsulta($consulta);
+            $this->descripcion = Conexion::getInstancia()->getDescripcion();
+            if ($eliminacion == 2) {
+                return $this->borrarDocentes();
+            }
+            $this->descripcion = "No se realizó la eliminación del tribunal";
+            return $eliminacion;
+        }
+        $this->descripcion = "No se pudo hacer referencia al tribunal";
+        return 0;
+    }
+
+    private function borrarDocentes() {
+        $docentes = new Docentes();
+        $eliminacion = $docentes->borrarSinTribunal();
+        if ($eliminacion != 2) {
+            $this->descripcion = "No se realizó la eliminación de los docentes asociados al tribunal";
+        }
+        return $eliminacion;
+    }
+
     public function crear() {
         if ($this->presidente && $this->vocalPrimero) {
             $values = "({$this->presidente}, {$this->vocalPrimero},{$this->vocalSegundo}, {$this->suplente})";

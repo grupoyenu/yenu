@@ -29,8 +29,9 @@ $(document).ready(function () {
             }
         });
     });
-    
+
     $(".detalle").click(function () {
+        var columnas = $("#tablaBuscarMesas tr").length;
         $("#mdmCodigoCarrera").val($(this).parents("tr").find('td:eq(0)').text());
         $("#mdmNombreCarrera").val($(this).parents("tr").find('td:eq(1)').text());
         $("#mdmNombreAsignatura").val($(this).parents("tr").find('td:eq(2)').text());
@@ -43,7 +44,43 @@ $(document).ready(function () {
         $("#mdmSectorPrimero").val($(this).parents("tr").find('td:eq(9)').text());
         $("#mdmAulaPrimero").val($(this).parents("tr").find('td:eq(10)').text());
         $("#mdmEdicionPrimero").val($(this).parents("tr").find('td:eq(11)').text());
+        if (columnas > 11) {
+            $("#mdmFechaSegundo").val($(this).parents("tr").find('td:eq(7)').text());
+            $("#mdmHoraSegundo").val($(this).parents("tr").find('td:eq(8)').text());
+            $("#mdmSectorSegundo").val($(this).parents("tr").find('td:eq(9)').text());
+            $("#mdmAulaSegundo").val($(this).parents("tr").find('td:eq(10)').text());
+            $("#mdmEdicionSegundo").val($(this).parents("tr").find('td:eq(11)').text());
+        }
         $("#ModalDetalleMesa").modal({});
+    });
+        
+    $(".borrar").click(function (evento) {
+        evento.preventDefault();
+        $("#modalIdMesa").val($(this).attr("name"));
+        $("#ModalBorrarMesa").modal({});
+    });
+    
+    $('#btnBorrarMesa').click(function () {
+        $.ajax({
+            type: "POST",
+            url: "./app/mesas/vistas/ProcesarBorrarMesa.php",
+            data: $("#formBorrarMesa").serialize(),
+            success: function (data) {
+                $('#cuerpoModal').html(data);
+                $('#btnBorrarMesa').hide();
+                $('#btnRefrescarPantalla').show();
+            },
+            error: function (data) {
+                console.log(data);
+                $("#cuerpoModal").html('<div class="alert alert-danger text-center" role="alert"><strong>No se procesó la petición</strong></div>');
+            }
+        });
+    });
+    
+    $("#btnRefrescarPantalla").click(function () {
+        setTimeout(function () {
+            location.reload();
+        }, 600);
     });
 
 });

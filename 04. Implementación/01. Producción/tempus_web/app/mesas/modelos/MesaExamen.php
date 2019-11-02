@@ -61,6 +61,40 @@ class MesaExamen {
         $this->segundo = $segundo;
     }
 
+    public function borrar() {
+        if ($this->idMesa) {
+            $condicion = "idmesa=" . $this->idMesa;
+            $eliminacion = Conexion::getInstancia()->borrar("mesa_examen", $condicion);
+            $this->descripcion = Conexion::getInstancia()->getDescripcion();
+            if ($eliminacion == 2) {
+                $borrarTribunal = $this->borrarTribunal();
+                $borrarLlamados = $this->borrarLlamados();
+                return ($borrarTribunal == 2 && $borrarLlamados == 2) ? 2 : 0;
+            }
+            return $eliminacion;
+        }
+        $this->descripcion = "No se pudo hacer referencia a la mesa de examen";
+        return 0;
+    }
+
+    private function borrarTribunal() {
+        $tribunal = new Tribunal($this->tribunal);
+        $eliminacion = $tribunal->borrar();
+        if ($eliminacion != 2) {
+            $this->descripcion = $tribunal->getDescripcion();
+        }
+        return $eliminacion;
+    }
+
+    private function borrarLlamados() {
+        $llamados = new Llamados();
+        $eliminacion = $llamados->borrar();
+        if ($eliminacion != 2) {
+            $this->descripcion = "No se realizó la eliminación del/los llamado/s asociados a la mesa de examen";
+        }
+        return $eliminacion;
+    }
+
     public function crear() {
         
     }

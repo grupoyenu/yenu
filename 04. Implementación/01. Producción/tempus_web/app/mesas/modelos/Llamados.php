@@ -14,6 +14,26 @@ class Llamados {
         return $this->descripcion;
     }
 
+    public function borrar() {
+        $consulta = "DELETE FROM llamado WHERE 1";
+        $eliminacion = Conexion::getInstancia()->borrarConSubconsulta($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $eliminacion;
+    }
+
+    /**
+     * Elimina de la base de datos a los llamados que no pertenecen a ninguna mesa de examen.
+     */
+    public function borrarSinMesa() {
+        $consulta = "DELETE LLA FROM llamado LLA JOIN (SELECT idllamado FROM llamado "
+                . "WHERE idllamado NOT IN (SELECT DISTINCT primero idllamado FROM mesa_examen "
+                . "WHERE primero IS NOT NULL UNION SELECT DISTINCT segundo idllamado "
+                . "FROM mesa_examen WHERE segundo IS NOT NULL)) CAN ON CAN.idllamado = LLA.idllamado";
+        $eliminacion = Conexion::getInstancia()->borrarConSubconsulta($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $eliminacion;
+    }
+
     public function obtenerNumeroLlamados() {
         $consulta = "SELECT COUNT(segundo) cantidad FROM mesa_examen WHERE segundo IS NOT NULL";
         $resultado = Conexion::getInstancia()->seleccionar($consulta);
