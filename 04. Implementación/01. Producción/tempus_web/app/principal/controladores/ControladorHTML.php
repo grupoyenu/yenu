@@ -39,6 +39,14 @@ class ControladorHTML {
         return "<div {$clase} role='alert'>{$icono} <strong>{$mensaje}</strong></div>";
     }
 
+    static function mostrarCard($titulo, $contenido) {
+        $html = "<div class='card border-dark'>
+                    <div class='card-header bg-dark text-white'>{$titulo}</div>
+                    <div class='card-body'>{$contenido}</div>
+                 </div>";
+        return $html;
+    }
+
     static function mostrarCardResultadoBusqueda($titulo, $contenido) {
         $html = "<div class='card border-dark'>
                     <div class='card-header bg-dark text-white'><i class='fas fa-table'></i> {$titulo}</div>
