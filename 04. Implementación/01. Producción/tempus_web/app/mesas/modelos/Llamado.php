@@ -115,7 +115,7 @@ class Llamado {
 
     public function modificar() {
         if ($this->idLlamado && $this->fecha && $this->hora) {
-            $consulta = "UPDATE llamado SET fecha='{$this->fecha}', hora='{$this->hora}', idaula={$this->aula}, fechamod=NOW() WHERE idllamado=" . $this->idllamado;
+            $consulta = "UPDATE llamado SET fecha='{$this->fecha}', hora='{$this->hora}', idaula={$this->aula}, fechamod = NOW() WHERE idllamado=" . $this->idllamado;
             if (Conexion::getInstancia()->executeUpdate($consulta)) {
                 $this->descripcion = "Se realizó la modificación del llamado";
                 return 2;
