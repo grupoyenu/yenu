@@ -1,5 +1,5 @@
 <?php
-if (isset($_FILES['fileCursadas'])) {
+if (isset($_FILES['fileMesas'])) {
     $mensaje = ValidadorMesa::validarArchivo();
     if (!$mensaje) {
 

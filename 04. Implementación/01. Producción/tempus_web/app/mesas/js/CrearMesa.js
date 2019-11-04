@@ -10,6 +10,96 @@
  */
 $(document).ready(function () {
 
+    $('select#presidente').select2({
+        placeholder: 'Seleccione una opcion',
+        theme: "bootstrap",
+        ajax: {
+            url: "./app/docentes/vistas/ProcesarSeleccionarDocente.php",
+            dataType: 'json',
+            type: "POST",
+            delay: 250,
+            data: function (params) {
+                return {nombre: params.term};
+            },
+            processResults: function (data) {
+                return {results: data};
+            },
+            cache: true
+        }
+    });
+
+    $('select#vocal1').select2({
+        placeholder: 'Seleccione una opcion',
+        theme: "bootstrap",
+        ajax: {
+            url: "./app/docentes/vistas/ProcesarSeleccionarDocente.php",
+            dataType: 'json',
+            type: "POST",
+            delay: 250,
+            data: function (params) {
+                return {nombre: params.term};
+            },
+            processResults: function (data) {
+                return {results: data};
+            },
+            cache: true
+        }
+    });
+
+    $('select#vocal2').select2({
+        placeholder: 'Seleccione una opcion',
+        theme: "bootstrap",
+        ajax: {
+            url: "./app/docentes/vistas/ProcesarSeleccionarDocente.php",
+            dataType: 'json',
+            type: "POST",
+            delay: 250,
+            data: function (params) {
+                return {nombre: params.term};
+            },
+            processResults: function (data) {
+                return {results: data};
+            },
+            cache: true
+        }
+    });
+
+    $('select#suplente').select2({
+        placeholder: 'Seleccione una opcion',
+        theme: "bootstrap",
+        ajax: {
+            url: "./app/docentes/vistas/ProcesarSeleccionarDocente.php",
+            dataType: 'json',
+            type: "POST",
+            delay: 250,
+            data: function (params) {
+                return {nombre: params.term};
+            },
+            processResults: function (data) {
+                return {results: data};
+            },
+            cache: true
+        }
+    });
+    
+    $('select#aula1').select2({
+        placeholder: 'Seleccione una opcion',
+        theme: "bootstrap",
+        ajax: {
+            url: "./app/aulas/vistas/ProcesarSeleccionarAula.php",
+            dataType: 'json',
+            type: "POST",
+            delay: 250,
+            data: function (params) {
+                return {nombre: params.term};
+            },
+            processResults: function (data) {
+                return {results: data};
+            },
+            cache: true
+        }
+    });
+
     /* Captura el formulario antes de su envio y realiza solicitud AJAX */
 
     $('#formCrearMesa').submit(function (evento) {

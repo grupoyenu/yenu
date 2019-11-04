@@ -147,6 +147,31 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="ModalBorrarMesa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title text-center" id="myModalLabel"> <i class='fas fa-trash'></i> ELIMINACIÓN DE MESA DE EXAMEN</h4>
+                    </div>
+                    <div class="modal-body" id="cuerpoModal">
+                        <form id="formBorrarMesa" name="formBorrarMesa" method="POST">
+                            <input type="hidden" name="modalIdMesa" id="modalIdMesa">
+                            <div class="container">
+                                <p><strong> Presione GUARDAR para confirmar la eliminación de la mesa de examen </strong></p>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success"
+                                name="btnBorrarMesa" id="btnBorrarMesa">
+                            <i class="far fa-save"></i> GUARDAR</button>
+                        <input type='submit' class='btn btn-outline-secondary' 
+                               style="display: none;"
+                               name="btnRefrescarPantalla" id="btnRefrescarPantalla" value='Aceptar'>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <script type="text/javascript" src="./app/mesas/js/BuscarMesa.js"></script>
