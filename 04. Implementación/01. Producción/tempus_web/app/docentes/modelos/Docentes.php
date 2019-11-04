@@ -36,4 +36,18 @@ class Docentes {
         return $eliminacion;
     }
 
+    public function buscar($nombre) {
+        $consulta = "SELECT * FROM docente WHERE nombre LIKE '%{$nombre}%' ORDER BY nombre";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
+    }
+
+    public function listarUltimosCreados() {
+        $consulta = "SELECT * FROM docente ORDER BY iddocente DESC LIMIT 10";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
+    }
+
 }

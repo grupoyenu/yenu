@@ -13,23 +13,28 @@
  */
 class ControladorDocentes {
 
-    //put your code here
+    private $descripcion;
 
-
-    public function __construct() {
-        ;
+    public function getDescripcion() {
+        return $this->descripcion;
     }
 
     public function crear() {
         
     }
 
-    public function buscar() {
-        
+    public function buscar($nombre) {
+        $docentes = new Docentes();
+        $resultado = $docentes->buscar($nombre);
+        $this->descripcion = $docentes->getDescripcion();
+        return $resultado;
     }
 
-    public function listar() {
-        
+    public function listarUltimosCreados() {
+        $docentes = new Docentes();
+        $resultado = $docentes->listarUltimosCreados();
+        $this->descripcion = $docentes->getDescripcion();
+        return $resultado;
     }
 
 }
