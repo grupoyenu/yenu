@@ -16,8 +16,9 @@ class ControladorAula {
     }
 
     public function buscar($campo, $valor) {
-        $resultado = $this->aulas->buscar($campo, $valor);
-        $this->descripcion = $this->aulas->getDescripcion();
+        $aulas = new Aulas();
+        $resultado = $aulas->buscar($campo, $valor);
+        $this->descripcion = $aulas->getDescripcion();
         return $resultado;
     }
 
@@ -34,8 +35,9 @@ class ControladorAula {
     }
 
     public function listarUltimasCreadas() {
-        $resultado = $this->aulas->listarUltimasCreadas();
-        $this->descripcion = $this->aulas->getDescripcion();
+        $aulas = new Aulas();
+        $resultado = $aulas->listarUltimasCreadas();
+        $this->descripcion = $aulas->getDescripcion();
         return $resultado;
     }
 
@@ -45,7 +47,7 @@ class ControladorAula {
         $this->descripcion = $aulas->getDescripcion();
         return $resultado;
     }
-    
+
     public function listarHorariosClase($id) {
         $aulas = new Aulas();
         $resultado = $aulas->listarHorariosClase($id);
