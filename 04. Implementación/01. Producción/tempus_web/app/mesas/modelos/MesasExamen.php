@@ -24,7 +24,7 @@ class MesasExamen {
         return 0;
     }
 
-    public function listarInforme($carrera, $asignatura, $fecha, $modificada) {
+    public function listarInforme($carrera, $asignatura, $fecha, $hora, $modificada) {
         $consulta = "SELECT * FROM vista_mesas WHERE ";
         $resultado = Conexion::getInstancia()->seleccionar($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();

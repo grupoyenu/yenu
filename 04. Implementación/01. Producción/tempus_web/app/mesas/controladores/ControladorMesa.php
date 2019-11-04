@@ -36,9 +36,9 @@ class ControladorMesa {
         return $resultado;
     }
 
-    public function listarInforme($carrera, $asignatura) {
+    public function listarInforme($carrera, $asignatura, $fecha, $hora, $modificada) {
         $mesas = new MesasExamen();
-        $resultado = $mesas->listarInforme();
+        $resultado = $mesas->listarInforme($carrera, $asignatura, $fecha, $hora, $modificada);
         $this->descripcion = $mesas->getDescripcion();
         return $resultado;
     }

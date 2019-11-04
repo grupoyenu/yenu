@@ -21,26 +21,18 @@ if ($cantidad > 0) {
     }
 
     $formulario = '
+        <input type="hidden" name="cantidadLlamados" id="cantidadLlamados" value="' . $cantidad . '">
         <div class="card border-dark">
             <div class="card-header bg-dark text-white">Seleccione asignatura</div>
             <div class="card-body">
                 <div class="form-row">
+                    <label for="carrera" class="col-sm-2 col-form-label">* Carrera:</label>
+                    <div class="col">
+                        <select class="form-control mb-2" name="carrera" id="carrera" disabled></select>
+                    </div>
                     <label for="carrera" class="col-sm-2 col-form-label">* Asignatura:</label>
                     <div class="col">
-                        <input type="text" class="form-control mb-2" 
-                               name="nombreCarrera" id="nombreCarrera"
-                               placeholder="Nombre de carrera" required readonly>
-                    </div>
-                    <div class="col">
-                        <input type="text" class="form-control mb-2" 
-                               name="nombreAsignatura" id="nombreAsignatura"
-                               placeholder="Nombre de asignatura" required readonly>
-                    </div>
-                    <div class="col-1 text-right">
-                        <button class="btn btn-outline-info" 
-                                id="seleccionarAsignatura" name="seleccionarAsignatura">
-                            <i class="far fa-hand-point-right"></i>
-                        </button>
+                        <select class="form-control mb-2" name="asignatura" id="asignatura" disabled></select>
                     </div>
                 </div>
             </div>
@@ -116,23 +108,12 @@ if ($cantidad > 0) {
                         <div class="col-1 text-right"></div>
                     </div>
                     <div class="form-row">
-                        <label for="sector2" class="col-sm-2 col-form-label">Lugar:</label>
+                        <label for="aula2" class="col-sm-2 col-form-label">Aula:</label>
                         <div class="col">
-                            <input type="text" class="form-control mb-2" 
-                                   name="sector2" id="sector2"
-                                   placeholder="Nombre del sector" required readonly>
+                            <select class="form-control mb-2" name="aula2" id="aula2"></select>
                         </div>
-                        <div class="col">
-                            <input type="text" class="form-control mb-2" 
-                                   name="aula2" id="aula2"
-                                   placeholder="Nombre del aula" required readonly>
-                        </div>
-                        <div class="col-1 text-right">
-                            <button class="btn btn-outline-info" 
-                                    id="seleccionarAula" name="seleccionarAula">
-                                <i class="far fa-hand-point-right"></i>
-                            </button>
-                        </div>
+                         <label class="col-sm-2 col-form-label"></label>
+                        <div class="col"></div>
                     </div>
                 </div>
             </div>';
@@ -152,7 +133,9 @@ if ($cantidad > 0) {
             </div>
         </div>';
 } else {
-    $formulario = ControladorHTML::mostrarAlertaResultadoOperacion(0, $controlador->getDescripcion());
+    $titulo = "Información básica";
+    $contenido = ControladorHTML::mostrarAlertaResultadoOperacion(0, $controlador->getDescripcion());
+    $formulario = ControladorHTML::mostrarCard($titulo, $contenido);
 }
 ?>
 <div class="container-fluid" id="contenido">

@@ -1,11 +1,8 @@
 <?php
-
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+$opcionesHora = "";
+for ($hora = 10; $hora < 23; ++$hora) {
+    $opcionesHora .= "<option value='{$hora}:00'>{$hora}:00 hs</option>";
+}
 ?>
 <div class="container-fluid" id="contenido">
     <div class="container">
@@ -20,7 +17,7 @@
             </div>
         </div> 
         <div class="mt-4 mb-4">
-            <form name="formInformeCursada" id="formInformeCursada" method="POST">
+            <form name="formInformeMesa" id="formInformeMesa" method="POST">
                 <div class="card border-dark">
                     <div class="card-header bg-dark text-white">Formulario de búsqueda</div>
                     <div class="card-body">
@@ -31,8 +28,6 @@
                                        name="carrera" id="carrera"
                                        placeholder="Nombre de carrera">
                             </div>
-                        </div>
-                        <div class="form-row">
                             <label for="asignatura" class="col-sm-2 col-form-label">Asignatura:</label>
                             <div class="col">
                                 <input type="text" class="form-control mb-2" 
@@ -53,26 +48,27 @@
                                     <option value="6">Sábado</option>
                                 </select>
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <label for="dia" class="col-sm-2 col-form-label">Franja horaria:</label>
+                            <label for="hora" class="col-sm-2 col-form-label">Hora:</label>
                             <div class="col">
-                                <select class="form-control mb-2">
-                                    <option value="TODOS">No aplicar filtro para hora de inicio</option>
-                                    <?= $opcionesInicio; ?>
+                                <select class="form-control mb-2" name="hora" id="hora">
+                                    <option value="TODOS">No aplicar filtro</option>
+                                    <?= $opcionesHora; ?>
                                 </select>
                             </div>
+                        </div>
+                        <div class="form-row">
+                            <label for="modificada" class="col-sm-2 col-form-label">Modificada:</label>
                             <div class="col">
-                                <select class="form-control mb-2">
-                                    <option value="TODOS">No aplicar filtro para hora de fin</option>
-                                    <?= $opcionesFin; ?>
+                                <select class="form-control mb-2" name="modificada" id="modificada">
+                                    <option value="SI">SI</option>
+                                    <option value="NO">NO</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col text-right">
                                 <button type="submit" class="btn btn-success" 
-                                        name="btnBuscarCursada"><i class="fas fa-search"></i> BUSCAR</button>
+                                        name="btnBuscarMesa"><i class="fas fa-search"></i> BUSCAR</button>
                             </div>
                         </div>
                     </div>
@@ -81,8 +77,8 @@
         </div>
         <br>
         <div id="seccionInferior" class="mt-4 mb-2">
-           
+
         </div>
     </div>
 </div>
-<script type="text/javascript" src="./app/cursadas/js/BuscarCursada.js"></script>
+<script type="text/javascript" src="./app/mesas/js/InformeMesa.js"></script>
