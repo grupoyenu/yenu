@@ -107,26 +107,4 @@ class Tribunal {
         return 0;
     }
 
-    public function obtener() {
-        if ($this->idTribunal) {
-            $consulta = "SELECT t.idtribunal, pr.iddocente idpre, pr.nombre nompre, vp.iddocente idvop, vp.nombre nomvop, vs.iddocente idvos, vs.nombre nomvos, su.iddocente idsup, su.nombre nomsup "
-                    . "FROM {$this->TABLA} t "
-                    . "LEFT JOIN docente pr ON t.presidente = pr.iddocente "
-                    . "LEFT JOIN docente vp ON t.vocal1 = vp.iddocente "
-                    . "LEFT JOIN docente vs ON t.vocal2 = vs.iddocente "
-                    . "LEFT JOIN docente su ON t.suplente = su.iddocente "
-                    . "WHERE idtribunal = {$this->idTribunal}";
-            $fila = Conexion::getInstancia()->obtener($consulta);
-            if (!is_null($fila)) {
-                $this->docentes[0] = ($fila['idpre']) ? new Docente(array($fila['idpre'], $fila['nompre'])) : NULL;
-                $this->docentes[1] = ($fila['idvop']) ? new Docente(array($fila['idvop'], $fila['nomvop'])) : NULL;
-                $this->docentes[2] = ($fila['idvos']) ? new Docente(array($fila['idvos'], $fila['nomvos'])) : NULL;
-                $this->docentes[3] = ($fila['idsup']) ? new Docente(array($fila['idsup'], $fila['nomsup'])) : NULL;
-                return 2;
-            }
-            return 1;
-        }
-        return 0;
-    }
-
 }

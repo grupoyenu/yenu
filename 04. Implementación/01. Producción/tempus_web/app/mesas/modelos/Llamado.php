@@ -1,11 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of Llamado
  *
@@ -13,22 +7,22 @@
  */
 class Llamado {
 
-    /** @var integer */
+    /** @var integer Identificador del llamado en la base de datos. */
     private $idLlamado;
 
-    /** @var string */
+    /** @var string Fecha en la que se dicta la mesa de examen. */
     private $fecha;
 
-    /** @var string */
+    /** @var string Hora en la que se dicta la mesa de examen. */
     private $hora;
 
-    /** @var Aula */
+    /** @var Aula Aula en la que se dicta la mesa de examen. */
     private $aula;
 
-    /** @var string Fecha de modificacion */
+    /** @var string Fecha de modificacion del llamado. */
     private $fechamod;
 
-    /** @var string Descripcion para mostrar mensajes */
+    /** @var string Descripcion para mostrar mensajes sobre las operaciones. */
     private $descripcion;
 
     public function __construct($id = NULL, $fecha = NULL, $hora = NULL, $aula = NULL, $fechaModificacion = NULL) {

@@ -47,52 +47,65 @@ if (isset($_POST['idMesa'])) {
                 <div class="card border-dark">
                     <div class="card-header bg-dark text-white">Seleccione los integrantes del tribunal</div>
                     <div class="card-body">
-                        <div class="form-row">
-                            <label for="presidente" class="col-sm-2 col-form-label">* Presidente:</label>
-                            <div class="col">
-                                <select class="form-control mb-2" name="presidente" id="presidente"></select>
+                        <form method="POST" name="formModificarTribunal" id="formModificarTribunal">
+                            <input type="hidden" name="idTribunal" id="idTribunal" value="">
+                            <div class="form-row">
+                                <label for="presidente" class="col-sm-2 col-form-label">* Presidente:</label>
+                                <div class="col">
+                                    <select class="form-control mb-2" name="presidente" id="presidente"></select>
+                                </div>
+                                <label for="vocal1" class="col-sm-2 col-form-label">* Vocal primero:</label>
+                                <div class="col">
+                                    <select class="form-control mb-2" name="vocal1" id="vocal1" disabled></select>
+                                </div>
                             </div>
-                            <label for="vocal1" class="col-sm-2 col-form-label">* Vocal primero:</label>
-                            <div class="col">
-                                <select class="form-control mb-2" name="vocal1" id="vocal1" disabled></select>
+                            <div class="form-row">
+                                <label for="vocal2" class="col-sm-2 col-form-label">Vocal segundo:</label>
+                                <div class="col">
+                                    <select class="form-control mb-2" name="vocal2" id="vocal2" disabled></select>
+                                </div>
+                                <label for="suplente" class="col-sm-2 col-form-label">Suplente:</label>
+                                <div class="col">
+                                    <select class="form-control mb-2" name="suplente" id="suplente" disabled></select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <label for="vocal2" class="col-sm-2 col-form-label">Vocal segundo:</label>
-                            <div class="col">
-                                <select class="form-control mb-2" name="vocal2" id="vocal2" disabled></select>
-                            </div>
-                            <label for="suplente" class="col-sm-2 col-form-label">Suplente:</label>
-                            <div class="col">
-                                <select class="form-control mb-2" name="suplente" id="suplente" disabled></select>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
                 <br>
                 <div class="card border-dark">
                     <div class="card-header bg-dark text-white">Complete los datos del primer llamado</div>
                     <div class="card-body">
-                        <div class="form-row">
-                            <label for="fecha1" class="col-sm-2 col-form-label">* Fecha:</label>
-                            <div class="col">
-                                <input type="date" class="form-control mb-2" 
-                                       value="' . $fechaHoy . '" min="' . $fechaHoy . '"
-                                       name="fecha1" id="fecha1" required>
+                        <form method="POST" name="formModificarLlamado" id="formModificarLlamado">
+                            <div class="form-row">
+                                <label for="fecha1" class="col-sm-2 col-form-label">* Fecha:</label>
+                                <div class="col">
+                                    <input type="date" class="form-control mb-2" 
+                                           value="' . $fechaHoy . '" min="' . $fechaHoy . '"
+                                           name="fecha1" id="fecha1" required>
+                                </div>
+                                <label for="vocal2" class="col-sm-2 col-form-label">* Hora:</label>
+                                <div class="col">
+                                    <select class="form-control mb-2">' . $opcionesHora . '</select>
+                                </div>
                             </div>
-                            <label for="vocal2" class="col-sm-2 col-form-label">* Hora:</label>
-                            <div class="col">
-                                <select class="form-control mb-2">' . $opcionesHora . '</select>
+                            <div class="form-row">
+                                <label for="aula1" class="col-sm-2 col-form-label">Aula:</label>
+                                <div class="col">
+                                    <select class="form-control mb-2" name="aula1" id="aula1"></select>
+                                </div>
+                                 <label class="col-sm-2 col-form-label"></label>
+                                <div class="col"></div>
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <label for="aula1" class="col-sm-2 col-form-label">Aula:</label>
-                            <div class="col">
-                                <select class="form-control mb-2" name="aula1" id="aula1"></select>
+                            <div class="form-row">
+                                <label class="col-sm-2 col-form-label">Operaciones:</label>
+                                <div class="col">
+                                    <select class="form-control mb-2" name="aula1" id="aula1"></select>
+                                </div>
+                                 <label class="col-sm-2 col-form-label"></label>
+                                <div class="col"></div>
                             </div>
-                             <label class="col-sm-2 col-form-label"></label>
-                            <div class="col"></div>
-                        </div>
+                        </form>
                     </div>
                 </div>';
             if ($cantidad == 2) {

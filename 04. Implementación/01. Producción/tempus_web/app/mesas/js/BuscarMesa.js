@@ -6,14 +6,21 @@
 
 $(document).ready(function () {
 
+    /*
+     * INICIALIZA LA TABLA DE MESAS DE EXAMEN CON EL PLUGIN DATATABLE. 
+     */
     $("table#tablaBuscarMesas").DataTable({
         dom: 'Bfrtip',
         responsive: true,
         language: {url: "./lib/js/Spanish.json"}
     });
 
-    /* CARGA EL FORMULARIO DE MODIFICACION CUANDO SE PRESIONA EL BOTON EN LA TABLA */
-
+    /* 
+     * CARGA EL FORMULARIO DE MODIFICACION CUANDO SE PRESIONA EL BOTON EN LA TABLA.
+     * Se obtiene el identificador de la mesa que se encuentra cargado en el boton
+     * y se envia al procesar para que cargue el formulario de modificacion en el
+     * div de contenido.
+     */
     $('.editar').click(function () {
         var idMesa = $(this).attr("name");
         $.ajax({
@@ -29,6 +36,12 @@ $(document).ready(function () {
             }
         });
     });
+
+    /* 
+     * CARGA Y ABRE EL MODAL CON LOS DETALLES DE LA MESA CUANDO SE PRESIONA EL BOTON EN LA TABLA.
+     * Se obtiene el numero de columnas de la tabla para establecer la cantidad de llamados
+     * de la mesa y los elementos a mostrar por pantalla.
+     * */
 
     $(".detalle").click(function () {
         var columnas = $("#tablaBuscarMesas tr").length;
@@ -53,13 +66,25 @@ $(document).ready(function () {
         }
         $("#ModalDetalleMesa").modal({});
     });
-        
+
+    /*
+     * ABRE EL MODAL DE CONFIRMACION CUANDO SE PRESIONA EL BOTON DE ELIMINAR EN LA TABLA.
+     * Se obtiene el identificador de la mesa de examen que se encuentra en el boton
+     * y se carga en el formulario que luego se envia por AJAX al procesar. Luego,
+     * se muestra el modal por pantalla.
+     * */
     $(".borrar").click(function (evento) {
         evento.preventDefault();
         $("#modalIdMesa").val($(this).attr("name"));
         $("#ModalBorrarMesa").modal({});
     });
-    
+
+    /*
+     * SE CONFIRMA LA ELIMINACION DE LA MESA AL PRESIONAR EL BOTON DEL MODAL.
+     * Se obtienen los datos que se cargaron en el formulario de eliminacion y
+     * se envian al procesar. El resultado de la operacion se muestra por pantalla
+     * dentro del modal.
+     * */
     $('#btnBorrarMesa').click(function () {
         $.ajax({
             type: "POST",
@@ -76,7 +101,13 @@ $(document).ready(function () {
             }
         });
     });
-    
+
+    /*
+     * ACTUALIZA LA PANTALLA LUEGO QUE SE ELIMINA UNA MESA DE EXAMEN.
+     * Cuando se realiza el proceso de eliminacion de la mesa de examen, se 
+     * refresca la pantalla para que ya no se observe la mesa de examen en la tabla
+     * con los demas resultados.
+     */
     $("#btnRefrescarPantalla").click(function () {
         setTimeout(function () {
             location.reload();
