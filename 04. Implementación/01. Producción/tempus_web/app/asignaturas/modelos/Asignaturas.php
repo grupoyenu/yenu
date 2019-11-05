@@ -64,13 +64,20 @@ class Asignaturas {
         return $resultado;
     }
 
-    public function listarAsignaturasSinCursadas() {
+    public function listarSinCursada($codigo, $nombre) {
         $consulta = "SELECT DISTINCT REL.idasignatura idAsignatura, ASI.nombre nombreAsignatura, REL.idcarrera idCarrera, CAR.nombre nombreCarrera "
                 . "FROM asignatura_carrera REL "
                 . "INNER JOIN asignatura ASI ON ASI.idasignatura = REL.idasignatura "
                 . "INNER JOIN carrera CAR ON CAR.codigo = REL.idcarrera "
                 . "LEFT JOIN cursada CUR ON CUR.idasignatura = REL.idasignatura AND CUR.idcarrera = REL.idcarrera "
                 . "WHERE CUR.idclase IS NULL";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
+    }
+    
+    public function listarSinMesa($codigo, $nombre) {
+        $consulta = "";
         $resultado = Conexion::getInstancia()->seleccionar($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
         return $resultado;

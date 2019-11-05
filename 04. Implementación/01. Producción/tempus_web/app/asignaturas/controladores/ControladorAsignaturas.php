@@ -56,16 +56,23 @@ class ControladorAsignaturas {
         return $resultado;
     }
 
-    public function listarAsignaturasSinCursadas() {
+    public function listarCarrerasAsignatura($id) {
         $asignaturas = new Asignaturas();
-        $resultado = $asignaturas->listarAsignaturasSinCursadas();
+        $resultado = $asignaturas->listarCarrerasAsignatura($id);
         $this->descripcion = $asignaturas->getDescripcion();
         return $resultado;
     }
 
-    public function listarCarrerasAsignatura($id) {
+    public function listarSinCursada($codigo, $nombre) {
         $asignaturas = new Asignaturas();
-        $resultado = $asignaturas->listarCarrerasAsignatura($id);
+        $resultado = $asignaturas->listarSinCursada($codigo, $nombre);
+        $this->descripcion = $asignaturas->getDescripcion();
+        return $resultado;
+    }
+
+    public function listarSinMesa($codigo, $nombre) {
+        $asignaturas = new Asignaturas();
+        $resultado = $asignaturas->listarSinMesa($codigo, $nombre);
         $this->descripcion = $asignaturas->getDescripcion();
         return $resultado;
     }
