@@ -46,4 +46,18 @@ class ControladorCarreras {
         return $resultado;
     }
 
+    public function listarSinCursada($nombre) {
+        $carreras = new Carreras();
+        $resultado = $carreras->listarSinCursada($nombre);
+        $this->descripcion = $carreras->getDescripcion();
+        return $resultado;
+    }
+
+    public function listarSinMesa($nombre) {
+        $carreras = new Carreras();
+        $resultado = $carreras->listarSinMesa($nombre);
+        $this->descripcion = $carreras->getDescripcion();
+        return $resultado;
+    }
+
 }

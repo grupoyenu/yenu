@@ -13,10 +13,7 @@ class Carrera {
 
     /** @var string Descripcion para mostrar mensajes */
     private $descripcion;
-
-    /** @var string Nombre de la tabla en la base de datos. */
-    private $TABLA = "carrera";
-
+    
     public function __construct($codigo = NULL, $nombre = NULL) {
         $this->setCodigo($codigo);
         $this->setNombre($nombre);
@@ -72,7 +69,7 @@ class Carrera {
     public function crear() {
         if ($this->codigo && $this->nombre) {
             $values = "($this->codigo, '$this->nombre')";
-            $creacion = Conexion::getInstancia()->executeInsert($this->TABLA, $values);
+            $creacion = Conexion::getInstancia()->executeInsert("carrera", $values);
             $this->descripcion = Conexion::getInstancia()->getDescripcion();
             return $creacion;
         }
@@ -81,7 +78,7 @@ class Carrera {
 
     public function obtener() {
         if ($this->codigo) {
-            $consulta = "SELECT * FROM {$this->TABLA} WHERE codigo = {$this->codigo}";
+            $consulta = "SELECT * FROM carrera WHERE codigo = {$this->codigo}";
             $fila = Conexion::getInstancia()->obtener($consulta);
             if (!is_null($fila)) {
                 $this->nombre = $fila['nombre'];
