@@ -109,33 +109,11 @@ class Llamado {
 
     public function modificar() {
         if ($this->idLlamado && $this->fecha && $this->hora) {
-            $consulta = "UPDATE llamado SET fecha='{$this->fecha}', hora='{$this->hora}', idaula={$this->aula}, fechamod = NOW() WHERE idllamado=" . $this->idllamado;
-            if (Conexion::getInstancia()->executeUpdate($consulta)) {
-                $this->descripcion = "Se realizó la modificación del llamado";
-                return 2;
-            }
-            $this->descripcion = "No se realizó la modificación del llamado";
-            return 1;
-        }
-        return 0;
-    }
-
-    public function obtener() {
-        if ($this->idLlamado) {
-            $consulta = "SELECT l.*, a.sector, a.nombre "
-                    . "FROM llamado l LEFT JOIN aula a ON l.idaula = a.idaula "
-                    . "WHERE idllamado = {$this->idLlamado}";
-            $fila = Conexion::getInstancia()->obtener($consulta);
-            if (!is_null($fila)) {
-                $this->idLlamado = $fila['idllamado'];
-                $this->fecha = $fila['fecha'];
-                $this->hora = $fila['hora'];
-                $this->fechamod = $fila['fechamod'];
-                $parametros = array($fila['idaula'], $fila['nombre'], $fila['sector']);
-                $this->aula = ($fila['idaula']) ? new Aula($parametros) : NULL;
-                return 2;
-            }
-            return 1;
+            $campos = "fecha='{$this->fecha}', hora='{$this->hora}', idaula={$this->aula}, fechamod = NOW()";
+            $condicion = "idllamado={$this->idLlamado}";
+            $modificacion = Conexion::getInstancia()->modificar("llamado", $campos, $condicion);
+            $this->descripcion = Conexion::getInstancia()->getDescripcion();
+            return $modificacion;
         }
         return 0;
     }

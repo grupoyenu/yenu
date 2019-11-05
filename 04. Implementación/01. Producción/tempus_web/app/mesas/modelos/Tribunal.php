@@ -8,7 +8,6 @@ class Tribunal {
     private $vocalSegundo;
     private $suplente;
     private $descripcion;
-    private $TABLA = "tribunal";
 
     public function __construct($id = NULL, $presidente = NULL, $vocal1 = NULL, $vocal2 = NULL, $suplente = NULL) {
         $this->setIdTribunal($id);
@@ -47,21 +46,28 @@ class Tribunal {
     }
 
     public function setPresidente($presidente) {
-        $this->presidente = $presidente;
+        $this->presidente = ($presidente) ? $presidente : NULL;
+        $this->descripcion = ($presidente) ? "No se pudo hacer referencia al presidente" : $this->descripcion;
     }
 
     public function setVocalPrimero($vocalPrimero) {
-        $this->vocalPrimero = $vocalPrimero;
+        $this->vocalPrimero = ($vocalPrimero) ? $vocalPrimero : NULL;
+        $this->descripcion = ($vocalPrimero) ? "No se pudo hacer referencia al vocal primero" : $this->descripcion;
     }
 
     public function setVocalSegundo($vocalSegundo) {
-        $this->vocalSegundo = $vocalSegundo;
+        $this->vocalSegundo = ($vocalSegundo) ? $vocalSegundo : NULL;
     }
 
     public function setSuplente($suplente) {
-        $this->suplente = $suplente;
+        $this->suplente = ($suplente) ? $suplente : NULL;
     }
 
+    /**
+     * Realiza la eliminacion del tribunal y de los docentes no asociados a ningun
+     * tribunal. Cuando se elimina el tribunal, se eliminan los docentes asociados
+     * solo si no forman parte de otro tribunal.
+     */
     public function borrar() {
         if ($this->idTribunal) {
             $consulta = "DELETE t FROM tribunal t JOIN "
@@ -80,6 +86,12 @@ class Tribunal {
         return 0;
     }
 
+    /**
+     * Realiza la eliminacion de los docentes que no tienen tribunal. Al borrar
+     * el tribunal, es posible que algunos docentes queden asociado a otro tribunal
+     * y algunos queden sin tribunal. Aquellos docentes sin tribunal son quitados
+     * de la base de datos.
+     */
     private function borrarDocentes() {
         $docentes = new Docentes();
         $eliminacion = $docentes->borrarSinTribunal();
@@ -89,9 +101,13 @@ class Tribunal {
         return $eliminacion;
     }
 
+    /**
+     * Realiza la creacion del tribunal en la base de datos.
+     * @return integer 0 si falla, 1 si no se crea o 2 si es correcta.
+     */
     public function crear() {
         if ($this->presidente && $this->vocalPrimero) {
-            $values = "({$this->presidente}, {$this->vocalPrimero},{$this->vocalSegundo}, {$this->suplente})";
+            $values = "(NULL, {$this->presidente}, {$this->vocalPrimero}, {$this->vocalSegundo}, {$this->suplente})";
             $creacion = Conexion::getInstancia()->insertar("tribunal", $values);
             $this->idTribunal = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
             $this->descripcion = Conexion::getInstancia()->getDescripcion();
@@ -100,11 +116,25 @@ class Tribunal {
         return 0;
     }
 
+    /**
+     * Realiza la modificacion en la base de datos de un tribunal.
+     * @return integer 0 si falla, 1 si no afecta filas o 2 si es correcta.
+     */
     public function modificar() {
         if ($this->presidente && $this->vocalPrimero) {
-            
+            $campos = "prediente={$this->presidente}, vocal1={$this->vocalPrimero}, vocal2={$this->vocalSegundo}, suplente={$this->suplente}";
+            $condicion = "idtribunal={$this->idTribunal}";
+            $modificacion = Conexion::getInstancia()->modificar("tribunal", $campos, $condicion);
+            $this->descripcion = Conexion::getInstancia()->getDescripcion();
+            return $modificacion;
         }
         return 0;
+    }
+
+    private function validar() {
+        if ($this->presidente == $this->vocalPrimero) {
+            return false;
+        }
     }
 
 }

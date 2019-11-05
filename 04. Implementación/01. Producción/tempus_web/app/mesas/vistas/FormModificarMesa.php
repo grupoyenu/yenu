@@ -76,7 +76,9 @@ if (isset($_POST['idMesa'])) {
                 <div class="card border-dark">
                     <div class="card-header bg-dark text-white">Complete los datos del primer llamado</div>
                     <div class="card-body">
-                        <form method="POST" name="formModificarLlamado" id="formModificarLlamado">
+                        <form method="POST" name="formModificarLlamado1" id="formModificarLlamado1">
+                            <input type="hidden" name="numeroLlamado" id="numeroLlamado" value="1">
+                            <input type="hidden" name="idLlamado1" id="idLlamado1" value="">
                             <div class="form-row">
                                 <label for="fecha1" class="col-sm-2 col-form-label">* Fecha:</label>
                                 <div class="col">
@@ -114,26 +116,30 @@ if (isset($_POST['idMesa'])) {
                     <div class="card border-dark">
                         <div class="card-header bg-dark text-white">Complete los datos del segundo llamado</div>
                         <div class="card-body">
-                            <div class="form-row">
-                                <label for="fecha2" class="col-sm-2 col-form-label">* Fecha y hora:</label>
-                                <div class="col">
-                                    <input type="date" class="form-control mb-2" 
-                                           name="fecha2" id="fecha2"
-                                           value="' . $fechaSegundo . '" min="' . $fechaSegundo . '" required>
+                            <form method="POST" name="formModificarLlamado2" id="formModificarLlamado2">
+                                <input type="hidden" name="numeroLlamado" id="numeroLlamado" value="2">
+                                <input type="hidden" name="idLlamado2" id="idLlamado2" value="">
+                                <div class="form-row">
+                                    <label for="fecha2" class="col-sm-2 col-form-label">* Fecha y hora:</label>
+                                    <div class="col">
+                                        <input type="date" class="form-control mb-2" 
+                                               name="fecha2" id="fecha2"
+                                               value="' . $fechaSegundo . '" min="' . $fechaSegundo . '" required>
+                                    </div>
+                                    <div class="col">
+                                        <select class="form-control mb-2" name="hora2" id="hora2">' . $opcionesHora . '</select>
+                                    </div>
+                                    <div class="col-1 text-right"></div>
                                 </div>
-                                <div class="col">
-                                    <select class="form-control mb-2" name="hora2" id="hora2">' . $opcionesHora . '</select>
+                                <div class="form-row">
+                                    <label for="aula2" class="col-sm-2 col-form-label">Aula:</label>
+                                    <div class="col">
+                                        <select class="form-control mb-2" name="aula2" id="aula2"></select>
+                                    </div>
+                                     <label class="col-sm-2 col-form-label"></label>
+                                    <div class="col"></div>
                                 </div>
-                                <div class="col-1 text-right"></div>
-                            </div>
-                            <div class="form-row">
-                                <label for="aula2" class="col-sm-2 col-form-label">Aula:</label>
-                                <div class="col">
-                                    <select class="form-control mb-2" name="aula2" id="aula2"></select>
-                                </div>
-                                 <label class="col-sm-2 col-form-label"></label>
-                                <div class="col"></div>
-                            </div>
+                            </form>
                         </div>
                     </div>';
             }

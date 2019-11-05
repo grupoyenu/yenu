@@ -16,9 +16,6 @@ class Aula {
     /** @var string Descripcion para mostrar mensajes. */
     private $descripcion;
 
-    /** @var string Nombre de la tabla en la base de datos. */
-    private $TABLA = "aula";
-
     public function __construct($id = NULL, $sector = NULL, $nombre = NULL) {
         $this->setIdAula($id);
         $this->setSector($sector);
@@ -79,7 +76,7 @@ class Aula {
     public function crear() {
         if ($this->nombre && $this->sector) {
             $values = "(NULL,'" . $this->nombre . "','" . $this->sector . "')";
-            $creacion = Conexion::getInstancia()->insertar($this->TABLA, $values);
+            $creacion = Conexion::getInstancia()->insertar("aula", $values);
             $this->idaula = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
             $this->descripcion = Conexion::getInstancia()->getDescripcion();
             return $creacion;
@@ -91,16 +88,17 @@ class Aula {
         if ($this->idAula && $this->nombre && $this->sector) {
             $campos = "nombre = '{$this->nombre}', sector = '{$this->sector}'";
             $condicion = "idaula={$this->idAula}";
-            $modificacion = Conexion::getInstancia()->modificar($this->TABLA, $campos, $condicion);
+            $modificacion = Conexion::getInstancia()->modificar("aula", $campos, $condicion);
             $this->descripcion = Conexion::getInstancia()->getDescripcion();
             return $modificacion;
         }
+        $this->descripcion = ($this->idAula) ? $this->descripcion : "No se pudo hacer referencia al aula";
         return 0;
     }
 
     public function obtener() {
         if ($this->idAula) {
-            $consulta = "SELECT * FROM {$this->TABLA} WHERE idaula = {$this->idAula}";
+            $consulta = "SELECT * FROM aula WHERE idaula = {$this->idAula}";
             $fila = Conexion::getInstancia()->obtener($consulta);
             if (!is_null($fila)) {
                 $this->nombre = $fila['nombre'];
@@ -110,6 +108,7 @@ class Aula {
             $this->descripcion = "No se obtuvo la información del aula";
             return 1;
         }
+        $this->descripcion = "No se pudo hacer referencia al aula";
         return 0;
     }
 
@@ -122,7 +121,8 @@ class Aula {
                     . "WHERE cl.idaula = {$this->idAula} ORDER BY cl.dia, cl.desde";
             $this->clases = Conexion::getInstancia()->seleccionar($consulta);
         }
-        return 1;
+        $this->descripcion = "No se pudo hacer referencia al aula";
+        return 0;
     }
 
     public function obtenerMesas() {
@@ -137,6 +137,7 @@ class Aula {
                     . "WHERE lp.idaula = {$this->idAula} OR ls.idaula = {$this->idAula}";
             $this->mesas = Conexion::getInstancia()->seleccionar($consulta);
         }
+        $this->descripcion = "No se pudo hacer referencia al aula";
         return 1;
     }
 
