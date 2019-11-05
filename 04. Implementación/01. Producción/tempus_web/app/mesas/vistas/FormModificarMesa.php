@@ -171,7 +171,7 @@ if (isset($_POST['idMesa'])) {
 
 <div class="container">
     <div class="form-row mt-4 mb-4">
-        <div class="col text-left"><h4><i class="fas fa-chalkboard"></i> MODIFICAR AULA</h4></div>
+        <div class="col text-left"><h4><i class="far fa-calendar-alt"></i> MODIFICAR MESA DE EXAMEN</h4></div>
         <div class="col text-right">
             <a href="principal_home">
                 <button class="btn btn-sm btn-outline-secondary"> 
@@ -182,15 +182,7 @@ if (isset($_POST['idMesa'])) {
     </div>
     <div id="seccionResultado"></div>
     <div id="seccionFormulario">
-        <form id="formModificarAula" name="formModificarAula" method="POST">
-            <div class="card">
-                <div class="card-header">Formulario de modificación</div>
-                <div class="card-body"><?= $contenido; ?></div>
-            </div>
-            <div class="form-row"> 
-                <div class="col text-right mt-2"><?= $botones; ?></div>
-            </div>
-        </form>
+        <?= $formulario; ?>
     </div>
 </div>
 <script type="text/javascript" src="./app/mesas/js/ModificarMesa.js"></script>
