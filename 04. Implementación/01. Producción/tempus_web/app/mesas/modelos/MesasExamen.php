@@ -36,6 +36,10 @@ class MesasExamen {
         return 0;
     }
 
+    public function importar($mesas) {
+        
+    }
+
     /**
      * Realiza la busqueda de mesas de examen en la vista correspondientes con el
      * objetivo de generar el informe del modulo. Se pueden aplicar filtros para

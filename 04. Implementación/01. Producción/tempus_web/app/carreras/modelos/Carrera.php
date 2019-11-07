@@ -13,7 +13,7 @@ class Carrera {
 
     /** @var string Descripcion para mostrar mensajes */
     private $descripcion;
-    
+
     public function __construct($codigo = NULL, $nombre = NULL) {
         $this->setCodigo($codigo);
         $this->setNombre($nombre);
@@ -68,10 +68,14 @@ class Carrera {
 
     public function crear() {
         if ($this->codigo && $this->nombre) {
-            $values = "($this->codigo, '$this->nombre')";
-            $creacion = Conexion::getInstancia()->executeInsert("carrera", $values);
-            $this->descripcion = Conexion::getInstancia()->getDescripcion();
-            return $creacion;
+            $existe = $this->verificarExistencia();
+            if ($existe == 1) {
+                $values = "($this->codigo, '$this->nombre')";
+                $creacion = Conexion::getInstancia()->insertar("carrera", $values);
+                $this->descripcion = Conexion::getInstancia()->getDescripcion();
+                return $creacion;
+            }
+            return $existe;
         }
         return 1;
     }
@@ -100,6 +104,18 @@ class Carrera {
             return Conexion::getInstancia()->seleccionar($consulta);
         }
         return 1;
+    }
+
+    private function verificarExistencia() {
+        $consulta = "SELECT codigo FROM carrera WHERE codigo = {$this->codigo} OR nombre = '{$this->nombre}'";
+        $resultado = Conexion::getInstancia()->obtener($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        if (gettype($resultado) == "array") {
+            $this->descripcion = "Se verificó la existencia de la carrera";
+            $this->idAsignatura = $resultado['codigo'];
+            return 2;
+        }
+        return $resultado;
     }
 
 }

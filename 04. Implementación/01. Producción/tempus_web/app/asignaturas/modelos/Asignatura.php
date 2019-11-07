@@ -10,10 +10,6 @@ class Asignatura {
 
     /** @var string Descripcion para mostrar mensajes */
     private $descripcion;
-    private $carreras;
-
-    /** @var string Nombre de la tabla en la base de datos. */
-    private $TABLA = "asignatura";
 
     public function __construct($id = NULL, $nombre = NULL) {
         $this->setIdAsignatura($id);
@@ -30,10 +26,6 @@ class Asignatura {
 
     public function getDescripcion() {
         return $this->descripcion;
-    }
-
-    public function getCarreras() {
-        return $this->carreras;
     }
 
     public function setIdAsignatura($idAsignatura) {
@@ -61,18 +53,22 @@ class Asignatura {
 
     public function crear() {
         if ($this->nombre) {
-            $values = "(NULL, '$this->nombre')";
-            $creacion = Conexion::getInstancia()->insertar($this->TABLA, $values);
-            $this->idasignatura = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
-            $this->descripcion = Conexion::getInstancia()->getDescripcion();
-            return $creacion;
+            $existe = $this->verificarExistencia();
+            if ($existe == 1) {
+                $values = "(NULL, '$this->nombre')";
+                $creacion = Conexion::getInstancia()->insertar("asignatura", $values);
+                $this->idasignatura = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
+                $this->descripcion = Conexion::getInstancia()->getDescripcion();
+                return $creacion;
+            }
+            return $existe;
         }
-        return 1;
+        return 0;
     }
 
     public function obtener() {
         if ($this->idAsignatura) {
-            $consulta = "SELECT * FROM {$this->TABLA} WHERE idasignatura = {$this->idAsignatura}";
+            $consulta = "SELECT * FROM asignatura WHERE idasignatura = {$this->idAsignatura}";
             $fila = Conexion::getInstancia()->obtener($consulta);
             if (!is_null($fila)) {
                 $this->nombre = $fila['nombre'];
@@ -83,6 +79,18 @@ class Asignatura {
         }
         $this->descripcion = "No se pudo hacer referencia a la asignatura";
         return 0;
+    }
+
+    private function verificarExistencia() {
+        $consulta = "SELECT idasignatura FROM asignatura WHERE nombre = '{$this->nombre}'";
+        $resultado = Conexion::getInstancia()->obtener($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        if (gettype($resultado) == "array") {
+            $this->descripcion = "Se verificó la existencia de la asignatura";
+            $this->idAsignatura = $resultado['idasignatura'];
+            return 2;
+        }
+        return $resultado;
     }
 
 }

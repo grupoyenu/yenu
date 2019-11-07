@@ -1,4 +1,5 @@
 <?php
+$boton = "";
 if (isset($_FILES['fileMesas'])) {
     $mensaje = ValidadorMesa::validarArchivo();
     if (!$mensaje) {
@@ -24,6 +25,9 @@ if (isset($_FILES['fileMesas'])) {
                 $classPrimero = ($errores[7] == "Correcta") ? "" : "table-danger";
                 $classHora = ($errores[8] == "Correcta") ? "" : "table-danger";
                 $estado = ($errores[9]) ? "Correcta" : "Incorrecta";
+                if ($errores[9]) {
+                    $sesionMesas[] = $registro;
+                }
                 $filas .= "
                 <tr>
                     <td title='$errores[0]' class='{$classCodigo}'>$registro[0]</td>
@@ -73,6 +77,9 @@ if (isset($_FILES['fileMesas'])) {
                 $classSegundo = ($errores[8] == "Correcta") ? "" : "table-danger";
                 $classHora = ($errores[9] == "Correcta") ? "" : "table-danger";
                 $estado = ($errores[10]) ? "Correcta" : "Incorrecta";
+                if ($errores[10]) {
+                    $sesionMesas[] = $registro;
+                }
                 $filas .= "
                 <tr>
                     <td title='$errores[0]' class='{$classCodigo}'>$registro[0]</td>
@@ -110,6 +117,14 @@ if (isset($_FILES['fileMesas'])) {
                     </table>
                 </div>';
         }
+        $cantidad = count($sesionMesas);
+        if ($cantidad > 0) {
+            $_SESSION['mesas'] = $sesionMesas;
+            $boton = '<button type="submit" class="btn btn-success" 
+                            id="btnImportarMesa" name="btnImportarMesa" title="Guardar datos (' . $cantidad . ')">
+                        <i class="far fa-save"></i> GUARDAR
+                    </button>';
+        }
     } else {
         // EL ARCHIVO NO CUMPLIO ALGUNA DE LAS VALIDACIONES 
         $cuerpo = ControladorHTML::mostrarAlertaResultadoOperacion(0, $mensaje);
@@ -141,6 +156,7 @@ if (isset($_FILES['fileMesas'])) {
             </div>
             <div class="form-row mt-2 mb-4">
                 <div class="col text-right">
+                    <?= $boton; ?>
                     <a href="mesa_seleccionar">
                         <button type="button" class="btn btn-outline-info">
                             <i class="fas fa-search"></i> VOLVER

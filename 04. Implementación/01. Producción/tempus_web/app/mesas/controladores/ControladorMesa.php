@@ -36,6 +36,13 @@ class ControladorMesa {
         return $resultado;
     }
 
+    public function importar($mesasExamen) {
+        $mesas = new MesasExamen();
+        $resultado = $mesas->importar($mesasExamen);
+        $this->descripcion = $mesas->getDescripcion();
+        return $resultado;
+    }
+
     public function listarInforme($carrera, $asignatura, $fecha, $hora, $modificada) {
         $mesas = new MesasExamen();
         $resultado = $mesas->listarInforme($carrera, $asignatura, $fecha, $hora, $modificada);
