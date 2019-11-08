@@ -86,8 +86,8 @@ class Llamado {
     }
 
     public function borrar() {
-        if ($this->idllamado) {
-            $condicion = "idllamado=" . $this->idllamado;
+        if ($this->idLlamado) {
+            $condicion = "idllamado=" . $this->idLlamado;
             $eliminacion = Conexion::getInstancia()->borrar("llamado", $condicion);
             $this->descripcion = Conexion::getInstancia()->getDescripcion();
             return $eliminacion;
@@ -98,18 +98,21 @@ class Llamado {
 
     public function crear() {
         if ($this->fecha && $this->hora) {
-            $values = "(NULL, '{$this->fecha}', '{$this->hora}', {$this->aula}, NULL)";
+            $aula = ($this->aula) ? $this->aula : "NULL";
+            $values = "(NULL, '{$this->fecha}', '{$this->hora}', {$aula}, NULL)";
             $creacion = Conexion::getInstancia()->insertar("llamado", $values);
-            $this->idllamado = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
+            $this->idLlamado = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
             $this->descripcion = Conexion::getInstancia()->getDescripcion();
             return $creacion;
         }
+        $this->descripcion = "No se indicaron todos los campos obligatorios del llamado";
         return 0;
     }
 
     public function modificar() {
         if ($this->idLlamado && $this->fecha && $this->hora) {
-            $campos = "fecha='{$this->fecha}', hora='{$this->hora}', idaula={$this->aula}, fechamod = NOW()";
+            $aula = ($this->aula) ? $this->aula : "NULL";
+            $campos = "fecha='{$this->fecha}', hora='{$this->hora}', idaula={$aula}, fechamod = NOW()";
             $condicion = "idllamado={$this->idLlamado}";
             $modificacion = Conexion::getInstancia()->modificar("llamado", $campos, $condicion);
             $this->descripcion = Conexion::getInstancia()->getDescripcion();

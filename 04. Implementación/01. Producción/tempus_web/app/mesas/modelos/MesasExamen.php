@@ -36,8 +36,94 @@ class MesasExamen {
         return 0;
     }
 
-    public function importar($mesas) {
-        
+    public function importar($mesas, $nroLlamados) {
+        $tribunales = new Tribunales();
+        $llamados = new Llamados();
+        $docentes = new Docentes();
+        $truncaMesa = $this->truncar();
+        $truncaTribunal = $tribunales->borrar();
+        $truncaLlamado = $llamados->borrar();
+        $truncaDocente = $docentes->borrar();
+        if ($truncaMesa == 2 && $truncaTribunal == 2 && $truncaLlamado == 2 && $truncaDocente == 2) {
+            $errores = ($nroLlamados == 1) ? $this->importarUnLlamado($mesas) : $this->importarDosLlamados($mesas);
+            if (count($errores) == count($mesas)) {
+                $this->descripcion = "No se crearon mesas de examen";
+                return 1;
+            }
+            $this->descripcion = "Mesas creadas exitosamente: " . (count($mesas) - count($errores)) . " de " . count($mesas);
+            return $errores;
+        }
+        $this->descripcion = "No se pudieron eliminar los datos previos";
+        return 0;
+    }
+
+    public function importarUnLlamado($mesas) {
+        foreach ($mesas as $datos) {
+            $carrera = new Carrera($datos[0], $datos[1]);
+            $asignatura = new Asignatura(NULL, $datos[2]);
+            $presidente = new Docente(NULL, $datos[3]);
+            $vocal1 = new Docente(NULL, $datos[4]);
+            $vocal2 = new Docente(NULL, $datos[5]);
+            $suplente = new Docente(NULL, $datos[6]);
+            $primero = new Llamado(NULL, $datos[7], $datos[8], NULL);
+            $carrera->crear();
+            $asignatura->crear();
+            $carrera->agregarAsignatura($asignatura->getIdAsignatura(), 1);
+            $presidente->crear();
+            $vocal1->crear();
+            $vocal2->crear();
+            $suplente->crear();
+            $tribunal = new Tribunal(NULL, $presidente->getIdDocente(), $vocal1->getIdDocente(), $vocal2->getIdDocente(), $suplente->getIdDocente());
+            $tribunal->crear();
+            $primero->crear();
+            $mesa = new MesaExamen(NULL, $asignatura->getIdAsignatura(), $carrera->getCodigo(), $tribunal->getIdTribunal(), $primero->getIdLlamado());
+            if ($mesa->crear() != 2) {
+                $mensaje = "Carrera: " . $carrera->getDescripcion() . " / ";
+                $mensaje .= "Asignatura: " . $asignatura->getDescripcion() . " / ";
+                $mensaje .= "Tribunal: " . $tribunal->getDescripcion() . " / ";
+                $mensaje .= "Llamado: " . $primero->getDescripcion() . " / ";
+                $mensaje .= "Mesa: " . $mesa->getDescripcion();
+                Log::escribirLineaError("[" . $mensaje . "]");
+                $errores [] = $datos;
+            }
+        }
+        return $errores;
+    }
+
+    public function importarDosLlamados($mesas) {
+        foreach ($mesas as $datos) {
+            $carrera = new Carrera($datos[0], $datos[1]);
+            $asignatura = new Asignatura(NULL, $datos[2]);
+            $presidente = new Docente(NULL, $datos[3]);
+            $vocal1 = new Docente(NULL, $datos[4]);
+            $vocal2 = new Docente(NULL, $datos[5]);
+            $suplente = new Docente(NULL, $datos[6]);
+            $primero = new Llamado(NULL, $datos[7], $datos[8], NULL);
+            $segundo = new Llamado(NULL, $datos[9], $datos[8], NULL);
+            $carrera->crear();
+            $asignatura->crear();
+            $carrera->agregarAsignatura($asignatura->getIdAsignatura(), 1);
+            $presidente->crear();
+            $vocal1->crear();
+            $vocal2->crear();
+            $suplente->crear();
+            $tribunal = new Tribunal(NULL, $presidente->getIdDocente(), $vocal1->getIdDocente(), $vocal2->getIdDocente(), $suplente->getIdDocente());
+            $tribunal->crear();
+            $primero->crear();
+            $segundo->crear();
+            $mesa = new MesaExamen(NULL, $asignatura->getIdAsignatura(), $carrera->getCodigo(), $tribunal->getIdTribunal(), $primero->getIdLlamado(), $segundo->getIdLlamado());
+            if ($mesa->crear() != 2) {
+                $mensaje = "Carrera: " . $carrera->getDescripcion() . " / ";
+                $mensaje .= "Asignatura: " . $asignatura->getDescripcion() . " / ";
+                $mensaje .= "Tribunal: " . $tribunal->getDescripcion() . " / ";
+                $mensaje .= "Llamado 1: " . $primero->getDescripcion() . " / ";
+                $mensaje .= "Llamado 2: " . $segundo->getDescripcion() . " / ";
+                $mensaje .= "Mesa: " . $mesa->getDescripcion();
+                Log::escribirLineaError("[" . $mensaje . "]");
+                $errores [] = $datos;
+            }
+        }
+        return $errores;
     }
 
     /**
@@ -75,6 +161,13 @@ class MesasExamen {
         $resultado = Conexion::getInstancia()->seleccionar($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
         return $resultado;
+    }
+
+    public function truncar() {
+        $consulta = "TRUNCATE TABLE mesa_examen";
+        $eliminacion = Conexion::getInstancia()->borrarConSubconsulta($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $eliminacion;
     }
 
 }

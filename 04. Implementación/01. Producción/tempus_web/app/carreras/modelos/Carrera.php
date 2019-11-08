@@ -57,11 +57,15 @@ class Carrera {
 
     public function agregarAsignatura($idAsignatura, $anio) {
         if ($this->codigo) {
-            $values = "({$idAsignatura}, {$this->codigo}, {$anio})";
-            $creacion = Conexion::getInstancia()->insertar("asignatura_carrera", $values);
-            $this->idasignatura = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
-            $this->descripcion = Conexion::getInstancia()->getDescripcion();
-            return $creacion;
+            $existe = $this->verificarRelacion($idAsignatura);
+            if ($existe == 1) {
+                $values = "({$idAsignatura}, {$this->codigo}, {$anio})";
+                $creacion = Conexion::getInstancia()->insertar("asignatura_carrera", $values);
+                $this->idasignatura = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
+                $this->descripcion = Conexion::getInstancia()->getDescripcion();
+                return $creacion;
+            }
+            return $existe;
         }
         return 1;
     }
@@ -113,6 +117,17 @@ class Carrera {
         if (gettype($resultado) == "array") {
             $this->descripcion = "Se verificó la existencia de la carrera";
             $this->idAsignatura = $resultado['codigo'];
+            return 2;
+        }
+        return $resultado;
+    }
+
+    private function verificarRelacion($idAsignatura) {
+        $consulta = "SELECT idcarrera FROM asignatura_carrera WHERE idcarrera = {$this->codigo} AND idasignatura = {$idAsignatura}";
+        $resultado = Conexion::getInstancia()->obtener($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        if (gettype($resultado) == "array") {
+            $this->descripcion = "Se verificó la existencia de la relación entre carrera y asignatura";
             return 2;
         }
         return $resultado;

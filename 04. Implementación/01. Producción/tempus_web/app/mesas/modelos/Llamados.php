@@ -26,7 +26,7 @@ class Llamados {
      * @return integer 0 cuando falla la operacion, 2 correcta.
      */
     public function borrar() {
-        $consulta = "DELETE FROM llamado WHERE 1";
+        $consulta = "DELETE FROM llamado";
         $eliminacion = Conexion::getInstancia()->borrarConSubconsulta($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
         return $eliminacion;

@@ -48,36 +48,30 @@ class Docente {
     }
 
     public function crear() {
-        $values = "(NULL, '$this->nombre')";
-        $creacion = Conexion::getInstancia()->insertar($this->TABLA, $values);
-        $this->idDocente = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
-        $this->descripcion = Conexion::getInstancia()->getDescripcion() . " del docente";
-        return $creacion;
-    }
-
-    public function buscar() {
         if ($this->nombre) {
-            $consulta = "SELECT * FROM {$this->TABLA} WHERE nombre LIKE '%{$this->nombre}%' ";
-            return Conexion::getInstancia()->seleccionar($consulta);
-        }
-        return NULL;
-    }
-
-    public function listar() {
-        return Conexion::getInstancia()->seleccionarTodo($this->TABLA);
-    }
-
-    public function obtener() {
-        if ($this->idDocente) {
-            $consulta = "SELECT * FROM {$this->TABLA} WHERE iddocente = {$this->idDocente} ";
-            $fila = Conexion::getInstancia()->obtener($consulta);
-            if (!is_null($fila)) {
-                $this->nombre = $fila['nombre'];
-                return 2;
+            $existe = $this->verificarExistencia();
+            if ($existe == 1) {
+                $values = "(NULL, '$this->nombre')";
+                $creacion = Conexion::getInstancia()->insertar("docente", $values);
+                $this->idDocente = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
+                $this->descripcion = Conexion::getInstancia()->getDescripcion();
+                return $creacion;
             }
-            return 1;
+            return $existe;
         }
         return 0;
+    }
+
+    private function verificarExistencia() {
+        $consulta = "SELECT iddocente FROM docente WHERE nombre = '{$this->nombre}'";
+        $resultado = Conexion::getInstancia()->obtener($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        if (gettype($resultado) == "array") {
+            $this->descripcion = "Se verificó la existencia del docente";
+            $this->idDocente = $resultado['iddocente'];
+            return 2;
+        }
+        return $resultado;
     }
 
 }

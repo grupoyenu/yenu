@@ -15,7 +15,7 @@ class Docentes {
     }
 
     public function borrar() {
-        $consulta = "DELETE FROM docente WHERE 1";
+        $consulta = "DELETE FROM docente";
         $eliminacion = Conexion::getInstancia()->borrarConSubconsulta($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
         return $eliminacion;

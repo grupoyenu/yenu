@@ -3,15 +3,17 @@
 class MesaExamen {
 
     private $idMesa;
-    private $plan;
+    private $carrera;
+    private $asignatura;
     private $tribunal;
     private $primero;
     private $segundo;
     private $descripcion;
 
-    public function __construct($id = NULL, $plan = NULL, $tribunal = NULL, $primero = NULL, $segundo = NULL) {
+    public function __construct($id = NULL, $asignatura = NULL, $carrera = NULL, $tribunal = NULL, $primero = NULL, $segundo = NULL) {
         $this->setIdMesa($id);
-        $this->setPlan($plan);
+        $this->setCarrera($carrera);
+        $this->setAsignatura($asignatura);
         $this->setTribunal($tribunal);
         $this->setPrimero($primero);
         $this->setSegundo($segundo);
@@ -21,8 +23,12 @@ class MesaExamen {
         return $this->idMesa;
     }
 
-    public function getPlan() {
-        return $this->plan;
+    public function getCarrera() {
+        return $this->carrera;
+    }
+
+    public function getAsignatura() {
+        return $this->asignatura;
     }
 
     public function getTribunal() {
@@ -45,8 +51,12 @@ class MesaExamen {
         $this->idMesa = $idMesa;
     }
 
-    public function setPlan($plan) {
-        $this->plan = $plan;
+    public function setCarrera($carrera) {
+        $this->carrera = $carrera;
+    }
+
+    public function setAsignatura($asignatura) {
+        $this->asignatura = $asignatura;
     }
 
     public function setTribunal($tribunal) {
@@ -96,7 +106,17 @@ class MesaExamen {
     }
 
     public function crear() {
-        
+        if ($this->carrera && $this->asignatura && $this->tribunal && ($this->primero || $this->segundo)) {
+            $primero = ($this->primero) ? $this->primero : "NULL";
+            $segundo = ($this->segundo) ? $this->segundo : "NULL";
+            $values = "(NULL, {$this->asignatura}, {$this->carrera}, {$this->tribunal}, {$primero}, {$segundo})";
+            $creacion = Conexion::getInstancia()->insertar("mesa_examen", $values);
+            $this->idasignatura = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
+            $this->descripcion = Conexion::getInstancia()->getDescripcion();
+            return $creacion;
+        }
+        $this->descripcion = "No se indicaron todos los campos obligatorios";
+        return 0;
     }
 
     public function obtener() {

@@ -107,11 +107,17 @@ class Tribunal {
      */
     public function crear() {
         if ($this->presidente && $this->vocalPrimero) {
-            $values = "(NULL, {$this->presidente}, {$this->vocalPrimero}, {$this->vocalSegundo}, {$this->suplente})";
-            $creacion = Conexion::getInstancia()->insertar("tribunal", $values);
-            $this->idTribunal = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
-            $this->descripcion = Conexion::getInstancia()->getDescripcion();
-            return $creacion;
+            $vocal2 = ($this->vocalSegundo) ? $this->vocalSegundo : "NULL";
+            $suplente = ($this->suplente) ? $this->suplente : "NULL";
+            $existe = $this->verificarExistencia($vocal2, $suplente);
+            if ($existe == 1) {
+                $values = "(NULL, {$this->presidente}, {$this->vocalPrimero}, {$vocal2}, {$suplente})";
+                $creacion = Conexion::getInstancia()->insertar("tribunal", $values);
+                $this->idTribunal = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
+                $this->descripcion = Conexion::getInstancia()->getDescripcion();
+                return $creacion;
+            }
+            return $existe;
         }
         return 0;
     }
@@ -122,7 +128,9 @@ class Tribunal {
      */
     public function modificar() {
         if ($this->presidente && $this->vocalPrimero) {
-            $campos = "prediente={$this->presidente}, vocal1={$this->vocalPrimero}, vocal2={$this->vocalSegundo}, suplente={$this->suplente}";
+            $vocal2 = ($this->vocalSegundo) ? $this->vocalSegundo : "NULL";
+            $suplente = ($this->suplente) ? $this->suplente : "NULL";
+            $campos = "prediente={$this->presidente}, vocal1={$this->vocalPrimero}, vocal2={$vocal2}, suplente={$suplente}";
             $condicion = "idtribunal={$this->idTribunal}";
             $modificacion = Conexion::getInstancia()->modificar("tribunal", $campos, $condicion);
             $this->descripcion = Conexion::getInstancia()->getDescripcion();
@@ -135,6 +143,19 @@ class Tribunal {
         if ($this->presidente == $this->vocalPrimero) {
             return false;
         }
+    }
+
+    private function verificarExistencia($vocal2, $suplente) {
+        $consulta = "SELECT idtribunal FROM tribunal WHERE presidente = {$this->presidente} "
+                . "AND vocal1 ={$this->vocalPrimero} AND vocal2 = {$vocal2} AND suplente={$suplente}";
+        $resultado = Conexion::getInstancia()->obtener($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        if (gettype($resultado) == "array") {
+            $this->descripcion = "Se verificó la existencia del tribunal";
+            $this->idTribunal = $resultado['idtribunal'];
+            return 2;
+        }
+        return $resultado;
     }
 
 }
