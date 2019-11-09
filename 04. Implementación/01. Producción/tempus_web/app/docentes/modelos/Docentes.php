@@ -14,10 +14,20 @@ class Docentes {
         return $this->descripcion;
     }
 
+    private function alter() {
+        $consulta = "ALTER TABLE docente AUTO_INCREMENT = 1";
+        $alter = Conexion::getInstancia()->borrarConSubconsulta($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $alter;
+    }
+
     public function borrar() {
         $consulta = "DELETE FROM docente";
         $eliminacion = Conexion::getInstancia()->borrarConSubconsulta($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        if ($eliminacion == 2) {
+            return $this->alter();
+        }
         return $eliminacion;
     }
 

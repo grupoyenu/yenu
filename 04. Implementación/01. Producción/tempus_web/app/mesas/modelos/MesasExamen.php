@@ -58,6 +58,7 @@ class MesasExamen {
     }
 
     public function importarUnLlamado($mesas) {
+        $errores = array();
         foreach ($mesas as $datos) {
             $carrera = new Carrera($datos[0], $datos[1]);
             $asignatura = new Asignatura(NULL, $datos[2]);
@@ -65,7 +66,7 @@ class MesasExamen {
             $vocal1 = new Docente(NULL, $datos[4]);
             $vocal2 = new Docente(NULL, $datos[5]);
             $suplente = new Docente(NULL, $datos[6]);
-            $primero = new Llamado(NULL, $datos[7], $datos[8], NULL);
+            $primero = new Llamado(NULL, date('Y-m-d', strtotime(str_replace('/', '-', $datos[7]))), $datos[8], NULL);
             $carrera->crear();
             $asignatura->crear();
             $carrera->agregarAsignatura($asignatura->getIdAsignatura(), 1);
@@ -91,6 +92,7 @@ class MesasExamen {
     }
 
     public function importarDosLlamados($mesas) {
+        $errores = array();
         foreach ($mesas as $datos) {
             $carrera = new Carrera($datos[0], $datos[1]);
             $asignatura = new Asignatura(NULL, $datos[2]);
@@ -98,8 +100,8 @@ class MesasExamen {
             $vocal1 = new Docente(NULL, $datos[4]);
             $vocal2 = new Docente(NULL, $datos[5]);
             $suplente = new Docente(NULL, $datos[6]);
-            $primero = new Llamado(NULL, $datos[7], $datos[8], NULL);
-            $segundo = new Llamado(NULL, $datos[9], $datos[8], NULL);
+            $primero = new Llamado(NULL, date('Y-m-d', strtotime(str_replace('/', '-', $datos[7]))), $datos[9], NULL);
+            $segundo = new Llamado(NULL, date('Y-m-d', strtotime(str_replace('/', '-', $datos[8]))), $datos[9], NULL);
             $carrera->crear();
             $asignatura->crear();
             $carrera->agregarAsignatura($asignatura->getIdAsignatura(), 1);

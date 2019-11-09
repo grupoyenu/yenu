@@ -10,14 +10,10 @@ $(document).ready(function () {
 
     $("#formModificarPermiso").change(function () {
         var formModificado = $("#formModificarPermiso").serialize();
-        var habilitar = true;
-        if (formOriginal !== formModificado) {
-            habilitar = false;
-            $("#btnModificarPermiso").prop("disabled", false);
-        }
+        var habilitar = (formOriginal !== formModificado) ? false : true;
         $("#btnModificarPermiso").prop("disabled", habilitar);
     });
-    
+
     $('#formModificarPermiso').submit(function (event) {
         event.preventDefault();
         $.ajax({
@@ -28,6 +24,7 @@ $(document).ready(function () {
             success: function (data) {
                 $('#seccionResultado').html(data[0]['resultado']);
                 if (data[0]['exito'] === true) {
+                    $("#nombre").prop("disabled", true);
                     $("#btnModificarPermiso").prop("disabled", true);
                 }
             },

@@ -22,7 +22,7 @@ class Usuario {
     /** @var string Estado del usuario (Activo o Inactivo) */
     private $estado;
 
-    /** @var Rol Rol que posee el usuario dentro del sistema */
+    /** @var integer Rol que posee el usuario dentro del sistema */
     private $rol;
 
     /** @var string Descripcion para mostrar mensajes */
@@ -57,7 +57,7 @@ class Usuario {
         return $this->estado;
     }
 
-    public function getRol(): Rol {
+    public function getRol() {
         return $this->rol;
     }
 
@@ -93,7 +93,7 @@ class Usuario {
         if ($this->email && $this->nombre && $this->metodo && $this->rol && $this->estado) {
             $values = "(NULL, '$this->email', '$this->nombre', '$this->metodo', '$this->estado')";
             $creacion = Conexion::getInstancia()->insertar("usuario", $values);
-            $this->idPermiso = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
+            $this->idUsuario = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
             $this->descripcion = $this->nombre . ": " . Conexion::getInstancia()->getDescripcion();
             return $creacion;
         }
@@ -101,8 +101,8 @@ class Usuario {
     }
 
     public function modificar() {
-        if ($this->idUsuario && $this->email && $this->nombre && $this->metodo && $this->rol && $this->estado) {
-            $campos = "email = '{$this->email}', nombre='{$this->nombre}', metodo='{$this->metodo}', rol={$this->rol}, estado='{$this->estado}'";
+        if ($this->idUsuario && $this->email && $this->nombre && $this->metodo && $this->estado) {
+            $campos = "email = '{$this->email}', nombre='{$this->nombre}', metodo='{$this->metodo}', estado='{$this->estado}'";
             $condicion = "idusuario={$this->idUsuario}";
             $modificacion = Conexion::getInstancia()->modificar("usuario", $campos, $condicion);
             $this->descripcion = Conexion::getInstancia()->getDescripcion();

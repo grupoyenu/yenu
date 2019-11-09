@@ -1,11 +1,36 @@
 <?php
+require_once '../../principal/modelos/Constantes.php';
+require_once '../../principal/modelos/AutoCargador.php';
+
+AutoCargador::cargarModulos();
+
+$cuerpo = $boton = "";
 if (isset($_POST['idPermiso'])) {
-    
-    
+
+    $idPermiso = $_POST['idPermiso'];
+    $permiso = new Permiso($idPermiso);
+    $obtener = $permiso->obtener();
+    if ($obtener == 2) {
+        $cuerpo = '
+            <input type="hidden" name="idPermiso" id="idPermiso" value="' . $permiso->getIdPermiso() . '">
+            <div class="form-row"><label for="nombre" class="col-sm-2 col-form-label">* Nombre:</label>
+                <div class="col">
+                    <input type="text" class="form-control mb-2" 
+                           name="nombre" id="nombre"
+                           value=' . $permiso->getNombre() . '
+                           placeholder="Nombre de permiso" required>
+                </div>
+            </div>';
+        $boton = '<button type="submit" class="btn btn-success" 
+                            id="btnModificarPermiso" title="Guardar datos" disabled>
+                        <i class="far fa-save"></i> GUARDAR
+                  </button>';
+    } else {
+        $cuerpo = ControladorHTML::mostrarAlertaResultadoBusqueda($obtener, $permiso->getDescripcion());
+    }
 } else {
     $mensaje = "No se obtuvo la información desde el formulario";
-    $contenido = ControladorHTML::mostrarAlertaResultadoOperacion(0, $mensaje);
-    $botones = ControladorHTML::mostrarBotonBusqueda("usuario_buscarPermiso");
+    $cuerpo = ControladorHTML::mostrarAlertaResultadoOperacion(0, $mensaje);
 }
 ?>
 <div class="container">
@@ -24,23 +49,11 @@ if (isset($_POST['idPermiso'])) {
         <form id="formModificarPermiso" name="formModificarPermiso" method="POST">
             <div class="card border-dark">
                 <div class="card-header bg-dark text-white">Modifique el formulario y presione GUARDAR</div>
-                <div class="card-body">
-                    <div class="form-row">
-                        <label for="nombre" class="col-sm-2 col-form-label">* Nombre:</label>
-                        <div class="col">
-                            <input type="text" class="form-control mb-2" 
-                                   name="nombre" id="nombre"
-                                   placeholder="Nombre de permiso" required>
-                        </div>
-                    </div>
-                </div>
+                <div class="card-body"><?= $cuerpo; ?></div>
             </div>
             <div class="form-row mt-2 mb-4">
                 <div class="col text-right">
-                    <button type="submit" class="btn btn-success" 
-                            id="btnModificarPermiso" title="Guardar datos">
-                        <i class="far fa-save"></i> GUARDAR
-                    </button>
+                    <?= $boton; ?>
                     <a href="usuario_buscarPermiso">
                         <button type="button" class="btn btn-outline-info">
                             <i class="fas fa-search"></i> BUSCAR
@@ -52,4 +65,4 @@ if (isset($_POST['idPermiso'])) {
     </div>
 </div>
 
-<script type="text/javascript" src="./app/usuarios/js/CrearPermiso.js"></script>
+<script type="text/javascript" src="./app/usuarios/js/ModificarPermiso.js"></script>

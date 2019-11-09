@@ -47,7 +47,10 @@ class ControladorPermisos {
     }
 
     public function modificar($idPermiso, $nombre) {
-        
+        $permiso = new Permiso($idPermiso, $nombre);
+        $modificacion = $permiso->modificar();
+        $this->descripcion = $permiso->getDescripcion();
+        return $modificacion;
     }
 
 }

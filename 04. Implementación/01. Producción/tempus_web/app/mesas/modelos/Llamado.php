@@ -62,11 +62,7 @@ class Llamado {
     }
 
     public function setFecha($fecha) {
-        if ($fecha) {
-            $this->fecha = $fecha;
-        } else {
-            $this->descripcion = "La fecha no cumple con el formato requerido";
-        }
+        $this->fecha = $fecha;
     }
 
     public function setHora($hora) {

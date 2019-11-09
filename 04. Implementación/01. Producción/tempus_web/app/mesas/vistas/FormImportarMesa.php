@@ -10,11 +10,12 @@ if (isset($_FILES['fileMesas'])) {
         $columnas = count($fila);
         rewind($registros);
         $sesionMesas = array();
+        $nroLlamados = 1;
         $filas = "";
         if ($columnas == 9) {
             // SE PROCESA EL ARCHIVO PARA UN SOLO LLAMADO
             while (($registro = fgetcsv($registros, 2000, ";")) !== FALSE) {
-                $errores = ValidadorMesa::validarRegistroDosLlamados($registro);
+                $errores = ValidadorMesa::validarRegistroUnLlamado($registro);
                 $classCodigo = ($errores[0] == "Correcto") ? "" : "table-danger";
                 $classCarrera = ($errores[1] == "Correcto") ? "" : "table-danger";
                 $classAsignatura = ($errores[2] == "Correcto") ? "" : "table-danger";
@@ -38,7 +39,7 @@ if (isset($_FILES['fileMesas'])) {
                     <td title='$errores[5]' class='{$classVocal2}'>$registro[5]</td>
                     <td title='$errores[6]' class='{$classSuplente}'>$registro[6]</td>
                     <td title='$errores[7]' class='{$classPrimero}'>$registro[7]</td>
-                    <td title='$errores[8]' class='{$classSegundo}'>$registro[8]</td>
+                    <td title='$errores[8]' class='{$classHora}'>$registro[8]</td>
                     <td style='display: none;'>$estado</td>
                 </tr>";
             }
@@ -64,6 +65,7 @@ if (isset($_FILES['fileMesas'])) {
                 </div>';
         } else {
             // SE PROCESA EL ARCHIVO PARA DOS LLAMADOS
+            $nroLlamados = 2;
             while (($registro = fgetcsv($registros, 2000, ";")) !== FALSE) {
                 $errores = ValidadorMesa::validarRegistroDosLlamados($registro);
                 $classCodigo = ($errores[0] == "Correcto") ? "" : "table-danger";
@@ -119,6 +121,7 @@ if (isset($_FILES['fileMesas'])) {
         }
         $cantidad = count($sesionMesas);
         if ($cantidad > 0) {
+            $_SESSION['nroLlamados'] = $nroLlamados;
             $_SESSION['mesas'] = $sesionMesas;
             $boton = '<button type="submit" class="btn btn-success" 
                             id="btnImportarMesa" name="btnImportarMesa" title="Guardar datos (' . $cantidad . ')">
@@ -164,6 +167,14 @@ if (isset($_FILES['fileMesas'])) {
                     </a>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ModalProcesando" tabindex="-1" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+
+        <div class="modal-content bg-dark">
+            <h1 class="text-white text-center"><i class="fas fa-spinner fa-spin"></i></h1>
         </div>
     </div>
 </div>

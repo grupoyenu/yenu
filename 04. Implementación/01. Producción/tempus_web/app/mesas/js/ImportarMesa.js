@@ -18,6 +18,7 @@ $(document).ready(function () {
 
     $('#btnImportarMesa').click(function (evento) {
         evento.preventDefault();
+        $("#ModalProcesando").modal({});
         $.ajax({
             type: "POST",
             url: "./app/mesas/vistas/ProcesarImportarMesa.php",
@@ -26,7 +27,10 @@ $(document).ready(function () {
             },
             error: function (data) {
                 console.log(data);
-                $("#contenido").html('<div class="alert alert-danger text-center" role="alert"><strong>No se procesó la petición<strong></div>');
+                $("#seccionResultado").html('<div class="alert alert-danger text-center" role="alert"><strong>No se procesó la petición<strong></div>');
+            },
+            complete: function () {
+                $("#ModalProcesando").modal('toggle');
             }
         });
     });

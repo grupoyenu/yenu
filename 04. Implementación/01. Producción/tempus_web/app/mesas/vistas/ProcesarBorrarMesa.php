@@ -5,7 +5,7 @@ require_once '../../principal/modelos/AutoCargador.php';
 
 AutoCargador::cargarModulos();
 
-if (isset($_POST['idMesa'])) {
+if (isset($_POST['modalIdMesa'])) {
     $idMesa = $_POST['modalIdMesa'];
     $controlador = new ControladorMesa();
     $eliminacion = $controlador->borrar($idMesa);

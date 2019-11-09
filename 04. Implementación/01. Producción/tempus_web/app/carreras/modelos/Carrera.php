@@ -61,7 +61,6 @@ class Carrera {
             if ($existe == 1) {
                 $values = "({$idAsignatura}, {$this->codigo}, {$anio})";
                 $creacion = Conexion::getInstancia()->insertar("asignatura_carrera", $values);
-                $this->idasignatura = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
                 $this->descripcion = Conexion::getInstancia()->getDescripcion();
                 return $creacion;
             }

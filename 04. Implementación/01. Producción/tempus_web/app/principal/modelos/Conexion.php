@@ -75,6 +75,16 @@ class Conexion extends mysqli {
         return 0;
     }
 
+    public function borrarConSubconsulta($consulta) {
+        if ($this->query($consulta)) {
+            $this->descripcion = "Se realizó la eliminación del registro correctamente";
+            return 2;
+        }
+        $this->descripcion = "Error en la operación. Intente nuevamente";
+        Log::escribirLineaError("[METODO: borrarConSubconsulta][ERROR: Error al borrar registro (QUERY: $consulta)");
+        return 0;
+    }
+
     public function existe($consulta) {
         $result = $this->query($consulta);
         if ($result) {
@@ -140,6 +150,7 @@ class Conexion extends mysqli {
         $result = $this->query($consulta);
         if ($result) {
             if ($result->num_rows > 0) {
+                $this->descripcion = "Se obtuvo la información";
                 return $result->fetch_assoc();
             }
             $this->descripcion = "No se obtuvo la información";
@@ -172,6 +183,5 @@ class Conexion extends mysqli {
     public function finalizarTransaccion($resultado = TRUE) {
         ($resultado) ? $this->commit() : $this->rollback();
     }
-
 
 }

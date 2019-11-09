@@ -29,52 +29,74 @@ if (isset($_POST['idMesa'])) {
             $formulario = '
                 <input type="hidden" name="cantidadLlamados" id="cantidadLlamados" value="' . $cantidad . '">
                 <div class="card border-dark">
-                    <div class="card-header bg-dark text-white">Seleccione asignatura</div>
+                    <div class="card-header bg-dark text-white">Información básica</div>
                     <div class="card-body">
                         <div class="form-row">
                             <label for="carrera" class="col-sm-2 col-form-label">* Carrera:</label>
                             <div class="col">
-                                <select class="form-control mb-2" name="carrera" id="carrera" disabled></select>
+                                <input class="form-control mb-2" name="carrera" id="carrera"
+                                        value="' . $resultado['nombreCarrera'] . '" disabled>
                             </div>
                             <label for="carrera" class="col-sm-2 col-form-label">* Asignatura:</label>
                             <div class="col">
-                                <select class="form-control mb-2" name="asignatura" id="asignatura" disabled></select>
+                                <input class="form-control mb-2" name="asignatura" id="asignatura" 
+                                       value="' . $resultado['nombreAsignatura'] . '" disabled>
                             </div>
                         </div>
                     </div>
                 </div>
                 <br>
-                <div class="card border-dark">
-                    <div class="card-header bg-dark text-white">Seleccione los integrantes del tribunal</div>
+                <div class="card border-dark" title="Las modificaciones sobre el tribunal no generan alertas en la APP">
+                    <div class="card-header bg-dark text-white">Integrantes del tribunal</div>
                     <div class="card-body">
                         <form method="POST" name="formModificarTribunal" id="formModificarTribunal">
                             <input type="hidden" name="idTribunal" id="idTribunal" value="">
                             <div class="form-row">
                                 <label for="presidente" class="col-sm-2 col-form-label">* Presidente:</label>
                                 <div class="col">
-                                    <select class="form-control mb-2" name="presidente" id="presidente"></select>
+                                    <select class="form-control mb-2" name="presidente" id="presidente">
+                                        <option value="' . $resultado['idPresidente'] . '">' . $resultado['nombrePresidente'] . '</option>
+                                    </select>
                                 </div>
                                 <label for="vocal1" class="col-sm-2 col-form-label">* Vocal primero:</label>
                                 <div class="col">
-                                    <select class="form-control mb-2" name="vocal1" id="vocal1" disabled></select>
+                                    <select class="form-control mb-2" name="vocal1" id="vocal1">
+                                        <option value="' . $resultado['idVocalPri'] . '">' . $resultado['nombreVocalPri'] . '</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <label for="vocal2" class="col-sm-2 col-form-label">Vocal segundo:</label>
                                 <div class="col">
-                                    <select class="form-control mb-2" name="vocal2" id="vocal2" disabled></select>
+                                    <select class="form-control mb-2" name="vocal2" id="vocal2">
+                                        <option value="' . $resultado['idVocalSeg'] . '">' . $resultado['nombreVocalSeg'] . '</option>
+                                    </select>
                                 </div>
                                 <label for="suplente" class="col-sm-2 col-form-label">Suplente:</label>
                                 <div class="col">
-                                    <select class="form-control mb-2" name="suplente" id="suplente" disabled></select>
+                                    <select class="form-control mb-2" name="suplente" id="suplente">
+                                        <option value="' . $resultado['idSuplente'] . '">' . $resultado['nombreSuplente'] . '</option>
+                                    </select>
                                 </div>
+                            </div>
+                            <div class="form-row">
+                                <label class="col-sm-2 col-form-label">Operación:</label>
+                                <div class="col">
+                                    <button class="btn btn-success mb-2" 
+                                            title="Modificar"
+                                            id="btnModificarTribunal" name="btnModificarTribunal">
+                                        <i class="far fa-edit"></i> MODIFICAR
+                                    </button>
+                                </div>
+                                 <label class="col-sm-2 col-form-label"></label>
+                                <div class="col"></div>
                             </div>
                         </form>
                     </div>
                 </div>
                 <br>
-                <div class="card border-dark">
-                    <div class="card-header bg-dark text-white">Complete los datos del primer llamado</div>
+                <div class="card border-dark" title="Las modificaciones sobre el llamado generan alertas en la APP">
+                    <div class="card-header bg-dark text-white">Información del primer llamado</div>
                     <div class="card-body">
                         <form method="POST" name="formModificarLlamado1" id="formModificarLlamado1">
                             <input type="hidden" name="numeroLlamado" id="numeroLlamado" value="1">
@@ -100,9 +122,13 @@ if (isset($_POST['idMesa'])) {
                                 <div class="col"></div>
                             </div>
                             <div class="form-row">
-                                <label class="col-sm-2 col-form-label">Operaciones:</label>
+                                <label class="col-sm-2 col-form-label">Operación:</label>
                                 <div class="col">
-                                    <select class="form-control mb-2" name="aula1" id="aula1"></select>
+                                    <button class="btn btn-success mb-2" 
+                                            title="Modificar"
+                                            id="btnModificarLlamado" name="btnModificarLlamado">
+                                        <i class="far fa-edit"></i> MODIFICAR
+                                    </button>
                                 </div>
                                  <label class="col-sm-2 col-form-label"></label>
                                 <div class="col"></div>
@@ -113,8 +139,8 @@ if (isset($_POST['idMesa'])) {
             if ($cantidad == 2) {
                 $fechaSegundo = date("Y-m-d", strtotime('+3 days', strtotime($fechaHoy)));
                 $formulario .= '<br>
-                    <div class="card border-dark">
-                        <div class="card-header bg-dark text-white">Complete los datos del segundo llamado</div>
+                    <div class="card border-dark" title="Las modificaciones sobre el llamado generan alertas en la APP">
+                        <div class="card-header bg-dark text-white">Información del segundo llamado</div>
                         <div class="card-body">
                             <form method="POST" name="formModificarLlamado2" id="formModificarLlamado2">
                                 <input type="hidden" name="numeroLlamado" id="numeroLlamado" value="2">
@@ -146,10 +172,6 @@ if (isset($_POST['idMesa'])) {
             $formulario .= '
                 <div class="form-row mt-2 mb-4">
                     <div class="col text-right">
-                        <button type="submit" class="btn btn-success" 
-                                id="btnCrearMesa" title="Guardar datos">
-                            <i class="far fa-save"></i> GUARDAR
-                        </button>
                         <a href="mesa_buscar">
                             <button type="button" class="btn btn-outline-info">
                                 <i class="fas fa-search"></i> BUSCAR

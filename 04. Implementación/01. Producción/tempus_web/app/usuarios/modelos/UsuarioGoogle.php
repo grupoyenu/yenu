@@ -18,8 +18,10 @@ class UsuarioGoogle extends Usuario {
     /** @var string Imagen google */
     private $imagen;
 
-    public function __construct() {
-        ;
+    public function __construct($id = NULL, $email = NULL, $nombre = NULL, $estado = NULL, $rol = NULL, $googleid = NULL, $imagen = NULL) {
+        parent::__construct($id, $email, $nombre, "Google", $estado, $rol);
+        $this->setGoogleid($googleid);
+        $this->setImagen($imagen);
     }
 
     public function getGoogleid() {
@@ -39,12 +41,14 @@ class UsuarioGoogle extends Usuario {
     }
 
     public function crear() {
-        if ($this->getIdUsuario() && $this->googleid && $this->imagen) {
-            $values = "($this->getIdUsuario(), '$this->googleid', '$this->imagen')";
+        if ($this->getIdUsuario()) {
+            $idUsurio = $this->getIdUsuario();
+            $values = "($idUsurio, NULL, NULL)";
             $creacion = Conexion::getInstancia()->insertar("usuario_google", $values);
             $this->descripcion = Conexion::getInstancia()->getDescripcion();
             return $creacion;
         }
+        $this->descripcion = "No se recibieron todos los campos obligatorios";
         return 0;
     }
 

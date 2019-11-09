@@ -98,7 +98,7 @@ class MesaExamen {
 
     private function borrarLlamados() {
         $llamados = new Llamados();
-        $eliminacion = $llamados->borrar();
+        $eliminacion = $llamados->borrarSinMesa();
         if ($eliminacion != 2) {
             $this->descripcion = "No se realizó la eliminación del/los llamado/s asociados a la mesa de examen";
         }

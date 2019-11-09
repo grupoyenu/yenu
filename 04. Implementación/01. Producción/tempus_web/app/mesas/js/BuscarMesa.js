@@ -91,7 +91,7 @@ $(document).ready(function () {
             url: "./app/mesas/vistas/ProcesarBorrarMesa.php",
             data: $("#formBorrarMesa").serialize(),
             success: function (data) {
-                $('#cuerpoModal').html(data);
+                $('#cuerpoModalBorrar').html(data);
                 $('#btnBorrarMesa').hide();
                 $('#btnRefrescarPantalla').show();
             },

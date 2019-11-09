@@ -19,6 +19,13 @@ class Llamados {
         return $this->descripcion;
     }
 
+    private function alter() {
+        $consulta = "ALTER TABLE llamado AUTO_INCREMENT = 1";
+        $alter = Conexion::getInstancia()->borrarConSubconsulta($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $alter;
+    }
+
     /**
      * Realiza la eliminacion de todos los llamados en la base de datos. Tiene
      * como objetivo limpiar la tabla de llamados cuando se importan las nuevas
@@ -29,6 +36,9 @@ class Llamados {
         $consulta = "DELETE FROM llamado";
         $eliminacion = Conexion::getInstancia()->borrarConSubconsulta($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        if ($eliminacion == 2) {
+            return $this->alter();
+        }
         return $eliminacion;
     }
 

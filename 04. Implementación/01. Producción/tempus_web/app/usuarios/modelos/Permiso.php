@@ -34,11 +34,7 @@ class Permiso {
     }
 
     public function setIdPermiso($idPermiso) {
-        if ($idPermiso) {
-            $this->idPermiso = $idPermiso;
-        } else {
-            $this->descripcion = "No se pudo hacer referencia al permiso";
-        }
+        $this->idPermiso = $idPermiso;
     }
 
     public function setNombre($nombre) {
@@ -56,6 +52,7 @@ class Permiso {
             $this->descripcion = Conexion::getInstancia()->getDescripcion();
             return $eliminacion;
         }
+        $this->descripcion = "No se pudo hacer referencia al permiso";
         return 0;
     }
 
@@ -75,9 +72,25 @@ class Permiso {
             $campos = "nombre = '{$this->nombre}'";
             $condicion = "idpermiso={$this->idPermiso}";
             $modificacion = Conexion::getInstancia()->modificar("permiso", $campos, $condicion);
-            $this->descripcion = Conexion::getInstancia()->getDescripcion();
+            $this->descripcion = $this->nombre . ": " . Conexion::getInstancia()->getDescripcion();
             return $modificacion;
         }
+        $this->descripcion = "No se recibieron todos los campos obligatorios";
+        return 0;
+    }
+
+    public function obtener() {
+        if ($this->idPermiso) {
+            $consulta = "SELECT * FROM permiso WHERE idpermiso = {$this->idPermiso}";
+            $fila = Conexion::getInstancia()->obtener($consulta);
+            if (gettype($fila) == "array") {
+                $this->nombre = $fila['nombre'];
+                return 2;
+            }
+            $this->descripcion = "No se obtuvo la información del permiso";
+            return 1;
+        }
+        $this->descripcion = "No se pudo hacer referencia al permiso";
         return 0;
     }
 

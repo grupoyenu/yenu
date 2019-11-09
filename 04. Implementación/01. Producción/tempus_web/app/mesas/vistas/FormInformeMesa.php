@@ -57,6 +57,12 @@ for ($hora = 10; $hora < 23; ++$hora) {
                             </div>
                         </div>
                         <div class="form-row">
+                            <label for="docente" class="col-sm-2 col-form-label">Modificada:</label>
+                            <div class="col">
+                                <input type="text" class="form-control mb-2" 
+                                       name="docente" id="docente"
+                                       placeholder="Nombre de docente">
+                            </div>
                             <label for="modificada" class="col-sm-2 col-form-label">Modificada:</label>
                             <div class="col">
                                 <select class="form-control mb-2" name="modificada" id="modificada">

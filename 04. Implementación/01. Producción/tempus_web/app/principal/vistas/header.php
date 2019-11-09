@@ -2,14 +2,17 @@
 <html lang="es">
     <head>
         <title>TEMPUS</title>
-        <meta charset="UTF-8">
+        <meta http-equiv='Content-type' content='text/html; charset=iso-8859-1'/>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
         <!-- Hojas de estilo -->
         <link rel="stylesheet" type='text/css' href="./lib/css/bootstrap/bootstrap.min.css">
         <link rel="stylesheet" type='text/css' href="./lib/css/EstiloPrincipal.css">
         <link rel='stylesheet' type='text/css' href='./lib/css/dataTables-1.10.16/jquery.dataTables.min.css'/>
         <link rel='stylesheet' type='text/css' href='./lib/css/buttons-1.4.2/buttons.dataTables.min.css'/>
-        <link rel="stylesheet" type='text/css' href="./lib/css/fontAwesome/css/all.min.css" >
+        <link rel="stylesheet" type='text/css' href="./lib/css/fontAwesome/css/all.min.css">
+        <link rel="stylesheet" type='text/css' href="./lib/js/select2/select2.min.css">
+        <link rel="stylesheet" type='text/css' href="./lib/js/select2/select2.bootstrap.css">
         <!-- Archivos JavaScript -->
         <script type='text/javascript' src='./lib/js/jquery-3.3.1/jquery-3.3.1.min.js'></script>
         <script type='text/javascript' src='./lib/js/bootstrap/bootstrap.min.js'></script>
@@ -20,9 +23,11 @@
         <script type='text/javascript' src='./lib/js/pdfmake-0.1.32/pdfmake.min.js'></script>
         <script type='text/javascript' src='./lib/js/pdfmake-0.1.32/vfs_fonts.js'></script>
         <script type='text/javascript' src="./lib/js/feather/feather.min.js"></script>
+        <script type='text/javascript' src="./lib/js/select2/select2.min.js"></script>
         <script type='text/javascript' src="./lib/css/fontAwesome/js/all.min.js"></script>
         <script type='text/javascript' src="./app/principal/js/principal.js"></script>
-        
+
+
     </head>
     <body>
         <header id="main-header">
@@ -58,7 +63,7 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="mesa_buscar">Buscar</a>
                                 <a class="dropdown-item" href="mesa_crear">Crear</a>
-                                <a class="dropdown-item" href="mesa_importar">Importar</a>
+                                <a class="dropdown-item" href="mesa_seleccionar">Importar</a>
                                 <a class="dropdown-item" href="mesa_informe">Informe</a>
                             </div>
                         </li>

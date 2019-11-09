@@ -67,8 +67,8 @@ if (gettype($mesas) == "object") {
                                 <button class='btn btn-outline-warning editar' 
                                         name='{$mesa['idmesa']}' title='Editar'><i class='far fa-edit'></i>
                                 </button>
-                                <button class='btn btn-outline-danger baja' 
-                                        name='{$mesa['idmesa']}' title='Dar de baja'><i class='fas fa-trash'></i>
+                                <button class='btn btn-outline-danger borrar' 
+                                        name='{$mesa['idmesa']}' title='Borrar'><i class='fas fa-trash'></i>
                                 </button>
                             </div>
                         </td>

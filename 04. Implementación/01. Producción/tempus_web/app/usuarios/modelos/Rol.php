@@ -135,13 +135,14 @@ class Rol {
             }
             $this->descripcion = Conexion::getInstancia()->getDescripcion();
         }
+        $this->descripcion = "No se pudo hacer referencia al rol";
         return 0;
     }
 
     private function obtenerPermisos() {
         $permisos = new Permisos();
         $resultado = $permisos->listarPorRol($this->idRol);
-        if (gettype($resultado) == "resource") {
+        if (gettype($resultado) == "object") {
             $this->permisos = $resultado;
             return 2;
         }

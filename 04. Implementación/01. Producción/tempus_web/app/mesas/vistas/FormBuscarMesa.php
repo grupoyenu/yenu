@@ -153,7 +153,7 @@
                     <div class="modal-header">
                         <h4 class="modal-title text-center" id="myModalLabel"> <i class='fas fa-trash'></i> ELIMINACIÓN DE MESA DE EXAMEN</h4>
                     </div>
-                    <div class="modal-body" id="cuerpoModal">
+                    <div class="modal-body" id="cuerpoModalBorrar">
                         <form id="formBorrarMesa" name="formBorrarMesa" method="POST">
                             <input type="hidden" name="modalIdMesa" id="modalIdMesa">
                             <div class="container">
