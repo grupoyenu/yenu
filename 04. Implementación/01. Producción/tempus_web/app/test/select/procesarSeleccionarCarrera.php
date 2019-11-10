@@ -16,6 +16,7 @@ if (isset($_POST['nombre'])) {
         }
     } else {
         $arreglo[] = array('id' => "NO", 'text' => "Sin resultados");
+        $arreglo[] = array('id' => "CREAR", 'text' => $_POST['nombre']);
     }
 } else {
     $arreglo[] = array('id' => "0", 'text' => "ERROR 2");
