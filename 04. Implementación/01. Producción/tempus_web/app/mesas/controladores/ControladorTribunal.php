@@ -14,9 +14,11 @@ class ControladorTribunal {
         return $this->descripcion;
     }
 
-
     public function modificar($id, $presidente, $vocal1, $vocal2, $suplente) {
-        
+        $tribunal = new Tribunal($id, $presidente, $vocal1, $vocal2, $suplente);
+        $modificacion = $tribunal->modificar();
+        $this->descripcion = $tribunal->getDescripcion();
+        return $modificacion;
     }
 
 }

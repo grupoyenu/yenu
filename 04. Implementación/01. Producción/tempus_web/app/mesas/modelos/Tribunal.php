@@ -122,7 +122,7 @@ class Tribunal {
         if ($this->presidente && $this->vocalPrimero) {
             $vocal2 = ($this->vocalSegundo) ? $this->vocalSegundo : "NULL";
             $suplente = ($this->suplente) ? $this->suplente : "NULL";
-            $campos = "prediente={$this->presidente}, vocal1={$this->vocalPrimero}, vocal2={$vocal2}, suplente={$suplente}";
+            $campos = "presidente={$this->presidente}, vocal1={$this->vocalPrimero}, vocal2={$vocal2}, suplente={$suplente}";
             $condicion = "idtribunal={$this->idTribunal}";
             $modificacion = Conexion::getInstancia()->modificar("tribunal", $campos, $condicion);
             $this->descripcion = Conexion::getInstancia()->getDescripcion();

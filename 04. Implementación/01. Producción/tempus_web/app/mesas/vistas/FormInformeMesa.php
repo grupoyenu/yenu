@@ -1,5 +1,15 @@
 <?php
-$opcionesHora = "";
+$controlador = new ControladorLlamados();
+
+$fechas = $controlador->listarFechas();
+
+$opcionesFecha = $opcionesHora = "";
+if (gettype($fechas) == "object") {
+    while ($llamado = $fechas->fetch_assoc()) {
+        $fecha = date_format(date_create($llamado['fecha']), 'd/m/Y');
+        $opcionesFecha .= "<option value='{$llamado['fecha']}'>{$fecha}</option>";
+    }
+}
 for ($hora = 10; $hora < 23; ++$hora) {
     $opcionesHora .= "<option value='{$hora}:00'>{$hora}:00 hs</option>";
 }
@@ -38,26 +48,21 @@ for ($hora = 10; $hora < 23; ++$hora) {
                         <div class="form-row">
                             <label for="fecha" class="col-sm-2 col-form-label">Fecha:</label>
                             <div class="col">
-                                <select class="form-control mb-2">
-                                    <option value="TODOS">No aplicar filtro</option>
-                                    <option value="1">Lunes</option>
-                                    <option value="2">Martes</option>
-                                    <option value="3">Miercoles</option>
-                                    <option value="4">Jueves</option>
-                                    <option value="5">Viernes</option>
-                                    <option value="6">Sábado</option>
+                                <select class="form-control mb-2" name="fecha" id="fecha">
+                                    <option value="NO">No aplicar filtro</option>
+                                    <?= $opcionesFecha; ?>
                                 </select>
                             </div>
                             <label for="hora" class="col-sm-2 col-form-label">Hora:</label>
                             <div class="col">
                                 <select class="form-control mb-2" name="hora" id="hora">
-                                    <option value="TODOS">No aplicar filtro</option>
+                                    <option value="NO">No aplicar filtro</option>
                                     <?= $opcionesHora; ?>
                                 </select>
                             </div>
                         </div>
                         <div class="form-row">
-                            <label for="docente" class="col-sm-2 col-form-label">Modificada:</label>
+                            <label for="docente" class="col-sm-2 col-form-label">Docente:</label>
                             <div class="col">
                                 <input type="text" class="form-control mb-2" 
                                        name="docente" id="docente"
@@ -82,9 +87,7 @@ for ($hora = 10; $hora < 23; ++$hora) {
             </form>
         </div>
         <br>
-        <div id="seccionInferior" class="mt-4 mb-2">
-
-        </div>
+        <div id="seccionInferior" class="mt-4 mb-2"></div>
     </div>
 </div>
 <script type="text/javascript" src="./app/mesas/js/InformeMesa.js"></script>

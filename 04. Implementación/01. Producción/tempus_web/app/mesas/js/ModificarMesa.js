@@ -5,6 +5,9 @@
  */
 $(document).ready(function () {
 
+    var formTribunalOriginal = $("#formModificarTribunal").serialize();
+    var formLlamado1Original = $("#formModificarLlamado1").serialize();
+    var formLlamado2Original = $("#formModificarLlamado2").serialize();
 
     /**
      * INICIALIZA EL SELECTOR DEL PRESIDENTE CON EL PLUGIN SELECT2.
@@ -26,7 +29,7 @@ $(document).ready(function () {
             cache: true
         }
     });
-    
+
     /**
      * INICIALIZA EL SELECTOR DEL VOCAL PRIMERO CON EL PLUGIN SELECT2.
      */
@@ -47,7 +50,7 @@ $(document).ready(function () {
             cache: true
         }
     });
-    
+
     /**
      * INICIALIZA EL SELECTOR DEL VOCAL SEGUNDO CON EL PLUGIN SELECT2.
      */
@@ -89,7 +92,7 @@ $(document).ready(function () {
             cache: true
         }
     });
-    
+
     /**
      * INICIALIZA EL SELECTOR DEL AULA PARA EL PRIMER LLAMADO CON EL PLUGIN SELECT2.
      */
@@ -110,7 +113,7 @@ $(document).ready(function () {
             cache: true
         }
     });
-    
+
     /**
      * INICIALIZA EL SELECTOR DEL AULA PARA EL SEGUNDO LLAMADO CON EL PLUGIN SELECT2.
      */
@@ -132,16 +135,49 @@ $(document).ready(function () {
         }
     });
 
+    /* DETECTA LOS CAMBIOS EN LOS CAMPOS DEL FORMULARIO PARA ACTIVAR/DESACTIVAR EL BOTON DE GUARDADO */
+
+    $("#formModificarTribunal").change(function () {
+        var formModificado = $("#formModificarTribunal").serialize();
+        var habilitar = (formTribunalOriginal !== formModificado) ? false : true;
+        $("#btnModificarTribunal").prop("disabled", habilitar);
+    });
+
+
+    /* DETECTA LOS CAMBIOS EN LOS CAMPOS DEL FORMULARIO PARA ACTIVAR/DESACTIVAR EL BOTON DE GUARDADO */
+
+    $("#formModificarLlamado1").change(function () {
+        var formModificado = $("#formModificarLlamado2").serialize();
+        var habilitar = (formLlamado1Original !== formModificado) ? false : true;
+        $("#btnModificarLlamado1").prop("disabled", habilitar);
+    });
+
+
+    /* DETECTA LOS CAMBIOS EN LOS CAMPOS DEL FORMULARIO PARA ACTIVAR/DESACTIVAR EL BOTON DE GUARDADO */
+
+    $("#formModificarLlamado2").change(function () {
+        var formModificado = $("#formModificarLlamado2").serialize();
+        var habilitar = (formLlamado2Original !== formModificado) ? false : true;
+        $("#btnModificarLlamado2").prop("disabled", habilitar);
+    });
+
     /**
      * SE CONFIRMA LA MODIFICACION DEL TRIBUNAL.
      */
-    $('.modificarTribunal').click(function () {
+    $('#formModificarTribunal').submit(function (evento) {
+        evento.preventDefault();
         $.ajax({
             type: "POST",
             url: "./app/mesas/vistas/ProcesarModificarTribunal.php",
             data: $("#formModificarTribunal").serialize(),
             success: function (data) {
+                $("#presidente").prop("disabled", true);
+                $("#vocal1").prop("disabled", true);
+                $("#vocal2").prop("disabled", true);
+                $("#suplente").prop("disabled", true);
+                $("#btnModificarTribunal").prop("disabled", true);
                 $('#seccionResultado').html(data);
+                $('html, body').animate({scrollTop: 0}, 1250);
             },
             error: function (data) {
                 console.log(data);
@@ -153,13 +189,19 @@ $(document).ready(function () {
     /**
      * SE CONFIRMA LA MODIFICACION DEL PRIMER LLAMADO.
      */
-    $('#formModificarLlamado1').submit(function () {
+    $('#formModificarLlamado1').submit(function (evento) {
+        evento.preventDefault();
         $.ajax({
             type: "POST",
             url: "./app/mesas/vistas/ProcesarModificarLlamado.php",
             data: $("#formModificarLlamado1").serialize(),
             success: function (data) {
+                $("#fecha1").prop("readonly", true);
+                $("#hora1").prop("disabled", true);
+                $("#aula1").prop("disabled", true);
+                $("#btnModificarLlamado1").prop("disabled", true);
                 $('#seccionResultado').html(data);
+                $('html, body').animate({scrollTop: 0}, 1250);
             },
             error: function (data) {
                 console.log(data);
@@ -177,7 +219,12 @@ $(document).ready(function () {
             url: "./app/mesas/vistas/ProcesarModificarLlamado.php",
             data: $("#formModificarLlamado2").serialize(),
             success: function (data) {
+                $("#fecha2").prop("readonly", true);
+                $("#hora2").prop("disabled", true);
+                $("#aula2").prop("disabled", true);
+                $("#btnModificarLlamado2").prop("disabled", true);
                 $('#seccionResultado').html(data);
+                $('html, body').animate({scrollTop: 0}, 1250);
             },
             error: function (data) {
                 console.log(data);

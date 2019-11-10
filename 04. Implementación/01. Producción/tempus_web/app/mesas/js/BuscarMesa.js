@@ -6,14 +6,48 @@
 
 $(document).ready(function () {
 
-    /*
-     * INICIALIZA LA TABLA DE MESAS DE EXAMEN CON EL PLUGIN DATATABLE. 
-     */
-    $("table#tablaBuscarMesas").DataTable({
-        dom: 'Bfrtip',
-        responsive: true,
-        language: {url: "./lib/js/Spanish.json"}
-    });
+    incializarTabla();
+
+    function incializarTabla() {
+        var columnas = $("#tablaBuscarMesas tr").length;
+        if (columnas > 11) {
+            $("table#tablaBuscarMesas").DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    {extend: 'pdfHtml5',
+                        orientation: 'landscape',
+                        download: 'open',
+                        title: ' Mesas de examen ',
+                        exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15]}
+                    },
+                    {extend: 'excelHtml5', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15]}},
+                    {extend: 'print', text: 'Imprimir'},
+                    {extend: 'copy', text: 'Copiar'}
+                ],
+                responsive: true,
+                language: {url: "./lib/js/Spanish.json"}
+            });
+        } else {
+            $("table#tablaBuscarMesas").DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    {extend: 'pdfHtml5',
+                        orientation: 'landscape',
+                        download: 'open',
+                        title: ' Mesas de examen ',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                        }
+                    },
+                    {extend: 'excelHtml5', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}},
+                    {extend: 'print', text: 'Imprimir'},
+                    {extend: 'copy', text: 'Copiar'}
+                ],
+                responsive: true,
+                language: {url: "./lib/js/Spanish.json"}
+            });
+        }
+    }
 
     /* 
      * CARGA EL FORMULARIO DE MODIFICACION CUANDO SE PRESIONA EL BOTON EN LA TABLA.

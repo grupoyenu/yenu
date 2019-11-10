@@ -20,11 +20,7 @@ if (isset($_POST['idMesa'])) {
             date_default_timezone_set('America/Argentina/Buenos_Aires');
             $fechaHoy = date("Y-m-d");
 
-            // CARGA EL RANGO DE HORARIO PARA SELECCIONAR
-            $opcionesHora = "";
-            for ($hora = 10; $hora < 23; ++$hora) {
-                $opcionesHora .= "<option value='{$hora}:00'>{$hora}:00 hs</option>";
-            }
+
 
             $formulario = '
                 <input type="hidden" name="cantidadLlamados" id="cantidadLlamados" value="' . $cantidad . '">
@@ -50,7 +46,7 @@ if (isset($_POST['idMesa'])) {
                     <div class="card-header bg-dark text-white">Integrantes del tribunal</div>
                     <div class="card-body">
                         <form method="POST" name="formModificarTribunal" id="formModificarTribunal">
-                            <input type="hidden" name="idTribunal" id="idTribunal" value="">
+                            <input type="hidden" name="idTribunal" id="idTribunal" value="' . $resultado['idtribunal'] . '">
                             <div class="form-row">
                                 <label for="presidente" class="col-sm-2 col-form-label">* Presidente:</label>
                                 <div class="col">
@@ -82,9 +78,8 @@ if (isset($_POST['idMesa'])) {
                             <div class="form-row">
                                 <label class="col-sm-2 col-form-label">Operación:</label>
                                 <div class="col">
-                                    <button class="btn btn-success mb-2" 
-                                            title="Modificar"
-                                            id="btnModificarTribunal" name="btnModificarTribunal">
+                                    <button class="btn btn-success mb-2" title="Modificar"
+                                            id="btnModificarTribunal" name="btnModificarTribunal" disabled>
                                         <i class="far fa-edit"></i> MODIFICAR
                                     </button>
                                 </div>
@@ -95,12 +90,22 @@ if (isset($_POST['idMesa'])) {
                     </div>
                 </div>
                 <br>
-                <div class="card border-dark" title="Las modificaciones sobre el llamado generan alertas en la APP">
+                ';
+            if ($cantidad == 1) {
+                // SE ADAPTAN LAS OPCIONES DEL FORMULARIO PARA UN SOLO LLAMADO
+                $opcionesHora = "";
+                for ($hora = 10; $hora < 23; ++$hora) {
+                    $selected = ($resultado['horaPri'] == $hora . ":00:00") ? "selected" : "";
+                    $opcionesHora .= "<option value='{$hora}:00' $selected>{$hora}:00 hs</option>";
+                }
+
+                $formulario .= '
+                    <div class="card border-dark" title="Las modificaciones sobre el llamado generan alertas en la APP">
                     <div class="card-header bg-dark text-white">Información del primer llamado</div>
                     <div class="card-body">
                         <form method="POST" name="formModificarLlamado1" id="formModificarLlamado1">
                             <input type="hidden" name="numeroLlamado" id="numeroLlamado" value="1">
-                            <input type="hidden" name="idLlamado1" id="idLlamado1" value="">
+                            <input type="hidden" name="idLlamado1" id="idLlamado1" value="' . $resultado['idLlamadoPri'] . '">
                             <div class="form-row">
                                 <label for="fecha1" class="col-sm-2 col-form-label">* Fecha:</label>
                                 <div class="col">
@@ -108,9 +113,9 @@ if (isset($_POST['idMesa'])) {
                                            value="' . $fechaHoy . '" min="' . $fechaHoy . '"
                                            name="fecha1" id="fecha1" required>
                                 </div>
-                                <label for="vocal2" class="col-sm-2 col-form-label">* Hora:</label>
+                                <label for="hora1" class="col-sm-2 col-form-label">* Hora:</label>
                                 <div class="col">
-                                    <select class="form-control mb-2">' . $opcionesHora . '</select>
+                                    <select class="form-control mb-2" id="hora1" name="hora1">' . $opcionesHora . '</select>
                                 </div>
                             </div>
                             <div class="form-row">
@@ -124,9 +129,8 @@ if (isset($_POST['idMesa'])) {
                             <div class="form-row">
                                 <label class="col-sm-2 col-form-label">Operación:</label>
                                 <div class="col">
-                                    <button class="btn btn-success mb-2" 
-                                            title="Modificar"
-                                            id="btnModificarLlamado" name="btnModificarLlamado">
+                                    <button class="btn btn-success mb-2" title="Modificar"
+                                            id="btnModificarLlamado1" name="btnModificarLlamado1" disabled>
                                         <i class="far fa-edit"></i> MODIFICAR
                                     </button>
                                 </div>
@@ -136,15 +140,69 @@ if (isset($_POST['idMesa'])) {
                         </form>
                     </div>
                 </div>';
-            if ($cantidad == 2) {
+            } else {
+                // SE ADAPTA EL FORMULARIO PARA DOS LLAMADOS
                 $fechaSegundo = date("Y-m-d", strtotime('+3 days', strtotime($fechaHoy)));
-                $formulario .= '<br>
+
+                $opcionesHora1 = $opcionesHora2 = "";
+                for ($hora = 10; $hora < 23; ++$hora) {
+                    $selected = ($resultado['horaPri'] == $hora . ":00:00") ? "selected" : "";
+                    $opcionesHora1 .= "<option value='{$hora}:00' $selected>{$hora}:00 hs</option>";
+                }
+
+                for ($hora = 10; $hora < 23; ++$hora) {
+                    $selected = ($resultado['horaSeg'] == $hora . ":00:00") ? "selected" : "";
+                    $opcionesHora2 .= "<option value='{$hora}:00' $selected>{$hora}:00 hs</option>";
+                }
+
+                $formulario .= '
+                    <div class="card border-dark" title="Las modificaciones sobre el llamado generan alertas en la APP">
+                        <div class="card-header bg-dark text-white">Información del primer llamado</div>
+                        <div class="card-body">
+                            <form method="POST" name="formModificarLlamado1" id="formModificarLlamado1">
+                                <input type="hidden" name="numeroLlamado" id="numeroLlamado" value="1">
+                                <input type="hidden" name="idLlamado1" id="idLlamado1" value="' . $resultado['idLlamadoPri'] . '">
+                                <div class="form-row">
+                                    <label for="fecha1" class="col-sm-2 col-form-label">* Fecha:</label>
+                                    <div class="col">
+                                        <input type="date" class="form-control mb-2" 
+                                               value="' . $fechaHoy . '" min="' . $fechaHoy . '"
+                                               name="fecha1" id="fecha1" required>
+                                    </div>
+                                    <label for="vocal2" class="col-sm-2 col-form-label">* Hora:</label>
+                                    <div class="col">
+                                        <select class="form-control mb-2" id="hora1" name="hora1">' . $opcionesHora1 . '</select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <label for="aula1" class="col-sm-2 col-form-label">Aula:</label>
+                                    <div class="col">
+                                        <select class="form-control mb-2" name="aula1" id="aula1"></select>
+                                    </div>
+                                     <label class="col-sm-2 col-form-label"></label>
+                                    <div class="col"></div>
+                                </div>
+                                <div class="form-row">
+                                    <label class="col-sm-2 col-form-label">Operación:</label>
+                                    <div class="col">
+                                        <button class="btn btn-success mb-2" title="Modificar"
+                                                id="btnModificarLlamado1" name="btnModificarLlamado1" disabled>
+                                            <i class="far fa-edit"></i> MODIFICAR
+                                        </button>
+                                    </div>
+                                     <label class="col-sm-2 col-form-label"></label>
+                                    <div class="col"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <br>
                     <div class="card border-dark" title="Las modificaciones sobre el llamado generan alertas en la APP">
                         <div class="card-header bg-dark text-white">Información del segundo llamado</div>
                         <div class="card-body">
                             <form method="POST" name="formModificarLlamado2" id="formModificarLlamado2">
                                 <input type="hidden" name="numeroLlamado" id="numeroLlamado" value="2">
-                                <input type="hidden" name="idLlamado2" id="idLlamado2" value="">
+                                <input type="hidden" name="idLlamado2" id="idLlamado2" value="' . $resultado['idLlamadoSeg'] . '">
                                 <div class="form-row">
                                     <label for="fecha2" class="col-sm-2 col-form-label">* Fecha y hora:</label>
                                     <div class="col">
@@ -153,7 +211,7 @@ if (isset($_POST['idMesa'])) {
                                                value="' . $fechaSegundo . '" min="' . $fechaSegundo . '" required>
                                     </div>
                                     <div class="col">
-                                        <select class="form-control mb-2" name="hora2" id="hora2">' . $opcionesHora . '</select>
+                                        <select class="form-control mb-2" name="hora2" id="hora2">' . $opcionesHora2 . '</select>
                                     </div>
                                     <div class="col-1 text-right"></div>
                                 </div>
@@ -161,6 +219,17 @@ if (isset($_POST['idMesa'])) {
                                     <label for="aula2" class="col-sm-2 col-form-label">Aula:</label>
                                     <div class="col">
                                         <select class="form-control mb-2" name="aula2" id="aula2"></select>
+                                    </div>
+                                     <label class="col-sm-2 col-form-label"></label>
+                                    <div class="col"></div>
+                                </div>
+                                <div class="form-row">
+                                    <label class="col-sm-2 col-form-label">Operación:</label>
+                                    <div class="col">
+                                        <button class="btn btn-success mb-2" title="Modificar"
+                                                id="btnModificarLlamado2" name="btnModificarLlamado2" disabled>
+                                            <i class="far fa-edit"></i> MODIFICAR
+                                        </button>
                                     </div>
                                      <label class="col-sm-2 col-form-label"></label>
                                     <div class="col"></div>

@@ -6,17 +6,15 @@ require_once '../../principal/modelos/AutoCargador.php';
 AutoCargador::cargarModulos();
 
 if (isset($_POST['idTribunal'])) {
-
     $idTribunal = $_POST['idTribunal'];
     $presidente = $_POST['presidente'];
     $vocal1 = $_POST['vocal1'];
-    $vocal2 = $_POST['vocal2'];
-    $suplente = $_POST['suplente'];
+    $vocal2 = ($_POST['vocal2'] != "NO") ? $_POST['vocal2'] : NULL;
+    $suplente = ($_POST['suplente'] != "NO") ? $_POST['suplente'] : NULL;
     $controlador = new ControladorTribunal();
-    $modificacion = $controlador->modificar($id, $presidente, $vocal1, $vocal2, $suplente);
+    $modificacion = $controlador->modificar($idTribunal, $presidente, $vocal1, $vocal2, $suplente);
     $mensaje = $controlador->getDescripcion();
     $resultado = ControladorHTML::mostrarAlertaResultadoOperacion($modificacion, $mensaje);
-    
 } else {
     $mensaje = "No se recibió la información desde el formulario";
     $resultado = ControladorHTML::mostrarAlertaResultadoOperacion(0, $mensaje);

@@ -10,14 +10,15 @@ if (isset($_POST['carrera']) && isset($_POST['asignatura'])) {
     $asignatura = $_POST['asignatura'];
     $fecha = $_POST['fecha'];
     $hora = $_POST['hora'];
+    $docente = $_POST['docente'];
     $modificada = $_POST['modificada'];
     $controlador = new ControladorMesa();
 
     $cantidad = $controlador->obtenerCantidadLlamados();
     if ($cantidad > 0) {
         $mesas = $controlador->listarInforme($carrera, $asignatura, $fecha, $hora, $modificada);
-        if (gettype($mesas) == "resource") {
-
+        if (gettype($mesas) == "object") {
+            $filas = "";
             if ($cantidad == 1) {
                 // CARGA LA TABLA PARA UN SOLO LLAMADO EN EL TURNO DE MESA
                 while ($mesa = $mesas->fetch_assoc()) {
@@ -120,7 +121,7 @@ if (isset($_POST['carrera']) && isset($_POST['asignatura'])) {
                 </div>';
             }
         } else {
-            $cuerpo = ControladorHTML::mostrarAlertaResultadoOperacion($cantidad, $controlador->getDescripcion());
+            $cuerpo = ControladorHTML::mostrarAlertaResultadoOperacion($mesas, $controlador->getDescripcion());
         }
     } else {
         $cuerpo = ControladorHTML::mostrarAlertaResultadoOperacion($cantidad, $controlador->getDescripcion());
@@ -131,5 +132,5 @@ if (isset($_POST['carrera']) && isset($_POST['asignatura'])) {
 }
 
 $titulo = "Resultado de la búsqueda";
-$resultado = ControladorHTML::mostrarCardResultadoBusqueda($titulo, $contenido);
+$resultado = ControladorHTML::mostrarCardResultadoBusqueda($titulo, $cuerpo);
 echo $resultado;

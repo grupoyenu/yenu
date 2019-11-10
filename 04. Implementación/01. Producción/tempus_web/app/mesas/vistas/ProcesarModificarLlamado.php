@@ -5,14 +5,14 @@ require_once '../../principal/modelos/AutoCargador.php';
 
 AutoCargador::cargarModulos();
 
-if (isset($_POST['idLlamado'])) {
+if (isset($_POST['numeroLlamado'])) {
     $nro = $_POST['numeroLlamado'];
     $idLlamado = $_POST['idLlamado' . $nro];
     $fecha = $_POST['fecha' . $nro];
     $hora = $_POST['hora' . $nro];
-    $aula = $_POST['aula' . $nro];
+    $aula = isset($_POST['aula' . $nro]) ? $_POST['aula' . $nro] : NULL;
     $controlador = new ControladorLlamados();
-    $modificacion = $controlador->modificar($id, $fecha, $hora, $aula);
+    $modificacion = $controlador->modificar($idLlamado, $fecha, $hora, $aula);
     $mensaje = $controlador->getDescripcion();
     $resultado = ControladorHTML::mostrarAlertaResultadoOperacion($modificacion, $mensaje);
 } else {
