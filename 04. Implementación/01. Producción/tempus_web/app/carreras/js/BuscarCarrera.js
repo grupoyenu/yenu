@@ -7,6 +7,19 @@ $(document).ready(function () {
 
     $("table#tablaBuscarCarreras").DataTable({
         dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'pdfHtml5',
+                orientation: 'landscape',
+                pageSize: 'LEGAL',
+                download: 'open',
+                text: 'Descargar PDF',
+                title: ' Mesas de examen '
+                
+            },
+            'excel',
+            'csvHtml5'
+        ],
         responsive: true,
         language: {url: "./lib/js/Spanish.json"}
     });
