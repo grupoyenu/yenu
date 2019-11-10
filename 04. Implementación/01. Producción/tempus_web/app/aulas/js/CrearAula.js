@@ -20,17 +20,14 @@ $(document).ready(function () {
             url: "./app/aulas/vistas/ProcesarCrearAula.php",
             data: $("#formCrearAula").serialize(),
             success: function (data) {
+                $('#seccionResultado').html(data[0]['resultado']);
                 if (data[0]['exito'] === true) {
-                    $('#seccionCentral').html(data[0]['div']);
-                    $("#seccionInferior").empty();
-                } else {
-                    $('#seccionCentral').html(data[0]['div']);
+                    $("#formCrearAula")[0].reset();
                 }
             },
             error: function (data) {
                 console.log(data);
-                var div = '<div class="alert alert-danger text-center" role="alert">No se procesó la petición por un error interno</div>';
-                $("#seccionCentral").html(div);
+                $('#seccionResultado').html("<div class='alert alert-danger text-center' role='alert'><i class='fas fa-exclamation-triangle'></i> <strong>No se procesó la petición</strong></div>");
             }
         });
     });

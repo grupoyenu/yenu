@@ -2,14 +2,7 @@
 
 class ControladorAula {
 
-    private $aula;
-    private $aulas;
     private $descripcion;
-
-    public function __construct() {
-        $this->aula = new Aula();
-        $this->aulas = new Aulas();
-    }
 
     public function getDescripcion() {
         return $this->descripcion;
@@ -23,10 +16,9 @@ class ControladorAula {
     }
 
     public function crear($sector, $nombre) {
-        $parametros = array(NULL, $nombre, $sector);
-        $this->aula = new Aula($parametros);
-        $creacion = $this->aula->crear();
-        $this->descripcion = $this->aula->getDescripcion();
+        $aula = new Aula(NULL, $sector, $nombre);
+        $creacion = $aula->crear();
+        $this->descripcion = $aula->getDescripcion();
         return $creacion;
     }
 
@@ -56,9 +48,9 @@ class ControladorAula {
     }
 
     public function modificar($id, $sector, $nombre) {
-        $this->aula = new Aula($id, $sector, $nombre);
-        $modificacion = $this->aula->modificar();
-        $this->descripcion = $this->aula->getDescripcion();
+        $aula = new Aula($id, $sector, $nombre);
+        $modificacion = $aula->modificar();
+        $this->descripcion = $aula->getDescripcion();
         return $modificacion;
     }
 

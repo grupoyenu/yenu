@@ -78,7 +78,7 @@ class Aula {
             $values = "(NULL,'" . $this->nombre . "','" . $this->sector . "')";
             $creacion = Conexion::getInstancia()->insertar("aula", $values);
             $this->idaula = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
-            $this->descripcion = Conexion::getInstancia()->getDescripcion();
+            $this->descripcion = $this->nombre . ": " . Conexion::getInstancia()->getDescripcion();
             return $creacion;
         }
         return 1;
@@ -89,7 +89,7 @@ class Aula {
             $campos = "nombre = '{$this->nombre}', sector = '{$this->sector}'";
             $condicion = "idaula={$this->idAula}";
             $modificacion = Conexion::getInstancia()->modificar("aula", $campos, $condicion);
-            $this->descripcion = Conexion::getInstancia()->getDescripcion();
+            $this->descripcion = $this->nombre . ": " . Conexion::getInstancia()->getDescripcion();
             return $modificacion;
         }
         $this->descripcion = ($this->idAula) ? $this->descripcion : "No se pudo hacer referencia al aula";

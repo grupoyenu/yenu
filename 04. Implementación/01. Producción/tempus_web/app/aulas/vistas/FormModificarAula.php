@@ -72,8 +72,8 @@ if (isset($_POST['idAula'])) {
     <div id="seccionResultado"></div>
     <div id="seccionFormulario">
         <form id="formModificarAula" name="formModificarAula" method="POST">
-            <div class="card">
-                <div class="card-header">Formulario de modificación</div>
+            <div class="card border-dark">
+                <div class="card-header bg-dark text-white">Formulario de modificación</div>
                 <div class="card-body"><?= $contenido; ?></div>
             </div>
             <div class="form-row"> 
