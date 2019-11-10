@@ -2,9 +2,9 @@
 <html lang="es">
     <head>
         <title>TEMPUS</title>
-        <meta http-equiv='Content-type' content='text/html; charset=iso-8859-1'/>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        
+
         <!-- Hojas de estilo -->
         <link rel="stylesheet" type='text/css' href="./lib/css/bootstrap/bootstrap.min.css">
         <link rel="stylesheet" type='text/css' href="./lib/css/EstiloPrincipal.css">
@@ -19,6 +19,8 @@
         <script type='text/javascript' src='./lib/js/dataTables-1.10.16/jquery.dataTables.min.js'></script>
         <script type='text/javascript' src='./lib/js/buttons-1.4.2/buttons.html5.min.js'></script>
         <script type='text/javascript' src='./lib/js/buttons-1.4.2/buttons.print.min.js'></script>
+        <script type='text/javascript' src='./lib/js/buttons-1.4.2/buttons.flash.min.js'></script>
+        <script type='text/javascript' src='./lib/js/buttons-1.4.2/jszip.min.js'></script>
         <script type='text/javascript' src='./lib/js/buttons-1.4.2/dataTables.buttons.min.js'></script>
         <script type='text/javascript' src='./lib/js/pdfmake-0.1.32/pdfmake.min.js'></script>
         <script type='text/javascript' src='./lib/js/pdfmake-0.1.32/vfs_fonts.js'></script>
