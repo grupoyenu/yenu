@@ -15,7 +15,7 @@ $(document).ready(function () {
                 download: 'open',
                 text: 'Descargar PDF',
                 title: ' Mesas de examen '
-                
+
             },
             'excel',
             'csvHtml5'
@@ -36,15 +36,26 @@ $(document).ready(function () {
             },
             error: function (data) {
                 console.log(data);
-                $("#contenido").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
+                $("#seccionInferior").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
             }
         });
     });
 
-    $(".agregarAsignatura").click(function (evento) {
-        evento.preventDefault();
-        $("#codigo").val($(this).attr("name"));
-        $("#fmBuscarCarrera").submit();
+    $(".agregar").click(function () {
+        var codigo = $(this).attr("name");
+        var nombre = $(this).parents("tr").find("td").eq(1).html();
+        $.ajax({
+            type: "POST",
+            url: "./app/carreras/vistas/FormAgregarAsignatura.php",
+            data: "codigo=" + codigo + "&nombre=" + nombre,
+            success: function (data) {
+                $('#contenido').html(data);
+            },
+            error: function (data) {
+                console.log(data);
+                $("#seccionInferior").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
+            }
+        });
     });
 
 

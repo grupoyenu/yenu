@@ -31,19 +31,15 @@ class Asignaturas {
         return $resultado;
     }
 
-    public function buscarPorCarrera($codigo, $pertenece) {
-        $asignaturas = array();
-        if ($codigo) {
-            $condicion = ($pertenece) ? "IN" : "NOT IN";
-            $consulta = "SELECT ma.* FROM asignatura ma "
-                    . "WHERE ma.idasignatura {$condicion} "
-                    . "(SELECT idasignatura FROM asignatura_carrera WHERE idcarrera = {$codigo}) "
-                    . "ORDER BY ma.nombre ASC";
-            $resultado = Conexion::getInstancia()->seleccionar($consulta);
-            $this->descripcion = Conexion::getInstancia()->getDescripcion();
-            return $resultado;
-        }
-        return $asignaturas;
+    public function buscarPorCarrera($codigo, $asignatura, $pertenece) {
+        $condicion = ($pertenece) ? "IN" : "NOT IN";
+        $consulta = "SELECT ma.* FROM asignatura ma "
+                . "WHERE ma.idasignatura {$condicion} "
+                . "(SELECT idasignatura FROM asignatura_carrera WHERE idcarrera = {$codigo}) "
+                . "AND ma.nombre LIKE '%{$asignatura}%' ORDER BY ma.nombre ASC";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
     }
 
     public function listar() {
@@ -75,7 +71,7 @@ class Asignaturas {
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
         return $resultado;
     }
-    
+
     public function listarSinMesa($codigo, $nombre) {
         $consulta = "";
         $resultado = Conexion::getInstancia()->seleccionar($consulta);

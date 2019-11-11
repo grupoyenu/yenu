@@ -24,24 +24,7 @@ $(document).ready(function () {
             },
             error: function (data) {
                 console.log(data);
-                $("#contenido").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
-            }
-        });
-    });
-
-    $(".agregar").click(function () {
-        var idAsignatura = $(this).attr("name");
-        var nombre = $(this).parents("tr").find("td").eq(0).html();
-        $.ajax({
-            type: "POST",
-            url: "./app/asignaturas/vistas/FormAgregarCarrera.php",
-            data: "idAsignatura=" + idAsignatura + "&nombre=" + nombre,
-            success: function (data) {
-                $('#contenido').html(data);
-            },
-            error: function (data) {
-                console.log(data);
-                $("#contenido").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
+                $("#seccionInferior").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
             }
         });
     });

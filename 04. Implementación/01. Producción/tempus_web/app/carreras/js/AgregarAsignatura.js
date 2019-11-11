@@ -7,6 +7,29 @@
 
 $(document).ready(function () {
 
+    var codigo = $("#codigo").val();
+
+    alert(codigo);
+
+    $('select#asignatura').select2({
+        placeholder: 'Seleccione una opcion',
+        theme: "bootstrap",
+        minimumInputLength: 3,
+        ajax: {
+            url: "./app/asignaturas/vistas/ProcesarSeleccionarAsignaturaCarrera.php",
+            dataType: 'json',
+            type: "POST",
+            delay: 250,
+            data: function (params) {
+                return {nombre: params.term, codigoCarrera: $("#codigo").val()};
+            },
+            processResults: function (data) {
+                return {results: data};
+            },
+            cache: true
+        }
+    });
+
     $("#formAgregarAsignatura").submit(function (evento) {
         evento.preventDefault();
         $.ajax({
@@ -27,38 +50,6 @@ $(document).ready(function () {
                 $("#seccionCentral").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
             }
         });
-    });
-
-    $("#btnSeleccionarAsignatura").click(function (evento) {
-        evento.preventDefault();
-        $("#ModalSeleccionarAsignatura").modal({});
-        $.ajax({
-            type: "POST",
-            url: "./app/asignaturas/vistas/ProcesarSeleccionarAsignatura.php",
-            success: function (data) {
-                $("#cuerpoModal").html(data);
-            },
-            error: function (data) {
-                console.log(data);
-                $("#cuerpoModal").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
-            }
-        });
-    });
-
-    /*
-     $("#asignaturas").change(function () {
-     
-     });*/
-
-    $('#asignatura').bind('input', function () {
-        var options = $("#asignaturas")[0].options;
-        $("#idasignatura").val("");
-        for (var i = 0; i < options.length; i++) {
-            if (options[i].value === $(this).val()) {
-                $("#idasignatura").val(options[i].getAttribute("data-id"));
-                break;
-            }
-        }
     });
 
 });

@@ -11,6 +11,7 @@ if (isset($_POST['idAsignatura']) && isset($_POST['nombre'])) {
     $carreras = $controlador->listarCarrerasAsignatura($id);
     if (gettype($carreras) == "object") {
         $titulo = "Información detallada de asignatura: " . $nombre;
+        $filas = "";
         while ($carrera = $carreras->fetch_assoc()) {
             $filas .= "
                 <tr>

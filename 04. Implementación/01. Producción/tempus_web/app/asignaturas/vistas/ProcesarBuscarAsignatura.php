@@ -41,9 +41,6 @@ if (gettype($asignaturas) == "object") {
                         <button class='btn btn-outline-info detalle' 
                             name='{$asignatura['idasignatura']}' title='Ver detalle'><i class='fas fa-eye'></i>
                         </button>
-                        <button class='btn btn-outline-success agregar' 
-                            name='{$asignatura['idasignatura']}' title='Agregar a carrera'><i class='fas fa-plus-circle'></i>
-                        </button>
                     </div>
                 </td> 
             </tr>";
