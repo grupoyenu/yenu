@@ -31,9 +31,9 @@ class ControladorAsignaturas {
         return $resultado;
     }
 
-    public function buscarPorCarrera($codigo, $pertenece) {
+    public function buscarPorCarrera($codigo, $nombre, $pertenece) {
         $this->asignaturas = new Asignaturas();
-        $resultado = $this->asignaturas->buscarPorCarrera($codigo, $pertenece);
+        $resultado = $this->asignaturas->buscarPorCarrera($codigo, $nombre, $pertenece);
         $this->descripcion = $this->asignaturas->getDescripcion();
         return $resultado;
     }

@@ -12,7 +12,6 @@ $controlador = new ControladorDocentes();
 $arreglo = array();
 
 if (isset($_POST['nombre'])) {
-    Log::escribirLineaError("HAY NOMBRE " . $_POST['nombre']);
     $nombre = $_POST['nombre'];
     $docentes = $controlador->buscar($nombre);
 } else {

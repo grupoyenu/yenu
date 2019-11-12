@@ -9,47 +9,62 @@ $(document).ready(function () {
 
     var codigo = $("#codigo").val();
 
-    alert(codigo);
-
     $('select#asignatura').select2({
         placeholder: 'Seleccione una opcion',
         theme: "bootstrap",
         minimumInputLength: 3,
+        maximumSelectionLength: 50,
         ajax: {
             url: "./app/asignaturas/vistas/ProcesarSeleccionarAsignaturaCarrera.php",
             dataType: 'json',
             type: "POST",
             delay: 250,
             data: function (params) {
-                return {nombre: params.term, codigoCarrera: $("#codigo").val()};
+                return {nombre: params.term, codigoCarrera: codigo};
             },
             processResults: function (data) {
                 return {results: data};
-            },
-            cache: true
+            }
+        }
+    });
+
+    $('select#asignatura').change(function () {
+        var opcion = $(this).find(":selected").val();
+        if (opcion.substring(0, 1) === "_") {
+            var nombre = $(this).find(":selected").text();
+            var mensaje = "La asignatura '" + nombre + "' será verificada y creada";
+            $("#seccionResultado").html('<div class="alert alert-info text-center" role="alert"><strong>' + mensaje + '</strong></div>');
+        } else {
+            $("#seccionResultado").empty();
         }
     });
 
     $("#formAgregarAsignatura").submit(function (evento) {
         evento.preventDefault();
-        $.ajax({
-            type: "POST",
-            dataType: 'json',
-            url: "./app/carreras/vistas/ProcesarAgregarAsignatura.php",
-            data: $("#formAgregarAsignatura").serialize(),
-            success: function (data) {
-                if (data[0]['exito'] === true) {
-                    $('#seccionCentral').html(data[0]['div']);
-                    $("#seccionInferior").empty();
-                } else {
-                    $('#seccionCentral').html(data[0]['div']);
+        var asignatura = $('select#asignatura').find(":selected").val();
+        if (asignatura !== "NO") {
+            $("#nombreAsignatura").val($('select#asignatura').find(":selected").text());
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: "./app/carreras/vistas/ProcesarAgregarAsignatura.php",
+                data: $("#formAgregarAsignatura").serialize(),
+                success: function (data) {
+                    $('#seccionResultado').html(data[0]['resultado']);
+                    if (data[0]['exito'] === true) {
+                        $("#formAgregarAsignatura")[0].reset();
+                    }
+                },
+                error: function (data) {
+                    console.log(data);
+                    $("#seccionResultado").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
                 }
-            },
-            error: function (data) {
-                console.log(data);
-                $("#seccionCentral").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
-            }
-        });
+            });
+        } else {
+            var mensaje = "Se debe seleccionar o indicar una asignatura";
+            $("#seccionResultado").html('<div class="alert alert-danger text-center" role="alert"><strong>' + mensaje + '</strong></div>');
+        }
     });
 
 });
+

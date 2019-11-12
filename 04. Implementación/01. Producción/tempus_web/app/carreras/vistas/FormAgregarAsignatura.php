@@ -9,10 +9,11 @@ if (isset($_POST['codigo'])) {
     $codigo = $_POST['codigo'];
     $cuerpo = '
         <input type="hidden" name="codigo" id="codigo" value="' . $codigo . '">
+        <input type="hidden" name="nombreAsignatura" id="nombreAsignatura" value="">
         <div class="form-row">
             <label for="anio" class="col-sm-2 col-form-label text-left">* Asignatura:</label>
             <div class="col">
-                <select class="form-control mb-2" id="asignatura" name="asignatura"></select>
+                <select class="form-control mb-2" id="asignatura" name="asignatura" required></select>
             </div>
             <label for="anio" class="col-sm-2 col-form-label text-left">* Año:</label>
             <div class="col">
@@ -25,6 +26,10 @@ if (isset($_POST['codigo'])) {
                 </select>
             </div>
         </div>';
+    $boton = '<button type="submit" class="btn btn-success" 
+                        id="btnAgregarAsignatura" title="Guardar datos">
+                    <i class="far fa-save"></i> GUARDAR
+                </button>';
 } else {
     $mensaje = "No se obtuvo la información desde el formulario";
     $cuerpo = ControladorHTML::mostrarAlertaResultadoOperacion(0, $mensaje);
@@ -44,7 +49,7 @@ if (isset($_POST['codigo'])) {
     </div>
     <div id="seccionResultado"></div>
     <div id="seccionFormulario">
-        <form id="formCrearAula" name="formCrearAula" method="POST">
+        <form id="formAgregarAsignatura" name="formAgregarAsignatura" method="POST">
             <div class="card border-dark">
                 <div class="card-header bg-dark text-white">Complete el formulario y presione CREAR</div>
                 <div class="card-body"><?= $cuerpo; ?></div>

@@ -14,10 +14,9 @@ class ControladorCarreras {
     }
 
     public function agregarAsignatura($codigo, $idAsignatura, $anio) {
-        $carrera = new Carrera();
-        $carrera->setCodigo($codigo);
-        $resultado = $this->carrera->agregarAsignatura($idAsignatura, $anio);
-        $this->descripcion = $this->carrera->getDescripcion();
+        $carrera = new Carrera($codigo);
+        $resultado = $carrera->agregarAsignatura($idAsignatura, $anio);
+        $this->descripcion = $carrera->getDescripcion();
         return $resultado;
     }
 
