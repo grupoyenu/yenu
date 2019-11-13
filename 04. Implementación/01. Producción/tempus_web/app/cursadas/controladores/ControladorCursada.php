@@ -15,6 +15,10 @@ class ControladorCursada {
         return $this->descripcion;
     }
 
+    public function borrar($carrera, $asignatura) {
+        
+    }
+
     public function buscar($campo, $valor) {
         $cursadas = new Cursadas();
         $resultado = $cursadas->buscar($campo, $valor);
@@ -33,6 +37,21 @@ class ControladorCursada {
         }
         $this->descripcion = "No se pudo inicializar la transacción para operar";
         return 1;
+    }
+
+    public function importar($cursadas) {
+        $horariosCursada = new Cursadas();
+        if (Conexion::getInstancia()->iniciarTransaccion()) {
+            $resultado = $horariosCursada->importar($cursadas);
+            $this->descripcion = $horariosCursada->getDescripcion();
+            return $resultado;
+        }
+        $this->descripcion = "No se pudo inicializar la transacción para operar";
+        return 1;
+    }
+
+    public function listarInforme() {
+        
     }
 
     public function listarUltimasCreadas() {

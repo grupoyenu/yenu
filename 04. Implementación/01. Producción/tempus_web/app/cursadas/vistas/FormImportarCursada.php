@@ -1,16 +1,14 @@
 <?php
-
-
+$boton = "";
 if (isset($_FILES['fileCursadas'])) {
-
     $mensaje = ValidadorCursada::validarArchivo();
     if (!$mensaje) {
         // EL ARCHIVO CUMPLE CON LAS CONDICIONES PARA SER PROCESADO
-
         $nombre_temporal = $_FILES['fileCursadas']['tmp_name'];
         $registros = fopen($nombre_temporal, "r");
         rewind($registros);
         $filas = "";
+        $sesionCursadas = array();
         while (($registro = fgetcsv($registros, 2000, ";")) !== FALSE) {
             $errores = ValidadorCursada::validarRegistro($registro);
             $classCodigo = ($errores[0] == "Correcto") ? "" : "table-danger";
@@ -23,6 +21,10 @@ if (isset($_FILES['fileCursadas'])) {
             $classJueves = ($errores[7] == "Correcto") ? "" : "table-danger";
             $classViernes = ($errores[8] == "Correcto") ? "" : "table-danger";
             $classSabado = ($errores[9] == "Correcto") ? "" : "table-danger";
+            $estado = ($errores[10]) ? "Correcta" : "Incorrecta";
+            if ($errores[10]) {
+                $sesionCursadas[] = $registro;
+            }
             $filas .= "
                 <tr>
                     <td title='$errores[0]' class='{$classCodigo}'>$registro[0]</td>
@@ -57,6 +59,13 @@ if (isset($_FILES['fileCursadas'])) {
                     <tbody>' . $filas . '</tbody>
                 </table>
             </div>';
+        if (count($sesionCursadas) > 0) {
+            $_SESSION['cursadas'] = $sesionCursadas;
+            $boton = '<button type="submit" class="btn btn-success" 
+                            id="btnImportarCursada" name="btnImportarCursada" title="Guardar datos (' . $cantidad . ')">
+                        <i class="far fa-save"></i> GUARDAR
+                    </button>';
+        }
     } else {
         // EL ARCHIVO NO CUMPLIO ALGUNA DE LAS VALIDACIONES 
         $cuerpo = ControladorHTML::mostrarAlertaResultadoOperacion(0, $mensaje);
@@ -88,6 +97,7 @@ if (isset($_FILES['fileCursadas'])) {
             </div>
             <div class="form-row mt-2 mb-4">
                 <div class="col text-right">
+                    <?= $boton; ?>
                     <a href="cursada_seleccionar">
                         <button type="button" class="btn btn-outline-info">
                             <i class="fas fa-search"></i> VOLVER
@@ -95,6 +105,13 @@ if (isset($_FILES['fileCursadas'])) {
                     </a>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ModalProcesando" tabindex="-1" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content bg-dark">
+            <h1 class="text-white text-center"><i class="fas fa-spinner fa-spin"></i></h1>
         </div>
     </div>
 </div>

@@ -22,10 +22,9 @@ if (isset($_POST['idCarrera']) && isset($_POST['idAsignatura']) && isset($_POST[
     $exito = ($creacion == 2) ? TRUE : FALSE;
     $resultado = ControladorHTML::mostrarAlertaResultadoOperacion($creacion, $mensaje);
 } else {
-    $resultado = "<div class='alert alert-danger text-center' role='alert'>
-                    <i class='fas fa-exclamation-triangle'></i> 
-                    <strong>No se obtuvo la información desde el formulario</strong>
-                  </div>";
+
+    $mensaje = "No se obtuvo la información desde el formulario";
+    $resultado = ControladorHTML::mostrarAlertaResultadoOperacion(0, $mensaje);
 }
 
 /* RETORNA EL ARREGLO JSON PARA MOSTRAR LA INFORMACION SEGUN CORRESPONDA */
