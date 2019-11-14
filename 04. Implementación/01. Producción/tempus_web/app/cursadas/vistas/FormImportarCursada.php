@@ -28,15 +28,15 @@ if (isset($_FILES['fileCursadas'])) {
             $filas .= "
                 <tr>
                     <td title='$errores[0]' class='{$classCodigo}'>$registro[0]</td>
-                    <td title='$errores[1]' class='{$classCarrera}'>$registro[1]</td>
-                    <td title='$errores[2]' class='{$classAsignatura}'>$registro[2]</td>
+                    <td title='$errores[1]' class='{$classCarrera}'>" . utf8_encode($registro[1]) . "</td>
+                    <td title='$errores[2]' class='{$classAsignatura}'>" . utf8_encode($registro[2]) . "</td>
                     <td title='$errores[3]' class='{$classAnio}'>$registro[3]</td>
-                    <td title='$errores[4]' class='{$classLunes}'>$registro[4] $registro[5] $registro[6] $registro[7]</td>
-                    <td title='$errores[5]' class='{$classMartes}'>$registro[8] $registro[9] $registro[10] $registro[11]</td>
-                    <td title='$errores[6]' class='{$classMiercoles}'>$registro[12] $registro[13] $registro[14] $registro[15]</td>
-                    <td title='$errores[7]' class='{$classJueves}'>$registro[16] $registro[17] $registro[18] $registro[19]</td>
-                    <td title='$errores[8]' class='{$classViernes}'>$registro[20] $registro[21] $registro[22] $registro[23]</td>
-                    <td title='$errores[9]' class='{$classSabado}'>$registro[24] $registro[25] $registro[26] $registro[27]</td>
+                    <td title='$errores[4]' class='{$classLunes}'>$registro[4] $registro[5] $registro[6] " . utf8_encode($registro[7]) . "</td>
+                    <td title='$errores[5]' class='{$classMartes}'>$registro[8] $registro[9] $registro[10] " . utf8_encode($registro[11]) . "</td>
+                    <td title='$errores[6]' class='{$classMiercoles}'>$registro[12] $registro[13] $registro[14] " . utf8_encode($registro[15]) . "</td>
+                    <td title='$errores[7]' class='{$classJueves}'>$registro[16] $registro[17] $registro[18] " . utf8_encode($registro[19]) . "</td>
+                    <td title='$errores[8]' class='{$classViernes}'>$registro[20] $registro[21] $registro[22] " . utf8_encode($registro[23]) . "</td>
+                    <td title='$errores[9]' class='{$classSabado}'>$registro[24] $registro[25] $registro[26] " . utf8_encode($registro[27]) . "</td>
                 </tr>";
         }
         $cuerpo = '
@@ -59,7 +59,8 @@ if (isset($_FILES['fileCursadas'])) {
                     <tbody>' . $filas . '</tbody>
                 </table>
             </div>';
-        if (count($sesionCursadas) > 0) {
+        $cantidad = count($sesionCursadas);
+        if ($cantidad > 0) {
             $_SESSION['cursadas'] = $sesionCursadas;
             $boton = '<button type="submit" class="btn btn-success" 
                             id="btnImportarCursada" name="btnImportarCursada" title="Guardar datos (' . $cantidad . ')">

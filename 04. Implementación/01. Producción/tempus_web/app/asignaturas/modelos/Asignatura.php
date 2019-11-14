@@ -33,22 +33,9 @@ class Asignatura {
     }
 
     public function setNombre($nombre) {
-        if (preg_match("/^[A-Za-zÑÁÉÍÓÚñáéíóú0123456789,. ]{5,255}$/", $nombre)) {
+        if (preg_match("/^[A-Za-zÁÉÍÓÚÑüáéíóúñ0-9,. ]{5,60}$/", $nombre)) {
             $this->nombre = Utilidades::convertirCamelCase($nombre);
-        } else {
-            $this->descripcion = "El nombre no cumple con el formato requerido";
         }
-    }
-
-    public function agregarCarrera($codigo, $anio) {
-        if ($this->idAsignatura) {
-            $values = "({$this->idAsignatura}, {$codigo}, {$anio})";
-            $creacion = Conexion::getInstancia()->insertar("asignatura_carrera", $values);
-            $this->idasignatura = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
-            $this->descripcion = Conexion::getInstancia()->getDescripcion();
-            return $creacion;
-        }
-        return 1;
     }
 
     public function crear() {
@@ -63,7 +50,8 @@ class Asignatura {
             }
             return $existe;
         }
-        return 0;
+        $this->descripcion = "No se recibió el nombre de la asignatura o no cumple el formato requerido";
+        return 1;
     }
 
     public function obtener() {
@@ -78,7 +66,7 @@ class Asignatura {
             return 1;
         }
         $this->descripcion = "No se pudo hacer referencia a la asignatura";
-        return 0;
+        return 1;
     }
 
     private function verificarExistencia() {

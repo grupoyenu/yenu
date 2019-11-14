@@ -44,6 +44,8 @@ class ControladorCursada {
         if (Conexion::getInstancia()->iniciarTransaccion()) {
             $resultado = $horariosCursada->importar($cursadas);
             $this->descripcion = $horariosCursada->getDescripcion();
+            $confirmar = (gettype($resultado) == "array") ? TRUE : FALSE;
+            Conexion::getInstancia()->finalizarTransaccion($confirmar);
             return $resultado;
         }
         $this->descripcion = "No se pudo inicializar la transacción para operar";

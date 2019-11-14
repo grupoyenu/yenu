@@ -38,16 +38,12 @@ class Carrera {
     public function setCodigo($codigo) {
         if (preg_match("/^[0-9]{1,3}$/", $codigo)) {
             $this->codigo = $codigo;
-        } else {
-            $this->descripcion = "El código no cumple el formato requerido";
         }
     }
 
     public function setNombre($nombre) {
-        if (preg_match("/^[A-Za-zÁÉÍÓÚÑáéíóúñ. ]{10,255}$/", $nombre)) {
+        if (preg_match("/^[A-Za-zÁÉÍÓÚÑáéíóúñ. ]{10,60}$/", $nombre)) {
             $this->nombre = Utilidades::convertirCamelCase($nombre);
-        } else {
-            $this->descripcion = "El nombre no cumple con el formato requerido";
         }
     }
 
@@ -56,7 +52,7 @@ class Carrera {
     }
 
     public function agregarAsignatura($idAsignatura, $anio) {
-        if ($this->codigo) {
+        if ($this->codigo && $idAsignatura && $anio) {
             $existe = $this->verificarRelacion($idAsignatura);
             if ($existe == 1) {
                 $values = "({$idAsignatura}, {$this->codigo}, {$anio})";
@@ -66,6 +62,7 @@ class Carrera {
             }
             return $existe;
         }
+        $this->descripcion = "No se recibieron los campos obligatorios o no cumplen el formato requerido";
         return 1;
     }
 
@@ -80,6 +77,7 @@ class Carrera {
             }
             return $existe;
         }
+        $this->descripcion = "No se recibieron los campos obligatorios o no cumplen el formato requerido";
         return 1;
     }
 
@@ -95,6 +93,7 @@ class Carrera {
             $this->descripcion = Conexion::getInstancia()->getDescripcion();
             return 1;
         }
+        $this->descripcion = "No se pudo hacer referencia a la carrera";
         return 1;
     }
 
@@ -106,6 +105,7 @@ class Carrera {
                     . "WHERE idcarrera = {$this->codigo} ORDER BY ac.anio ASC, ma.nombre ASC";
             return Conexion::getInstancia()->seleccionar($consulta);
         }
+        $this->descripcion = "No se pudo hacer referencia a la carrera";
         return 1;
     }
 

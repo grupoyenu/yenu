@@ -51,18 +51,14 @@ class Aula {
     }
 
     public function setNombre($nombre) {
-        if (preg_match("/^[A-Za-zÁÉÍÓÚÑáéíóúñ0123456789 ]{1,40}$/", $nombre)) {
+        if (preg_match("/^[A-Za-zÁÉÍÓÚÑáéíóúñ0-9 ]{1,40}$/", $nombre)) {
             $this->nombre = Utilidades::convertirCamelCase($nombre);
-        } else {
-            $this->descripcion = "El nombre no cumple con el formato requerido";
         }
     }
 
     public function setSector($sector) {
         if (preg_match("/^[A-Za-z]$/", $sector)) {
             $this->sector = Utilidades::convertirCamelCase($sector);
-        } else {
-            $this->descripcion = "El sector no cumple con el formato requerido";
         }
     }
 
@@ -75,12 +71,17 @@ class Aula {
 
     public function crear() {
         if ($this->nombre && $this->sector) {
-            $values = "(NULL,'" . $this->nombre . "','" . $this->sector . "')";
-            $creacion = Conexion::getInstancia()->insertar("aula", $values);
-            $this->idaula = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
-            $this->descripcion = $this->nombre . ": " . Conexion::getInstancia()->getDescripcion();
-            return $creacion;
+            $existencia = $this->verificarExistencia();
+            if ($existencia == 1) {
+                $values = "(NULL,'" . $this->nombre . "','" . $this->sector . "')";
+                $creacion = Conexion::getInstancia()->insertar("aula", $values);
+                $this->idaula = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
+                $this->descripcion = $this->nombre . ": " . Conexion::getInstancia()->getDescripcion();
+                return $creacion;
+            }
+            return $existencia;
         }
+        $this->descripcion = "No se recibieron los campos obligatorios o no cumplen el formato requerido";
         return 1;
     }
 
@@ -93,7 +94,7 @@ class Aula {
             return $modificacion;
         }
         $this->descripcion = ($this->idAula) ? $this->descripcion : "No se pudo hacer referencia al aula";
-        return 0;
+        return 1;
     }
 
     public function obtener() {
@@ -109,7 +110,7 @@ class Aula {
             return 1;
         }
         $this->descripcion = "No se pudo hacer referencia al aula";
-        return 0;
+        return 1;
     }
 
     public function obtenerClases() {
@@ -122,7 +123,7 @@ class Aula {
             $this->clases = Conexion::getInstancia()->seleccionar($consulta);
         }
         $this->descripcion = "No se pudo hacer referencia al aula";
-        return 0;
+        return 1;
     }
 
     public function obtenerMesas() {
@@ -139,6 +140,18 @@ class Aula {
         }
         $this->descripcion = "No se pudo hacer referencia al aula";
         return 1;
+    }
+
+    private function verificarExistencia() {
+        $consulta = "SELECT idaula FROM aula WHERE nombre = '{$this->nombre}' AND sector = '{$this->sector}'";
+        $fila = Conexion::getInstancia()->obtener($consulta);
+        if (gettype($fila) == "array") {
+            $this->idAula = $fila['idaula'];
+            $this->descripcion = "Se verificó la existencia del aula";
+            return 2;
+        }
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $fila;
     }
 
 }

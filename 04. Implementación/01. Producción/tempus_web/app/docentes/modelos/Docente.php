@@ -11,9 +11,6 @@ class Docente {
     /** @var string Descripcion para mostrar mensajes */
     private $descripcion;
 
-    /** @var string Nombre de la tabla en la base de datos. */
-    private $TABLA = "docente";
-
     public function __construct($id = NULL, $nombre = NULL) {
         $this->setIdDocente($id);
         $this->setNombre($nombre);
@@ -34,16 +31,12 @@ class Docente {
     public function setIdDocente($idDocente) {
         if ($idDocente) {
             $this->idDocente = $idDocente;
-        } else {
-            $this->descripcion = "No se pudo hacer referencia al docente";
         }
     }
 
     public function setNombre($nombre) {
-        if (preg_match("/^[A-Za-zÁÉÍÓÚÑáéíóúñ., ]{4,100}$/", $nombre)) {
+        if (preg_match("/^[A-Za-zÁÉÍÓÚÑáéíóúñ,. ]{4,60}$/", $nombre)) {
             $this->nombre = Utilidades::convertirCamelCase($nombre);
-        } else {
-            $this->descripcion = "El nombre de docente no cumple con el formato requerido";
         }
     }
 
@@ -59,7 +52,8 @@ class Docente {
             }
             return $existe;
         }
-        return 0;
+        $this->descripcion = "No se recibió el nombre del docente o no cumple con el formato requerido";
+        return 1;
     }
 
     private function verificarExistencia() {

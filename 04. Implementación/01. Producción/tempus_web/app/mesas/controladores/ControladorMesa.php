@@ -38,9 +38,15 @@ class ControladorMesa {
 
     public function importar($mesasExamen, $numeroLlamados) {
         $mesas = new MesasExamen();
-        $resultado = $mesas->importar($mesasExamen, $numeroLlamados);
-        $this->descripcion = $mesas->getDescripcion();
-        return $resultado;
+        if (Conexion::getInstancia()->iniciarTransaccion()) {
+            $resultado = $mesas->importar($mesasExamen, $numeroLlamados);
+            $this->descripcion = $mesas->getDescripcion();
+            $confirmar = (gettype($resultado) == "array") ? TRUE : FALSE;
+            Conexion::getInstancia()->finalizarTransaccion($confirmar);
+            return $resultado;
+        }
+        $this->descripcion = "No se pudo inicializar la transacción para operar";
+        return 1;
     }
 
     public function listarInforme($carrera, $asignatura, $fecha, $hora, $modificada) {

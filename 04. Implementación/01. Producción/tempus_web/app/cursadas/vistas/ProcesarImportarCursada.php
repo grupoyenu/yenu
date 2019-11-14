@@ -14,9 +14,9 @@ AutoCargador::cargarModulos();
 session_start();
 
 if (isset($_SESSION['cursadas'])) {
-    $cursadas = $_SESSION['mesas'];
+    $cursadas = $_SESSION['cursadas'];
     $controlador = new ControladorCursada();
-    $resultado = $controlador->importar($cursada);
+    $resultado = $controlador->importar($cursadas);
     if (gettype($resultado) == "array") {
         $filas = $tabla = "";
         $mensaje = ControladorHTML::mostrarAlertaResultadoOperacion(2, $controlador->getDescripcion());

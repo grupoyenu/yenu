@@ -19,6 +19,13 @@ class Cursadas {
         return $this->descripcion;
     }
 
+    public function borrar() {
+        $consulta = "DELETE FROM cursada";
+        $eliminacion = Conexion::getInstancia()->borrarConSubconsulta($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $eliminacion;
+    }
+
     public function buscar($campo, $valor) {
         if ($campo) {
             $consulta = "SELECT * FROM vista_cursadas WHERE {$campo} LIKE '%{$valor}%'";
@@ -31,9 +38,19 @@ class Cursadas {
     }
 
     public function importar($cursadas) {
-        $truncaClases = $this->truncar();
-        if ($truncaClases == 2) {
-            
+        $clases = new Clases();
+        $planes = new Planes();
+        $borraClases = $clases->borrar();
+        $borraCursadas = $this->borrar();
+        $borraPlanes = $planes->borrar();
+        if (($borraClases == 2) && ($borraCursadas == 2) && ($borraPlanes == 2)) {
+            $errores = $this->importarCursada($cursadas);
+            if (count($errores) == count($cursadas)) {
+                $this->descripcion = "No se crearon horarios de cursada";
+                return 1;
+            }
+            $this->descripcion = "Horarios de cursada creados exitosamente: " . (count($cursadas) - count($errores)) . " de " . count($cursadas);
+            return $errores;
         }
         $this->descripcion = "No se pudieron eliminar los datos previos";
         return 0;
@@ -54,7 +71,8 @@ class Cursadas {
                 if ($datos[$posicion]) {
                     $aula = new Aula(NULL, $datos[$posicion + 2], $datos[$posicion + 3]);
                     $aula->crear();
-                    $clase = new Clase(NULL, $dia, $datos[4], $datos[5], $aula->getIdAula());
+                    Log::escribirLineaError($dia . " " . $datos[$posicion] . " " . $datos[$posicion + 1] . " " . $aula->getIdAula());
+                    $clase = new Clase(NULL, $dia, $datos[$posicion], $datos[$posicion + 1], $aula->getIdAula());
                     $clases[] = $clase;
                 }
                 $posicion = $posicion + 4;
@@ -84,13 +102,6 @@ class Cursadas {
         $resultado = Conexion::getInstancia()->seleccionar($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
         return $resultado;
-    }
-
-    public function truncar() {
-        $consulta = "TRUNCATE TABLE clases";
-        $eliminacion = Conexion::getInstancia()->borrarConSubconsulta($consulta);
-        $this->descripcion = Conexion::getInstancia()->getDescripcion();
-        return $eliminacion;
     }
 
 }

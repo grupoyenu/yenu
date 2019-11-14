@@ -64,7 +64,7 @@ class Cursada {
                     $this->descripcion = "No se pudo realizar la creación de la clase";
                     return $resultado;
                 }
-                $claves[] = $resultado;
+                $claves[] = $clase->getId();
             }
             return $this->crearCursada($claves);
         }

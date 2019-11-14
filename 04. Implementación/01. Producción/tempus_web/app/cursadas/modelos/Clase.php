@@ -125,7 +125,7 @@ class Clase {
     }
 
     private function evaluarExistencia() {
-        $consulta = "SELECT idclase FROM {$this->TABLA} "
+        $consulta = "SELECT idclase FROM clase "
                 . "WHERE dia ={$this->dia} AND desde = '{$this->horaInicio}' "
                 . "AND hasta = '{$this->horaFin}' AND idaula={$this->aula}";
         $fila = Conexion::getInstancia()->obtener($consulta);

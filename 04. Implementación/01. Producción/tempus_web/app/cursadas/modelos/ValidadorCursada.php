@@ -26,15 +26,16 @@ class ValidadorCursada {
     static function validarRegistro($registro) {
         $errores = array();
         $errores[0] = ValidadorCursada::validarCodigoCarrera($registro[0]);
-        $errores[1] = ValidadorCursada::validarNombreCarrera($registro[1]);
-        $errores[2] = ValidadorCursada::validarNombreAsignatura($registro[2]);
+        $errores[1] = ValidadorCursada::validarNombreCarrera(utf8_encode($registro[1]));
+        $errores[2] = ValidadorCursada::validarNombreAsignatura(utf8_encode($registro[2]));
         $errores[3] = ValidadorCursada::validarAnio($registro[3]);
-        $errores[4] = ValidadorCursada::validarClase($registro[4], $registro[5], $registro[6], $registro[7]);
-        $errores[5] = ValidadorCursada::validarClase($registro[8], $registro[9], $registro[10], $registro[11]);
-        $errores[6] = ValidadorCursada::validarClase($registro[12], $registro[13], $registro[14], $registro[15]);
-        $errores[7] = ValidadorCursada::validarClase($registro[16], $registro[17], $registro[18], $registro[19]);
-        $errores[8] = ValidadorCursada::validarClase($registro[20], $registro[21], $registro[22], $registro[23]);
-        $errores[9] = ValidadorCursada::validarClase($registro[24], $registro[25], $registro[26], $registro[27]);
+        $errores[4] = ValidadorCursada::validarClase($registro[4], $registro[5], $registro[6], utf8_encode($registro[7]));
+        $errores[5] = ValidadorCursada::validarClase($registro[8], $registro[9], $registro[10], utf8_encode($registro[11]));
+        $errores[6] = ValidadorCursada::validarClase($registro[12], $registro[13], $registro[14], utf8_encode($registro[15]));
+        $errores[7] = ValidadorCursada::validarClase($registro[16], $registro[17], $registro[18], utf8_encode($registro[19]));
+        $errores[8] = ValidadorCursada::validarClase($registro[20], $registro[21], $registro[22], utf8_encode($registro[23]));
+        $errores[9] = ValidadorCursada::validarClase($registro[24], $registro[25], $registro[26], utf8_encode($registro[27]));
+        $errores[10] = ValidadorCursada::estadoRegistro($errores);
         return $errores;
     }
 
@@ -48,7 +49,7 @@ class ValidadorCursada {
 
     static function validarNombreAsignatura($nombre) {
         if (!ctype_digit($nombre)) {
-            return preg_match("/^[A-Za-zÁÉÍÓÚÑáéíóúñ0-9,. ]{5,60}$/", $nombre) ? "Correcto" : "Nombre de asignatura: No cumple el formato [A-Za-z0-9,. ]{5,60}'";
+            return preg_match("/^[A-Za-zÁÉÍÓÚÑüáéíóúñ0-9,. ]{5,60}$/", $nombre) ? "Correcto" : "Nombre de asignatura: No cumple el formato [A-Za-z0-9,. ]{5,60}'";
         }
         return "Nombre de asignatura: Está completamente compuesto de números";
     }
@@ -73,6 +74,15 @@ class ValidadorCursada {
             }
         }
         return "Correcto";
+    }
+
+    private static function estadoRegistro($errores) {
+        foreach ($errores as $columna) {
+            if (($columna != "Correcta") && ($columna != "Correcto")) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
