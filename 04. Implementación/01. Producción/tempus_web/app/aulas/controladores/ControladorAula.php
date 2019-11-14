@@ -33,9 +33,9 @@ class ControladorAula {
         return $resultado;
     }
 
-    public function listarAulasDisponibles($dia, $desde, $hasta) {
+    public function listarAulasDisponibles($dia, $desde, $hasta, $nombre) {
         $aulas = new Aulas();
-        $resultado = $aulas->listarAulasDisponibles($dia, $desde, $hasta);
+        $resultado = $aulas->listarAulasDisponibles($dia, $desde, $hasta, $nombre);
         $this->descripcion = $aulas->getDescripcion();
         return $resultado;
     }

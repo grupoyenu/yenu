@@ -33,8 +33,8 @@ class Aulas {
         return $resultado;
     }
 
-    public function listarAulasDisponibles($dia, $desde, $hasta) {
-        $consulta = "SELECT * FROM aula WHERE idaula NOT IN "
+    public function listarAulasDisponibles($dia, $desde, $hasta, $nombre) {
+        $consulta = "SELECT * FROM aula WHERE nombre LIKE '%{$nombre}%' AND idaula NOT IN "
                 . "(SELECT idaula FROM clase WHERE dia = {$dia} AND "
                 . "((desde > '{$desde}' AND desde < '{$hasta}') OR "
                 . "(hasta > '{$desde}' AND hasta < '{$hasta}')))";
