@@ -25,61 +25,55 @@ if (isset($_POST['idCarrera']) && isset($_POST['idAsignatura'])) {
             }
 
             if ($resultado['idClase' . $dia]) {
-                $aula = '<input type="text" class="form-control" 
-                                id="aula' . $dia . '" name="aula' . $dia . '" 
-                                value="' . $resultado['sector' . $dia] . ' ' . utf8_encode($resultado['aula' . $dia]) . '"
-                                placeholder="Nombre de aula" readonly>';
+                $opcionAula = '<option value="' . $resultado['idAula' . $dia] . '">' . $resultado['sector' . $dia] . ' ' . utf8_encode($resultado['aula' . $dia]) . '</option>';
                 $operaciones = '
                     <div class="btn-group btn-group-sm">
-                        <button class="btn btn-outline-info seleccionarAula" 
-                                name="' . $dia . '"
-                                title="Cambiar aula"><i class="far fa-hand-point-right"></i>
+                        <button class="btn btn-outline-warning editar" disabled id="editar' . $dia . '"
+                                    name="" title="Editar clase"><i class="far fa-edit"></i>
                         </button>
-                        <button class="btn btn-outline-danger baja" 
-                                name="' . $resultado['idClase' . $dia] . '" 
+                        <button class="btn btn-outline-danger baja" disabled
+                                name="' . $resultado['idClase' . $dia] . '" id="baja' . $dia . '"
                                 title="Dar de baja"><i class="fas fa-trash"></i>
                         </button>
                     </div>';
             } else {
-                $aula = '<input type="text" class="form-control"
-                        id="aula' . $dia . '" name="aula' . $dia . '"  
-                        placeholder="Nombre de aula" readonly>';
+                $opcionAula = "";
                 $operaciones = '
                     <div class="btn-group btn-group-sm">
-                        <button class="btn btn-outline-info seleccionarAula" 
-                                name="' . $dia . '"
-                                title="Seleccionar aula"><i class="far fa-hand-point-right"></i>
-                        </button>
-                        <button class="btn btn-outline-success crear" 
+                        <button class="btn btn-outline-success crear" disabled id="crear' . $dia . '"
                                     name="" title="Crear clase"><i class="fas fa-plus-circle"></i>
                         </button>
                     </div>';
             }
-
+            $nombreDia = ValidadorCursada::nombreDia($dia);
             $filas .= '
                 <tr name="' . $dia . '">
                     <td class="align-middle text-center">
                         <input type="checkbox" class="clases" id="clases" name="cbClases[]" value="' . $dia . '">
                     </td>
-                    <td class="align-middle">Lunes</td>
+                    <td class="align-middle">' . $nombreDia . '</td>
                     <td class="align-middle">
                         <select class="form-control horaInicio" 
-                                id="horaInicio' . $dia . '" name="horaInicio' . $dia . '">' . $opcionesInicio . '</select>
+                                id="horaInicio' . $dia . '" name="horaInicio' . $dia . '" disabled>' . $opcionesInicio . '</select>
                     </td>
                     <td class="align-middle">
                         <select class="form-control horaFin" 
-                                id="horaFin' . $dia . '" name="horaFin' . $dia . '">' . $opcionesFin . '</select>
+                                id="horaFin' . $dia . '" name="horaFin' . $dia . '" disabled>' . $opcionesFin . '</select>
                     </td>
-                    <td class="align-middle">' . $aula . '</td>
+                    <td class="align-middle">
+                        <select class="form-control aula" style="width:100%" name="aula' . $dia . '" id="aula' . $dia . '" disabled required>
+                        ' . $opcionAula . '
+                        </select>
+                    </td>
                     <td class="align-middle text-center">' . $operaciones . '</td>
                 </tr>';
         }
 
         $i = 2;
         $contenido = '
-            <div class="card">
-                <div class="card-header">Información de la asignatura</div>
-                <div class="card-body">
+            <div class="card border-dark">
+                <div class="card-header bg-dark text-white">Información de la asignatura</div>
+                <div class="card-body ">
                     <div class="form-row">
                         <label for="carrera" class="col-sm-2 col-form-label">* Carrera:</label>
                         <div class="col">
@@ -98,8 +92,8 @@ if (isset($_POST['idCarrera']) && isset($_POST['idAsignatura'])) {
                     </div>
                 </div>
             </div>
-            <div class="card mt-2">
-                    <div class="card-header">Complete los horarios de cursada</div>
+            <div class="card mt-2 border-dark">
+                    <div class="card-header bg-dark text-white">Complete los horarios de cursada</div>
                     <div class="card-body">
                         <table class="table table table-bordered table-hover" cellspacing="0" style="width:100%">
                             <thead>
@@ -109,7 +103,7 @@ if (isset($_POST['idCarrera']) && isset($_POST['idAsignatura'])) {
                                     <th>Hora de inicio</th>
                                     <th>Hora de fin</th>
                                     <th>Aula</th>
-                                    <th></th>
+                                    <th>Operaciones</th>
                                 </tr>
                             </thead>
                             <tbody>' . $filas . '</tbody>
@@ -142,19 +136,16 @@ if (isset($_POST['idCarrera']) && isset($_POST['idAsignatura'])) {
         <form id="formModificarCursada" name="formModificarCursada" method="POST">
             <?= $contenido; ?>
             <div class="form-row"> 
-                <div class="col text-right mt-2"><?= $botones; ?></div>
+                <div class="col text-right mt-2">
+                    <?= $botones; ?>
+                    <a href="cursada_buscar">
+                        <button type="button" class="btn btn-outline-info">
+                            <i class="fas fa-search"></i> BUSCAR
+                        </button>
+                    </a>
+                </div>
             </div>
         </form>
-    </div>
-    <div class="modal fade" id="modalSeleccionarAula" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title text-center">SELECCIONAR AULA</h4>
-                </div>
-                <div class="modal-body" id="cuerpoModalAula"></div>
-            </div>
-        </div>
     </div>
     <div class="modal fade" id="modalBorrarClase" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">

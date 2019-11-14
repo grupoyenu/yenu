@@ -48,15 +48,12 @@
                     </div>
                     <div class="modal-body" id="cuerpoModal">
                         <div class="form-row">
-                            <label for="mdcCodigoCarrera" class="col-sm-2 col-form-label">Código:</label>
-                            <div class="col">
+                            <label for="mdcCodigoCarrera" class="col-sm-2 col-form-label">Carrera:</label>
+                            <div class="col-1">
                                 <input type="text" class="form-control mb-2" 
                                        name="mdcCodigoCarrera" id="mdcCodigoCarrera"
                                        placeholder="Nombre de carrera" readonly>
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <label for="mdcNombreCarrera" class="col-sm-2 col-form-label">Carrera:</label>
                             <div class="col">
                                 <input type="text" class="form-control mb-2" 
                                        name="mdcNombreCarrera" id="mdcNombreCarrera"
@@ -70,6 +67,9 @@
                                        name="mdcNombreAsignatura" id="mdcNombreAsignatura"
                                        placeholder="Nombre de asignatura" readonly>
                             </div>
+                        </div>
+                        <div class="form-row mt-2 mb-2">
+                            <label class="col-form-label"><strong>HORARIOS DE CLASE</strong></label>
                         </div>
                         <div class="form-row">
                             <label for="mdcLunes" class="col-sm-2 col-form-label">Lunes:</label>

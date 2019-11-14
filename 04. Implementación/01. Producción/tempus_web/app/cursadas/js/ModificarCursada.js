@@ -5,40 +5,153 @@
  */
 $(document).ready(function () {
 
+    $(".clases").change(function () {
+        var dia = $(this).val();
+        var checkeado = $(this).prop('checked');
+        var disabled = (checkeado) ? false : true;
+        $("#horaInicio" + dia).prop("disabled", disabled);
+        $("#horaFin" + dia).prop("disabled", disabled);
+        $("#aula" + dia).prop("disabled", disabled);
+        $("#baja" + dia).prop("disabled", disabled);
+        $("#crear" + dia).prop("disabled", disabled);
+        $("#editar" + dia).prop("disabled", disabled);
+    });
 
-    $('.baja').click(function (evento) { 
+    $('#aula1').select2({
+        placeholder: 'Seleccione una opcion',
+        theme: "bootstrap",
+        ajax: {
+            url: "./app/aulas/vistas/ProcesarSeleccionarAulaDisponible.php",
+            dataType: 'json',
+            type: "POST",
+            delay: 250,
+            data: function (params) {
+                return {
+                    dia: 1,
+                    desde: $("#horaInicio1").val(),
+                    hasta: $("#horaFin1").val(),
+                    nombre: params.term};
+            },
+            processResults: function (data) {
+                return {results: data};
+            },
+            cache: true
+        }
+    });
+
+    $('#aula2').select2({
+        placeholder: 'Seleccione una opcion',
+        theme: "bootstrap",
+        ajax: {
+            url: "./app/aulas/vistas/ProcesarSeleccionarAulaDisponible.php",
+            dataType: 'json',
+            type: "POST",
+            delay: 250,
+            data: function (params) {
+                return {
+                    dia: 2,
+                    desde: $("#horaInicio2").val(),
+                    hasta: $("#horaFin2").val(),
+                    nombre: params.term};
+            },
+            processResults: function (data) {
+                return {results: data};
+            },
+            cache: true
+        }
+    });
+
+    $('#aula3').select2({
+        placeholder: 'Seleccione una opcion',
+        theme: "bootstrap",
+        ajax: {
+            url: "./app/aulas/vistas/ProcesarSeleccionarAulaDisponible.php",
+            dataType: 'json',
+            type: "POST",
+            delay: 250,
+            data: function (params) {
+                return {
+                    dia: 3,
+                    desde: $("#horaInicio3").val(),
+                    hasta: $("#horaFin3").val(),
+                    nombre: params.term};
+            },
+            processResults: function (data) {
+                return {results: data};
+            },
+            cache: true
+        }
+    });
+
+    $('#aula4').select2({
+        placeholder: 'Seleccione una opcion',
+        theme: "bootstrap",
+        ajax: {
+            url: "./app/aulas/vistas/ProcesarSeleccionarAulaDisponible.php",
+            dataType: 'json',
+            type: "POST",
+            delay: 250,
+            data: function (params) {
+                return {
+                    dia: 4,
+                    desde: $("#horaInicio4").val(),
+                    hasta: $("#horaFin4").val(),
+                    nombre: params.term};
+            },
+            processResults: function (data) {
+                return {results: data};
+            },
+            cache: true
+        }
+    });
+
+    $('#aula5').select2({
+        placeholder: 'Seleccione una opcion',
+        theme: "bootstrap",
+        ajax: {
+            url: "./app/aulas/vistas/ProcesarSeleccionarAulaDisponible.php",
+            dataType: 'json',
+            type: "POST",
+            delay: 250,
+            data: function (params) {
+                return {
+                    dia: 1,
+                    desde: $("#horaInicio5").val(),
+                    hasta: $("#horaFin5").val(),
+                    nombre: params.term};
+            },
+            processResults: function (data) {
+                return {results: data};
+            },
+            cache: true
+        }
+    });
+
+    $('#aula6').select2({
+        placeholder: 'Seleccione una opcion',
+        theme: "bootstrap",
+        ajax: {
+            url: "./app/aulas/vistas/ProcesarSeleccionarAulaDisponible.php",
+            dataType: 'json',
+            type: "POST",
+            delay: 250,
+            data: function (params) {
+                return {
+                    dia: 6,
+                    desde: $("#horaInicio6").val(),
+                    hasta: $("#horaFin6").val(),
+                    nombre: params.term};
+            },
+            processResults: function (data) {
+                return {results: data};
+            },
+            cache: true
+        }
+    });
+
+    $('.baja').click(function (evento) {
         evento.preventDefault();
         $("#modalBorrarClase").modal();
-    });
-
-    $('.seleccionarAula').click(function (evento) {
-        evento.preventDefault();
-        var dia = $(this).attr("name");
-        var horaInicio = $("select#horaInicio" + dia + " option:selected").text();
-        var horaFin = $("select#horaFin" + dia + " option:selected").text();
-        $("#modalSeleccionarAula").modal();
-        $.ajax({
-            type: "POST",
-            url: "./app/aulas/vistas/ProcesarSeleccionarAulaDisponible.php",
-            data: "dia=" + dia + "&desde=" + horaInicio + "&hasta=" + horaFin,
-            success: function (data) {
-                $('#cuerpoModalAula').html(data);
-                $('#tablaSeleccionarAula').dataTable();
-            },
-            error: function (data) {
-                console.log(data);
-                $('#cuerpoModal').html("ERROR");
-            }
-        });
-    });
-
-    $("#cuerpoModalAula").on("click", ".elegirAula", function () {
-        var dia = $(this).val();
-        var sector = $(this).parents("tr").find("td").eq(1).html();
-        var nombre = $(this).parents("tr").find("td").eq(2).html();
-        $("#idAula" + dia).val($(this).attr("name"));
-        $("#aula" + dia).val(sector + " " + nombre);
-        $("#modalSeleccionarAula").modal("toggle");
     });
 
 

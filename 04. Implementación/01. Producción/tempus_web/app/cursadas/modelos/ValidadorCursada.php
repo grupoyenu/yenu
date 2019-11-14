@@ -85,4 +85,31 @@ class ValidadorCursada {
         return true;
     }
 
+    public static function nombreDia($dia) {
+        switch ($dia) {
+            case 1:
+                $nombre = "Lunes";
+                break;
+            case 2:
+                $nombre = "Martes";
+                break;
+            case 3:
+                $nombre = "Miercoles";
+                break;
+            case 4:
+                $nombre = "Jueves";
+                break;
+            case 5:
+                $nombre = "Viernes";
+                break;
+            case 6:
+                $nombre = "Sábado";
+                break;
+            default:
+                $nombre = "Día";
+                break;
+        }
+        return $nombre;
+    }
+
 }
