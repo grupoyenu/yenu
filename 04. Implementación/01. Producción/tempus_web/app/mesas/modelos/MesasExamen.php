@@ -137,16 +137,18 @@ class MesasExamen {
      * @param string $asignatura Nombre de la asignatura.
      * @param string $fecha Fecha en la que se dicta la mesa o NO.
      * @param string $hora Hora en la que se dicta la mesa o NO.
+     * @param string $docente Nombre del docente a buscar dentro del tribunal.
      * @param string $modificada SI para mesa modificada, NO en caso contrario.
      * @return integer 0 cuando falla la consulta, 1 sin resultados o 2 correcta.
      */
-    public function listarInforme($carrera, $asignatura, $fecha, $hora, $modificada) {
+    public function listarInforme($carrera, $asignatura, $fecha, $hora, $docente, $modificada) {
         $consulta = "SELECT * FROM vista_mesas WHERE ";
         $consulta .= ($carrera) ? "nombreCarrera LIKE '%{$carrera}%' AND " : "";
         $consulta .= ($asignatura) ? "nombreAsignatura LIKE '%{$asignatura}%' AND " : "";
         $consulta .= ($fecha != "NO") ? "(fechaPri = '{$fecha}' OR fechaSeg = '{$fecha}') AND " : "";
         $consulta .= ($hora != "NO") ? "(horaPri = '{$hora}' OR horaSeg = '{$hora}') AND " : "";
-        $consulta .= ($modificada == "SI") ? "(fechaModPri IS NULL OR fechaModSeg IS NULL)" : "(fechaModPri IS NOT NULL OR fechaModSeg IS NOT NULL)";
+        $consulta .= ($docente) ? "(nombrePresidente LIKE '%{$docente}%' OR nombreVocalPri LIKE '%{$docente}%' OR nombreVocalSeg LIKE '%{$docente}%' OR nombreSuplente LIKE '%{$docente}%') AND" : "";
+        $consulta .= ($modificada == "SI") ? "(fechaModPri IS NOT NULL OR fechaModSeg IS NOT NULL)" : "(fechaModPri IS NULL AND fechaModSeg IS NULL)";
         Log::escribirLineaError($consulta);
         $resultado = Conexion::getInstancia()->seleccionar($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();

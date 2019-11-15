@@ -35,13 +35,13 @@ for ($hora = 10; $hora < 23; ++$hora) {
                             <label for="carrera" class="col-sm-2 col-form-label">Carrera:</label>
                             <div class="col">
                                 <input type="text" class="form-control mb-2" 
-                                       name="carrera" id="carrera"
+                                       name="carrera" id="carrera" maxlength="20"
                                        placeholder="Nombre de carrera">
                             </div>
                             <label for="asignatura" class="col-sm-2 col-form-label">Asignatura:</label>
                             <div class="col">
                                 <input type="text" class="form-control mb-2" 
-                                       name="asignatura" id="asignatura"
+                                       name="asignatura" id="asignatura" maxlength="20"
                                        placeholder="Nombre de asignatura">
                             </div>
                         </div>
@@ -65,7 +65,7 @@ for ($hora = 10; $hora < 23; ++$hora) {
                             <label for="docente" class="col-sm-2 col-form-label">Docente:</label>
                             <div class="col">
                                 <input type="text" class="form-control mb-2" 
-                                       name="docente" id="docente"
+                                       name="docente" id="docente" maxlength="20"
                                        placeholder="Nombre de docente">
                             </div>
                             <label for="modificada" class="col-sm-2 col-form-label">Modificada:</label>

@@ -14,6 +14,11 @@ $(document).ready(function () {
             data: $("#formInformeMesa").serialize(),
             success: function (data) {
                 $('#seccionInferior').html(data);
+                $("table#tablaInformeMesas").DataTable({
+                    dom: 'Bfrtip',
+                    responsive: true,
+                    language: {url: "./lib/js/Spanish.json"}
+                });
             },
             error: function (data) {
                 console.log(data);

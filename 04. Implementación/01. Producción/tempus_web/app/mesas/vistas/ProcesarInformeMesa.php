@@ -16,7 +16,7 @@ if (isset($_POST['carrera']) && isset($_POST['asignatura'])) {
 
     $cantidad = $controlador->obtenerCantidadLlamados();
     if ($cantidad > 0) {
-        $mesas = $controlador->listarInforme($carrera, $asignatura, $fecha, $hora, $modificada);
+        $mesas = $controlador->listarInforme($carrera, $asignatura, $fecha, $hora, $docente, $modificada);
         if (gettype($mesas) == "object") {
             $filas = "";
             if ($cantidad == 1) {
@@ -28,23 +28,23 @@ if (isset($_POST['carrera']) && isset($_POST['asignatura'])) {
                     $filas .= "
                     <tr>
                         <td style='display: none;'>" . str_pad($mesa['codigoCarrera'], 3, "0", STR_PAD_LEFT) . "</td>
-                        <td class='align-middle'>{$mesa['nombreCarrera']}</td>
-                        <td class='align-middle'>{$mesa['nombreAsignatura']}</td>
-                        <td class='align-middle'>{$mesa['nombrePresidente']}</td>
-                        <td class='align-middle'>{$mesa['nombreVocalPri']}</td>
-                        <td class='align-middle'>{$mesa['nombreVocalSeg']}</td>
-                        <td class='align-middle'>{$mesa['nombreSuplente']}</td>
+                        <td class='align-middle'>" . utf8_encode($mesa['nombreCarrera']) . "</td>
+                        <td class='align-middle'>" . utf8_encode($mesa['nombreAsignatura']) . "</td>
+                        <td class='align-middle'>" . utf8_encode($mesa['nombrePresidente']) . "</td>
+                        <td class='align-middle'>" . utf8_encode($mesa['nombreVocalPri']) . "</td>
+                        <td class='align-middle'>" . utf8_encode($mesa['nombreVocalSeg']) . "</td>
+                        <td class='align-middle'>" . utf8_encode($mesa['nombreSuplente']) . "</td>
                         <td class='align-middle'>{$fechaLlamado}</td>
                         <td class='align-middle'>{$hora}</td>
                         <td style='display: none;'>{$mesa['sectorPri']}</td>
-                        <td style='display: none;'>{$mesa['aulaPri']}</td>
+                        <td style='display: none;'>" . utf8_encode($mesa['aulaPri']) . "</td>
                         <td style='display: none;'>{$fechaModificacion}</td>
                     </tr>";
                 }
                 $cuerpo = '
                 <div class="table-responsive mt-4">
                     <table id="tablaInformeMesas" class="table table-bordered table-hover">
-                        <thead class="thead-dark">
+                        <thead>
                             <tr>
                                 <th style="display: none;">Código</th>
                                 <th>Carrera</th>
@@ -74,28 +74,28 @@ if (isset($_POST['carrera']) && isset($_POST['asignatura'])) {
                     $filas .= "
                     <tr>
                         <td style='display: none;'>" . str_pad($mesa['codigoCarrera'], 3, "0", STR_PAD_LEFT) . "</td>
-                        <td class='align-middle'>{$mesa['nombreCarrera']}</td>
-                        <td class='align-middle'>{$mesa['nombreAsignatura']}</td>
-                        <td class='align-middle'>{$mesa['nombrePresidente']}</td>
-                        <td class='align-middle'>{$mesa['nombreVocalPri']}</td>
-                        <td class='align-middle'>{$mesa['nombreVocalSeg']}</td>
-                        <td class='align-middle'>{$mesa['nombreSuplente']}</td>
+                        <td class='align-middle'>" . utf8_encode($mesa['nombreCarrera']) . "</td>
+                        <td class='align-middle'>" . utf8_encode($mesa['nombreAsignatura']) . "</td>
+                        <td class='align-middle'>" . utf8_encode($mesa['nombrePresidente']) . "</td>
+                        <td class='align-middle'>" . utf8_encode($mesa['nombreVocalPri']) . "</td>
+                        <td class='align-middle'>" . utf8_encode($mesa['nombreVocalSeg']) . "</td>
+                        <td class='align-middle'>" . utf8_encode($mesa['nombreSuplente']) . "</td>
                         <td class='align-middle'>{$fechaPrimero}</td>
                         <td style='display: none;'>{$horaPrimero}</td>
                         <td style='display: none;'>{$mesa['sectorPri']}</td>
-                        <td style='display: none;'>{$mesa['aulaPri']}</td>
+                        <td style='display: none;'>" . utf8_encode($mesa['aulaPri']) . "</td>
                         <td style='display: none;'>{$edicionPrimero}</td>
                         <td class='align-middle'>{$fechaSegundo}</td>
                         <td style='display: none;'>{$horaSegundo}</td>
                         <td style='display: none;'>{$mesa['sectorSeg']}</td>
-                        <td style='display: none;'>{$mesa['aulaSeg']}</td>
+                        <td style='display: none;'>" . utf8_encode($mesa['aulaSeg']) . "</td>
                         <td style='display: none;'>{$edicionSegundo}</td>
                     </tr>";
                 }
                 $cuerpo = '
                 <div class="table-responsive mt-4">
-                    <table id="tablaBuscarMesas" class="table table-bordered table-hover">
-                        <thead class="thead-dark">
+                    <table id="tablaInformeMesas" class="table table-bordered table-hover">
+                        <thead>
                             <tr>
                                 <th style="display: none;">Código</th>
                                 <th>Carrera</th>
