@@ -70,4 +70,11 @@ class ControladorCursada {
         return $resultado;
     }
 
+    public function modificarClase($idClase, $horaInicio, $horaFin, $aula) {
+        $clase = new Clase($idClase, NULL, $horaInicio, $horaFin, $aula);
+        $modificacion = $clase->modificar();
+        $this->descripcion = $clase->getDescripcion();
+        return $modificacion;
+    }
+
 }

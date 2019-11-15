@@ -29,7 +29,7 @@ if (isset($_POST['idCarrera']) && isset($_POST['idAsignatura'])) {
                 $operaciones = '
                     <div class="btn-group btn-group-sm">
                         <button class="btn btn-outline-warning editar" disabled id="editar' . $dia . '"
-                                    name="" title="Editar clase"><i class="far fa-edit"></i>
+                                    name="' . $resultado['idClase' . $dia] . '" title="Editar clase"><i class="far fa-edit"></i>
                         </button>
                         <button class="btn btn-outline-danger baja" disabled
                                 name="' . $resultado['idClase' . $dia] . '" id="baja' . $dia . '"

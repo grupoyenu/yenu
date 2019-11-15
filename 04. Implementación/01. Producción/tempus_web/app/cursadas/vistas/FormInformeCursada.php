@@ -30,15 +30,13 @@ for ($horafin = 11; $horafin < 24; ++$horafin) {
                             <label for="carrera" class="col-sm-2 col-form-label">Carrera:</label>
                             <div class="col">
                                 <input type="text" class="form-control mb-2" 
-                                       name="carrera" id="carrera"
+                                       name="carrera" id="carrera" maxlength="20"
                                        placeholder="Nombre de carrera">
                             </div>
-                        </div>
-                        <div class="form-row">
                             <label for="asignatura" class="col-sm-2 col-form-label">Asignatura:</label>
                             <div class="col">
                                 <input type="text" class="form-control mb-2" 
-                                       name="asignatura" id="asignatura"
+                                       name="asignatura" id="asignatura" maxlength="20"
                                        placeholder="Nombre de asignatura">
                             </div>
                         </div>
@@ -55,18 +53,39 @@ for ($horafin = 11; $horafin < 24; ++$horafin) {
                                     <option value="6">Sábado</option>
                                 </select>
                             </div>
+                            <label class="col-sm-2 col-form-label"></label>
+                            <div class="col"></div>
                         </div>
                         <div class="form-row">
-                            <label for="dia" class="col-sm-2 col-form-label">Franja horaria:</label>
+                            <label for="operadorDesde" class="col-sm-2 col-form-label">Operador de inicio:</label>
                             <div class="col">
-                                <select class="form-control mb-2">
-                                    <option value="TODOS">No aplicar filtro para hora de inicio</option>
+                                <select class="form-control mb-2" name="operadorDesde" id="operadorDesde">
+                                    <option value="=">Igual</option>
+                                    <option value=">=">Mayor o igual</option>
+                                    <option value=">">Mayor</option>
+                                </select>
+                            </div>
+                            <label for="desde" class="col-sm-2 col-form-label">Hora de inicio:</label>
+                            <div class="col">
+                                <select class="form-control mb-2" name="desde" id="desde">
+                                    <option value="TODOS">No aplicar filtro</option>
                                     <?= $opcionesInicio; ?>
                                 </select>
                             </div>
+                        </div>
+                        <div class="form-row">
+                            <label for="operadorHasta" class="col-sm-2 col-form-label">Operador de fin:</label>
                             <div class="col">
-                                <select class="form-control mb-2">
-                                    <option value="TODOS">No aplicar filtro para hora de fin</option>
+                                <select class="form-control mb-2" name="operadorHasta" id="operadorHasta">
+                                    <option value="=">Igual</option>
+                                    <option value=">=">Mayor o igual</option>
+                                    <option value=">">Mayor</option>
+                                </select>
+                            </div>
+                            <label for="hasta" class="col-sm-2 col-form-label">Hora de fin:</label>
+                            <div class="col">
+                                <select class="form-control mb-2" name="hasta" id="hasta">
+                                    <option value="TODOS">No aplicar filtro</option>
                                     <?= $opcionesFin; ?>
                                 </select>
                             </div>
@@ -83,8 +102,7 @@ for ($horafin = 11; $horafin < 24; ++$horafin) {
         </div>
         <br>
         <div id="seccionInferior" class="mt-4 mb-2">
-            <?php require_once './app/cursadas/vistas/ProcesarInformeCursada.php'; ?>
         </div>
     </div>
 </div>
-<script type="text/javascript" src="./app/cursadas/js/BuscarCursada.js"></script>
+<script type="text/javascript" src="./app/cursadas/js/InformeCursada.js"></script>

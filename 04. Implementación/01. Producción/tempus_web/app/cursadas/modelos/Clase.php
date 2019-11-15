@@ -121,6 +121,7 @@ class Clase {
             $this->descripcion = Conexion::getInstancia()->getDescripcion();
             return $modificacion;
         }
+        $this->descripcion = "No se recieron los campos obligatorios o no cumplen con el formato requerido";
         return 1;
     }
 
