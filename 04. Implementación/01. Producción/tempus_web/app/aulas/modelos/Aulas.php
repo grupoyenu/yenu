@@ -36,8 +36,12 @@ class Aulas {
     public function listarAulasDisponibles($dia, $desde, $hasta, $nombre) {
         $consulta = "SELECT * FROM aula WHERE nombre LIKE '%{$nombre}%' AND idaula NOT IN "
                 . "(SELECT idaula FROM clase WHERE dia = {$dia} AND "
-                . "((desde > '{$desde}' AND desde < '{$hasta}') OR "
-                . "(hasta > '{$desde}' AND hasta < '{$hasta}')))";
+                . "((desde >= '{$desde}' AND desde < '{$hasta}') OR "
+                . "(hasta > '{$desde}' AND hasta < '{$hasta}') OR "
+                . "(desde < '{$desde}' AND hasta > '{$desde}') "
+                . ")) OR "
+                . "idaula IN (SELECT idaula FROM clase WHERE dia = {$dia} AND desde = '{$desde}' and hasta='{$hasta}')";
+        Log::escribirLineaError($consulta);
         $resultado = Conexion::getInstancia()->seleccionar($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
         return $resultado;

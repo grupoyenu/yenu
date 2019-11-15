@@ -73,7 +73,9 @@ if (isset($_POST['idCarrera']) && isset($_POST['idAsignatura'])) {
         $contenido = '
             <div class="card border-dark">
                 <div class="card-header bg-dark text-white">Información de la asignatura</div>
-                <div class="card-body ">
+                <div class="card-body">
+                    <input type="hidden" id="codigo" name="codigo" value="' . $resultado['idCarrera'] . '">
+                    <input type="hidden" id="idAsignatura" name="idAsignatura" value="' . $resultado['idAsignatura'] . '">
                     <div class="form-row">
                         <label for="carrera" class="col-sm-2 col-form-label">* Carrera:</label>
                         <div class="col">

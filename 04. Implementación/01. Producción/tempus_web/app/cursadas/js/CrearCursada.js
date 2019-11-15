@@ -109,13 +109,11 @@ $(document).ready(function () {
     $(".horaInicio").change(function () {
         var dia = $(this).parents("tr").attr("name");
         $("#aula" + dia).val("");
-        alert($(this).attr("name"));
     });
 
     $(".horaFin").change(function () {
         var dia = $(this).parents("tr").attr("name");
         $("#aula" + dia).val("");
-        alert($(this).attr("name"));
     });
 
 });
