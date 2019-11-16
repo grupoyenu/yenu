@@ -36,5 +36,31 @@
             <?php require_once './app/usuarios/vistas/ProcesarBuscarUsuario.php'; ?>
         </div>
     </div>
+    <div class="modal fade" id="ModalBorrarUsuario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-center" id="myModalLabel"> <i class='fas fa-trash'></i> ELIMINACIÓN DE USUARIO</h4>
+                </div>
+                <div class="modal-body" id="cuerpoModal">
+                    <form id="formBorrarUsuario" name="formBorrarUsuario" method="POST">
+                        <input type="hidden" name="modalIdUsuario" id="modalIdUsuario">
+                        <input type="hidden" name="modalMetodo" id="modalMetodo">
+                        <div class="container">
+                            <p><strong> Presione GUARDAR para confirmar la eliminación del usuario </strong></p>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success"
+                            name="btnBorrarUsuario" id="btnBorrarUsuario">
+                        <i class="far fa-save"></i> GUARDAR</button>
+                    <input type='submit' class='btn btn-outline-secondary' 
+                           style="display: none;"
+                           name="btnRefrescarPantalla" id="btnRefrescarPantalla" value='Aceptar'>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script type="text/javascript" src="./app/usuarios/js/BuscarUsuario.js"></script>

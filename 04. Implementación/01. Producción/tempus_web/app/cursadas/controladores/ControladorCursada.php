@@ -52,8 +52,11 @@ class ControladorCursada {
         return 1;
     }
 
-    public function listarInforme() {
-        
+    public function listarInforme($carrera, $asignatura, $dia, $modificada, $operadorDesde, $desde, $operadorHasta, $hasta) {
+        $cursadas = new Cursadas();
+        $resultado = $cursadas->listarInforme($carrera, $asignatura, $dia, $modificada, $operadorDesde, $desde, $operadorHasta, $hasta);
+        $this->descripcion = $cursadas->getDescripcion();
+        return $resultado;
     }
 
     public function listarUltimasCreadas() {

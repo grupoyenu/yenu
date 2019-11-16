@@ -149,7 +149,6 @@ class MesasExamen {
         $consulta .= ($hora != "NO") ? "(horaPri = '{$hora}' OR horaSeg = '{$hora}') AND " : "";
         $consulta .= ($docente) ? "(nombrePresidente LIKE '%{$docente}%' OR nombreVocalPri LIKE '%{$docente}%' OR nombreVocalSeg LIKE '%{$docente}%' OR nombreSuplente LIKE '%{$docente}%') AND" : "";
         $consulta .= ($modificada == "SI") ? "(fechaModPri IS NOT NULL OR fechaModSeg IS NOT NULL)" : "(fechaModPri IS NULL AND fechaModSeg IS NULL)";
-        Log::escribirLineaError($consulta);
         $resultado = Conexion::getInstancia()->seleccionar($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
         return $resultado;

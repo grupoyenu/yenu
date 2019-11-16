@@ -23,7 +23,7 @@ $(document).ready(function () {
             },
             error: function (data) {
                 console.log(data);
-                $("#contenido").html('<div class="alert alert-danger text-center" role="alert"><strong>No se procesó la petición</strong></div>');
+                $("#seccionInferior").html('<div class="alert alert-danger text-center" role="alert"><strong>No se procesó la petición</strong></div>');
             }
         });
     });

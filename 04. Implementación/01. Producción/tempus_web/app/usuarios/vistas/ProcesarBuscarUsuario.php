@@ -37,12 +37,12 @@ if (gettype($usuarios) == "object") {
             $operaciones = "<button class='btn btn-outline-warning editar' 
                                     name='{$usuario['idUsuario']}' title='Editar'><i class='far fa-edit'></i>
                             </button>
-                            <button class='btn btn-outline-danger baja' 
+                            <button class='btn btn-outline-danger borrar' 
                                     name='{$usuario['idUsuario']}' title='Dar de baja'><i class='fas fa-trash'></i>
                             </button>";
         } else {
-            $operaciones = "<button class='btn btn-outline-warning editar' 
-                                    name='{$usuario['idUsuario']}' title='Editar'><i class='far fa-edit'></i>
+            $operaciones = "<button class='btn btn-outline-danger borrar' 
+                                    name='{$usuario['idUsuario']}' title='Dar de baja'><i class='fas fa-trash'></i>
                             </button>";
         }
         $filas .= "

@@ -15,7 +15,9 @@ $(document).ready(function () {
             data: $("#formCrearRol").serialize(),
             success: function (data) {
                 $('#seccionResultado').html(data[0]['resultado']);
-                $("#formCrearRol").reset();
+                if (data[0]['exito'] === true) {
+                    $("#formCrearRol")[0].reset();
+                }
             },
             error: function (data) {
                 console.log(data);

@@ -2,21 +2,17 @@
 
 require_once '../../principal/modelos/Constantes.php';
 require_once '../../principal/modelos/AutoCargador.php';
-
 AutoCargador::cargarModulos();
+
 $exito = FALSE;
-if (isset($_POST['nombre'])) {
-    $controlador = new ControladorUsuarios();
+if (isset($_POST['idPermiso'])) {
+    $id = $_POST['idPermiso'];
     $nombre = $_POST['nombre'];
-    $email = $_POST['correo'];
-    $rol = $_POST['rol'];
-    $estado = $_POST['estado'];
-    $metodo = $_POST['metodo'];
-    $clave = $_POST['clave'];
-    $creacion = $controlador->crear($nombre, $email, $rol, $estado, $metodo, $clave);
+    $controlador = new ControladorPermisos();
+    $modificacion = $controlador->modificar($id, $nombre);
     $mensaje = $controlador->getDescripcion();
-    $exito = ($creacion == 2) ? true : false;
-    $resultado = ControladorHTML::mostrarAlertaResultadoOperacion($creacion, $mensaje);
+    $exito = ($modificacion == 2) ? TRUE : FALSE;
+    $resultado = ControladorHTML::mostrarAlertaResultadoOperacion($modificacion, $mensaje);
 } else {
     $mensaje = "No se obtuvo la información desde el formulario";
     $resultado = ControladorHTML::mostrarAlertaResultadoOperacion(0, $mensaje);

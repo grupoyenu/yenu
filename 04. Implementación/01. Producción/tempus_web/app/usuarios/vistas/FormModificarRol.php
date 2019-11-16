@@ -13,12 +13,16 @@ if (isset($_POST['idRol'])) {
         $controlador = new ControladorPermisos();
         $permisos = $controlador->listar();
         if (gettype($permisos) == "object") {
+            $arreglo = array_column(mysqli_fetch_all($rol->getPermisos(), MYSQLI_ASSOC), 'idpermiso');
             $filas = "";
             while ($permiso = $permisos->fetch_assoc()) {
+                $check = (array_search($permiso['idpermiso'], $arreglo)) ? "checked" : "";
                 $filas .= "
                     <tr>
-                        <td class='text-center align-middle'><input type='checkbox' name='permisos[]' id='permisos' value='{$permiso['idpermiso']}'></td>
-                        <td>" . utf8_encode($permiso['nombre']) . "</td>
+                        <td class='text-center align-middle'>
+                            <input type='checkbox' name='permisos[]' id='permisos' {$check} value='{$permiso['idpermiso']}'>
+                        </td>
+                        <td>" . utf8_encode($permiso['nombre']) . " {$check}</td>
                     </tr>";
             }
             $cuerpo = '

@@ -134,12 +134,8 @@ class Conexion extends mysqli {
     public function modificar($tabla, $campos, $condicion) {
         $consulta = "UPDATE $tabla SET $campos WHERE $condicion";
         if ($this->query($consulta)) {
-            if ($this->affected_rows > 0) {
-                $this->descripcion = "Se realizó la modificación";
-                return 2;
-            }
-            $this->descripcion = "No se realizó la modificación";
-            return 1;
+            $this->descripcion = "Se realizó la modificación correctamente";
+            return 2;
         }
         $this->descripcion = "Error en la operación. Intente nuevamente";
         Log::escribirLineaError("[METODO: modificar][ERROR: Error al modificar registro (QUERY: $consulta)");
@@ -177,11 +173,12 @@ class Conexion extends mysqli {
     }
 
     public function iniciarTransaccion() {
-        return $this->autocommit(true);
+        return $this->autocommit(false);
     }
 
     public function finalizarTransaccion($resultado = TRUE) {
         ($resultado) ? $this->commit() : $this->rollback();
+        $this->autocommit(true);
     }
 
 }

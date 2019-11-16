@@ -10,7 +10,7 @@ $(document).ready(function () {
         evento.preventDefault();
         $.ajax({
             type: "POST",
-            url: "./app/mesas/vistas/ProcesarInformeCursada.php",
+            url: "./app/cursadas/vistas/ProcesarInformeCursada.php",
             data: $("#formInformeCursada").serialize(),
             success: function (data) {
                 $('#seccionInferior').html(data);

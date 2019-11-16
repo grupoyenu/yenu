@@ -77,7 +77,7 @@ if (gettype($mesas) == "object") {
             $cuerpo = '
                 <div class="table-responsive mt-4">
                     <table id="tablaBuscarMesas" class="table table-bordered table-hover">
-                        <thead class="thead-dark">
+                        <thead>
                             <tr>
                                 <th style="display: none;">Código</th>
                                 <th>Carrera</th>
@@ -143,7 +143,7 @@ if (gettype($mesas) == "object") {
             $cuerpo = '
                 <div class="table-responsive mt-4">
                     <table id="tablaBuscarMesas" class="table table-bordered table-hover">
-                        <thead class="thead-dark">
+                        <thead>
                             <tr>
                                 <th style="display: none;">Código</th>
                                 <th>Carrera</th>

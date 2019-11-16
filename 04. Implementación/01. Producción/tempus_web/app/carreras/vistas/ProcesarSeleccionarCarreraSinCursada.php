@@ -10,28 +10,19 @@ require_once '../../principal/modelos/AutoCargador.php';
 
 AutoCargador::cargarModulos();
 
-$controlador = new ControladorCarreras();
 $arreglo = array();
 
 if (isset($_POST['nombre'])) {
-    // SE ESCRIBIO EL NOMBRE O PARTE DEL NOMBRE DE LA CARRERA QUE SE BUSCA.
+    $controlador = new ControladorCarreras();
     $nombre = $_POST['nombre'];
     $carreras = $controlador->listarSinCursada($nombre);
-} else {
-    // NO SE ESCRIBIO EL NOMBRE DE NINGUNA CARRERA. SE BUSCAN POR DEFECTO.
-    $nombre = "a";
-    $carreras = $controlador->listarSinCursada($nombre);
-}
-
-if (gettype($carreras) == "object") {
-    // SE EJECUTO LA CONSULTA CORRECTAMENTE. SE PROCESAN LOS RESULTADOS.
-    while ($carrera = $carrera->fetch_assoc()) {
-        $nombre = str_pad($carrera['codigo'], 3, "0", STR_PAD_LEFT) . ": " . $carrera["nombre"];
-        $arreglo[] = array('id' => $carrera["codigo"], 'text' => $nombre);
+    if (gettype($carreras) == "object") {
+        while ($carrera = $carreras->fetch_assoc()) {
+            $arreglo[] = array('id' => $carrera["codigo"], 'text' => utf8_encode($carrera["nombre"]));
+        }
+    } else {
+        $arreglo[] = array('id' => "NO", 'text' => "Sin resultados");
     }
-} else {
-    // NO SE EJECUTO LA CONSULTA. SE INDICA QUE NO HAY RESULTADOS PARA MOSTRAR.
-    $arreglo[] = array('id' => "NO", 'text' => "Sin resultados");
 }
 
 // SE DEVUELVE EL ARREGLO CON FORMATO JSON.

@@ -128,12 +128,12 @@ class Rol {
         if ($this->idRol) {
             $consulta = "SELECT * FROM rol WHERE idrol = {$this->idRol}";
             $fila = Conexion::getInstancia()->obtener($consulta);
-            if (!is_null($fila)) {
+            if (gettype($fila) == "array") {
                 $this->nombre = $fila['nombre'];
-                $obtenerPermisos = $this->obtenerPermisos();
-                return $obtenerPermisos;
+                return $this->obtenerPermisos();
             }
-            $this->descripcion = Conexion::getInstancia()->getDescripcion();
+            $this->descripcion = "No se pudo obtener la información del rol";
+            return 1;
         }
         $this->descripcion = "No se pudo hacer referencia al rol";
         return 0;

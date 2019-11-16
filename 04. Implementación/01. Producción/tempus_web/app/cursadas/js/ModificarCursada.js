@@ -108,7 +108,7 @@ $(document).ready(function () {
             delay: 250,
             data: function (params) {
                 return {
-                    dia: 1,
+                    dia: 5,
                     desde: $("#horaInicio5").val(),
                     hasta: $("#horaFin5").val(),
                     nombre: params.term};

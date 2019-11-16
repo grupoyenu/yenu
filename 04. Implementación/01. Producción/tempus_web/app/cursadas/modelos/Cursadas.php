@@ -90,6 +90,19 @@ class Cursadas {
         return $errores;
     }
 
+    public function listarInforme($carrera, $asignatura, $dia, $modificada, $opDesde, $desde, $opHasta, $hasta) {
+        $consulta = "SELECT * FROM vista_cursadas WHERE ";
+        $consulta .= ($carrera) ? "nombreCarrera LIKE '%{$carrera}%' AND " : "";
+        $consulta .= ($asignatura) ? "nombreAsignatura LIKE '%{$asignatura}%' AND " : "";
+        $consulta .= ($dia != "NO") ? "idClase{$dia} IS NOT NULL AND " : "";
+        $consulta .= ($desde != "NO") ? "(desde1 {$opDesde} '{$desde}' OR desde2 {$opDesde} '{$desde}' OR desde3 {$opDesde} '{$desde}' OR desde4 {$opDesde} '{$desde}' OR desde5 {$opDesde} '{$desde}' OR desde6 {$opDesde} '{$desde}') AND " : "";
+        $consulta .= ($hasta != "NO") ? "(hasta1 {$opHasta} '{$hasta}' OR hasta2 {$opHasta} '{$hasta}' OR hasta3 {$opHasta} '{$hasta}' OR hasta4 {$opHasta} '{$hasta}' OR hasta5 {$opHasta} '{$hasta}' OR hasta6 {$opHasta} '{$hasta}') AND " : "";
+        $consulta .= ($modificada != "SI") ? "(fechaMod1 IS NOT NULL OR fechaMod2 IS NOT NULL OR fechaMod3 IS NOT NULL OR fechaMod4 IS NOT NULL OR fechaMod5 IS NOT NULL OR fechaMod6 IS NOT NULL)" : "(fechaMod1 IS NULL AND fechaMod2 IS NULL AND fechaMod3 IS NULL AND fechaMod4 IS NULL AND fechaMod5 IS NULL AND fechaMod6 IS NULL)";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
+    }
+
     public function listarUltimasCreadas() {
         $consulta = "SELECT * FROM vista_cursadas ORDER BY idAsignatura DESC LIMIT 10";
         $resultado = Conexion::getInstancia()->seleccionar($consulta);

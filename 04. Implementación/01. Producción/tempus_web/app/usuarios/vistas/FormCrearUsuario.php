@@ -31,9 +31,9 @@ if (gettype($roles) == "object") {
             <div class="col">
                 <select class="form-control mb-2" id="rol" name="rol">' . $filas . '</select>
             </div>
-            <label for="correo" class="col-sm-2 col-form-label">* Estado:</label>
+            <label for="estado" class="col-sm-2 col-form-label">* Estado:</label>
             <div class="col">
-                <select class="form-control mb-2" id="metodo" name="metodo">
+                <select class="form-control mb-2" id="estado" name="estado">
                     <option value="Activo">Activo</option>
                     <option value="Inactivo">Inactivo</option>
                 </select>

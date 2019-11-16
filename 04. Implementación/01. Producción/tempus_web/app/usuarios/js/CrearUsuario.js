@@ -15,6 +15,9 @@ $(document).ready(function () {
             data: $("#formCrearUsuario").serialize(),
             success: function (data) {
                 $('#seccionResultado').html(data[0]['resultado']);
+                if (data[0]['exito'] === true) {
+                    $("#formCrearUsuario")[0].reset();
+                }
             },
             error: function (data) {
                 console.log(data);

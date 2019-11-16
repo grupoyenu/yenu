@@ -24,6 +24,9 @@ $(document).ready(function () {
                 $('#seccionResultado').html(data[0]['resultado']);
                 if (data[0]['exito'] === true) {
                     $("#formCrearCursada")[0].reset();
+                    $('select#carrera').val('').trigger('change');
+                    $('select#asignatura').val('').trigger('change');
+                    $('.aula').val('').trigger('change');
                 }
             },
             error: function (data) {
@@ -31,89 +34,218 @@ $(document).ready(function () {
                 $('#seccionResultado').html("<div class='alert alert-danger text-center' role='alert'><i class='fas fa-exclamation-triangle'></i> <strong>No se procesó la petición</strong></div>");
             }
         });
+        $('html, body').animate({scrollTop: 0}, 1250);
     });
 
-    /* Inicializa la tabla del modal planes con DataTable */
-
-    $("table#tablaBuscarCarreras").DataTable({
-        dom: 'Bfrtip',
-        responsive: true,
-        language: {url: "./app/js/Spanish.json"}
-    });
-
-    /* Inicializa la tabla del modal aulas con DataTable */
-
-    $("table#tablaAulas").DataTable({
-        dom: 'Bfrtip',
-        responsive: true,
-        language: {url: "./app/js/Spanish.json"}
-    });
-
-    /* Abre el modal para selecccionar carrera y asignatura */
-
-    $('#seleccionarAsignatura').click(function (evento) {
-        evento.preventDefault();
-        $("#modalSeleccionarAsignatura").modal();
-        $.ajax({
+    $('select#carrera').select2({
+        placeholder: 'Seleccione una opcion',
+        theme: "bootstrap",
+        minimumInputLength: 1,
+        ajax: {
+            url: "./app/carreras/vistas/ProcesarSeleccionarCarreraSinCursada.php",
+            dataType: 'json',
             type: "POST",
+            delay: 250,
+            data: function (params) {
+                return {nombre: params.term};
+            },
+            processResults: function (data) {
+                return {results: data};
+            },
+            cache: true
+        }
+    });
+
+    $('select#asignatura').select2({
+        placeholder: 'Seleccione una opcion',
+        theme: "bootstrap",
+        minimumInputLength: 1,
+        ajax: {
             url: "./app/asignaturas/vistas/ProcesarSeleccionarAsignaturaSinCursada.php",
-            success: function (data) {
-                $('#cuerpoModalAsignatura').html(data);
-                $('#tablaSeleccionarAsignatura').dataTable();
-            },
-            error: function (data) {
-                console.log(data);
-                $('#cuerpoModal').html("ERROR");
-            }
-        });
-    });
-
-    $('.seleccionarAula').click(function (evento) {
-        evento.preventDefault();
-        var dia = $(this).attr("name");
-        var horaInicio = $("select#horaInicio" + dia + " option:selected").text();
-        var horaFin = $("select#horaFin" + dia + " option:selected").text();
-        $("#modalSeleccionarAula").modal();
-        $.ajax({
+            dataType: 'json',
             type: "POST",
-            url: "./app/aulas/vistas/ProcesarSeleccionarAulaDisponible.php",
-            data: "dia=" + dia + "&desde=" + horaInicio + "&hasta=" + horaFin,
-            success: function (data) {
-                $('#cuerpoModalAula').html(data);
-                $('#tablaSeleccionarAula').dataTable();
+            delay: 250,
+            data: function (params) {
+                return {nombre: params.term, codigo: $("select#carrera").val()};
             },
-            error: function (data) {
-                console.log(data);
-                $('#cuerpoModal').html("ERROR");
-            }
-        });
+            processResults: function (data) {
+                return {results: data};
+            },
+            cache: true
+        }
     });
 
-    $("#cuerpoModalAsignatura").on("click", ".seleccionarAsignatura", function () {
-        $("#nombreCarrera").val($(this).parents("tr").find("td").eq(2).html());
-        $("#nombreAsignatura").val($(this).parents("tr").find("td").eq(3).html());
-        $("#idAsignatura").val($(this).attr("name"));
-        $("#idCarrera").val($(this).val());
-        $("#modalSeleccionarAsignatura").modal("toggle");
+    $('select#aula1').select2({
+        placeholder: 'Seleccione una opcion',
+        theme: "bootstrap",
+        minimumInputLength: 1,
+        ajax: {
+            url: "./app/aulas/vistas/ProcesarSeleccionarAulaDisponible.php",
+            dataType: 'json',
+            type: "POST",
+            delay: 250,
+            data: function (params) {
+                return {
+                    dia: 1,
+                    desde: $("#horaInicio1").val(),
+                    hasta: $("#horaFin1").val(),
+                    nombre: params.term};
+            },
+            processResults: function (data) {
+                return {results: data};
+            },
+            cache: true
+        }
     });
 
-    $("#cuerpoModalAula").on("click", ".elegirAula", function () {
+    $('select#aula2').select2({
+        placeholder: 'Seleccione una opcion',
+        theme: "bootstrap",
+        minimumInputLength: 1,
+        ajax: {
+            url: "./app/aulas/vistas/ProcesarSeleccionarAulaDisponible.php",
+            dataType: 'json',
+            type: "POST",
+            delay: 250,
+            data: function (params) {
+                return {
+                    dia: 2,
+                    desde: $("#horaInicio2").val(),
+                    hasta: $("#horaFin2").val(),
+                    nombre: params.term};
+            },
+            processResults: function (data) {
+                return {results: data};
+            },
+            cache: true
+        }
+    });
+
+    $('select#aula3').select2({
+        placeholder: 'Seleccione una opcion',
+        theme: "bootstrap",
+        minimumInputLength: 1,
+        ajax: {
+            url: "./app/aulas/vistas/ProcesarSeleccionarAulaDisponible.php",
+            dataType: 'json',
+            type: "POST",
+            delay: 250,
+            data: function (params) {
+                return {
+                    dia: 3,
+                    desde: $("#horaInicio3").val(),
+                    hasta: $("#horaFin3").val(),
+                    nombre: params.term};
+            },
+            processResults: function (data) {
+                return {results: data};
+            },
+            cache: true
+        }
+    });
+
+    $('select#aula4').select2({
+        placeholder: 'Seleccione una opcion',
+        theme: "bootstrap",
+        minimumInputLength: 1,
+        ajax: {
+            url: "./app/aulas/vistas/ProcesarSeleccionarAulaDisponible.php",
+            dataType: 'json',
+            type: "POST",
+            delay: 250,
+            data: function (params) {
+                return {
+                    dia: 4,
+                    desde: $("#horaInicio4").val(),
+                    hasta: $("#horaFin4").val(),
+                    nombre: params.term};
+            },
+            processResults: function (data) {
+                return {results: data};
+            },
+            cache: true
+        }
+    });
+
+    $('select#aula5').select2({
+        placeholder: 'Seleccione una opcion',
+        theme: "bootstrap",
+        minimumInputLength: 1,
+        ajax: {
+            url: "./app/aulas/vistas/ProcesarSeleccionarAulaDisponible.php",
+            dataType: 'json',
+            type: "POST",
+            delay: 250,
+            data: function (params) {
+                return {
+                    dia: 1,
+                    desde: $("#horaInicio5").val(),
+                    hasta: $("#horaFin5").val(),
+                    nombre: params.term};
+            },
+            processResults: function (data) {
+                return {results: data};
+            },
+            cache: true
+        }
+    });
+
+    $('select#aula6').select2({
+        placeholder: 'Seleccione una opcion',
+        theme: "bootstrap",
+        minimumInputLength: 1,
+        ajax: {
+            url: "./app/aulas/vistas/ProcesarSeleccionarAulaDisponible.php",
+            dataType: 'json',
+            type: "POST",
+            delay: 250,
+            data: function (params) {
+                return {
+                    dia: 6,
+                    desde: $("#horaInicio6").val(),
+                    hasta: $("#horaFin6").val(),
+                    nombre: params.term};
+            },
+            processResults: function (data) {
+                return {results: data};
+            },
+            cache: true
+        }
+    });
+
+    $(".clases").change(function () {
         var dia = $(this).val();
-        var sector = $(this).parents("tr").find("td").eq(1).html();
-        var nombre = $(this).parents("tr").find("td").eq(2).html();
-        $("#idAula" + dia).val($(this).attr("name"));
-        $("#aula" + dia).val(sector + " " + nombre);
-        $("#modalSeleccionarAula").modal("toggle");
+        var checkeado = $(this).prop('checked');
+        var disabled = (checkeado) ? false : true;
+        $("#horaInicio" + dia).prop("disabled", disabled);
+        $("#horaFin" + dia).prop("disabled", disabled);
+        $("#aula" + dia).prop("disabled", disabled);
+    });
+
+    $("select#carrera").change(function () {
+        var carrera = $(this).val();
+        var habilitar = ((carrera !== null) && (carrera !== "NO")) ? false : true;
+        $("select#asignatura").prop("disabled", habilitar);
     });
 
     $(".horaInicio").change(function () {
         var dia = $(this).parents("tr").attr("name");
-        $("#aula" + dia).val("");
+        var hora = $(this).val().substring(0, 2);
+        $('select#aula' + dia).val('').trigger('change');
+        for (var i = 10; i < 24; i++) {
+            if (i <= hora) {
+                $("#horaFin" + dia).find("option[value='" + i + ":00']").attr("disabled", "disabled");
+                $("#horaFin" + dia).find("option[value='" + i + ":30']").attr("disabled", "disabled");
+            } else {
+                $("#horaFin" + dia).find("option[value='" + i + ":00']").removeAttr("disabled");
+                $("#horaFin" + dia).find("option[value='" + i + ":30']").removeAttr("disabled");
+            }
+        }
     });
 
     $(".horaFin").change(function () {
         var dia = $(this).parents("tr").attr("name");
-        $("#aula" + dia).val("");
+        $('select#aula' + dia).val('').trigger('change');
     });
 
 });

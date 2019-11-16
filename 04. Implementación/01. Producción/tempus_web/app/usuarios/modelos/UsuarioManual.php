@@ -23,13 +23,26 @@ class UsuarioManual extends Usuario {
         $this->clave = $clave;
     }
 
+    public function borrar() {
+        if ($this->getIdUsuario()) {
+            $condicion = "idusuario = {$this->getIdUsuario()}";
+            $eliminacion = Conexion::getInstancia()->borrar("usuario_manual", $condicion);
+            $this->descripcion = Conexion::getInstancia()->getDescripcion();
+            if ($eliminacion == 2) {
+                return parent::borrar();
+            }
+            return $eliminacion;
+        }
+        return 0;
+    }
+
     public function crear() {
         $creacion = parent::crear();
         if ($creacion == 2) {
             if ($this->getIdUsuario() && $this->clave) {
                 $idUsurio = $this->getIdUsuario();
                 $values = "($idUsurio, '{$this->clave}')";
-                $creacion = Conexion::getInstancia()->insertar("usuario_manual", $values);
+                $creacion = $this->getNombre() . ': ' . Conexion::getInstancia()->insertar("usuario_manual", $values);
                 $this->descripcion = Conexion::getInstancia()->getDescripcion();
                 return $creacion;
             }
@@ -47,13 +60,28 @@ class UsuarioManual extends Usuario {
                 $campos = "clave = '{$this->clave}'";
                 $condicion = "idusuario={$idUsuario}";
                 $modificacion = Conexion::getInstancia()->modificar("usuario_manual", $campos, $condicion);
-                $this->descripcion = Conexion::getInstancia()->getDescripcion();
+                $this->descripcion = $this->getNombre() . ": " . Conexion::getInstancia()->getDescripcion();
                 return $modificacion;
             }
             $this->descripcion = "No se recibieron todos los campos obligatorios";
             return 0;
         }
         return $modificacion;
+    }
+
+    public function obtener() {
+        $obtener = parent::obtener();
+        if ($obtener == 2) {
+            $consulta = "SELECT * FROM usuario_manual WHERE idusuario = {$this->getIdUsuario()}";
+            $fila = Conexion::getInstancia()->obtener($consulta);
+            if (gettype($fila) == "array") {
+                $this->clave = $fila['clave'];
+                return 2;
+            }
+            $this->descripcion = "No se obtuvo la información del usuario";
+            return 1;
+        }
+        return $obtener;
     }
 
 }

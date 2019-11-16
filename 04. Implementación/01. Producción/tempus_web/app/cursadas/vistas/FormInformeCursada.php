@@ -43,8 +43,8 @@ for ($horafin = 11; $horafin < 24; ++$horafin) {
                         <div class="form-row">
                             <label for="dia" class="col-sm-2 col-form-label">Día:</label>
                             <div class="col">
-                                <select class="form-control mb-2">
-                                    <option value="TODOS">No aplicar filtro</option>
+                                <select class="form-control mb-2" name="dia" id="dia">
+                                    <option value="NO">No aplicar filtro</option>
                                     <option value="1">Lunes</option>
                                     <option value="2">Martes</option>
                                     <option value="3">Miercoles</option>
@@ -53,8 +53,13 @@ for ($horafin = 11; $horafin < 24; ++$horafin) {
                                     <option value="6">Sábado</option>
                                 </select>
                             </div>
-                            <label class="col-sm-2 col-form-label"></label>
-                            <div class="col"></div>
+                            <label for="modificada" class="col-sm-2 col-form-label">Modificada:</label>
+                            <div class="col">
+                                <select class="form-control mb-2" name="modificada" id="modificada">
+                                    <option value="SI">Si</option>
+                                    <option value="NO">No</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-row">
                             <label for="operadorDesde" class="col-sm-2 col-form-label">Operador de inicio:</label>
@@ -68,7 +73,7 @@ for ($horafin = 11; $horafin < 24; ++$horafin) {
                             <label for="desde" class="col-sm-2 col-form-label">Hora de inicio:</label>
                             <div class="col">
                                 <select class="form-control mb-2" name="desde" id="desde">
-                                    <option value="TODOS">No aplicar filtro</option>
+                                    <option value="NO">No aplicar filtro</option>
                                     <?= $opcionesInicio; ?>
                                 </select>
                             </div>
@@ -78,14 +83,14 @@ for ($horafin = 11; $horafin < 24; ++$horafin) {
                             <div class="col">
                                 <select class="form-control mb-2" name="operadorHasta" id="operadorHasta">
                                     <option value="=">Igual</option>
-                                    <option value=">=">Mayor o igual</option>
-                                    <option value=">">Mayor</option>
+                                    <option value="<=">Menor o igual</option>
+                                    <option value="<">Menor</option>
                                 </select>
                             </div>
                             <label for="hasta" class="col-sm-2 col-form-label">Hora de fin:</label>
                             <div class="col">
                                 <select class="form-control mb-2" name="hasta" id="hasta">
-                                    <option value="TODOS">No aplicar filtro</option>
+                                    <option value="NO">No aplicar filtro</option>
                                     <?= $opcionesFin; ?>
                                 </select>
                             </div>

@@ -5,15 +5,15 @@ require_once '../../principal/modelos/AutoCargador.php';
 
 AutoCargador::cargarModulos();
 $exito = FALSE;
-if (isset($_POST['idCarrera']) && isset($_POST['idAsignatura']) && isset($_POST['cbClases'])) {
+if (isset($_POST['carrera']) && isset($_POST['asignatura']) && isset($_POST['cbClases'])) {
     $controlador = new ControladorCursada();
-    $idAsignatura = $_POST['idAsignatura'];
-    $idCarrera = $_POST['idCarrera'];
+    $idAsignatura = $_POST['asignatura'];
+    $idCarrera = $_POST['carrera'];
     $clases = array();
     foreach ($_POST['cbClases'] as $dia) {
         $horaInicio = $_POST['horaInicio' . $dia];
         $horaFin = $_POST['horaFin' . $dia];
-        $aula = $_POST['idAula' . $dia];
+        $aula = $_POST['aula' . $dia];
         $clase = new Clase(NULL, $dia, $horaInicio, $horaFin, $aula);
         $clases[] = $clase;
     }

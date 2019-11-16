@@ -14,7 +14,9 @@ $(document).ready(function () {
             data: $("#formCrearPermiso").serialize(),
             success: function (data) {
                 $('#seccionResultado').html(data[0]['resultado']);
-                $("#formCrearPermiso").reset();
+                if (data[0]['exito'] === true) {
+                    $("#formCrearPermiso")[0].reset();
+                }
             },
             error: function (data) {
                 console.log(data);

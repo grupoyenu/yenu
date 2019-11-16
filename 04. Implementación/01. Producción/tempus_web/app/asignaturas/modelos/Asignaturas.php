@@ -61,12 +61,12 @@ class Asignaturas {
     }
 
     public function listarSinCursada($codigo, $nombre) {
-        $consulta = "SELECT DISTINCT REL.idasignatura idAsignatura, ASI.nombre nombreAsignatura, REL.idcarrera idCarrera, CAR.nombre nombreCarrera "
+        $consulta = "SELECT DISTINCT REL.idasignatura idAsignatura, ASI.nombre nombre "
                 . "FROM asignatura_carrera REL "
                 . "INNER JOIN asignatura ASI ON ASI.idasignatura = REL.idasignatura "
                 . "INNER JOIN carrera CAR ON CAR.codigo = REL.idcarrera "
                 . "LEFT JOIN cursada CUR ON CUR.idasignatura = REL.idasignatura AND CUR.idcarrera = REL.idcarrera "
-                . "WHERE CUR.idclase IS NULL";
+                . "WHERE CUR.idclase IS NULL AND REL.idcarrera = {$codigo} AND ASI.nombre LIKE '%{$nombre}%'";
         $resultado = Conexion::getInstancia()->seleccionar($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
         return $resultado;

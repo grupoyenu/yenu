@@ -5,6 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 class Carreras {
 
     /** @var string Descripcion del resultado de alguna busqueda. */
@@ -74,7 +75,13 @@ class Carreras {
      * @return integer 0 si la consulta falla, 1 si no hay resultados o resource.
      */
     public function listarSinCursada($nombre) {
-        $consulta = "";
+        $consulta = "SELECT ca.* FROM carrera ca LEFT JOIN "
+                . "(SELECT COUNT(idasignatura) asignaturas, idcarrera FROM asignatura_carrera GROUP BY idcarrera) asi "
+                . "ON asi.idcarrera = ca.codigo LEFT JOIN "
+                . "(SELECT COUNT(DISTINCT idasignatura) cursadas, idcarrera FROM cursada GROUP BY idcarrera) cur "
+                . "ON cur.idcarrera = ca.codigo "
+                . "WHERE asi.asignaturas > 0 AND (cur.cursadas < asi.asignaturas OR cur.cursadas IS NULL) AND "
+                . "ca.nombre LIKE '%{$nombre}%'";
         $resultado = Conexion::getInstancia()->seleccionar($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
         return $resultado;
