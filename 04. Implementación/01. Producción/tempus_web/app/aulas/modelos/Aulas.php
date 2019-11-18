@@ -10,7 +10,13 @@ class Aulas {
 
     public function buscar($campo, $valor) {
         if ($campo) {
-            $consulta = "SELECT * FROM aula WHERE {$campo} LIKE '%{$valor}%'";
+            $consulta = "SELECT aul.*, (CASE WHEN cla.clases IS NULL THEN 0 ELSE cla.clases END) clases,"
+                    . "(CASE WHEN lla.llamados IS NULL THEN 0 ELSE lla.llamados END) llamados "
+                    . "FROM aula aul LEFT JOIN (SELECT idaula, COUNT(idclase) clases "
+                    . "FROM clase GROUP BY idaula) cla ON cla.idaula = aul.idaula "
+                    . "LEFT JOIN (SELECT idaula, COUNT(idllamado) llamados "
+                    . "FROM llamado GROUP BY idaula) lla ON lla.idaula = aul.idaula "
+                    . "WHERE {$campo} LIKE '%{$valor}%'";
             $resultado = Conexion::getInstancia()->seleccionar($consulta);
             $this->descripcion = Conexion::getInstancia()->getDescripcion();
             return $resultado;
@@ -26,13 +32,6 @@ class Aulas {
         return $resultado;
     }
 
-    public function listarUltimasCreadas() {
-        $consulta = "SELECT * FROM aula ORDER BY idaula DESC LIMIT 10";
-        $resultado = Conexion::getInstancia()->seleccionar($consulta);
-        $this->descripcion = Conexion::getInstancia()->getDescripcion();
-        return $resultado;
-    }
-
     public function listarAulasDisponibles($dia, $desde, $hasta, $nombre) {
         $consulta = "SELECT * FROM aula WHERE nombre LIKE '%{$nombre}%' AND idaula NOT IN "
                 . "(SELECT idaula FROM clase WHERE dia = {$dia} AND "
@@ -41,7 +40,6 @@ class Aulas {
                 . "(desde < '{$desde}' AND hasta > '{$desde}') "
                 . ")) OR "
                 . "idaula IN (SELECT idaula FROM clase WHERE dia = {$dia} AND desde = '{$desde}' and hasta='{$hasta}')";
-        Log::escribirLineaError($consulta);
         $resultado = Conexion::getInstancia()->seleccionar($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
         return $resultado;
@@ -50,7 +48,28 @@ class Aulas {
     public function listarHorariosClase($id) {
         $consulta = "SELECT DISTINCT idAsignatura, nombreAsignatura, idClase, "
                 . "numeroDia, nombreDia, desde, hasta, idAula, fechaMod "
-                . "FROM vista_aulascursadas WHERE idAula = {$id} ORDER BY numeroDia, desde";
+                . "FROM vista_aulascursadas WHERE idAula = {$id} ORDER BY numeroDia asc, desde";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
+    }
+
+    public function listarMesasExamen($id) {
+        $consulta = "SELECT codigoCarrera, nombreCarrera, nombreAsignatura, fechaPri, horaPri, fechaSeg, horaSeg "
+                . " FROM vista_mesas WHERE idAulaPri = {$id} OR idAulaSeg = {$id}";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
+    }
+
+    public function listarUltimasCreadas() {
+        $consulta = "SELECT aul.*, (CASE WHEN cla.clases IS NULL THEN 0 ELSE cla.clases END) clases,"
+                . "(CASE WHEN lla.llamados IS NULL THEN 0 ELSE lla.llamados END) llamados "
+                . "FROM aula aul LEFT JOIN (SELECT idaula, COUNT(idclase) clases "
+                . "FROM clase GROUP BY idaula) cla ON cla.idaula = aul.idaula "
+                . "LEFT JOIN (SELECT idaula, COUNT(idllamado) llamados "
+                . "FROM llamado GROUP BY idaula) lla ON lla.idaula = aul.idaula "
+                . "ORDER BY idaula DESC LIMIT 10";
         $resultado = Conexion::getInstancia()->seleccionar($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
         return $resultado;

@@ -92,6 +92,7 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="aula_buscar">Buscar</a>
                                 <a class="dropdown-item" href="aula_crear">Crear</a>
+                                <a class="dropdown-item" href="aula_informe">Informe</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">

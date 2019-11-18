@@ -44,27 +44,23 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel"><i class='fas fa-trash'></i> CONFIRME ELIMINACIÓN</h4>
+                        <h4 class="modal-title" id="myModalLabel"><i class='fas fa-trash'></i> ELIMINACIÓN DE AULA</h4>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" id="cuerpoModalBorrar">
                         <form name="formBorrarAula" id="formBorrarAula" method="POST">
                             <input type="hidden" name="modalIdAula" id="modalIdAula">
-                            <div class="form-row">
-                                <div class="col">
-                                    <label id="modalDetalle">Presione CONFIRMAR para borrar el aula</label>
-                                </div>
+                            <div class="container">
+                                <p><strong> Presione GUARDAR para confirmar la eliminación del aula </strong></p>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <input type='submit' class='btn btn-success' 
-                               id='btnConfirmarEliminacion' name='btnConfirmarEliminacion'
-                               data-dismiss="modal"
-                               title='Confirmar la eliminación del registro seleccionado' value='Confirmar'>
+                        <button type="submit" class="btn btn-success"
+                                name="btnBorrarAula" id="btnBorrarAula">
+                            <i class="far fa-save"></i> GUARDAR</button>
                         <input type='submit' class='btn btn-outline-secondary' 
-                               id='btnCancelarEliminacion' name="btnCancelarEliminacion" 
-                               data-dismiss="modal" title='Cancelar la eliminación del registro seleccionado'
-                               value='Cancelar'>
+                               style="display: none;"
+                               name="btnRefrescarPantalla" id="btnRefrescarPantalla" value='Aceptar'>
                     </div>
                 </div>
             </div>

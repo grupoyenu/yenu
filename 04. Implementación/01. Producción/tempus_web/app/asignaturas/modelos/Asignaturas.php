@@ -73,7 +73,10 @@ class Asignaturas {
     }
 
     public function listarSinMesa($codigo, $nombre) {
-        $consulta = "";
+        $consulta = "SELECT REL.idasignatura idAsignatura, ASI.nombre nombre FROM asignatura_carrera REL "
+                . "INNER JOIN asignatura ASI ON ASI.idasignatura = REL.idasignatura "
+                . "LEFT JOIN mesa_examen MES ON MES.idasignatura = REL.idasignatura "
+                . "WHERE MES.idmesa IS NULL AND REL.idcarrera = {$codigo} AND ASI.nombre LIKE '%{$nombre}%'";
         $resultado = Conexion::getInstancia()->seleccionar($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
         return $resultado;

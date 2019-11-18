@@ -44,7 +44,7 @@ class Asignatura {
             if ($existe == 1) {
                 $values = "(NULL, '$this->nombre')";
                 $creacion = Conexion::getInstancia()->insertar("asignatura", $values);
-                $this->idasignatura = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
+                $this->idAsignatura = ($creacion == 2) ? (Int) Conexion::getInstancia()->insert_id : NULL;
                 $this->descripcion = Conexion::getInstancia()->getDescripcion();
                 return $creacion;
             }

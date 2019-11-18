@@ -36,22 +36,22 @@ $(document).ready(function () {
 
     /* ABRE EL MODAL PARA CONFIRMAR LA BAJA */
 
-    $('.baja').click(function () {
-        var sector = $(this).parents("tr").find("td").eq(0).html();
-        var nombre = $(this).parents("tr").find("td").eq(1).html();
+    $(".borrar").click(function (evento) {
+        evento.preventDefault();
         $("#modalIdAula").val($(this).attr("name"));
-        $("#modalDetalle").text("Presione CONFIRMAR para borrar el aula " + nombre + " del sector " + sector);
         $("#modalBorrarAula").modal({backdrop: 'static', keyboard: false});
     });
-    
+
     /* CARGA EL FORMULARIO DE MODIFICACION CUANDO SE PRESIONA EL BOTON EN LA TABLA */
 
     $('.detalle').click(function () {
         var idAula = $(this).attr("name");
+        var sector = $(this).parents("tr").find('td:eq(0)').text();
+        var nombre = $(this).parents("tr").find('td:eq(1)').text();
         $.ajax({
             type: "POST",
             url: "./app/aulas/vistas/FormDetalleAula.php",
-            data: "idAula=" + idAula,
+            data: "idAula=" + idAula + "&sector=" + sector + "&nombre=" + nombre,
             success: function (data) {
                 $('#contenido').html(data);
             },
@@ -61,6 +61,29 @@ $(document).ready(function () {
             }
         });
     });
-    
+
+    $('#btnBorrarAula').click(function () {
+        $.ajax({
+            type: "POST",
+            url: "./app/aulas/vistas/ProcesarBorrarAula.php",
+            data: $("#formBorrarAula").serialize(),
+            success: function (data) {
+                $('#cuerpoModalBorrar').html(data);
+                $('#btnBorrarAula').hide();
+                $('#btnRefrescarPantalla').show();
+            },
+            error: function (data) {
+                console.log(data);
+                $("#cuerpoModal").html('<div class="alert alert-danger text-center" role="alert"><strong>No se procesó la petición</strong></div>');
+            }
+        });
+    });
+
+    $("#btnRefrescarPantalla").click(function () {
+        setTimeout(function () {
+            location.reload();
+        }, 600);
+    });
+
 
 });

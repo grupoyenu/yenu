@@ -120,6 +120,32 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="ModalBorrarCursada" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel"><i class='fas fa-trash'></i> ELIMINACIÓN DE CURSADA</h4>
+                    </div>
+                    <div class="modal-body" id="cuerpoModalBorrar">
+                        <form name="formBorrarCursada" id="formBorrarCursada" method="POST">
+                            <input type="hidden" name="modalIdCarrera" id="modalIdCarrera">
+                            <input type="hidden" name="modalIdAsignatura" id="modalIdAsignatura">
+                            <div class="container">
+                                <p><strong> Presione GUARDAR para confirmar la eliminación de la cursada </strong></p>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success"
+                                name="btnBorrarCursada" id="btnBorrarCursada">
+                            <i class="far fa-save"></i> GUARDAR</button>
+                        <input type='submit' class='btn btn-outline-secondary' 
+                               style="display: none;"
+                               name="btnRefrescarPantalla" id="btnRefrescarPantalla" value='Aceptar'>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <script type="text/javascript" src="./app/cursadas/js/BuscarCursada.js"></script>

@@ -160,6 +160,7 @@ class Conexion extends mysqli {
     public function seleccionar($consulta) {
         $resultado = $this->query($consulta);
         if ($resultado) {
+            Log::escribirLineaError($consulta);
             if ($resultado->num_rows > 0) {
                 $this->descripcion = "Se encontraron resultados";
                 return $resultado;

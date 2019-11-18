@@ -35,4 +35,13 @@ class Clases {
         return $eliminacion;
     }
 
+    public function borrarSinCursada() {
+        $consulta = "DELETE cla FROM clase cla JOIN (SELECT idclase FROM clase "
+                . "WHERE idclase NOT IN (SELECT DISTINCT idclase FROM cursada)) "
+                . "can ON can.idclase = cla.idclase";
+        $eliminacion = Conexion::getInstancia()->borrarConSubconsulta($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $eliminacion;
+    }
+
 }

@@ -5,8 +5,10 @@ require_once '../../principal/modelos/AutoCargador.php';
 AutoCargador::cargarModulos();
 
 $boton = "";
-if (isset($_POST['codigo'])) {
+if (isset($_POST['codigo']) && isset($_POST['nombre'])) {
     $codigo = $_POST['codigo'];
+    $nombre = $_POST['nombre'];
+    $titulo = str_pad($codigo, 3, "0", STR_PAD_LEFT) . " " . $nombre . ": ";
     $cuerpo = '
         <input type="hidden" name="codigo" id="codigo" value="' . $codigo . '">
         <input type="hidden" name="nombreAsignatura" id="nombreAsignatura" value="">
@@ -31,6 +33,7 @@ if (isset($_POST['codigo'])) {
                     <i class="far fa-save"></i> GUARDAR
                 </button>';
 } else {
+    $titulo = "";
     $mensaje = "No se obtuvo la información desde el formulario";
     $cuerpo = ControladorHTML::mostrarAlertaResultadoOperacion(0, $mensaje);
 }
@@ -51,7 +54,7 @@ if (isset($_POST['codigo'])) {
     <div id="seccionFormulario">
         <form id="formAgregarAsignatura" name="formAgregarAsignatura" method="POST">
             <div class="card border-dark">
-                <div class="card-header bg-dark text-white">Complete el formulario y presione CREAR</div>
+                <div class="card-header bg-dark text-white"><?= $titulo; ?> Complete el formulario y presione CREAR</div>
                 <div class="card-body"><?= $cuerpo; ?></div>
             </div>
             <div class="form-row mt-2 mb-4">

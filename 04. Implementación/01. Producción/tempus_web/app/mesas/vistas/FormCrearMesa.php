@@ -28,11 +28,11 @@ if ($cantidad > 0) {
                 <div class="form-row">
                     <label for="carrera" class="col-sm-2 col-form-label">* Carrera:</label>
                     <div class="col">
-                        <select class="form-control mb-2" name="carrera" id="carrera" disabled></select>
+                        <select class="form-control mb-2" name="carrera" id="carrera" required></select>
                     </div>
                     <label for="carrera" class="col-sm-2 col-form-label">* Asignatura:</label>
                     <div class="col">
-                        <select class="form-control mb-2" name="asignatura" id="asignatura" disabled></select>
+                        <select class="form-control mb-2" name="asignatura" id="asignatura" required disabled></select>
                     </div>
                 </div>
             </div>
@@ -76,7 +76,7 @@ if ($cantidad > 0) {
                     </div>
                     <label for="vocal2" class="col-sm-2 col-form-label">* Hora:</label>
                     <div class="col">
-                        <select class="form-control mb-2">' . $opcionesHora . '</select>
+                        <select class="form-control mb-2" name="hora1" id="hora1">' . $opcionesHora . '</select>
                     </div>
                 </div>
                 <div class="form-row">

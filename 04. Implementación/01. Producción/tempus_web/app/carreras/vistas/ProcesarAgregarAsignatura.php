@@ -14,7 +14,7 @@ if (isset($_POST['codigo']) && isset($_POST['asignatura'])) {
     $nombreAsignatura = $_POST['nombreAsignatura'];
     $anio = $_POST['anio'];
     if (substr($idAsignatura, 0, 1) == "_") {
-        $asignatura = new Asignatura($idAsignatura, $nombreAsignatura);
+        $asignatura = new Asignatura(NULL, $nombreAsignatura);
         $creacion = $asignatura->crear();
         if ($creacion == 2) {
             $controladorCarrera = new ControladorCarreras();

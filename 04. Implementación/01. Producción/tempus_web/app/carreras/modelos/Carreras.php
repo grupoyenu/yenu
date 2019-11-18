@@ -96,7 +96,12 @@ class Carreras {
      * @return integer 0 si la consulta falla, 1 si no hay resultados o resource.
      */
     public function listarSinMesa($nombre) {
-        $consulta = "";
+        $consulta = "SELECT ca.* FROM carrera ca LEFT JOIN "
+                . "(SELECT COUNT(idasignatura) asignaturas, idcarrera FROM asignatura_carrera GROUP BY idcarrera) asi "
+                . "ON asi.idcarrera = ca.codigo LEFT JOIN "
+                . "(SELECT COUNT(idasignatura) mesas, idcarrera FROM mesa_examen GROUP BY idcarrera) mes "
+                . "ON mes.idcarrera = ca.codigo WHERE asi.asignaturas > 0 AND (mes.mesas < asi.asignaturas OR mes.mesas IS NULL) "
+                . "AND ca.nombre LIKE '%{$nombre}%'";
         $resultado = Conexion::getInstancia()->seleccionar($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
         return $resultado;

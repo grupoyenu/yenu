@@ -55,6 +55,29 @@ class Cursada {
         $this->descripcion = empty($clases) ? "No se recibieron clases" : $this->descripcion;
     }
 
+    public function borrar() {
+        if ($this->asignatura && $this->carrera) {
+            $condicion = "idasignatura = {$this->asignatura} AND idcarrera = {$this->carrera}";
+            $eliminacion = Conexion::getInstancia()->borrar("cursada", $condicion);
+            $this->descripcion = Conexion::getInstancia()->getDescripcion();
+            if ($eliminacion == 2) {
+                return $this->borrarClases();
+            }
+            return $eliminacion;
+        }
+        $this->descripcion = "No se recibieron los campos obligatorios";
+        return 0;
+    }
+
+    private function borrarClases() {
+        $clases = new Clases();
+        $eliminacion = $clases->borrarSinCursada();
+        if ($eliminacion != 2) {
+            $this->descripcion = "No se realizó la eliminación de las clases";
+        }
+        return $eliminacion;
+    }
+
     public function crear() {
         if ($this->asignatura && $this->carrera && $this->clases) {
             $claves = array();

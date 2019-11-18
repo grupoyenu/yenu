@@ -11,7 +11,6 @@ $(document).ready(function () {
         language: {url: "./lib/js/Spanish.json"}
     });
 
-
     $(".detalle").click(function () {
         $("#mdcCodigoCarrera").val($(this).parents("tr").find('td:eq(0)').text());
         $("#mdcNombreCarrera").val($(this).parents("tr").find('td:eq(1)').text());
@@ -40,7 +39,36 @@ $(document).ready(function () {
                 $("#contenido").html('<div class="alert alert-danger text-center" role="alert">No se procesó la petición</div>');
             }
         });
+    });
 
+    $(".borrar").click(function (evento) {
+        evento.preventDefault();
+        $("#modalIdCarrera").val($(this).attr("name"));
+        $("#modalIdAsignatura").val($(this).attr("id"));
+        $("#ModalBorrarCursada").modal({backdrop: 'static', keyboard: false});
+    });
+
+    $('#btnBorrarCursada').click(function () {
+        $.ajax({
+            type: "POST",
+            url: "./app/cursadas/vistas/ProcesarBorrarCursada.php",
+            data: $("#formBorrarCursada").serialize(),
+            success: function (data) {
+                $('#cuerpoModalBorrar').html(data);
+                $('#btnBorrarCursada').hide();
+                $('#btnRefrescarPantalla').show();
+            },
+            error: function (data) {
+                console.log(data);
+                $("#cuerpoModal").html('<div class="alert alert-danger text-center" role="alert"><strong>No se procesó la petición</strong></div>');
+            }
+        });
+    });
+
+    $("#btnRefrescarPantalla").click(function () {
+        setTimeout(function () {
+            location.reload();
+        }, 600);
     });
 });
 

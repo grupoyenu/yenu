@@ -8,6 +8,7 @@ class ControladorVista {
         $this->vistas = array("home" => "home_principal",
             "FormBuscarAula" => "buscar_aulas",
             "FormCrearAula" => "crear_aulas",
+            "FormInformeAula" => "informe_aulas",
             "FormBuscarCursada" => "buscar_cursadas",
             "FormCrearCursada" => "crear_cursadas",
             "FormSeleccionarCursada" => "seleccionar_cursadas",

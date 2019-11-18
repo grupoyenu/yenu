@@ -36,6 +36,26 @@ class ControladorMesa {
         return $resultado;
     }
 
+    public function crear($carrera, $asignatura, $tribunal, $primero, $segundo) {
+        if (Conexion::getInstancia()->iniciarTransaccion()) {
+            $tribunal->crear();
+            $primero->crear();
+            $idSegundo = NULL;
+            if ($segundo) {
+                $segundo->crear();
+                $idSegundo = $segundo->getIdLlamado();
+            }
+            $mesa = new MesaExamen(NULL, $asignatura, $carrera, $tribunal->getIdTribunal(), $primero->getIdLlamado(), $idSegundo);
+            $creacion = $mesa->crear();
+            $this->descripcion = $mesa->getDescripcion();
+            $confirmar = ($creacion == 2) ? TRUE : FALSE;
+            Conexion::getInstancia()->finalizarTransaccion($confirmar);
+            return $creacion;
+        }
+        $this->descripcion = "No se pudo inicializar la transacción para operar";
+        return 1;
+    }
+
     public function importar($mesasExamen, $numeroLlamados) {
         $mesas = new MesasExamen();
         if (Conexion::getInstancia()->iniciarTransaccion()) {
@@ -45,8 +65,6 @@ class ControladorMesa {
             Conexion::getInstancia()->finalizarTransaccion($confirmar);
             return $resultado;
         }
-        $this->descripcion = "No se pudo inicializar la transacción para operar";
-        return 1;
     }
 
     public function listarInforme($carrera, $asignatura, $fecha, $hora, $docente, $modificada) {

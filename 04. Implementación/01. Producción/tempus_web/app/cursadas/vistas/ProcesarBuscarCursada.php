@@ -57,13 +57,13 @@ if (gettype($cursadas) == "object") {
                 <td class='text-center'>
                     <div class='btn-group btn-group-sm'>
                         <button class='btn btn-outline-info detalle' 
-                            name='' title='Ver detalle'><i class='fas fa-eye'></i>
+                                title='Ver detalle'><i class='fas fa-eye'></i>
                         </button>
                         <button class='btn btn-outline-warning editar' 
                                 name='{$cursada['idCarrera']}' id='{$cursada['idAsignatura']}' title='Editar'><i class='far fa-edit'></i>
                         </button>
-                        <button class='btn btn-outline-danger baja' 
-                                name='' title='Dar de baja'><i class='fas fa-trash'></i>
+                        <button class='btn btn-outline-danger borrar' 
+                                name='{$cursada['idCarrera']}' id='{$cursada['idAsignatura']}' title='Borrar'><i class='fas fa-trash'></i>
                         </button>
                     </div>
                 </td>

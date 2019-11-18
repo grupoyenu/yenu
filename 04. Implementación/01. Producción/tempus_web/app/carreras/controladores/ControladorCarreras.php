@@ -27,10 +27,6 @@ class ControladorCarreras {
         return $resultado;
     }
 
-    public function crear($codigo, $nombre) {
-        
-    }
-
     public function listarUltimasCreadas() {
         $carreras = new Carreras();
         $resultado = $carreras->listarUltimasCreadas();

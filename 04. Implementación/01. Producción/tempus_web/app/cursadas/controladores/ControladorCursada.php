@@ -15,8 +15,17 @@ class ControladorCursada {
         return $this->descripcion;
     }
 
-    public function borrar($carrera, $asignatura) {
-        
+    public function borrar($codigo, $idAsignatura) {
+        $cursada = new Cursada($idAsignatura, $codigo);
+        if (Conexion::getInstancia()->iniciarTransaccion()) {
+            $eliminacion = $cursada->borrar();
+            $this->descripcion = $cursada->getDescripcion();
+            $confirmar = ($eliminacion == 2) ? TRUE : FALSE;
+            Conexion::getInstancia()->finalizarTransaccion($confirmar);
+            return $eliminacion;
+        }
+        $this->descripcion = "No se pudo inicializar la transacción para operar";
+        return 1;
     }
 
     public function buscar($campo, $valor) {

@@ -64,7 +64,10 @@ class Aula {
 
     public function borrar() {
         if ($this->idAula) {
-            
+            $condicion = "idaula = {$this->idAula}";
+            $eliminacion = Conexion::getInstancia()->borrar("aula", $condicion);
+            $this->descripcion = Conexion::getInstancia()->getDescripcion();
+            return $eliminacion;
         }
         return 1;
     }

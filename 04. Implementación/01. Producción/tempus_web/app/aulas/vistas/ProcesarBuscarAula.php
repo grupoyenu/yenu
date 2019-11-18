@@ -34,22 +34,26 @@ $html = "";
 if (gettype($aulas) == "object") {
     $filas = "";
     while ($aula = $aulas->fetch_assoc()) {
-        $filas .= "
-            <tr>
-                <td class='align-middle'>{$aula['sector']}</td>
-                <td class='align-middle'>{$aula['nombre']}</td>
-                <td class='text-center'>
-                    <div class='btn-group btn-group-sm'>
-                        <button class='btn btn-outline-info detalle' 
+        if ($aula['clases'] == 0 && $aula['llamados'] == 0) {
+            $operaciones = " <button class='btn btn-outline-danger borrar' 
+                                name='{$aula['idaula']}' title='Dar de baja'><i class='fas fa-trash'></i>
+                            </button>";
+        } else {
+            $operaciones = "<button class='btn btn-outline-info detalle' 
                             name='{$aula['idaula']}' title='Ver detalle'><i class='fas fa-eye'></i>
                         </button>
                         <button class='btn btn-outline-warning editar' 
                                 name='{$aula['idaula']}' title='Editar'><i class='far fa-edit'></i>
-                        </button>
-                        <button class='btn btn-outline-danger baja' 
-                                name='{$aula['idaula']}' title='Dar de baja'><i class='fas fa-trash'></i>
-                        </button>
-                    </div>
+                        </button>";
+        }
+        $filas .= "
+            <tr>
+                <td class='align-middle'>{$aula['sector']}</td>
+                <td class='align-middle'>{$aula['nombre']}</td>
+                <td class='align-middle'>{$aula['clases']}</td>
+                <td class='align-middle'>{$aula['llamados']}</td>   
+                <td class='text-center'>
+                    <div class='btn-group btn-group-sm'>{$operaciones}</div>
                 </td>
             </tr>";
     }
@@ -58,8 +62,10 @@ if (gettype($aulas) == "object") {
             <table id="tablaBuscarAulas" class="table table-bordered table-hover">
                 <thead>
                     <tr>
-                        <th>Sector</th>
-                        <th>Nombre</th>
+                        <th title="Nombre del sector">Sector</th>
+                        <th title="Nombre del aula">Nombre</th>
+                        <th title="Cantidad de clases asociadas">Clases</th>
+                        <th title="Cantidad de llamados asociados">Llamados</th>
                         <th class="text-center">Operaciones</th>
                     </tr>
                 </thead>

@@ -8,6 +8,13 @@ class ControladorAula {
         return $this->descripcion;
     }
 
+    public function borrar($idAula) {
+        $aula = new Aula($idAula);
+        $resultado = $aula->borrar();
+        $this->descripcion = $aula->getDescripcion();
+        return $resultado;
+    }
+
     public function buscar($campo, $valor) {
         $aulas = new Aulas();
         $resultado = $aulas->buscar($campo, $valor);
@@ -43,6 +50,13 @@ class ControladorAula {
     public function listarHorariosClase($id) {
         $aulas = new Aulas();
         $resultado = $aulas->listarHorariosClase($id);
+        $this->descripcion = $aulas->getDescripcion();
+        return $resultado;
+    }
+
+    public function listarMesasExamen($id) {
+        $aulas = new Aulas();
+        $resultado = $aulas->listarMesasExamen($id);
         $this->descripcion = $aulas->getDescripcion();
         return $resultado;
     }
