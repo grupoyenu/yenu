@@ -74,6 +74,13 @@ class ControladorMesa {
         return $resultado;
     }
 
+    public function listarResumenInicial() {
+        $mesas = new MesasExamen();
+        $resultado = $mesas->listarResumenInicial();
+        $this->descripcion = $mesas->getDescripcion();
+        return $resultado;
+    }
+
     public function listarUltimasCreadas() {
         $mesas = new MesasExamen();
         $resultado = $mesas->listarUltimasCreadas();

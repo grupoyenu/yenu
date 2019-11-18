@@ -4,20 +4,62 @@ require_once './app/principal/modelos/AutoCargador.php';
 AutoCargador::cargarModulos();
 
 $controladorCursada = new ControladorCursada();
+$controladorMesa = new ControladorMesa();
+
 $resumenCursada = $controladorCursada->listarResumenInicial();
+$resumenMesa = $controladorMesa->listarResumenInicial();
 
+$filas = '';
 if (gettype($resumenCursada) == "object") {
-    $cuerpoCursada = '';
     while ($cursada = $resumenCursada->fetch_assoc()) {
-        $cuerpoCursada .= '
-            <div class="form-row">
-                <label for="nombre" class="col-sm-8">' . $cursada['nombre'] . ':</label>
-                <div class="col"> <p>' . $cursada['cantidad'] . '</p></div>
-            </div>';
+        $filas .= "
+            <tr>
+                <td class='align-middle'>Horarios de cursada</td>
+                <td class='align-middle'>" . utf8_encode($cursada['nombre']) . "</td>
+                <td class='align-middle'>{$cursada['cantidad']}</td>
+            </tr>";
     }
+} else {
+    $filas .= "
+            <tr>
+                <td class='align-middle'>Horarios de cursada</td>
+                <td class='align-middle'>Sin información</td>
+                <td class='align-middle'></td>
+            </tr>";
 }
-?>
+/* REPORTE INICIAL PARA MESAS DE EXAMEN */
+if (gettype($resumenMesa) == "object") {
+    while ($mesa = $resumenMesa->fetch_assoc()) {
+        $filas .= "
+            <tr>
+                <td class='align-middle'>Mesas de examen</td>
+                <td class='align-middle'>" . utf8_encode($mesa['nombre']) . "</td>
+                <td class='align-middle'>{$mesa['cantidad']}</td>
+            </tr>";
+    }
+} else {
+    $filas .= "
+            <tr>
+                <td class='align-middle'>Mesas de examen</td>
+                <td class='align-middle'>Sin información</td>
+                <td class='align-middle'></td>
+            </tr>";
+}
 
+$tabla = '
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Módulo</th>
+                    <th>Titulo</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>' . $filas . '</tbody>
+        </table>    
+    </div>';
+?>
 <div class="container-fluid" id="FormBuscarAsignatura">
     <div id="seccionSuperior" class="container mt-2 mb-2">
         <div class="row mt-sm-3 mb-4">
@@ -26,24 +68,11 @@ if (gettype($resumenCursada) == "object") {
             </div>
         </div>
     </div>
-    <div id="seccionCentral" class="container mt-2 mb-2">
-
-
-    </div>
-    <div id="seccionInferior" class="container mt-2 mb-2">
-        <div class="form-row">
-            <div class="col">
-                <div class="card border-dark">
-                    <div class="card-header bg-dark text-white"><i class="far fa-clock"></i> CURSADAS</div>
-                    <div class="card-body"> <?= $cuerpoCursada; ?></div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card border-dark">
-                    <div class="card-header bg-dark text-white"><i class="far fa-calendar-alt"></i> MESAS DE EXAMEN</div>
-                    <div class="card-body"></div>
-                </div>
-            </div>
+    <div id="seccionCentral" class="container">
+        <div class="card border-dark" title="Información resumida">
+            <div class="card-header bg-dark text-white">RESUMEN DEL SISTEMA</div>
+            <div class="card-body"> <?= $tabla; ?></div>
         </div>
+
     </div>
 </div>

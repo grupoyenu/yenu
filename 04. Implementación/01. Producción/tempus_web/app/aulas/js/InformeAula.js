@@ -6,6 +6,26 @@
 
 $(document).ready(function () {
 
+    $('#formInformeAula').submit(function (evento) {
+        evento.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "./app/aulas/vistas/ProcesarInformeAula.php",
+            data: $("#formInformeAula").serialize(),
+            success: function (data) {
+                $('#seccionInferior').html(data);
+                $("table#tablaInformeAulas").DataTable({
+                    dom: 'Bfrtip',
+                    responsive: true,
+                    language: {url: "./lib/js/Spanish.json"}
+                });
+            },
+            error: function (data) {
+                console.log(data);
+                $("#seccionInferior").html('<div class="alert alert-danger text-center" role="alert"><strong>No se procesó la petición</strong></div>');
+            }
+        });
+    });
 
     $("#modulo").change(function () {
         var modulo = $(this).val();
@@ -15,6 +35,7 @@ $(document).ready(function () {
             $("#desde").prop("disabled", false);
             $("#hasta").prop("disabled", false);
             $("#disponibleMesa").prop("disabled", true);
+            $("#fecha").prop("disabled", true);
             $("#horaMesa").prop("disabled", true);
         } else {
             $("#disponibleCursada").prop("disabled", true);
@@ -22,7 +43,22 @@ $(document).ready(function () {
             $("#desde").prop("disabled", true);
             $("#hasta").prop("disabled", true);
             $("#disponibleMesa").prop("disabled", false);
+            $("#fecha").prop("disabled", false);
             $("#horaMesa").prop("disabled", false);
         }
     });
+
+    $("#desde").change(function () {
+        var hora = $(this).val().substring(0, 2);
+        for (var i = 10; i < 24; i++) {
+            if (i <= hora) {
+                $("#hasta").find("option[value='" + i + ":00']").attr("disabled", "disabled");
+                $("#hasta").find("option[value='" + i + ":30']").attr("disabled", "disabled");
+            } else {
+                $("#hasta").find("option[value='" + i + ":00']").removeAttr("disabled");
+                $("#hasta").find("option[value='" + i + ":30']").removeAttr("disabled");
+            }
+        }
+    });
+
 });

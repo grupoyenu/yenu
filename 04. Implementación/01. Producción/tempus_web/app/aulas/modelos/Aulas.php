@@ -54,6 +54,24 @@ class Aulas {
         return $resultado;
     }
 
+    public function listarInformeCursada($disponible, $dia, $desde, $hasta) {
+        $consulta = "SELECT * FROM aula WHERE idaula {$disponible} (SELECT idaula FROM clase WHERE ";
+        $consulta .= ($dia != "NO") ? "dia = {$dia} AND" : "";
+        $consulta .= "((desde >= '{$desde}' AND desde < '{$hasta}') OR (hasta > '{$desde}' AND hasta < '{$hasta}') "
+                . "OR (desde < '{$desde}' AND hasta > '{$desde}'))) ORDER BY sector, nombre";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
+    }
+
+    public function listarInformeMesa($disponible, $fecha, $hora) {
+        $consulta = "SELECT * FROM aula WHERE idaula {$disponible} (SELECT idaula "
+                . "FROM llamado WHERE fecha = '{$fecha}' AND hora = '{$hora}') ORDER BY sector, nombre";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
+    }
+
     public function listarMesasExamen($id) {
         $consulta = "SELECT codigoCarrera, nombreCarrera, nombreAsignatura, fechaPri, horaPri, fechaSeg, horaSeg "
                 . " FROM vista_mesas WHERE idAulaPri = {$id} OR idAulaSeg = {$id}";

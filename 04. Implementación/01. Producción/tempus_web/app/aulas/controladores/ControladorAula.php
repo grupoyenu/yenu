@@ -54,6 +54,17 @@ class ControladorAula {
         return $resultado;
     }
 
+    public function listarInforme($modulo, $disponibleCursada, $dia, $desde, $hasta, $disponibleMesa, $fecha, $hora) {
+        $aulas = new Aulas();
+        if ($modulo == "CUR") {
+            $resultado = $aulas->listarInformeCursada($disponibleCursada, $dia, $desde, $hasta);
+        } else {
+            $resultado = $aulas->listarInformeMesa($disponibleMesa, $fecha, $hora);
+        }
+        $this->descripcion = $aulas->getDescripcion();
+        return $resultado;
+    }
+
     public function listarMesasExamen($id) {
         $aulas = new Aulas();
         $resultado = $aulas->listarMesasExamen($id);

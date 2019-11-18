@@ -49,7 +49,7 @@ if (gettype($aulas) == "object") {
         $filas .= "
             <tr>
                 <td class='align-middle'>{$aula['sector']}</td>
-                <td class='align-middle'>{$aula['nombre']}</td>
+                <td class='align-middle'>" . utf8_encode($aula['nombre']) . "</td>
                 <td class='align-middle'>{$aula['clases']}</td>
                 <td class='align-middle'>{$aula['llamados']}</td>   
                 <td class='text-center'>

@@ -71,7 +71,6 @@ class Cursadas {
                 if ($datos[$posicion]) {
                     $aula = new Aula(NULL, $datos[$posicion + 2], $datos[$posicion + 3]);
                     $aula->crear();
-                    Log::escribirLineaError($dia . " " . $datos[$posicion] . " " . $datos[$posicion + 1] . " " . $aula->getIdAula());
                     $clase = new Clase(NULL, $dia, $datos[$posicion], $datos[$posicion + 1], $aula->getIdAula());
                     $clases[] = $clase;
                 }
@@ -97,7 +96,7 @@ class Cursadas {
         $consulta .= ($dia != "NO") ? "idClase{$dia} IS NOT NULL AND " : "";
         $consulta .= ($desde != "NO") ? "(desde1 {$opDesde} '{$desde}' OR desde2 {$opDesde} '{$desde}' OR desde3 {$opDesde} '{$desde}' OR desde4 {$opDesde} '{$desde}' OR desde5 {$opDesde} '{$desde}' OR desde6 {$opDesde} '{$desde}') AND " : "";
         $consulta .= ($hasta != "NO") ? "(hasta1 {$opHasta} '{$hasta}' OR hasta2 {$opHasta} '{$hasta}' OR hasta3 {$opHasta} '{$hasta}' OR hasta4 {$opHasta} '{$hasta}' OR hasta5 {$opHasta} '{$hasta}' OR hasta6 {$opHasta} '{$hasta}') AND " : "";
-        $consulta .= ($modificada != "SI") ? "(fechaMod1 IS NOT NULL OR fechaMod2 IS NOT NULL OR fechaMod3 IS NOT NULL OR fechaMod4 IS NOT NULL OR fechaMod5 IS NOT NULL OR fechaMod6 IS NOT NULL)" : "(fechaMod1 IS NULL AND fechaMod2 IS NULL AND fechaMod3 IS NULL AND fechaMod4 IS NULL AND fechaMod5 IS NULL AND fechaMod6 IS NULL)";
+        $consulta .= ($modificada == "SI") ? "(fechaMod1 IS NOT NULL OR fechaMod2 IS NOT NULL OR fechaMod3 IS NOT NULL OR fechaMod4 IS NOT NULL OR fechaMod5 IS NOT NULL OR fechaMod6 IS NOT NULL)" : "(fechaMod1 IS NULL AND fechaMod2 IS NULL AND fechaMod3 IS NULL AND fechaMod4 IS NULL AND fechaMod5 IS NULL AND fechaMod6 IS NULL)";
         $resultado = Conexion::getInstancia()->seleccionar($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
         return $resultado;
@@ -111,7 +110,9 @@ class Cursadas {
     }
 
     public function listarResumenInicial() {
-        $consulta = "SELECT 'Total de asignaturas con cursada' nombre, COUNT(DISTINCT idasignatura, idcarrera) cantidad FROM vista_cursadas";
+        $consulta = "SELECT 'Total de horarios de cursada' nombre, COUNT(DISTINCT idasignatura, idcarrera) cantidad FROM vista_cursadas UNION "
+                . "SELECT 'Total de asignaturas distintas con cursada' nombre, COUNT(DISTINCT idasignatura) cantidad FROM vista_cursadas UNION "
+                . "SELECT 'Total de cursadas que se han modificado' nombre, COUNT(*) cantidad FROM vista_cursadas WHERE fechaMod1 IS NOT NULL OR fechaMod2 IS NOT NULL OR fechaMod3 IS NOT NULL OR fechaMod4 IS NOT NULL OR fechaMod5 IS NOT NULL OR fechaMod6 IS NOT NULL";
         $resultado = Conexion::getInstancia()->seleccionar($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
         return $resultado;

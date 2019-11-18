@@ -154,6 +154,15 @@ class MesasExamen {
         return $resultado;
     }
 
+    public function listarResumenInicial() {
+        $consulta = "SELECT 'Total de mesas de examen' nombre, COUNT(*) cantidad FROM vista_mesas UNION "
+                . "SELECT 'Total de asignaturas distintas con mesa', COUNT(DISTINCT idasignatura) cantidad FROM vista_mesas UNION "
+                . "SELECT 'Total de mesas que se han modificado' nombre, COUNT(*) cantidad FROM vista_mesas WHERE fechaModPri IS NOT NULL OR fechaModSeg IS NOT NULL";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
+    }
+
     /**
      * Realiza la busqueda de las ultimas diez mesas de examen que se han creado.
      * El objetivo es brindar resultados previos cuando se hace la busqueda de 

@@ -1,5 +1,16 @@
 <?php
-$opcionesInicio = $opcionesFin = "";
+$controlador = new ControladorLlamados();
+$fechas = $controlador->listarFechas();
+
+$opcionesFecha = $opcionesInicio = $opcionesFin = $opcionesHora = "";
+
+if (gettype($fechas) == "object") {
+    while ($llamado = $fechas->fetch_assoc()) {
+        $fecha = date_format(date_create($llamado['fecha']), 'd/m/Y');
+        $opcionesFecha .= "<option value='{$llamado['fecha']}'>{$fecha}</option>";
+    }
+}
+
 for ($horainicio = 10; $horainicio < 23; ++$horainicio) {
     $opcionesInicio .= "<option value='{$horainicio}:00'>{$horainicio}:00 hs</option>
                         <option value='{$horainicio}:30'>{$horainicio}:30 hs</option>";
@@ -9,7 +20,6 @@ for ($horafin = 11; $horafin < 24; ++$horafin) {
                      <option value='{$horafin}:30'>{$horafin}:30 hs</option>";
 }
 
-$opcionesHora = "";
 for ($hora = 10; $hora < 23; ++$hora) {
     $opcionesHora .= "<option value='{$hora}:00'>{$hora}:00 hs</option>";
 }
@@ -44,11 +54,11 @@ for ($hora = 10; $hora < 23; ++$hora) {
                         </div>
                         <hr>
                         <div class="form-row">
-                            <label for="disponibleCursada" class="col-sm-2 col-form-label">Disponibilidad:</label>
+                            <label for="disponibleCursada" class="col-sm-2 col-form-label">Condición:</label>
                             <div class="col">
                                 <select class="form-control mb-2" name="disponibleCursada" id="disponibleCursada">
-                                    <option value="SI">Si</option>
-                                    <option value="NO">No</option>
+                                    <option value="NOT IN">Disponible</option>
+                                    <option value="IN">Ocupada</option>
                                 </select>
                             </div>
                             <label for="dia" class="col-sm-2 col-form-label">Día:</label>
@@ -83,16 +93,27 @@ for ($hora = 10; $hora < 23; ++$hora) {
                             <label for="disponibleMesa" class="col-sm-2 col-form-label">Disponibilidad:</label>
                             <div class="col">
                                 <select class="form-control mb-2" name="disponibleMesa" id="disponibleMesa" disabled>
-                                    <option value="SI">Si</option>
-                                    <option value="NO">No</option>
+                                    <option value="NOT IN">Disponible</option>
+                                    <option value="IN">Ocupada</option>
                                 </select>
                             </div>
+
+                            <label for="fecha" class="col-sm-2 col-form-label">Fecha:</label>
+                            <div class="col">
+                                <select class="form-control mb-2" name="fecha" id="fecha" disabled>
+                                    <?= $opcionesFecha; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
                             <label for="horaMesa" class="col-sm-2 col-form-label">Día:</label>
                             <div class="col">
                                 <select id="horaMesa" name="horaMesa" class="form-control mb-2" disabled>
                                     <?= $opcionesHora; ?>
                                 </select>
                             </div>
+                            <label class="col-sm-2 col-form-label"></label>
+                            <div class="col"></div>
                         </div>
                         <div class="form-row">
                             <div class="col text-right">
