@@ -163,10 +163,46 @@ class Usuario {
                 $this->rol = $fila['idrol'];
                 return 2;
             }
-            $this->descripcion = "No se obtuvo la información de la cursada";
+            $this->descripcion = "No se obtuvo la información del usuario";
             return 1;
         }
         $this->descripcion = "No se pudo hacer referencia al usuario";
+        return 0;
+    }
+
+    private function obtenerRol() {
+        $rol = new Rol($this->rol);
+        $obtener = $rol->obtener();
+        if ($obtener == 2) {
+            $this->rol = $rol;
+            $arreglo = mysqli_fetch_all($rol->getPermisos(), MYSQLI_ASSOC);
+            $rol->setPermisos($arreglo);
+            return 2;
+        }
+        $this->descripcion = "No se obtuvo la información del rol para el usuario";
+        return $obtener;
+    }
+
+    public function login() {
+        if ($this->email) {
+            $consulta = "SELECT usu.*, rel.idrol FROM usuario usu "
+                    . "INNER JOIN usuario_rol rel ON rel.idusuario = usu.idusuario "
+                    . "WHERE usu.email = '{$this->email}'";
+            $fila = Conexion::getInstancia()->obtener($consulta);
+            if (gettype($fila) == "array") {
+                $rol = new Rol();
+                $this->idUsuario = $fila['idusuario'];
+                $this->nombre = $fila['nombre'];
+                $this->email = $fila['email'];
+                $this->metodo = $fila['metodologin'];
+                $this->estado = $fila['estado'];
+                $this->rol = $fila['idrol'];
+                return $this->obtenerRol();
+            }
+            $this->descripcion = "El usuario '{$this->email}' no se encuentra registrado en el sistema";
+            return 1;
+        }
+        $this->descripcion = "No se pudo hacer referencia al usuario con su email";
         return 0;
     }
 

@@ -52,4 +52,20 @@ class UsuarioGoogle extends Usuario {
         return 0;
     }
 
+    public function login() {
+        $login = parent::login();
+        if ($login == 2) {
+            $consulta = "SELECT * FROM usuario_google WHERE idusuario = {$this->getIdUsuario()}";
+            $fila = Conexion::getInstancia()->obtener($consulta);
+            if (gettype($fila) == "array") {
+                $this->googleid = $fila['googleid'];
+                $this->imagen = $fila['imagen'];
+                return 2;
+            }
+            $this->descripcion = "No se obtuvo la información del usuario google";
+            return 1;
+        }
+        return $login;
+    }
+
 }

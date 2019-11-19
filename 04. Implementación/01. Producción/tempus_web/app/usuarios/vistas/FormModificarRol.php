@@ -16,7 +16,7 @@ if (isset($_POST['idRol'])) {
             $arreglo = array_column(mysqli_fetch_all($rol->getPermisos(), MYSQLI_ASSOC), 'idpermiso');
             $filas = "";
             while ($permiso = $permisos->fetch_assoc()) {
-                $check = (array_search($permiso['idpermiso'], $arreglo)) ? "checked" : "";
+                $check = (array_search($permiso['idpermiso'], $arreglo) !== false) ? "checked" : "";
                 $filas .= "
                     <tr>
                         <td class='text-center align-middle'>

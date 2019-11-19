@@ -1,3 +1,115 @@
+<?php
+$menu = "";
+if (isset($_SESSION['user'])) {
+    $usuario = unserialize($_SESSION['user']);
+    $rol = $usuario->getRol();
+    $permisos = $rol->getPermisos();
+    $nombres = array_column($permisos, 'nombre');
+    $menu .= '
+        <li class="nav-item active">
+            <a class="nav-link" href="principal_home"> <i class="fas fa-home"></i> Home</a>
+        </li>';
+    if (array_search("CURSADAS", $nombres) !== false) {
+        $menu .= '
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Cursadas
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="cursada_buscar">Buscar</a>
+                    <a class="dropdown-item" href="cursada_crear">Crear</a>
+                    <a class="dropdown-item" href="cursada_seleccionar">Importar</a>
+                    <a class="dropdown-item" href="cursada_informe">Informe</a>
+                </div>
+            </li>';
+    }
+    if (array_search("MESAS", $nombres) !== false) {
+        $menu .= '
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Mesas de examen
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="mesa_buscar">Buscar</a>
+                    <a class="dropdown-item" href="mesa_crear">Crear</a>
+                    <a class="dropdown-item" href="mesa_seleccionar">Importar</a>
+                    <a class="dropdown-item" href="mesa_informe">Informe</a>
+                </div>
+            </li>';
+    }
+    if (array_search("PLANES", $nombres) !== false) {
+        $menu .= '
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Carreras
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="carrera_buscar">Buscar</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Asignaturas
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="asignatura_buscar">Buscar</a>
+                </div>
+            </li>';
+    }
+    if (array_search("AULAS", $nombres) !== false) {
+        $menu .= '
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Aulas
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="aula_buscar">Buscar</a>
+                    <a class="dropdown-item" href="aula_crear">Crear</a>
+                    <a class="dropdown-item" href="aula_informe">Informe</a>
+                </div>
+            </li>';
+    }
+    if (array_search("USUARIOS", $nombres) !== false) {
+        $menu .= '
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Usuarios
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="usuario_buscarUsuario">Buscar</a>
+                    <a class="dropdown-item" href="usuario_crearUsuario">Crear</a>
+                </div>
+            </li>';
+    }
+    if (array_search("ROLES", $nombres) !== false) {
+        $menu .= '
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Roles
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="usuario_buscarRol">Buscar</a>
+                    <a class="dropdown-item" href="usuario_crearRol">Crear</a>
+                </div>
+            </li>';
+    }
+    if (array_search("PERMISOS", $nombres) !== false) {
+        $menu .= '
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Permisos
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="usuario_buscarPermiso">Buscar</a>
+                    <a class="dropdown-item" href="usuario_crearPermiso">Crear</a>
+                </div>
+            </li>';
+    }
+
+    $info = '<a class="dropdown-item disabled">' . $usuario->getEmail() . '</a>
+             <div class="dropdown-divider"></div>';
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -28,8 +140,6 @@
         <script type='text/javascript' src="./lib/js/select2/select2.min.js"></script>
         <script type='text/javascript' src="./lib/css/fontAwesome/js/all.min.js"></script>
         <script type='text/javascript' src="./app/principal/js/principal.js"></script>
-
-
     </head>
     <body>
         <header id="main-header">
@@ -41,91 +151,20 @@
         <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #1b1919;">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="principal_home"> <i class="fas fa-home"></i> Home</a>
-                    </li>
-                    <?php
-                    if (!isset($_SESSION['user'])) {
-                        echo '
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Cursadas
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="cursada_buscar">Buscar</a>
-                                <a class="dropdown-item" href="cursada_crear">Crear</a>
-                                <a class="dropdown-item" href="cursada_seleccionar">Importar</a>
-                                <a class="dropdown-item" href="cursada_informe">Informe</a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Mesas de examen
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="mesa_buscar">Buscar</a>
-                                <a class="dropdown-item" href="mesa_crear">Crear</a>
-                                <a class="dropdown-item" href="mesa_seleccionar">Importar</a>
-                                <a class="dropdown-item" href="mesa_informe">Informe</a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Carreras
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="carrera_buscar">Buscar</a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Asignaturas
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="asignatura_buscar">Buscar</a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Aulas
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="aula_buscar">Buscar</a>
-                                <a class="dropdown-item" href="aula_crear">Crear</a>
-                                <a class="dropdown-item" href="aula_informe">Informe</a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Usuarios
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="usuario_buscarUsuario">Buscar</a>
-                                <a class="dropdown-item" href="usuario_crearUsuario">Crear</a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Roles
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="usuario_buscarRol">Buscar</a>
-                                <a class="dropdown-item" href="usuario_crearRol">Crear</a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Permisos
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="usuario_buscarPermiso">Buscar</a>
-                                <a class="dropdown-item" href="usuario_crearPermiso">Crear</a>
-                            </div>
-                        </li>';
-                    }
-                    ?>
+                    <?= $menu; ?>
                 </ul>
-
-
+                <ul class="navbar-nav ml-auto nav-flex-icons">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-default"
+                             aria-labelledby="navbarDropdownMenuLink-333">
+                                 <?= $info; ?>
+                            <a class="dropdown-item" href="#">Cerrar sesión</a>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </nav>
