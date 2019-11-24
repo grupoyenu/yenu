@@ -16,8 +16,9 @@ if (isset($_POST['idPermiso'])) {
             <div class="form-row"><label for="nombre" class="col-sm-2 col-form-label">* Nombre:</label>
                 <div class="col">
                     <input type="text" class="form-control mb-2" 
-                           name="nombre" id="nombre"
+                           name="nombre" id="nombre" maxlength="15" minlength="5" pattern="[A-Za-z_]{5,15}"
                            value=' . $permiso->getNombre() . '
+                           title="Nombre: Acepta caracteres alfabéticos sin espacios, con una longitud minima de 5 y máxima de 15"
                            placeholder="Nombre de permiso" required>
                 </div>
             </div>';

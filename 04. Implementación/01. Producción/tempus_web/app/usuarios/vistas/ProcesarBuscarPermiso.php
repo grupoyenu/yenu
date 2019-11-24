@@ -59,9 +59,9 @@ if (gettype($permisos) == "object") {
             <table id="tablaBuscarPermisos" class="table table-bordered table-hover">
                 <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Roles</th>
-                        <th class="text-center">Operaciones</th>
+                        <th title="Nombre del permiso">Nombre</th>
+                        <th title="Cantidad de roles asociados">Roles asociados</th>
+                        <th title="Operaciones disponibles" class="text-center">Operaciones</th>
                     </tr>
                 </thead>
                 <tbody>' . $filas . '</tbody>

@@ -6,6 +6,7 @@ AutoCargador::cargarModulos();
 
 $controlador = new ControladorRoles();
 $roles = $controlador->listar();
+$boton = "";
 if (gettype($roles) == "object") {
     $filas = "";
     while ($rol = $roles->fetch_assoc()) {
@@ -13,16 +14,17 @@ if (gettype($roles) == "object") {
     }
     $cuerpo = '
         <div class="form-row">
-            <label for="nombre" class="col-sm-2 col-form-label">* Nombre:</label>
+            <label for="nombre" class="col-sm-2 col-form-label">* Nombre completo:</label>
             <div class="col">
                 <input type="text" class="form-control mb-2" 
-                       name="nombre" id="nombre"
+                       name="nombre" id="nombre" maxlength="50" minlength="8" pattern="[A-Za-zÁÉÍÓÚÑáéíóúñ ]{8, 50}"
+                       title="Nombre: Acepta caracteres alfabéticos con una longitud minima de 8 y máxima de 50"
                        placeholder="Nombre del usuario" required>
             </div>
             <label for="correo" class="col-sm-2 col-form-label">* E-mail:</label>
             <div class="col">
                 <input type="text" class="form-control mb-2" 
-                       name="correo" id="correo"
+                       name="correo" id="correo" maxlength="35" minlength="12" 
                        placeholder="E-mail" required>
             </div>
         </div>
@@ -43,31 +45,25 @@ if (gettype($roles) == "object") {
             <label for="metodo" class="col-sm-2 col-form-label">* Método:</label>
             <div class="col">
                 <select class="form-control mb-2" id="metodo" name="metodo">
-                    <option value="Manual">Manual</option>
                     <option value="Google">Google</option>
+                    <option value="Manual">Manual</option>
                 </select>
             </div>
-
             <label for="clave" class="col-sm-2 col-form-label">* Clave:</label>
             <div class="col">
                 <input type="password" class="form-control mb-2" 
-                       name="clave" id="clave"
-                       placeholder="Clave" required>
+                       name="clave" id="clave" maxlength="12" minlength="8" pattern="[A-Za-zÁÉÍÓÚÑáéíóúñ0-9 ]"
+                       title="Clave: Acepta caracteres alfanúmericos con una longitud minima de 8 y máxima de 12"
+                       placeholder="Clave" disabled required>
             </div>
         </div>';
     $boton = '
         <button type="submit" class="btn btn-success" 
                 id="btnCrearPermiso" title="Guardar datos">
             <i class="far fa-save"></i> GUARDAR
-        </button>
-        <a href="usuario_buscarUsuario">
-            <button type="button" class="btn btn-outline-info">
-                <i class="fas fa-search"></i> BUSCAR
-            </button>
-        </a>';
+        </button>';
 } else {
     $cuerpo = ControladorHTML::mostrarAlertaResultadoOperacion($roles, $controlador->getDescripcion());
-    $boton = ControladorHTML::mostrarBotonBusqueda("usuario_buscarUsuario");
 }
 ?>
 <div class="container-fluid" id="contenido">
@@ -90,7 +86,14 @@ if (gettype($roles) == "object") {
                     <div class="card-body"> <?= $cuerpo; ?> </div>
                 </div>
                 <div class="form-row mt-2 mb-4">
-                    <div class="col text-right"> <?= $boton; ?> </div>
+                    <div class="col text-right"> 
+                        <?= $boton; ?> 
+                        <a href="usuario_buscarUsuario">
+                            <button type="button" class="btn btn-outline-info">
+                                <i class="fas fa-search"></i> BUSCAR
+                            </button>
+                        </a>
+                    </div>
                 </div>
             </form>
         </div>

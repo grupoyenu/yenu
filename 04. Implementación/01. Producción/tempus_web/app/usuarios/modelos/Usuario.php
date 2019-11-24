@@ -189,6 +189,7 @@ class Usuario {
                     . "INNER JOIN usuario_rol rel ON rel.idusuario = usu.idusuario "
                     . "WHERE usu.email = '{$this->email}'";
             $fila = Conexion::getInstancia()->obtener($consulta);
+            Log::escribirLineaError($consulta);
             if (gettype($fila) == "array") {
                 $rol = new Rol();
                 $this->idUsuario = $fila['idusuario'];

@@ -38,7 +38,7 @@ class Permiso {
     }
 
     public function setNombre($nombre) {
-        if (preg_match("/^[A-Za-z ]{5,30}$/", $nombre)) {
+        if (preg_match("/^[A-Za-z_]{5,15}$/", $nombre)) {
             $this->nombre = strtoupper($nombre);
         } else {
             $this->descripcion = "El nombre del permiso no cumple con el formato requerido";

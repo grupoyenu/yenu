@@ -14,9 +14,10 @@ class Roles {
     }
 
     public function buscar($nombre) {
-        $consulta = "SELECT ROL.*, CAN.cantidad FROM rol ROL "
-                . "LEFT JOIN (SELECT idrol, COUNT(*) cantidad FROM rol_permiso GROUP BY idrol) CAN "
-                . "ON CAN.idrol = ROL.idrol WHERE ROL.nombre LIKE '%{$nombre}%'";
+        $consulta = "SELECT ROL.*, (CASE WHEN USU.usuarios IS NULL THEN 0 ELSE USU.usuarios END) usuarios, PER.permisos FROM rol ROL "
+                . "LEFT JOIN (SELECT idrol, COUNT(*) permisos FROM rol_permiso GROUP BY idrol) PER ON PER.idrol = ROL.idrol "
+                . "LEFT JOIN (SELECT idrol, COUNT(*) usuarios FROM usuario_rol GROUP BY idrol) USU ON USU.idrol = ROL.idrol "
+                . "WHERE ROL.nombre LIKE '%{$nombre}%'";
         $resultado = Conexion::getInstancia()->seleccionar($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
         return $resultado;
@@ -28,9 +29,10 @@ class Roles {
     }
 
     public function listarUltimosCreados() {
-        $consulta = "SELECT ROL.*, CAN.cantidad FROM rol ROL "
-                . "LEFT JOIN (SELECT idrol, COUNT(*) cantidad FROM rol_permiso GROUP BY idrol) CAN "
-                . "ON CAN.idrol = ROL.idrol ORDER BY ROL.idrol DESC LIMIT 10";
+        $consulta = "SELECT ROL.*, (CASE WHEN USU.usuarios IS NULL THEN 0 ELSE USU.usuarios END) usuarios, PER.permisos FROM rol ROL "
+                . "LEFT JOIN (SELECT idrol, COUNT(*) permisos FROM rol_permiso GROUP BY idrol) PER ON PER.idrol = ROL.idrol "
+                . "LEFT JOIN (SELECT idrol, COUNT(*) usuarios FROM usuario_rol GROUP BY idrol) USU ON USU.idrol = ROL.idrol "
+                . "ORDER BY ROL.idrol DESC LIMIT 10";
         $resultado = Conexion::getInstancia()->seleccionar($consulta);
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
         return $resultado;

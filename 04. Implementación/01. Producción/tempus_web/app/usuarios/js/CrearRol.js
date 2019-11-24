@@ -8,22 +8,34 @@ $(document).ready(function () {
 
     $('#formCrearRol').submit(function (evento) {
         evento.preventDefault();
-        $.ajax({
-            type: "POST",
-            dataType: 'json',
-            url: "./app/usuarios/vistas/ProcesarCrearRol.php",
-            data: $("#formCrearRol").serialize(),
-            success: function (data) {
-                $('#seccionResultado').html(data[0]['resultado']);
-                if (data[0]['exito'] === true) {
-                    $("#formCrearRol")[0].reset();
+        var cantidad = $('input[name="permisos[]"]:checked').length;
+        if (cantidad > 0) {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: "./app/usuarios/vistas/ProcesarCrearRol.php",
+                data: $("#formCrearRol").serialize(),
+                success: function (data) {
+                    $('#seccionResultado').html(data[0]['resultado']);
+                    if (data[0]['exito'] === true) {
+                        $("#formCrearRol")[0].reset();
+                    }
+                    $('html, body').animate({scrollTop: 0}, 1250);
+                },
+                error: function (data) {
+                    console.log(data);
+                    var mensaje = "<strong>No se procesó la petición</strong>";
+                    var div = '<div class="alert alert-danger text-center" role="alert"> ' + mensaje + '</div>';
+                    $('#seccionResultado').html(div);
+                    $('html, body').animate({scrollTop: 0}, 1250);
                 }
-            },
-            error: function (data) {
-                console.log(data);
-                $('#seccionResultado').html('<div class="alert alert-danger text-center" role="alert"><strong>No se procesó la petición</strong></div>');
-            }
-        });
+            });
+        } else {
+            var mensaje = "<strong>Debe seleccionar al menos un permiso</strong>";
+            var div = '<div class="alert alert-warning text-center" role="alert"><i class="fas fa-exclamation-circle"></i> ' + mensaje + '</div>';
+            $('#seccionResultado').html(div);
+            $('html, body').animate({scrollTop: 0}, 1250);
+        }
     });
 
     /* Agrega un borde cuando el nombre de permiso esta vacio */
@@ -46,4 +58,6 @@ $(document).ready(function () {
             });
         }
     });
+
+
 });

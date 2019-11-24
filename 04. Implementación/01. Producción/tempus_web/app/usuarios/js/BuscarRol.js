@@ -6,7 +6,7 @@
 $(document).ready(function () {
 
     $("table#tablaBuscarRoles").DataTable({
-        dom: 'Bfrtip',
+        dom: 'frtip',
         responsive: true,
         language: {url: "./lib/js/Spanish.json"}
     });

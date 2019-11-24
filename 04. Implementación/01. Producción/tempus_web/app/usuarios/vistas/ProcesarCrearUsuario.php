@@ -12,7 +12,7 @@ if (isset($_POST['nombre'])) {
     $rol = $_POST['rol'];
     $estado = $_POST['estado'];
     $metodo = $_POST['metodo'];
-    $clave = $_POST['clave'];
+    $clave = isset($_POST['clave']) ? $_POST['clave'] : "";
     $creacion = $controlador->crear($nombre, $email, $rol, $estado, $metodo, $clave);
     $mensaje = $controlador->getDescripcion();
     $exito = ($creacion == 2) ? true : false;

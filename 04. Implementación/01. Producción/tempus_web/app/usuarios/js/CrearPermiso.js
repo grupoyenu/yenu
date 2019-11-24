@@ -17,12 +17,19 @@ $(document).ready(function () {
                 if (data[0]['exito'] === true) {
                     $("#formCrearPermiso")[0].reset();
                 }
+                $('html, body').animate({scrollTop: 0}, 1250);
             },
             error: function (data) {
                 console.log(data);
                 $('#seccionResultado').html('<div class="alert alert-danger text-center" role="alert"><strong>No se procesó la petición</strong></div>');
+                $('html, body').animate({scrollTop: 0}, 1250);
             }
         });
+    });
+
+    $('#nombre').change(function () {
+        var borde = ($(this).val().length < 5) ? "1px solid red" : "";
+        $(this).css("border", borde);
     });
 
 });

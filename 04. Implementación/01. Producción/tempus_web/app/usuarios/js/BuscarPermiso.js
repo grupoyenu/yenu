@@ -2,7 +2,7 @@
 $(document).ready(function () {
 
     $("table#tablaBuscarPermisos").DataTable({
-        dom: 'Bfrtip',
+        dom: 'frtip',
         responsive: true,
         language: {url: "./lib/js/Spanish.json"}
     });

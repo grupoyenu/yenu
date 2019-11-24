@@ -38,11 +38,11 @@ if (gettype($usuarios) == "object") {
                                     name='{$usuario['idUsuario']}' title='Editar'><i class='far fa-edit'></i>
                             </button>
                             <button class='btn btn-outline-danger borrar' 
-                                    name='{$usuario['idUsuario']}' title='Dar de baja'><i class='fas fa-trash'></i>
+                                    name='{$usuario['idUsuario']}' title='Borrar'><i class='fas fa-trash'></i>
                             </button>";
         } else {
             $operaciones = "<button class='btn btn-outline-danger borrar' 
-                                    name='{$usuario['idUsuario']}' title='Dar de baja'><i class='fas fa-trash'></i>
+                                    name='{$usuario['idUsuario']}' title='Borrar'><i class='fas fa-trash'></i>
                             </button>";
         }
         $filas .= "
@@ -61,12 +61,12 @@ if (gettype($usuarios) == "object") {
                 <table id="tablaBuscarRoles" class="table table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th>Nombre</th>
-                            <th>Email</th>
-                            <th>Método</th>
-                            <th>Estado</th>
-                            <th>Rol</th>
-                            <th class="text-center">Operaciones</th>
+                            <th title="Nombre del usuario">Nombre</th>
+                            <th title="Correo electrónico">Email</th>
+                            <th title="Método de acceso">Método</th>
+                            <th title="Estado actual">Estado</th>
+                            <th title="Nombre del rol">Rol</th>
+                            <th title="Operaciones disponibles" class="text-center">Operaciones</th>
                         </tr>
                     </thead>
                     <tbody>' . $filas . '</tbody>

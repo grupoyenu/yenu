@@ -63,9 +63,17 @@ class UsuarioGoogle extends Usuario {
                 return 2;
             }
             $this->descripcion = "No se obtuvo la información del usuario google";
-            return 1;
+            return 2;
         }
         return $login;
+    }
+
+    public function modificar() {
+        if ($this->getIdUsuario()) {
+            
+        }
+        $this->descripcion = "No se recibieron todos los campos obligatorios";
+        return 0;
     }
 
 }

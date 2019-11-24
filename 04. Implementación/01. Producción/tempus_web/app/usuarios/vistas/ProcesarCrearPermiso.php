@@ -9,6 +9,7 @@ if (isset($_POST['nombre'])) {
     $nombre = $_POST['nombre'];
     $controlador = new ControladorPermisos();
     $creacion = $controlador->crear($nombre);
+    $exito = ($creacion == 2) ? true : false;
     $mensaje = $controlador->getDescripcion();
     $resultado = ControladorHTML::mostrarAlertaResultadoOperacion($creacion, $mensaje);
 } else {

@@ -19,7 +19,7 @@
                             <label for="nombre" class="col-sm-2 col-form-label text-left">Nombre:</label>
                             <div class="col">
                                 <input type="text" class="form-control mb-2" 
-                                       name="nombre" id="nombre"
+                                       name="nombre" id="nombre"  maxlength="10" pattern="[A-Za-z ]{0,10}"
                                        placeholder="Nombre del rol">
                             </div>
                             <div class="col text-right">

@@ -15,6 +15,7 @@ if (isset($_POST['nombre']) && isset($_POST['permisos'])) {
     $permisos = $_POST['permisos'];
     $controlador = new ControladorRoles();
     $creacion = $controlador->crear($nombre, $permisos);
+    $exito = ($creacion == 2) ? true : false;
     $mensaje = $controlador->getDescripcion();
     $resultado = ControladorHTML::mostrarAlertaResultadoOperacion($creacion, $mensaje);
 } else {

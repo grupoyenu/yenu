@@ -16,7 +16,7 @@ class ControladorUsuarios {
 
     public function borrar($id, $metodo) {
         if (Conexion::getInstancia()->iniciarTransaccion()) {
-            $usuario = ($metodo == "Manual") ? new UsuarioManual($id, NULL, NULL, NULL, NULL, NULL) : Usuario($id, NULL, NULL, NULL, NULL, NULL);
+            $usuario = ($metodo == "Manual") ? new UsuarioManual($id, NULL, NULL, NULL, NULL, NULL) : new Usuario($id, NULL, NULL, NULL, NULL, NULL);
             $eliminacion = $usuario->borrar();
             $this->descripcion = $usuario->getDescripcion();
             $confirmar = ($eliminacion == 2) ? TRUE : FALSE;
@@ -36,7 +36,7 @@ class ControladorUsuarios {
 
     public function crear($nombre, $email, $rol, $estado, $metodo, $clave) {
         if (Conexion::getInstancia()->iniciarTransaccion()) {
-            $usuario = ($metodo == "Manual") ? new UsuarioManual(NULL, $email, $nombre, $estado, $rol, $clave) : Usuario(NULL, $email, $nombre, $metodo, $estado, $rol);
+            $usuario = ($metodo == "Manual") ? new UsuarioManual(NULL, $email, $nombre, $estado, $rol, $clave) : new Usuario(NULL, $email, $nombre, $metodo, $estado, $rol);
             $creacion = $usuario->crear();
             $this->descripcion = $usuario->getDescripcion();
             $confirmar = ($creacion == 2) ? TRUE : FALSE;
@@ -56,7 +56,7 @@ class ControladorUsuarios {
 
     public function modificar($id, $nombre, $email, $rol, $estado, $metodo, $clave) {
         if (Conexion::getInstancia()->iniciarTransaccion()) {
-            $usuario = ($metodo == "Manual") ? new UsuarioManual($id, $email, $nombre, $estado, $rol, $clave) : Usuario($id, $email, $nombre, $metodo, $estado, $rol);
+            $usuario = ($metodo == "Manual") ? new UsuarioManual($id, $email, $nombre, $estado, $rol, $clave) : new Usuario($id, $email, $nombre, $metodo, $estado, $rol);
             $modificacion = $usuario->modificar();
             $this->descripcion = $usuario->getDescripcion();
             $confirmar = ($modificacion == 2) ? TRUE : FALSE;

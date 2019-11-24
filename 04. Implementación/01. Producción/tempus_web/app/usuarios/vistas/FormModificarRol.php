@@ -22,7 +22,7 @@ if (isset($_POST['idRol'])) {
                         <td class='text-center align-middle'>
                             <input type='checkbox' name='permisos[]' id='permisos' {$check} value='{$permiso['idpermiso']}'>
                         </td>
-                        <td>" . utf8_encode($permiso['nombre']) . " {$check}</td>
+                        <td>" . utf8_encode($permiso['nombre']) . "</td>
                     </tr>";
             }
             $cuerpo = '

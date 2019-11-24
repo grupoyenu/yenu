@@ -35,5 +35,11 @@ $(document).ready(function () {
         });
     });
 
+    $('#nombre').change(function () {
+        var borde = ($(this).val().length < 5) ? "1px solid red" : "";
+        $(this).css("border", borde);
+    });
+
+
 });
 
