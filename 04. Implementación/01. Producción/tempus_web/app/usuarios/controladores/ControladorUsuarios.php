@@ -54,6 +54,13 @@ class ControladorUsuarios {
         return $resultado;
     }
 
+    public function listarResumenInicial() {
+        $usuarios = new Usuarios();
+        $resultado = $usuarios->listarResumenInicial();
+        $this->descripcion = $usuarios->getDescripcion();
+        return $resultado;
+    }
+
     public function modificar($id, $nombre, $email, $rol, $estado, $metodo, $clave) {
         if (Conexion::getInstancia()->iniciarTransaccion()) {
             $usuario = ($metodo == "Manual") ? new UsuarioManual($id, $email, $nombre, $estado, $rol, $clave) : new Usuario($id, $email, $nombre, $metodo, $estado, $rol);

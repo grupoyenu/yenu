@@ -17,15 +17,15 @@
                     <div class="card-body">
                         <div class="form-row">
                             <div class="col">
-                                <select id="campo" name="campo" class="form-control mb-2" >
+                                <select id="campo" name="campo" class="form-control mb-2" title="Seleccione el campo por el cual buscar">
                                     <option value="sector">Por sector</option>
                                     <option value="nombre">Por nombre</option>
                                 </select>
                             </div>
                             <div class="col">
                                 <input type="text" class="form-control mb-2" 
-                                       name="valor" id="valor"
-                                       placeholder="Nombre del aula">
+                                       name="valor" id="valor" maxlength="10" pattern="[A-Za-zÁÉÍÓÚÑáéíóúñ0-9 ]{0,10}"
+                                       placeholder="Nombre del sector o aula">
                             </div>
                             <div class="col text-right">
                                 <button type="submit" class="btn btn-success" 

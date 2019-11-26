@@ -6,6 +6,7 @@ class ControladorVista {
 
     public function __construct() {
         $this->vistas = array("home" => "home_principal",
+            "cerrarSesion" => "cerrarSesion_principal",
             "FormBuscarAula" => "buscar_aulas",
             "FormCrearAula" => "crear_aulas",
             "FormInformeAula" => "informe_aulas",
@@ -32,13 +33,42 @@ class ControladorVista {
     }
 
     public function evaluarVista($modulo, $vista) {
-        $nombreVista = $vista . "_" . $modulo;
-        $archivo = array_search($nombreVista, $this->vistas);
-        if ($archivo) {
-            $this->cargarVista($modulo, $archivo);
+        if ($this->evaluarPermiso($modulo)) {
+            $nombreVista = $vista . "_" . $modulo;
+            $archivo = array_search($nombreVista, $this->vistas);
+            if ($archivo) {
+                $this->cargarVista($modulo, $archivo);
+            } else {
+                Log::escribirLineaError("[Evaluar vista: No se encontró la página indicada]");
+                $_SESSION['tipoMensaje'] = 1;
+                $_SESSION['mensaje'] = "No se encontró la página indicada";
+                $this->cargarVista("principal", "error");
+            }
         } else {
+            Log::escribirLineaError("[Evaluar vista: No posee permisos para acceder a la página ingresada]");
+            $_SESSION['tipoMensaje'] = 0;
+            $_SESSION['mensaje'] = "No posee permisos para acceder a la página ingresada";
             $this->cargarVista("principal", "error");
         }
+    }
+
+    private function evaluarPermiso($modulo) {
+        switch ($modulo) {
+            case "asignaturas":
+                $modulo = "PLANES";
+                break;
+            case "carreras":
+                $modulo = "PLANES";
+                break;
+            default:
+                $modulo = strtoupper($modulo);
+                break;
+        }
+        $usuario = unserialize($_SESSION['user']);
+        $rol = $usuario->getRol();
+        $permisosUsuario = $rol->getPermisos();
+        $nombres = array_column($permisosUsuario, 'nombre');
+        return ((array_search($modulo, $nombres) !== false) || ($modulo == "PRINCIPAL")) ? true : false;
     }
 
     public function cargarVista($modulo, $vista) {

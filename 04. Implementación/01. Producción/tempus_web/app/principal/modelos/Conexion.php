@@ -137,6 +137,10 @@ class Conexion extends mysqli {
             $this->descripcion = "Se realizó la modificación correctamente";
             return 2;
         }
+        if ($this->errno == 1062) {
+            $this->descripcion = "No se realizó la modificación del registro por duplicación";
+            return 1;
+        }
         $this->descripcion = "Error en la operación. Intente nuevamente";
         Log::escribirLineaError("[METODO: modificar][ERROR: Error al modificar registro (QUERY: $consulta)");
         return 0;

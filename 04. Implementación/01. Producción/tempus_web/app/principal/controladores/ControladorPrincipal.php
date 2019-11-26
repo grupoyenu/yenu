@@ -23,7 +23,7 @@ class ControladorPrincipal {
             $this->acceder($ruta);
         } else {
             if (isset($_POST['email'])) {
-                $this->login($_POST['email']);
+                $this->login($_POST['email'], $_POST['googleid'], $_POST['imagen']);
             } else {
                 $this->controladorVista->cargarVista("principal", "ingreso");
             }
@@ -31,12 +31,14 @@ class ControladorPrincipal {
     }
 
     private function acceder($ruta) {
-        if ($ruta) {
+        if ($ruta && (strpos($ruta, "_") !== false)) {
             $particion = explode("_", $ruta);
             $modulo = $particion[0];
             $vista = $particion[1];
             $this->evaluarModulo($modulo, $vista);
         } else {
+            $_SESSION['tipoMensaje'] = 1;
+            $_SESSION['mensaje'] = "No se detectó una página válida a la cual ingresar ({$ruta})";
             $this->controladorVista->cargarVista("principal", "error");
         }
     }
@@ -54,25 +56,38 @@ class ControladorPrincipal {
         if ($archivo) {
             $this->controladorVista->evaluarVista($archivo, $vista);
         } else {
+            $_SESSION['tipoMensaje'] = 1;
+            $_SESSION['mensaje'] = "No se detectó una página válida a la cual ingresar";
             $this->controladorVista->cargarVista("principal", "error");
         }
     }
 
-    private function login($email) {
+    private function login($email, $idGoogle, $imagen) {
         $usuario = new UsuarioGoogle();
         $usuario->setEmail($email);
         $obtener = $usuario->login();
-        if ($obtener == 2) {
+        if ($obtener == 2 && $usuario->getEstado() == "Activo") {
             $_SESSION['ok'] = true;
             $_SESSION['user'] = serialize($usuario);
+            if (!$usuario->getGoogleid()) {
+                $usuario->setGoogleid($idGoogle);
+                $usuario->setImagen($imagen);
+                $usuario->crear();
+            }
             Log::escribirLineaError("[Login: inicio de sesion ({$email})]");
             $this->controladorVista->cargarVista("principal", "home");
         } else {
-            Log::escribirLineaError("[Login: {$usuario->getDescripcion()} ({$email})]");
-            $_SESSION['tipoMensaje'] = $obtener;
-            $_SESSION['mensaje'] = $usuario->getDescripcion();
-            $_POST = array();
-            $this->controladorVista->cargarVista("principal", "error");
+            if ($usuario->getEstado() == "Inactivo") {
+                Log::escribirLineaError("[Login: usuario inactivo ({$email})]");
+                $_SESSION['tipoMensaje'] = 1;
+                $_SESSION['mensaje'] = "Su estado actual no permite el ingreso al sistema";
+                $this->controladorVista->cargarVista("principal", "error");
+            } else {
+                Log::escribirLineaError("[Login: {$usuario->getDescripcion()} ({$email})]");
+                $_SESSION['tipoMensaje'] = $obtener;
+                $_SESSION['mensaje'] = $usuario->getDescripcion();
+                $this->controladorVista->cargarVista("principal", "error");
+            }
         }
     }
 

@@ -46,6 +46,13 @@ class ControladorPermisos {
         return $resultado;
     }
 
+    public function listarResumenInicial() {
+        $permisos = new Permisos();
+        $resultado = $permisos->listarResumenInicial();
+        $this->descripcion = $permisos->getDescripcion();
+        return $resultado;
+    }
+
     public function modificar($idPermiso, $nombre) {
         $permiso = new Permiso($idPermiso, $nombre);
         $modificacion = $permiso->modificar();

@@ -1,9 +1,7 @@
 <?php
 
-$sector = "X";
-
-if (preg_match("/^[A-Za-z]$/", $sector)) {
-    echo"Cumple";
-} else {
-    echo 'No cumple';
+if(strpos("pepe", "_") !== false){
+    echo "Word Found!";
+} else{
+    echo "Word Not Found!";
 }

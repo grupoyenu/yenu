@@ -47,5 +47,12 @@ class Permisos {
         $this->descripcion = Conexion::getInstancia()->getDescripcion();
         return $resultado;
     }
+    
+    public function listarResumenInicial() {
+        $consulta = "SELECT 'Total de permisos' nombre, COUNT(*) cantidad FROM permiso";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
+    }
 
 }

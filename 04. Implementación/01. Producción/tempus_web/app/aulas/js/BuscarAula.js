@@ -12,6 +12,12 @@ $(document).ready(function () {
 
     $("table#tablaBuscarAulas").DataTable({
         dom: 'Bfrtip',
+        buttons: [
+            {extend: 'pdfHtml5', download: 'open', title: 'Aulas ', exportOptions: {columns: [0, 1, 2, 3]}},
+            {extend: 'excelHtml5', exportOptions: {columns: [0, 1, 2, 3]}},
+            {extend: 'print', text: 'Imprimir'},
+            {extend: 'copy', text: 'Copiar'}
+        ],
         responsive: true,
         language: {url: "./lib/js/Spanish.json"}
     });

@@ -1,12 +1,16 @@
 <?php
 
 /**
- * Description of ControladorMesa
+ * Se utiliza para controlar las operaciones que se llevan a cabo para las mesas
+ * de examen. Se comunica con las clases Mesa de Examen y Mesas de Examen.
  *
- * @author Emanuel
+ * @author Oyarzo Mariela <marielaoyarzo89@gmail.com>.
+ * @author Quiroga Sandra <squiroga017@gmail.com>.
+ * @author Marquez Emanuel <marquez.emanuel.alberto@gmail.com>.
  */
 class ControladorMesa {
 
+    /** @var string Descripcion sobre alguna de las operaciones que se realiza. */
     private $descripcion;
 
     public function getDescripcion() {

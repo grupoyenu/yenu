@@ -36,7 +36,7 @@ if (gettype($aulas) == "object") {
     while ($aula = $aulas->fetch_assoc()) {
         if ($aula['clases'] == 0 && $aula['llamados'] == 0) {
             $operaciones = " <button class='btn btn-outline-danger borrar' 
-                                name='{$aula['idaula']}' title='Dar de baja'><i class='fas fa-trash'></i>
+                                name='{$aula['idaula']}' title='Borrar'><i class='fas fa-trash'></i>
                             </button>";
         } else {
             $operaciones = "<button class='btn btn-outline-info detalle' 
@@ -66,7 +66,7 @@ if (gettype($aulas) == "object") {
                         <th title="Nombre del aula">Nombre</th>
                         <th title="Cantidad de clases asociadas">Clases</th>
                         <th title="Cantidad de llamados asociados">Llamados</th>
-                        <th class="text-center">Operaciones</th>
+                        <th title="Operaciones disponibles" class="text-center">Operaciones</th>
                     </tr>
                 </thead>
                 <tbody>' . $filas . '</tbody>

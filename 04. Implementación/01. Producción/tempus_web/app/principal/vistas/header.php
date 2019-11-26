@@ -1,5 +1,5 @@
 <?php
-$menu = "";
+$menu = $info = "";
 if (isset($_SESSION['user'])) {
     $usuario = unserialize($_SESSION['user']);
     $rol = $usuario->getRol();
@@ -106,8 +106,18 @@ if (isset($_SESSION['user'])) {
             </li>';
     }
 
-    $info = '<a class="dropdown-item disabled">' . $usuario->getEmail() . '</a>
-             <div class="dropdown-divider"></div>';
+    $info = '<li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-default"
+                             aria-labelledby="navbarDropdownMenuLink-333">
+                                 <a class="dropdown-item disabled">' . $usuario->getEmail() . '</a>
+                                  <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="principal_cerrarSesion">Cerrar sesión</a>
+                        </div>
+                    </li>';
 }
 ?>
 <!DOCTYPE html>
@@ -154,17 +164,7 @@ if (isset($_SESSION['user'])) {
                     <?= $menu; ?>
                 </ul>
                 <ul class="navbar-nav ml-auto nav-flex-icons">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-user"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-default"
-                             aria-labelledby="navbarDropdownMenuLink-333">
-                                 <?= $info; ?>
-                            <a class="dropdown-item" href="#">Cerrar sesión</a>
-                        </div>
-                    </li>
+                    <?= $info; ?>
                 </ul>
             </div>
         </nav>

@@ -38,4 +38,11 @@ class Roles {
         return $resultado;
     }
 
+    public function listarResumenInicial() {
+        $consulta = "SELECT 'Total de roles' nombre, COUNT(*) cantidad FROM rol";
+        $resultado = Conexion::getInstancia()->seleccionar($consulta);
+        $this->descripcion = Conexion::getInstancia()->getDescripcion();
+        return $resultado;
+    }
+
 }

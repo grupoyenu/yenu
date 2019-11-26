@@ -16,6 +16,12 @@ $(document).ready(function () {
                 $('#seccionInferior').html(data);
                 $("table#tablaInformeAulas").DataTable({
                     dom: 'Bfrtip',
+                    buttons: [
+                        {extend: 'pdfHtml5', download: 'open', title: 'Informe de aulas'},
+                        {extend: 'excelHtml5'},
+                        {extend: 'print', text: 'Imprimir'},
+                        {extend: 'copy', text: 'Copiar'}
+                    ],
                     responsive: true,
                     language: {url: "./lib/js/Spanish.json"}
                 });

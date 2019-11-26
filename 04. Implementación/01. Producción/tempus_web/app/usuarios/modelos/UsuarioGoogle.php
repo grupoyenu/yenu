@@ -41,9 +41,9 @@ class UsuarioGoogle extends Usuario {
     }
 
     public function crear() {
-        if ($this->getIdUsuario()) {
+        if ($this->getIdUsuario() && $this->getGoogleid() && $this->imagen) {
             $idUsurio = $this->getIdUsuario();
-            $values = "($idUsurio, NULL, NULL)";
+            $values = "($idUsurio, '{$this->googleid}', '{$this->imagen}')";
             $creacion = Conexion::getInstancia()->insertar("usuario_google", $values);
             $this->descripcion = Conexion::getInstancia()->getDescripcion();
             return $creacion;
