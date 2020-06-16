@@ -1,0 +1,48 @@
+== TEST DE CARGA PARA LA TABLA DE CARRERAS.
+== Grupo de desarrollo: YENÚ.
+== Proyecto: Tempus.
+== Fecha: 2020/06/07.
+== Total de carreras: 39.
+
+[000][OK][001][LEA][Licenciatura En Administracion] -- [2][Se obtuvo la información de la carrera correctamente]
+[001][OK][002][TUEGDLO][Tecnicatura Universitaria En Gestion De Las Organizaciones] -- [2][Se obtuvo la información de la carrera correctamente]
+[002][OK][003][PEEYGDO][Profesorado En Economia Y Gestion De Organizaciones] -- [2][Se obtuvo la información de la carrera correctamente]
+[003][OK][004][PEM][Profesorado En Matemática] -- [2][Se obtuvo la información de la carrera correctamente]
+[004][OK][005][LECS][Licenciatura En Comunicacion Social] -- [2][Se obtuvo la información de la carrera correctamente]
+[005][OK][006][LECA][Licenciatura En Comunicacion Audiovisual] -- [2][Se obtuvo la información de la carrera correctamente]
+[006][OK][007][PPLEI][Profesorado Para La Educacion Inicial] -- [2][Se obtuvo la información de la carrera correctamente]
+[007][OK][008][PECDLE][Profesorado En Ciencias De La Educacion] -- [2][Se obtuvo la información de la carrera correctamente]
+[008][OK][009][PPLEP][Profesorado Para La Educacion Primaria] -- [2][Se obtuvo la información de la carrera correctamente]
+[009][OK][010][LEE][Licenciatura En Enfermeria] -- [2][Se obtuvo la información de la carrera correctamente]
+[010][OK][011][TUEAT][Tecnicatura Universitaria En Acompañamiento Terapeutico] -- [2][Se obtuvo la información de la carrera correctamente]
+[011][OK][012][EU][Enfermeria Universitaria] -- [2][Se obtuvo la información de la carrera correctamente]
+[012][OK][013][LEGCDL][Licenciatura En Geografia. Ciclo De Licenciatura] -- [2][Se obtuvo la información de la carrera correctamente]
+[013][OK][014][LEG][Licenciatura En Geografia] -- [2][Se obtuvo la información de la carrera correctamente]
+[014][OK][015][PEG][Profesorado En Geografia] -- [2][Se obtuvo la información de la carrera correctamente]
+[015][OK][016][PEH][Profesorado En Historia] -- [2][Se obtuvo la información de la carrera correctamente]
+[016][OK][017][TUESEHEET][Tecnicatura Universitaria En Seguridad E Higiene En El Trabajo] -- [2][Se obtuvo la información de la carrera correctamente]
+[017][OK][018][TUEP][Tecnicatura Universitaria En Petróleo] -- [2][Se obtuvo la información de la carrera correctamente]
+[018][OK][019][LEHYSEET][Licenciatura En Higiene Y Seguridad En El Trabajo] -- [2][Se obtuvo la información de la carrera correctamente]
+[019][OK][020][IE][Ingeniria Electromecánica] -- [2][Se obtuvo la información de la carrera correctamente]
+[020][OK][021][TUEE][Tecnicatura Universitaria En Energia] -- [2][Se obtuvo la información de la carrera correctamente]
+[021][OK][022][TUEM][Tecnicatura Universitaria En Minas] -- [2][Se obtuvo la información de la carrera correctamente]
+[022][OK][023][IQ][Ingeniería Química] -- [2][Se obtuvo la información de la carrera correctamente]
+[023][OK][024][LEL][Licenciatura En Letras] -- [2][Se obtuvo la información de la carrera correctamente]
+[024][OK][025][PEL][Profesorado En Letras] -- [2][Se obtuvo la información de la carrera correctamente]
+[025][OK][026][LEP][Licenciatura En Psicopedagogía] -- [2][Se obtuvo la información de la carrera correctamente]
+[026][OK][027][IERNR][Ingeniería En Recursos Naturales Renovables] -- [2][Se obtuvo la información de la carrera correctamente]
+[027][OK][028][TUERNRPA][Tecnicatura Universitaria En Recursos Naturales Renovables. Producción Agropecuaria] -- [2][Se obtuvo la información de la carrera correctamente]
+[028][OK][029][TUERNRPF][Tecnicatura Universitaria En Recursos Naturales Renovables. Producción Frutihortícola] -- [2][Se obtuvo la información de la carrera correctamente]
+[029][OK][030][TUERNRPA][Tecnicatura Universitaria En Recursos Naturales Renovables. Producción Acuícola] -- [2][Se obtuvo la información de la carrera correctamente]
+[030][OK][031][ADS][Analista De Sistemas] -- [2][Se obtuvo la información de la carrera correctamente]
+[031][OK][032][TUEDW][Tecnicatura Universitaria En Desarrollo Web] -- [2][Se obtuvo la información de la carrera correctamente]
+[032][OK][033][TUERDC][Tecnicatura Universitaria En Redes De Computadoras] -- [2][Se obtuvo la información de la carrera correctamente]
+[033][OK][034][IES][Ingeniería En Sistemas] -- [2][Se obtuvo la información de la carrera correctamente]
+[034][OK][035][LES][Licenciatura En Sistemas] -- [2][Se obtuvo la información de la carrera correctamente]
+[035][OK][036][LETS][Licenciatura En Trabajo Social] -- [2][Se obtuvo la información de la carrera correctamente]
+[036][OK][037][TUET][Tecnicatura Universitaria En Turismo] -- [2][Se obtuvo la información de la carrera correctamente]
+[037][OK][038][LET][Licenciatura En Turismo] -- [2][Se obtuvo la información de la carrera correctamente]
+[038][OK][039][PEEE][Profesorado En Educacion Especial] -- [2][Se realizó la creación del registro correctamente]
+
+== Total de registros creados o existentes: 39.
+== Total de registros no creados: 0.
