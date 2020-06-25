@@ -7,7 +7,7 @@ use app\principal\modelo\Conexion;
 use app\principal\modelo\Log;
 
 /**
- *  Controlador de Cursada. Esta clase se comunica con los modelos del modulo
+ * Controlador de Cursada. Esta clase se comunica con los modelos del modulo
  * de cursadas para invocar sus metodos y otorgar los resultados a las vistas 
  * que correspondan. Ademas, se encarga de almacenar las actividades que se llevan
  * a cabo en el Log cuando se realiza una operacion que implica actualizar 
@@ -24,16 +24,27 @@ use app\principal\modelo\Log;
  */
 class ControladorCursada {
 
+    /**
+     * Realiza la busqueda de horarios de cursada a partir del nombre de carrera
+     * y nombre de asignatura.
+     * @see Cursadas::buscarPorCarreraAsignatura
+     * @param string $nombreCarrera Nombre o parte del nombre de la carrera.
+     * @param string $nombreAsignatura Nombre o parte del nombre de la asignatura.
+     * @return array Arreglo de dos posiciones (codigo, datos).
+     */
     public function buscarPorCarreraAsignatura($nombreCarrera, $nombreAsignatura) {
         return Cursadas::buscarPorCarreraAsignatura($nombreCarrera, $nombreAsignatura);
     }
 
     /**
-     * 
+     * Realiza la carga masica de horarios de cursada a partir de la informacion
+     * obtenida del archivo ingresado.
      * @see Conexion::getInstancia->iniciarTransaccion
      * @see Conexion::getInstancia->finalizarTransaccion
      * @see Cursadas::importarCursada
      * @see Log::guardar
+     * @param array Horarios de cursada.
+     * @return array Arreglo de dos posiciones (codigo, mensaje).
      */
     public function importar($cursadas) {
         Log::guardar("INF", "CONTROLADOR CURSADAS --> IMPORTAR " . str_repeat("*", 60));
@@ -48,7 +59,10 @@ class ControladorCursada {
     }
 
     /**
+     * Realiza la busqueda de un conjunto limitado de horarios de cursada.
      * @see Cursadas::listarResumenCursadas
+     * @param int $limite Limite maximo de registros a seleccionar.
+     * @return array Arreglo de dos posiciones (codigo, mensaje).
      */
     public function listarResumenCursadas($limite) {
         return Cursadas::listarResumenCursadas($limite);

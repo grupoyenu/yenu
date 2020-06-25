@@ -9,6 +9,7 @@ require_once '../../principal/modelo/AutoCargador.php';
 
 use app\aula\modelo\Aula;
 use app\cursada\modelo\Cursada;
+use app\cursada\modelo\Clase;
 use app\plan\controlador\ControladorPlan;
 use app\plan\modelo\Plan;
 use app\principal\controlador\ControladorHTML;

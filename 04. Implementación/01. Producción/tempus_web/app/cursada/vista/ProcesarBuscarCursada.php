@@ -38,7 +38,7 @@ if (isset($_POST['peticion'])) {
         /* SE INGRESA POR PRIMERA VEZ */
         $limite = 20;
         $resultado = $controlador->listarResumenCursadas($limite);
-        $filtro = "Resumen de horarios de cursada";
+        $filtro = "Resumen de horarios de cursada: Hasta {$limite} registros";
         $_SESSION['BUSCUR'] = NULL;
     }
 }
@@ -64,7 +64,7 @@ if ($resultado[0] == 2) {
         $nombreAulaLunes = $cursada['nombreAulaLunes'];
         $fechaEdicionLunes = isset($cursada['fechaEdicionLunes']) ? date_format(date_create($cursada['fechaEdicionLunes']), 'd/m/Y H:m') : "";
         $lunes = "$horaInicioLunes $horaFinLunes $sectorAulaLunes $nombreAulaLunes";
-        
+
         /* DATOS DE LA CLASE PARA DIA MARTES */
         $horaInicioMartes = ($cursada['horaInicioMartes']) ? substr($cursada['horaInicioMartes'], 0, 5) : "";
         $horaFinMartes = ($cursada['horaFinMartes']) ? substr($cursada['horaFinMartes'], 0, 5) : "";
@@ -72,7 +72,7 @@ if ($resultado[0] == 2) {
         $nombreAulaMartes = $cursada['nombreAulaMartes'];
         $fechaEdicionMartes = isset($cursada['fechaEdicionMartes']) ? date_format(date_create($cursada['fechaEdicionMartes']), 'd/m/Y H:m') : "";
         $martes = "$horaInicioMartes $horaFinMartes $sectorAulaMartes $nombreAulaMartes";
-        
+
         /* DATOS DE LA CLASE PARA DIA MIERCOLES */
         $horaInicioMiercoles = ($cursada['horaInicioMiercoles']) ? substr($cursada['horaInicioMiercoles'], 0, 5) : "";
         $horaFinMiercoles = ($cursada['horaFinMiercoles']) ? substr($cursada['horaFinMiercoles'], 0, 5) : "";
@@ -80,7 +80,7 @@ if ($resultado[0] == 2) {
         $nombreAulaMiercoles = $cursada['nombreAulaMiercoles'];
         $fechaEdicionMiercoles = isset($cursada['fechaEdicionMiercoles']) ? date_format(date_create($cursada['fechaEdicionMiercoles']), 'd/m/Y H:m') : "";
         $miercoles = "$horaInicioMiercoles $horaFinMiercoles $sectorAulaMiercoles $nombreAulaMiercoles";
-            
+
         /* DATOS DE LA CLASE PARA DIA JUEVES */
         $horaInicioJueves = ($cursada['horaInicioJueves']) ? substr($cursada['horaInicioJueves'], 0, 5) : "";
         $horaFinJueves = ($cursada['horaFinJueves']) ? substr($cursada['horaFinJueves'], 0, 5) : "";
@@ -88,7 +88,7 @@ if ($resultado[0] == 2) {
         $nombreAulaJueves = $cursada['nombreAulaJueves'];
         $fechaEdicionJueves = isset($cursada['fechaEdicionJueves']) ? date_format(date_create($cursada['fechaEdicionJueves']), 'd/m/Y H:m') : "";
         $jueves = "$horaInicioJueves $horaFinJueves $sectorAulaJueves $nombreAulaJueves";
-        
+
         /* DATOS DE LA CLASE PARA DIA VIERNES */
         $horaInicioViernes = ($cursada['horaInicioViernes']) ? substr($cursada['horaInicioViernes'], 0, 5) : "";
         $horaFinViernes = ($cursada['horaFinViernes']) ? substr($cursada['horaFinViernes'], 0, 5) : "";
@@ -96,7 +96,7 @@ if ($resultado[0] == 2) {
         $nombreAulaViernes = $cursada['nombreAulaViernes'];
         $fechaEdicionViernes = isset($cursada['fechaEdicionViernes']) ? date_format(date_create($cursada['fechaEdicionViernes']), 'd/m/Y H:m') : "";
         $viernes = "$horaInicioViernes $horaFinViernes $sectorAulaViernes $nombreAulaViernes";
-        
+
         /* DATOS DE LA CLASE PARA DIA SABADO */
         $horaInicioSabado = ($cursada['horaInicioSabado']) ? substr($cursada['horaInicioSabado'], 0, 5) : "";
         $horaFinSabado = ($cursada['horaFinSabado']) ? substr($cursada['horaFinSabado'], 0, 5) : "";
@@ -104,7 +104,7 @@ if ($resultado[0] == 2) {
         $nombreAulaSabado = $cursada['nombreAulaSabado'];
         $fechaEdicionSabado = isset($cursada['fechaEdicionSabado']) ? date_format(date_create($cursada['fechaEdicionSabado']), 'd/m/Y H:m') : "";
         $sabado = "$horaInicioSabado $horaFinSabado $sectorAulaSabado $nombreAulaSabado";
-        
+
         $filas .= "
             <tr>
                 <td style='display: none;'>{$codigoCarrera}</td>
@@ -221,7 +221,7 @@ if ($resultado[0] == 2) {
         </div>';
 } else {
     $codigo = $resultado[0];
-    $mensaje = $resultado[0];
+    $mensaje = $resultado[1];
     $cuerpo = ControladorHTML::mostrarAlertaResultadoBusqueda($codigo, $mensaje);
 }
 

@@ -52,19 +52,14 @@ if (isset($_POST['idPlan'])) {
                 $opcionesFin .= "<option value='{$hora}:30' $selected2>{$hora}:30 hs</option>";
             }
 
-            $opcionAula = "";
+            $opcionAula = $cbBorrar = "";
             if ($clase) {
                 $aula = $clase->getAula();
                 $nombreAula = "{$aula->getSector()} - {$aula->getNombre()}";
                 $opcionAula = "<option value='{$aula->getId()}')>{$nombreAula}</option>";
-                $operaciones = '
-                    <div class="btn-group btn-group-sm">
-                        <button class="btn btn-outline-danger baja" disabled
-                                name="' . $clase->getId() . '" id="baja' . $dia . '"
-                                title="Dar de baja">
-                                <i class="fas fa-trash"></i>
-                        </button>
-                    </div>';
+                $cbBorrar = '<input type="checkbox" class="borrarClases" 
+                               id="cbBorrarClases" name="cbBorrarClases[]" 
+                               value="' . $dia . '">';
             }
 
             $filas .= '
@@ -74,6 +69,7 @@ if (isset($_POST['idPlan'])) {
                         <input type="checkbox" class="clases" 
                                id="cbClases" name="cbClases[]" value="' . $dia . '">
                     </td>
+                    <td class="align-middle text-center">' . $cbBorrar . '</td>
                     <td class="align-middle">' . $nombreDia . '</td>
                     <td class="align-middle">
                         <select class="form-control horaInicio" 
@@ -89,7 +85,6 @@ if (isset($_POST['idPlan'])) {
                                 ' . $opcionAula . '
                         </select>
                     </td>
-                    <td class="align-middle">' . $operaciones . '</td>
                 </tr>';
         }
 
@@ -110,25 +105,32 @@ if (isset($_POST['idPlan'])) {
             <div class="card mt-2 border-dark">
                 <div class="card-header bg-dark text-white">Complete los horarios de cursada</div>
                 <div class="card-body">
-                    <table class="table" cellspacing="0" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Día de la semana</th>
-                                <th>Hora de inicio</th>
-                                <th>Hora de fin</th>
-                                <th>Aula</th>
-                                <th>Borrar</th>
-                            </tr>
-                        </thead>
-                        <tbody>' . $filas . '</tbody>
-                    </table>
+                    <div class="table-responsive mt-4">
+                        <table class="table" cellspacing="0" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Editar</th>
+                                    <th>Borrar</th>
+                                    <th>Día de la semana</th>
+                                    <th>Hora de inicio</th>
+                                    <th>Hora de fin</th>
+                                    <th>Aula</th>
+                                </tr>
+                            </thead>
+                            <tbody>' . $filas . '</tbody>
+                        </table>
+                    </div>
                 </div>
             </div>';
         $botones = '
             <button type="submit" class="btn btn-success" 
                     id="btnModificarCursada" title="Guardar datos">
                     <i class="far fa-save"></i> GUARDAR
+            </button>
+            <button type="submit" class="btn btn-danger" 
+                    id="btnBorrarClases" name="btnBorrarClases" 
+                    title="Guardar datos" disabled>
+                    <i class="fas fa-trash"></i> BORRAR
             </button>';
     } else {
         $titulo = "Información básica";
@@ -186,10 +188,10 @@ if (isset($_POST['idPlan'])) {
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <input type='submit' class='btn btn-success' 
-                           id='btnConfirmarEliminacion' name='btnConfirmarEliminacion'
-                           data-dismiss="modal"
-                           title='Confirmar la eliminación del registro seleccionado' value='Confirmar'>
+                    <button type="submit" class="btn btn-success"
+                            id='btnConfirmarEliminacion' name='btnConfirmarEliminacion'
+                            title='Confirmar la eliminación del registro seleccionado'>
+                        <i class="far fa-save"></i> GUARDAR</button>
                     <input type='submit' class='btn btn-outline-secondary' 
                            id='btnCancelarEliminacion' name="btnCancelarEliminacion" 
                            data-dismiss="modal" title='Cancelar la eliminación del registro seleccionado'

@@ -26,6 +26,9 @@ $(document).ready(function () {
                     $("#formCrearCursada")[0].reset();
                     $('select#plan').val('').trigger('change');
                     $('.aula').val('').trigger('change');
+                    $('.aula').prop('disabled', true);
+                    $('.horaInicio').prop('disabled', true);
+                    $('.horaFin').prop('disabled', true);
                 }
             },
             error: function (data) {

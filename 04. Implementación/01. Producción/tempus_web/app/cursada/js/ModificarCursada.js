@@ -198,8 +198,6 @@ $(document).ready(function () {
         $("#editar" + dia).prop("disabled", disabled);
     });
 
-
-
     $('.baja').click(function (evento) {
         evento.preventDefault();
         var idClase = $(this).attr("name");
@@ -209,19 +207,19 @@ $(document).ready(function () {
 
     $("#btnConfirmarEliminacion").click(function (evento) {
         evento.preventDefault();
+        alert("dddd");
         $.ajax({
             type: "POST",
             dataType: 'json',
-            url: "./app/cursadas/vistas/ProcesarBorrarClase.php",
+            url: "./ProcesarBorrarClase.php",
             data: ("#formBorrarClase").serialize(),
             success: function (data) {
                 $('#seccionResultado').html(data[0]['resultado']);
             },
             error: function (data) {
                 console.log(data);
-                var mensaje = "No se procesó la petición";
-                var div = "<div class='alert alert-danger text-center' role='alert'>\n\
-                               <i class='fas fa-exclamation-triangle'></i> <strong>" + mensaje + "</strong></div>";
+                var mensaje = "<strong><i class='fas fa-exclamation-triangle'></i> No se procesó la petición</strong>";
+                var div = "<div class='alert alert-danger text-center' role='alert'>" + mensaje + "</div>";
                 $('#seccionResultado').html(div);
             }
         });

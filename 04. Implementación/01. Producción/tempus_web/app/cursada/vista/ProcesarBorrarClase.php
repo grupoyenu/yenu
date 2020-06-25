@@ -1,9 +1,19 @@
 <?php
 
+/* SE INCLUYE EL ARCHIVO DE CONSTANTES Y EL AUTOLOAD */
+
 require_once '../../principal/modelos/Constantes.php';
 require_once '../../principal/modelos/AutoCargador.php';
 
+/* SE REFERENCIAN LOS NAMESPACE */
+
+use app\cursada\controlador\ControladorCursada;
+use app\plan\modelo\Plan;
+use app\principal\controlador\ControladorHTML;
+use app\principal\modelo\AutoCargador;
+
 AutoCargador::cargarModulos();
+session_start();
 
 if (isset($_POST['idClase'])) {
     $idClase = $_POST['idClase'];
