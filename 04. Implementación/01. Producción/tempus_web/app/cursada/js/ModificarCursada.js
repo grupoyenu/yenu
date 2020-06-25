@@ -25,9 +25,72 @@ $(document).ready(function () {
                 var men = "<i class='fas fa-exclamation-triangle'><strong>No se procesó la petición</strong></i>";
                 var div = '<div class="alert alert-danger text-center" role="alert">' + men + '</div>';
                 $('#seccionResultado').html(div);
+            },
+            complete: function () {
+                $('html, body').animate({scrollTop: 0}, 1250);
             }
         });
-        $('html, body').animate({scrollTop: 0}, 1250);
+    });
+
+    $("#btnConfirmarEliminacion").click(function (evento) {
+        evento.preventDefault();
+        alert("PETICION AJAX 3");
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: "./ProcesarBorrarClase.php",
+            data: $("#formModificarCursada").serialize(),
+            success: function (data) {
+                $('#seccionResultado').html(data[0]['resultado']);
+                if (data[0]['exito'] === true) {
+                    $('#formModificarCursada').find('input, textarea, select').prop('disabled', true);
+                    $('select#plan').val('').trigger('change');
+                    $('.aula').val('').trigger('change');
+                }
+            },
+            error: function (data) {
+                console.log(data);
+                var men = "<i class='fas fa-exclamation-triangle'><strong>No se procesó la petición</strong></i>";
+                var div = '<div class="alert alert-danger text-center" role="alert">' + men + '</div>';
+                $('#seccionResultado').html(div);
+            },
+            complete: function () {
+                $('html, body').animate({scrollTop: 0}, 1250);
+            }
+        });
+    });
+
+    $(".borrarClases").change(function () {
+        var checkeado = $(this).prop('checked');
+        var disabled = (checkeado) ? false : true;
+        $("#btnBorrarClases").prop("disabled", disabled);
+    });
+
+    $('#btnBorrarClases').click(function (evento) {
+        evento.preventDefault();
+        $("#modalBorrarClase").modal();
+    });
+
+
+
+    $(".horaInicio").change(function () {
+        var dia = $(this).parents("tr").attr("name");
+        var hora = $(this).val().substring(0, 2);
+        $('select#aula' + dia).val('').trigger('change');
+        for (var i = 10; i < 24; i++) {
+            if (i <= hora) {
+                $("#horaFin" + dia).find("option[value='" + i + ":00']").attr("disabled", "disabled");
+                $("#horaFin" + dia).find("option[value='" + i + ":30']").attr("disabled", "disabled");
+            } else {
+                $("#horaFin" + dia).find("option[value='" + i + ":00']").removeAttr("disabled");
+                $("#horaFin" + dia).find("option[value='" + i + ":30']").removeAttr("disabled");
+            }
+        }
+    });
+
+    $(".horaFin").change(function () {
+        var dia = $(this).parents("tr").attr("name");
+        $('select#aula' + dia).val('').trigger('change');
     });
 
     $('#aula1').select2({
@@ -197,54 +260,6 @@ $(document).ready(function () {
         $("#crear" + dia).prop("disabled", disabled);
         $("#editar" + dia).prop("disabled", disabled);
     });
-
-    $('.baja').click(function (evento) {
-        evento.preventDefault();
-        var idClase = $(this).attr("name");
-        $("#modalIdClase").val(idClase);
-        $("#modalBorrarClase").modal();
-    });
-
-    $("#btnConfirmarEliminacion").click(function (evento) {
-        evento.preventDefault();
-        alert("dddd");
-        $.ajax({
-            type: "POST",
-            dataType: 'json',
-            url: "./ProcesarBorrarClase.php",
-            data: ("#formBorrarClase").serialize(),
-            success: function (data) {
-                $('#seccionResultado').html(data[0]['resultado']);
-            },
-            error: function (data) {
-                console.log(data);
-                var mensaje = "<strong><i class='fas fa-exclamation-triangle'></i> No se procesó la petición</strong>";
-                var div = "<div class='alert alert-danger text-center' role='alert'>" + mensaje + "</div>";
-                $('#seccionResultado').html(div);
-            }
-        });
-    });
-
-    $(".horaInicio").change(function () {
-        var dia = $(this).parents("tr").attr("name");
-        var hora = $(this).val().substring(0, 2);
-        $('select#aula' + dia).val('').trigger('change');
-        for (var i = 10; i < 24; i++) {
-            if (i <= hora) {
-                $("#horaFin" + dia).find("option[value='" + i + ":00']").attr("disabled", "disabled");
-                $("#horaFin" + dia).find("option[value='" + i + ":30']").attr("disabled", "disabled");
-            } else {
-                $("#horaFin" + dia).find("option[value='" + i + ":00']").removeAttr("disabled");
-                $("#horaFin" + dia).find("option[value='" + i + ":30']").removeAttr("disabled");
-            }
-        }
-    });
-
-    $(".horaFin").change(function () {
-        var dia = $(this).parents("tr").attr("name");
-        $('select#aula' + dia).val('').trigger('change');
-    });
-
 
 });
 

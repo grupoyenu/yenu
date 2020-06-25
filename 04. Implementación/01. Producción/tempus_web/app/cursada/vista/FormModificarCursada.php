@@ -178,14 +178,11 @@ if (isset($_POST['idPlan'])) {
                     <h4 class="modal-title text-center"><i class='fas fa-trash'></i> CONFIRME ELIMINACIÓN</h4>
                 </div>
                 <div class="modal-body">
-                    <form name="formBorrarClase" id="formBorrarClase" method="POST">
-                        <input type="hidden" name="modalIdClase" id="modalIdClase">
-                        <div class="form-row">
-                            <div class="col">
-                                <label id="modalDetalle">Presione CONFIRMAR para borrar la clase seleccionada</label>
-                            </div>
+                    <div class="form-row">
+                        <div class="col">
+                            <label id="modalDetalle">Presione CONFIRMAR para efectuar la operación</label>
                         </div>
-                    </form>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success"

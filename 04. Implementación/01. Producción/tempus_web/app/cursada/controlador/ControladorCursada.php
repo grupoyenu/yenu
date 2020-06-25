@@ -2,6 +2,7 @@
 
 namespace app\cursada\controlador;
 
+use app\cursada\modelo\Cursada;
 use app\cursada\modelo\ColeccionClases as Cursadas;
 use app\principal\modelo\Conexion;
 use app\principal\modelo\Log;
@@ -23,6 +24,18 @@ use app\principal\modelo\Log;
  * 
  */
 class ControladorCursada {
+
+    public function borrar(Cursada $cursada) {
+        Log::guardar("INF", "CONTROLADOR CURSADAS --> BORRAR " . str_repeat("*", 60));
+        if (Conexion::getInstancia()->iniciarTransaccion()) {
+            $resultado = $cursada->borrar();
+            $confirmar = ($resultado[0] == 2) ? TRUE : FALSE;
+            Conexion::getInstancia()->finalizarTransaccion($confirmar);
+            return $resultado;
+        }
+        Log::guardar("ERR", "CONTROLADOR CURSADAS --> IMPORTAR NO INICIADA");
+        return array(0, "No se pudo inicializar la transacción para operar");
+    }
 
     /**
      * Realiza la busqueda de horarios de cursada a partir del nombre de carrera
