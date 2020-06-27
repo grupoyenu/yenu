@@ -30,10 +30,27 @@ $(document).ready(function () {
         });
     });
 
-    $("#metodo").change(function () {
-        var metodo = $(this).val();
-        var habilitar = (metodo === "Google") ? true : false;
-        $("#clave").prop("disabled", habilitar);
+    $('select#rol').select2({
+        placeholder: 'Seleccione una opcion',
+        theme: "bootstrap",
+        minimumInputLength: 1,
+        maximumSelectionLength: 30,
+        language: "es",
+        allowClear: true,
+        width: '100%',
+        ajax: {
+            url: "./ProcesarSeleccionarRol.php",
+            dataType: 'json',
+            type: "POST",
+            delay: 250,
+            data: function (params) {
+                return {nombre: params.term};
+            },
+            processResults: function (data) {
+                return {results: data};
+            },
+            cache: true
+        }
     });
 
     $('#nombre').change(function () {

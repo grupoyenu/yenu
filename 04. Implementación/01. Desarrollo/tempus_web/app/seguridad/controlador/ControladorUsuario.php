@@ -31,14 +31,13 @@ class ControladorUsuario {
         return Usuarios::buscarPorNombre($nombreUsuario);
     }
 
-    public function crear($nombre, $email, $rol, $estado, $metodo, $clave) {
+    public function crear($nombre, $email, $rol, $estado, $metodo) {
         if (Conexion::getInstancia()->iniciarTransaccion()) {
-            $usuario = ($metodo == "Manual") ? new UsuarioManual(NULL, $email, $nombre, $estado, $rol, $clave) : new Usuario(NULL, $email, $nombre, $metodo, $estado, $rol);
-            $creacion = $usuario->crear();
-            $this->descripcion = $usuario->getDescripcion();
-            $confirmar = ($creacion == 2) ? TRUE : FALSE;
+            $usuario = new Usuario(NULL, $email, $nombre, $metodo, $estado, $rol);
+            $resultado = $usuario->crear();
+            $confirmar = ($resultado[0] == 2) ? TRUE : FALSE;
             Conexion::getInstancia()->finalizarTransaccion($confirmar);
-            return $creacion;
+            return $resultado;
         }
         return array(0, "No se pudo inicializar la transacción para operar");
     }

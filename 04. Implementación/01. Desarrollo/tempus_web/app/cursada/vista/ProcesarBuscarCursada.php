@@ -152,15 +152,18 @@ if ($resultado[0] == 2) {
                 <td class='text-center'>
                     <div class='btn-group btn-group-sm'>
                         <button class='btn btn-outline-info detalle' 
-                                title='Ver detalle'><i class='fas fa-eye'></i>
+                                title='Ver detalle ({$nombreLargoCarrera} {$nombreLargoAsignatura})'>
+                                <i class='fas fa-eye'></i>
                         </button>
                         <button class='btn btn-outline-warning editar' 
                                 name='$idPlan' id='$idPlan' 
-                                title='Editar'><i class='far fa-edit'></i>
+                                title='Editar ({$nombreLargoCarrera} {$nombreLargoAsignatura})'>
+                                <i class='far fa-edit'></i>
                         </button>
                         <button class='btn btn-outline-danger borrar' 
                                 name='{$idPlan}' id='{$idPlan}' 
-                                title='Borrar'><i class='fas fa-trash'></i>
+                                title='Borrar ({$nombreLargoCarrera} {$nombreLargoAsignatura})'>
+                                <i class='fas fa-trash'></i>
                         </button>
                     </div>
                 </td>

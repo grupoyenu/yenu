@@ -65,4 +65,8 @@ class ControladorRol {
         return array(0, "No se pudo inicializar la transacción para operar");
     }
 
+    public function seleccionar($nombre) {
+        return Roles::seleccionar($nombre);
+    }
+
 }

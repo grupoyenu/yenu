@@ -27,8 +27,7 @@ if (isset($_POST['nombre'])) {
     $rol = $_POST['rol'];
     $estado = $_POST['estado'];
     $metodo = $_POST['metodo'];
-    $clave = isset($_POST['clave']) ? $_POST['clave'] : "";
-    $creacion = $controlador->crear($nombre, $email, $rol, $estado, $metodo, $clave);
+    $creacion = $controlador->crear($nombre, $email, $rol, $estado, $metodo);
     $codigo = $creacion[0];
     $mensaje = "{$nombre}: {$creacion[1]}";
     $exito = ($codigo == 2) ? TRUE : FALSE;

@@ -61,4 +61,14 @@ class ColeccionRoles {
         return array(0, "No se estableció un limite válido");
     }
 
+    /**
+     * Seleccionar rol por su nombre.
+     * @param string $nombreRol Nombre del rol o parte del nombre (LIKE).
+     * @return array Arreglo de dos posiciones (codigo, mensaje).
+     */
+    public static function seleccionar($nombreRol): array {
+        $consulta = "SELECT * FROM rol WHERE nombre LIKE '%{$nombreRol}%' ORDER BY nombre";
+        return Conexion::getInstancia()->seleccionar($consulta);
+    }
+
 }

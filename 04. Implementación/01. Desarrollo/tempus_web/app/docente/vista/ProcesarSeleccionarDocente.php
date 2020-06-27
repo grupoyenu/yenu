@@ -9,7 +9,6 @@ require_once '../../principal/modelo/AutoCargador.php';
 
 use app\docente\controlador\ControladorDocente;
 use app\principal\modelo\AutoCargador;
-use app\principal\modelo\Log;
 
 AutoCargador::cargarModulos();
 

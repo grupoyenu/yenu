@@ -3,7 +3,6 @@
 namespace app\cursada\modelo;
 
 use app\principal\modelo\Conexion;
-use app\principal\modelo\Log;
 
 /**
  * 

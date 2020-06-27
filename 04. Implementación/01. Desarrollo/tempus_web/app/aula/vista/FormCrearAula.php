@@ -62,3 +62,5 @@
     </div>
 </div>
 <script type="text/javascript" src="../js/CrearAula.js"></script>
+<?php
+include_once '../../principal/vista/footer.php';

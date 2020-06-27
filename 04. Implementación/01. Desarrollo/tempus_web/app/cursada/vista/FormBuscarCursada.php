@@ -179,4 +179,5 @@
     </div>
 </div>
 <script type="text/javascript" src="../js/BuscarCursada.js"></script>
-
+<?php
+include_once '../../principal/vista/footer.php';

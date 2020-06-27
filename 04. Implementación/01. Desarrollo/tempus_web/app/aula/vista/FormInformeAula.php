@@ -136,3 +136,5 @@ for ($hora = 10; $hora < 23; ++$hora) {
     </div>
 </div>
 <script type="text/javascript" src="../js/InformeAula.js"></script>
+<?php
+include_once '../../principal/vista/footer.php';

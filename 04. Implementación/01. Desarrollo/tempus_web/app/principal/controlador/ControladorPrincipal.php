@@ -7,10 +7,14 @@ use app\seguridad\modelo\UsuarioGoogle;
 class ControladorPrincipal {
 
     public function ingresarPorGoogle($email, $googleId, $imagen) {
-        $usuario = new UsuarioGoogle(NULL, $email);
+        $usuario = new UsuarioGoogle(NULL, $email, NULL, NULL, NULL, $googleId, $imagen);
         $resultado = $usuario->login();
         if ($resultado[0] == 2) {
             $estado = $usuario->getEstado();
+            $imagen = $usuario->getImagen();
+            if (!$imagen) {
+                $usuario->crear();
+            }
             if ($estado == 'Activo') {
                 $_SESSION['ok'] = true;
                 $_SESSION['user'] = serialize($usuario);

@@ -46,7 +46,7 @@
                                    title="Caracter obligatorio">* Rol:</label>
                             <div class="col">
                                 <select class="form-control mb-2" id="rol" name="rol"
-                                        title="Seleccione el rol a asignar para el usuario"></select>
+                                        title="Seleccione el rol a asignar para el usuario" required></select>
                             </div>
                             <label for="estado" class="col-sm-2 col-form-label"
                                    title="Caracter obligatorio">* Estado:</label>
@@ -59,25 +59,17 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <label for="metodo" class="col-sm-2 col-form-label"
+                            <label for="rol" class="col-sm-2 col-form-label"
                                    title="Caracter obligatorio">* Método:</label>
                             <div class="col">
                                 <select class="form-control mb-2" id="metodo" name="metodo"
-                                        title="Seleccione el metodo de acceso para el usuario">
+                                        title="Seleccione el metodo de login">
                                     <option value="Google">Google</option>
                                     <option value="Manual">Manual</option>
                                 </select>
                             </div>
-                            <label for="clave" class="col-sm-2 col-form-label"
-                                   title="Caracter obligatorio">* Clave:</label>
-                            <div class="col">
-                                <input type="password" class="form-control mb-2" 
-                                       name="clave" id="clave" 
-                                       minlength="8" maxlength="12" 
-                                       pattern="[A-Za-zÁÉÍÓÚÑáéíóúñ0-9 ]"
-                                       title="Escriba la clave para el usuario cuyo acceso es Manual. Longitud mínima: 8. Longitud máxima: 12"
-                                       placeholder="Clave" disabled required>
-                            </div>
+                            <label class="col-sm-2 col-form-label"></label>
+                            <div class="col"></div>
                         </div>
                     </div>
                 </div>
@@ -99,3 +91,5 @@
     </div>
 </div>
 <script type="text/javascript" src="../js/CrearUsuario.js"></script>
+<?php
+include_once '../../principal/vista/footer.php';

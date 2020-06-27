@@ -15,7 +15,38 @@ $rol = $usuario->getRol();
 $permisos = $rol->getPermisos();
 $nombres = array_column($permisos, 'nombre');
 
+$usuarioImagen = $usuario->getImagen();
+$usuarioNombre = $usuario->getNombre();
+$usuarioEmail = $usuario->getEmail();
+$usuarioRol = $usuario->getRol()->getNombre();
+
 $filas = '';
+
+if (array_search("AULAS", $nombres) !== false) {
+    $controlador = new ControladorAula();
+    $informes = $controlador->listarInformesAula();
+    if ($informes[0] == 2) {
+        $aulas = $informes[1];
+        foreach ($aulas as $aula) {
+            $filas .= "
+            <tr>
+                <td class='align-middle'>Aulas</td>
+                <td class='align-middle'>" . utf8_encode($aula['informe']) . "</td>
+                <td class='align-middle'>{$aula['cantidad']}</td>
+            </tr>";
+        }
+    } else {
+        $filas .= "
+            <tr>
+                <td class='align-middle'>Aulas</td>
+                <td class='align-middle'>Sin información</td>
+                <td class='align-middle'></td>
+            </tr>";
+    }
+}
+
+
+
 if (array_search("CURSADAS", $nombres) !== false) {
     /*
       $controladorCursada = new ControladorCursada();
@@ -132,7 +163,7 @@ if (array_search("PERMISOS", $nombres) !== false) {
 }
 
 $tabla = '
-    <div class="table-responsive">
+    <div class="table-responsive mt-4 mb-4">
         <table class="table table-bordered table-hover">
             <thead>
                 <tr>
@@ -159,13 +190,13 @@ $tabla = '
             <div class="card-body">
                 <div class="form-row">
                     <div class="col-2">
-                        <img src="<?= $usuario->getImagen(); ?>" class="rounded img-fluid">
+                        <img src="<?= $usuarioImagen; ?>" class="rounded img-fluid">
                     </div>
                     <div class="col">
                         <div class="form-row mt-2">
                             <div class="col">
                                 <p class="card-text">
-                                    <b><?= $usuario->getNombre(); ?>:</b>
+                                    <b><?= $usuarioNombre; ?>:</b>
                                     Le damos la bienvenida a <b>TEMPUS</b>
                                 </p>
                             </div>
@@ -174,14 +205,14 @@ $tabla = '
                             <div class="col">
                                 <p class="card-text">
                                     Usted se ha identificado con el correo electrónico 
-                                    <b><?= utf8_encode($usuario->getEmail()); ?></b>
+                                    <b><?= $usuarioEmail; ?></b>
                                 </p>
                             </div>
                         </div>
                         <div class="form-row mt-2">
                             <div class="col">
                                 <p class="card-text">El rol que posee asignado actualmente es:
-                                    <b><?= utf8_encode($usuario->getRol()->getNombre()); ?></b>
+                                    <b><?= $usuarioRol; ?></b>
                                 </p>
                             </div>
                         </div>

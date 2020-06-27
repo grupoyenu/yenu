@@ -84,3 +84,5 @@
     </div>
 </div>
 <script type="text/javascript" src="../js/BuscarAula.js"></script>
+<?php
+include_once '../../principal/vista/footer.php';

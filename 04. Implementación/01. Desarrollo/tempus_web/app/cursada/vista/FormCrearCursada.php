@@ -104,3 +104,5 @@ for ($dia = 1; $dia < 7; ++$dia) {
     </div>
 </div> 
 <script type="text/javascript" src="../js/CrearCursada.js"></script>
+<?php
+include_once '../../principal/vista/footer.php';

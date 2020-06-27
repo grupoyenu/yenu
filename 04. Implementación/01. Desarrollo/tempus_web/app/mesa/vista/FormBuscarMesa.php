@@ -264,3 +264,5 @@
     </div>
 </div>
 <script type="text/javascript" src="../js/BuscarMesa.js"></script>
+<?php
+include_once '../../principal/vista/footer.php';

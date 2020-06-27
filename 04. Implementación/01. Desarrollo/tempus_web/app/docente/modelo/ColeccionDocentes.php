@@ -33,7 +33,6 @@ class ColeccionDocentes {
     public static function seleccionar($nombreDocente) {
         $consulta = "SELECT * FROM docente "
                 . "WHERE nombre LIKE '%{$nombreDocente}%' ORDER BY nombre";
-
         return Conexion::getInstancia()->seleccionar($consulta);
     }
 
@@ -41,7 +40,6 @@ class ColeccionDocentes {
         Log::guardar("INF", "COLECCION DOCENTES --> REINICIAR AUTOINCREMENTADOR");
         $consulta = "ALTER TABLE docente AUTO_INCREMENT = 1";
         $resultado = Conexion::getInstancia()->modificar($consulta);
-        ;
         return $resultado;
     }
 

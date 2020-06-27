@@ -260,4 +260,5 @@ if ($cantidad > 0) {
     </div>
 </div>
 <script type="text/javascript" src="../js/CrearMesa.js"></script>
-
+<?php
+include_once '../../principal/vista/footer.php';

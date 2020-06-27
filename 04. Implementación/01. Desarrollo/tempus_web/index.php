@@ -4,26 +4,27 @@ require_once './app/principal/modelo/Autocargador.php';
 
 use app\principal\controlador\ControladorPrincipal;
 use app\principal\modelo\AutoCargador;
+use app\principal\modelo\Log;
 
 AutoCargador::cargarModulos();
 
 session_start();
 
+$intentoIngresar = "";
 if (isset($_POST['email'])) {
-    echo " HAY EMAIL ";
     $email = $_POST['email'];
     $googleId = $_POST['googleid'];
     $imagen = $_POST['imagen'];
     $controlador = new ControladorPrincipal();
     $resultado = $controlador->ingresarPorGoogle($email, $googleId, $imagen);
-    echo "<br> $resultado[1]";
     if ($resultado[0] == 2) {
+        Log::guardar("INF", "INGRESO DE USUARIO");
         header("Location: app/principal/vista/home.php");
     } else {
+        $email = $_POST['email'];
+        $intentoIngresar = '<input type="hidden" name="intentoIngresar" id="intentoIngresar" value="' . $email . '">';
         echo "NO SE INGRESO";
     }
-} else {
-    echo "INGRESA PRIMERO";
 }
 ?>
 <!DOCTYPE html>
@@ -43,9 +44,15 @@ if (isset($_POST['email'])) {
         <script type='text/javascript' src="./lib/css/fontAwesome/js/all.min.js"></script>
         <script type='text/javascript' src="./app/principal/js/principal.js"></script>
         <script type="text/javascript" src="https://apis.google.com/js/platform.js" async defer></script>
-        <script type="text/javascript" src="lib/js/login.js"></script>
+        <script type="text/javascript" src="./lib/js/login.js"></script>
     </head>
     <body>
+        <header id="main-header">
+            <a id="logo-header" href="">
+                <span class="site-name">TEMPUS</span>
+                <span class="site-desc">SIT UNPA-UARG</span>
+            </a>
+        </header>
         <div class="container-fluid" id="contenido">
             <div class="container">
                 <div class="form-row mt-4 mb-4">
@@ -74,14 +81,25 @@ if (isset($_POST['email'])) {
                             </div>
                             <div class="form-row mt-3">
                                 <div class="col text-right">
-                                    <div id="okgoogle" class="g-signin2" data-onsuccess="onSignIn" title="Acceder al Sistema Tempus"></div>
+                                    <div id="okgoogle" class="g-signin2" data-onsuccess="onSignIn" 
+                                         title="Acceder al Sistema Tempus"></div>
                                 </div>
                             </div>
+                            <?= $intentoIngresar; ?>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <footer id="main-footer">
+            <p>
+                &copy; Servicio de Inform&aacute;tica y Telecomunicaciones (SIT) - UARG <br /> 
+                <b>Enlaces</b> .:
+                <a href="http://www.uarg.unpa.edu.ar" target="_blank" title="Ir a Portal UARG">Portal UARG</a> :: 
+                <a href="../Instructivo.pdf" target="_blank" title="Ver Manual de Uso">Manual de Uso</a> :.
+            </p>
+        </footer>
+
     </body>
 </html>
 

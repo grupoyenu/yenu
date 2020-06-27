@@ -112,3 +112,5 @@ for ($horafin = 11; $horafin < 24; ++$horafin) {
     </div>
 </div>
 <script type="text/javascript" src="./app/cursadas/js/InformeCursada.js"></script>
+<?php
+include_once '../../principal/vista/footer.php';

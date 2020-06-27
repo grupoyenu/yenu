@@ -194,3 +194,5 @@ if (isset($_FILES['fileMesas'])) {
     </div>
 </div>
 <script type="text/javascript" src="../js/ImportarMesa.js"></script>
+<?php
+include_once '../../principal/vista/footer.php';
