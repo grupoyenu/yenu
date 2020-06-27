@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Mesas de Examen</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding class="content">
+	<div>
+		<form [formGroup]="form" (ngSubmit)="consultarMesa()">
+			<ion-list no-lines>
+                <ion-item>
+                    <ion-label>* Carrera:</ion-label>
+                    <ion-select formControlName="carrera" [(ngModel)]="cursadaCarrera">
+                        <ion-option *ngFor="let item of carreras" value="{{item.codigo}}">{{item.nombre}}</ion-option>
+                    </ion-select>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label stacked>* Nombre de asignatura</ion-label>
+                    <ion-input type="text" formControlName="asignatura" [(ngModel)]="mesaAsignatura" required></ion-input>
+                </ion-item>
+
+                 <ion-item>
+                    <ion-label stacked>Docente</ion-label>
+                    <ion-input type="text" formControlName="docente" [(ngModel)]="mesaDocente" required></ion-input>
+                </ion-item>
+
+                    <ion-item>
+                    <button ion-button full>Buscar</button>
+                </ion-item>
+			</ion-list>
+		</form>
+	</div>
+	<div>
+       <ion-card *ngFor="let item of mesasE">
+			<ion-card-content>
+				<ion-label> Tribunal </ion-label>
+				<ion-label> Presidente: {{ item.presidente }} </ion-label>
+				<ion-label> Vocal 1: {{ item.vocal1 }} </ion-label>
+				<ion-label *ngIf="item.vocal2 != null"> Vocal 2: {{ item.vocal2 }} </ion-label>
+				<ion-label *ngIf="item.suplente != null"> Suplente: {{ item.suplente }} </ion-label>
+			</ion-card-content>
+			<ion-card-content *ngIf="item.pfecha != null">
+				<ion-label> Primer llamado </ion-label>
+				<ion-label> Fecha: {{ item.pfecha }} </ion-label>
+                <ion-label> Hora: {{ item.phora }} </ion-label>
+				<ion-label> Sector: {{ item.psector }} </ion-label>
+				<ion-label> Aula: {{ item.paula }} </ion-label>
+			</ion-card-content>
+			<ion-card-content *ngIf="item.sfecha != null">
+				<ion-label> Segundo llamado </ion-label>
+				<ion-label> Fecha: {{ item.sfecha }} </ion-label>
+                <ion-label> Hora: {{ item.phora }} </ion-label>
+				<ion-label> Sector: {{ item.ssector }} </ion-label>
+				<ion-label> Aula: {{ item.saula }} </ion-label>
+			</ion-card-content>						
+		</ion-card>	
+    </div>
+</ion-content>
