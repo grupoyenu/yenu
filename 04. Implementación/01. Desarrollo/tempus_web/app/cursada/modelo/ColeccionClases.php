@@ -118,6 +118,14 @@ class ColeccionClases {
     }
 
     /**
+     * @see vw_informe Consulta cuando modulo es CURSADAS.
+     */
+    public static function listarInformesCursada(): array {
+        $consulta = "SELECT * FROM vw_informe WHERE modulo = 'CURSADAS'";
+        return Conexion::getInstancia()->seleccionar($consulta);
+    }
+
+    /**
      * Realiza la busqueda de las ultimos horarios de cursada que se han creado.
      * El objetivo es brindar resultados previos cuando se hace la busqueda de 
      * mesas de examen.

@@ -45,29 +45,71 @@ if (array_search("AULAS", $nombres) !== false) {
     }
 }
 
+if (array_search("PLANES", $nombres) !== false) {
+    $controladorAsignatura = new ControladorAsignatura();
+    $informesAsignaturas = $controladorAsignatura->listarInformesAsignatura();
+    if ($informesAsignaturas[0] == 2) {
+        $asignaturas = $informesAsignaturas[1];
+        foreach ($asignaturas as $asignatura) {
+            $filas .= "
+            <tr>
+                <td class='align-middle'>Asignaturas</td>
+                <td class='align-middle'>" . utf8_encode($asignatura['informe']) . "</td>
+                <td class='align-middle'>{$asignatura['cantidad']}</td>
+            </tr>";
+        }
+    } else {
+        $filas .= "
+            <tr>
+                <td class='align-middle'>Asignaturas</td>
+                <td class='align-middle'>Sin información</td>
+                <td class='align-middle'></td>
+            </tr>";
+    }
 
+    $controladorCarrera = new ControladorCarrera();
+    $informesCarreras = $controladorCarrera->listarInformesCarrera();
+    if ($informesCarreras[0] == 2) {
+        $carreras = $informesCarreras[1];
+        foreach ($carreras as $carrera) {
+            $filas .= "
+            <tr>
+                <td class='align-middle'>Carreras</td>
+                <td class='align-middle'>" . utf8_encode($carrera['informe']) . "</td>
+                <td class='align-middle'>{$carrera['cantidad']}</td>
+            </tr>";
+        }
+    } else {
+        $filas .= "
+            <tr>
+                <td class='align-middle'>Carreras</td>
+                <td class='align-middle'>Sin información</td>
+                <td class='align-middle'></td>
+            </tr>";
+    }
+}
 
 if (array_search("CURSADAS", $nombres) !== false) {
-    /*
-      $controladorCursada = new ControladorCursada();
-      $resumenCursada = $controladorCursada->listarResumenInicial();
-      if (gettype($resumenCursada) == "object") {
-      while ($cursada = $resumenCursada->fetch_assoc()) {
-      $filas .= "
-      <tr>
-      <td class='align-middle'>Horarios de cursada</td>
-      <td class='align-middle'>" . utf8_encode($cursada['nombre']) . "</td>
-      <td class='align-middle'>{$cursada['cantidad']}</td>
-      </tr>";
-      }
-      } else {
-      $filas .= "
-      <tr>
-      <td class='align-middle'>Horarios de cursada</td>
-      <td class='align-middle'>Sin información</td>
-      <td class='align-middle'></td>
-      </tr>";
-      } */
+    $controlador = new ControladorCursada();
+    $informes = $controlador->listarInformesCursada();
+    if ($informes[0] == 2) {
+        $cursadas = $informes[1];
+        foreach ($cursadas as $cursada) {
+            $filas .= "
+            <tr>
+                <td class='align-middle'>Horarios de cursada</td>
+                <td class='align-middle'>" . utf8_encode($cursada['informe']) . "</td>
+                <td class='align-middle'>{$cursada['cantidad']}</td>
+            </tr>";
+        }
+    } else {
+        $filas .= "
+            <tr>
+                <td class='align-middle'>Horarios de cursada</td>
+                <td class='align-middle'>Sin información</td>
+                <td class='align-middle'></td>
+            </tr>";
+    }
 }
 
 if (array_search("MESAS", $nombres) !== false) {

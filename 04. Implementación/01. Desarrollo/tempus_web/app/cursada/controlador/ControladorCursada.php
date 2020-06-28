@@ -71,6 +71,11 @@ class ControladorCursada {
         return array(0, "No se pudo inicializar la transacción para operar");
     }
 
+    
+    public function listarInformesCursada() {
+        return Cursadas::listarInformesCursada();
+    }
+
     /**
      * Realiza la busqueda de un conjunto limitado de horarios de cursada.
      * @see Cursadas::listarResumenCursadas

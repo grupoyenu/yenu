@@ -7,8 +7,6 @@ use app\principal\modelo\Conexion;
 /**
  * Permite obtener operar con los registros de Usuario Google almacenados en la 
  * base de datos. 
- * Relacion con BD: USUARIO GOOGLE.
- * Campos: idusuario, googleid, imagen.
  *
  * @author Oyarzo Mariela 
  * @author Quiroga Sandra
@@ -44,10 +42,20 @@ class UsuarioGoogle extends Usuario {
         $this->imagen = $imagen;
     }
 
+    public function borrar() {
+        if ($this->getId()) {
+            $idUsuario = $this->getId();
+            $consulta = "DELETE FROM usuario_google WHERE usuario_id = {$idUsuario}";
+            $resultado = Conexion::getInstancia()->borrar($consulta);
+            return ($resultado[0] == 2) ? parent::borrar() : $resultado;
+        }
+        return array(0, "No se recibieron todos los campos obligatorios");
+    }
+
     public function crear() {
         if ($this->getId() && $this->getGoogleid() && $this->imagen) {
-            $idUsurio = $this->getId();
-            $consulta = "INSERT INTO usuario_google VALUES ($idUsurio, '{$this->googleid}', '{$this->imagen}')";
+            $idUsuario = $this->getId();
+            $consulta = "INSERT INTO usuario_google VALUES ($idUsuario, '{$this->googleid}', '{$this->imagen}')";
             return Conexion::getInstancia()->insertar($consulta);
         }
         return array(0, "No se recibieron todos los campos obligatorios");

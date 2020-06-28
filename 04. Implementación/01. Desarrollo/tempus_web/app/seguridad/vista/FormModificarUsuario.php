@@ -6,7 +6,7 @@ require_once '../../principal/modelo/AutoCargador.php';
 
 /* SE REFERENCIAN LOS NAMESPACE */
 
-use app\seguridad\modelo\Permiso;
+use app\seguridad\modelo\Usuario;
 use app\principal\controlador\ControladorHTML;
 use app\principal\modelo\AutoCargador;
 
@@ -19,77 +19,95 @@ session_start();
 /* INICIO DEL CODIGO PROPIO DEL ARCHIVO */
 
 $boton = "";
-if (isset($_POST['idUsuario']) && isset($_POST['metodo'])) {
+if (isset($_POST['idUsuario'])) {
     $idUsuario = $_POST['idUsuario'];
-    $metodo = $_POST['metodo'];
-    $usuario = ($metodo == "Manual") ? new UsuarioManual($idUsuario) : new Usuario($idUsuario);
-    $obtener = $usuario->obtener();
-    if ($obtener == 2) {
-        $controlador = new ControladorRoles();
-        $roles = $controlador->listar();
-        if (gettype($roles) == "object") {
-            $estado = $usuario->getEstado();
-            $filas = "";
-            while ($rol = $roles->fetch_assoc()) {
-                $selected = ($usuario->getRol() == $rol['idrol']) ? "selected" : "";
-                $filas .= "<option value='{$rol['idrol']}' {$selected}>" . utf8_encode($rol['nombre']) . "</td></option>";
-            }
+    $usuario = new Usuario($idUsuario);
+    $resultado = $usuario->obtenerPorIdentificador();
+    if ($resultado[0] == 2) {
 
-            $opcionesEstado = ($estado == "Activo") ? '<option value="Activo" selected>Activo</option>' : '<option value="Activo">Activo</option>';
-            $opcionesEstado .= ($estado == "Inactivo") ? '<option value="Inactivo" selected>Inactivo</option>' : '<option value="Inactivo">Inactivo</option>';
+        $nombre = $usuario->getNombre();
+        $email = $usuario->getEmail();
+        $estado = $usuario->getEstado();
+        $metodo = $usuario->getMetodo();
+        $rol = $usuario->getRol();
+        $idRol = $rol->getId();
+        $nombreRol = $rol->getNombre();
 
-            $cuerpo = '
-                <input type="hidden" name="idUsuario" id="idUsuario" value="' . $usuario->getIdUsuario() . '">
-                <input type="hidden" name="metodo" id="metodo" value="' . $metodo . '">
-                <div class="form-row">
-                    <label for="nombre" class="col-sm-2 col-form-label">* Nombre:</label>
-                    <div class="col">
-                        <input type="text" class="form-control mb-2" 
-                               name="nombre" id="nombre"
-                               value="' . $usuario->getNombre() . '"
-                               placeholder="Nombre del usuario" required>
-                    </div>
-                    <label for="correo" class="col-sm-2 col-form-label">* E-mail:</label>
-                    <div class="col">
-                        <input type="text" class="form-control mb-2" 
-                               name="correo" id="correo"
-                               value="' . $usuario->getEmail() . '"
-                               placeholder="E-mail" required>
-                    </div>
+        if ($estado == "Activo") {
+            $opcionesEstado = '<option value="Activo" selected>Activo</option>
+                               <option value="Inactivo">Inactivo</option>';
+        } else {
+            $opcionesEstado = '<option value="Activo">Activo</option>
+                               <option value="Inactivo" selected>Inactivo</option>';
+        }
+
+        if ($metodo == "Google") {
+            $opcionesMetodo = '<option value="Google" selected>Google</option>
+                               <option value="Manual">Manual</option>';
+        } else {
+            $opcionesMetodo = '<option value="Google">Google</option>
+                               <option value="Manual" selected>Manual</option>';
+        }
+
+        $cuerpo = '
+            <input type="hidden" name="idUsuario" id="idUsuario" value="' . $idUsuario . '">
+            <div class="form-row">
+                <label for="nombre" class="col-sm-2 col-form-label"
+                       title="Caracter obligatorio">* Nombre completo:</label>
+                <div class="col">
+                    <input type="text" class="form-control mb-2" 
+                           name="nombre" id="nombre" 
+                           value = "' . $nombre . '"
+                           maxlength="50" minlength="8" 
+                           pattern="[A-Za-zÁÉÍÓÚÑáéíóúñ, ]{8,50}"
+                           title="Escriba el nombre del usuario a crear. Longitud mínima: 8. Longitud máxima: 50"
+                           placeholder="Apellido y nombre" required>
                 </div>
-                <div class="form-row">
-                    <label for="rol" class="col-sm-2 col-form-label">* Rol:</label>
-                    <div class="col">
-                        <select class="form-control mb-2" id="rol" name="rol">' . $filas . '</select>
-                    </div>
-                    <label for="estado" class="col-sm-2 col-form-label">* Estado:</label>
-                    <div class="col">
-                        <select class="form-control mb-2" id="estado" name="estado">' . $opcionesEstado . '</select>
-                    </div>
-                </div>';
-            if ($metodo == "Manual") {
-                $cuerpo .= '
-                    <div class="form-row">
-                        <label for="clave" class="col-sm-2 col-form-label">* Clave:</label>
-                        <div class="col">
-                            <input type="password" class="form-control mb-2" 
-                                   name="clave" id="clave"
-                                   value="' . $usuario->getClave() . '"
-                                   placeholder="Clave" required>
-                        </div>
-                        <label class="col-sm-2 col-form-label"></label>
-                        <div class="col"></div>
-                    </div>';
-            }
-            $boton = '<button type="submit" class="btn btn-success" 
+                <label for="correo" class="col-sm-2 col-form-label"
+                       title="Caracter obligatorio">* E-mail:</label>
+                <div class="col">
+                    <input type="email" class="form-control mb-2" 
+                           name="correo" id="correo" 
+                           value = "' . $email . '"
+                           maxlength="35" minlength="12"
+                           title="Escriba el correo electrónico del usuario a crear. Longitud mínima: 12. Longitud máxima: 35"
+                           placeholder="E-mail" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <label for="rol" class="col-sm-2 col-form-label"
+                       title="Caracter obligatorio">* Rol:</label>
+                <div class="col">
+                    <select class="form-control mb-2" id="rol" name="rol"
+                            title="Seleccione el rol a asignar para el usuario" required>
+                            <option value="' . $idRol . '">' . $nombreRol . '</option>
+                    </select>
+                </div>
+                <label for="estado" class="col-sm-2 col-form-label"
+                       title="Caracter obligatorio">* Estado:</label>
+                <div class="col">
+                    <select class="form-control mb-2" id="estado" name="estado"
+                            title="Seleccione el estado del usuario">' . $opcionesEstado . '</select>
+                </div>
+            </div>
+            <div class="form-row">
+                <label for="rol" class="col-sm-2 col-form-label"
+                       title="Caracter obligatorio">* Método:</label>
+                <div class="col">
+                    <select class="form-control mb-2" id="metodo" name="metodo"
+                            title="Seleccione el metodo de login">' . $opcionesMetodo . '</select>
+                </div>
+                <label class="col-sm-2 col-form-label"></label>
+                <div class="col"></div>
+            </div>';
+        $boton = '<button type="submit" class="btn btn-success" 
                             id="btnModificarUsuario" title="Guardar datos" disabled>
                         <i class="far fa-save"></i> GUARDAR
                   </button>';
-        } else {
-            $cuerpo = ControladorHTML::mostrarAlertaResultadoOperacion($roles, $controlador->getDescripcion());
-        }
     } else {
-        $cuerpo = ControladorHTML::mostrarAlertaResultadoOperacion($obtener, $usuario->getDescripcion());
+        $codigo = $resultado[0];
+        $mensaje = $resultado[1];
+        $cuerpo = ControladorHTML::mostrarAlertaResultadoOperacion($codigo, $mensaje);
     }
 } else {
     $mensaje = "No se obtuvo la información desde el formulario";
@@ -130,5 +148,5 @@ if (isset($_POST['idUsuario']) && isset($_POST['metodo'])) {
         </form>
     </div>
 </div>
-<script type="text/javascript" src="./app/usuarios/js/ModificarUsuario.js"></script>
+<script type="text/javascript" src="../js/ModificarUsuario.js"></script>
 

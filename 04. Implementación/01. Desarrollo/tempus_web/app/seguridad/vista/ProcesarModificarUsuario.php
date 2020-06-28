@@ -1,23 +1,38 @@
 <?php
 
-require_once '../../principal/modelos/Constantes.php';
-require_once '../../principal/modelos/AutoCargador.php';
+/* SE INCLUYE EL ARCHIVO DE CONSTANTES Y EL AUTOLOAD */
+
+require_once '../../principal/modelo/Constantes.php';
+require_once '../../principal/modelo/AutoCargador.php';
+
+/* SE REFERENCIAN LOS NAMESPACE */
+
+use app\seguridad\controlador\ControladorUsuario;
+use app\principal\controlador\ControladorHTML;
+use app\principal\modelo\AutoCargador;
+
 AutoCargador::cargarModulos();
+
+/* INICIALIZA LA SESION PARA GUARDAR EL LOG */
+
+session_start();
+
+/* INICIO DEL CODIGO PROPIO DEL ARCHIVO */
 
 $exito = FALSE;
 if (isset($_POST['idUsuario'])) {
-    $controlador = new ControladorUsuarios();
+    $controlador = new ControladorUsuario();
     $id = $_POST['idUsuario'];
     $nombre = $_POST['nombre'];
     $email = $_POST['correo'];
     $rol = $_POST['rol'];
     $estado = $_POST['estado'];
     $metodo = $_POST['metodo'];
-    $clave = isset($_POST['clave']) ? $_POST['clave'] : NULL;
-    $modificacion = $controlador->modificar($id, $nombre, $email, $rol, $estado, $metodo, $clave);
-    $mensaje = $controlador->getDescripcion();
-    $exito = ($modificacion == 2) ? TRUE : FALSE;
-    $resultado = ControladorHTML::mostrarAlertaResultadoOperacion($modificacion, $mensaje);
+    $modificacion = $controlador->modificar($id, $nombre, $email, $rol, $estado, $metodo);
+    $codigo = $modificacion[0];
+    $mensaje = $modificacion[1];
+    $exito = ($codigo == 2) ? TRUE : FALSE;
+    $resultado = ControladorHTML::mostrarAlertaResultadoOperacion($codigo, $mensaje);
 } else {
     $mensaje = "No se obtuvo la información desde el formulario";
     $resultado = ControladorHTML::mostrarAlertaResultadoOperacion(0, $mensaje);

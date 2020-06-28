@@ -37,4 +37,51 @@ $(document).ready(function () {
         });
     });
 
+    $('select#rol').select2({
+        placeholder: 'Seleccione una opcion',
+        theme: "bootstrap",
+        minimumInputLength: 1,
+        maximumSelectionLength: 30,
+        language: "es",
+        allowClear: true,
+        width: '100%',
+        ajax: {
+            url: "./ProcesarSeleccionarRol.php",
+            dataType: 'json',
+            type: "POST",
+            delay: 250,
+            data: function (params) {
+                return {nombre: params.term};
+            },
+            processResults: function (data) {
+                return {results: data};
+            },
+            cache: true
+        }
+    });
+
+    $('#nombre').change(function () {
+        var borde = ($(this).val().length < 8) ? "1px solid red" : "";
+        $(this).css("border", borde);
+    });
+
+    $('#correo').change(function () {
+        var correo = $(this).val();
+        var borde = ($(this).val().length < 12) ? "1px solid red" : "";
+        $(this).css("border", borde);
+        if ($("#metodo").val() === "Google") {
+            if (!correo.includes('@unpa.edu.ar') && !correo.includes('@gmail.com')) {
+                var men = "Para metodo 'Google' se debe indicar un correo @unpa.edu.ar o @gmail.com";
+                var div = '<div class="alert alert-warning text-center" role="alert"><strong>' + men + '</strong></div>';
+                $('#seccionResultado').html(div);
+            }
+        }
+    });
+
+    $('#clave').change(function () {
+        var borde = ($(this).val().length < 8) ? "1px solid red" : "";
+        $(this).css("border", borde);
+    });
+
+
 });

@@ -23,7 +23,11 @@ if (isset($_POST['modalIdUsuario']) && isset($_POST['modalMetodo'])) {
     $idUsuario = $_POST['modalIdUsuario'];
     $metodo = $_POST['modalMetodo'];
     $controlador = new ControladorUsuario();
-    $eliminacion = $controlador->borrar($idUsuario, $metodo);
+    if ($metodo == "Manual") {
+        $eliminacion = $controlador->borrarUsuario($idUsuario);
+    } else {
+        $eliminacion = $controlador->borrarUsuarioGoogle($idUsuario);
+    }
     $codigo = $eliminacion[0];
     $mensaje = $eliminacion[1];
     $resultado = ControladorHTML::mostrarAlertaResultadoOperacion($codigo, $mensaje);

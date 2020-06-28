@@ -90,7 +90,7 @@ class Usuario {
         if ($this->id) {
             $relacion = $this->borrarRelacionRol();
             if ($relacion == 2) {
-                $consulta = "DELETE usuario WHERE id = {$this->id}";
+                $consulta = "DELETE FROM usuario WHERE id = {$this->id}";
                 return Conexion::getInstancia()->borrar($consulta);
             }
             return array($relacion, "No se realizo la eliminación del usuario");
@@ -99,7 +99,7 @@ class Usuario {
     }
 
     private function borrarRelacionRol() {
-        $consulta = "DELETE usuario_rol WHERE idusuario = {$this->id}";
+        $consulta = "DELETE FROM rol_usuario WHERE usuario_id = {$this->id}";
         $resultado = Conexion::getInstancia()->borrar($consulta);
         return $resultado[0];
     }
