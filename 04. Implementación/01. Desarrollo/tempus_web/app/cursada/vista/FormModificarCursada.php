@@ -124,7 +124,7 @@ if (isset($_POST['idPlan'])) {
             </div>';
         $botones = '
             <button type="submit" class="btn btn-success" 
-                    id="btnModificarCursada" title="Guardar datos">
+                    id="btnModificarCursada" title="Guardar datos" disabled>
                     <i class="far fa-save"></i> GUARDAR
             </button>
             <button type="submit" class="btn btn-danger" 

@@ -41,7 +41,10 @@ $(document).ready(function () {
     /* ABRE EL MODAL PARA CONFIRMAR LA BAJA */
     $('#seccionInferior').on('click', '.borrar', function (evento) {
         evento.preventDefault();
+        var sector = $(this).parents("tr").find('td:eq(0)').text();
+        var nombre = $(this).parents("tr").find('td:eq(1)').text();
         $("#modalIdAula").val($(this).attr("name"));
+        $("#nombreRegistroBorrar").text(sector + ", " + nombre + ": ");
         $("#modalBorrarAula").modal({backdrop: 'static', keyboard: false});
     });
 
@@ -75,6 +78,7 @@ $(document).ready(function () {
             success: function (data) {
                 $('#cuerpoModalBorrar').html(data);
                 $('#btnBorrarAula').hide();
+                $('#btnCancelarBorrarAula').hide();
                 $('#btnRefrescarPantalla').show();
             },
             error: function (data) {
@@ -85,13 +89,6 @@ $(document).ready(function () {
             }
         });
     });
-
-    $("#btnRefrescarPantalla").click(function () {
-        setTimeout(function () {
-            location.reload();
-        }, 600);
-    });
-
 
 });
 

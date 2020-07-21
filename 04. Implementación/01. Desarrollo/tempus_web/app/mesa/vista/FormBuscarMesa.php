@@ -245,8 +245,9 @@
                     <div class="modal-body" id="cuerpoModalBorrar">
                         <form id="formBorrarMesa" name="formBorrarMesa" method="POST">
                             <input type="hidden" name="modalIdPlan" id="modalIdPlan">
-                            <div class="container">
-                                <p><strong> Presione GUARDAR para confirmar la eliminación de la mesa de examen </strong></p>
+                            <div class="form-row">
+                                <b><p id="nombreRegistroBorrar" name="nombreRegistroBorrar"></p></b>
+                                <p> &nbsp; Presione <b>GUARDAR</b> para confirmar la eliminación de la mesa de examen</p>
                             </div>
                         </form>
                     </div>
@@ -254,8 +255,11 @@
                         <button type="submit" class="btn btn-success"
                                 name="btnBorrarMesa" id="btnBorrarMesa">
                             <i class="far fa-save"></i> GUARDAR</button>
+                        <button type="submit" class="btn btn-outline-secondary" 
+                                name="btnCancelarBorrarMesa" id="btnCancelarBorrarMesa"
+                                data-dismiss="modal">Cancelar</button>
                         <input type='submit' class='btn btn-outline-secondary' 
-                               style="display: none;"
+                               style="display: none;" onclick="window.location.reload()"
                                name="btnRefrescarPantalla" id="btnRefrescarPantalla" value='Aceptar'>
                     </div>
                 </div>

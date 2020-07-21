@@ -30,7 +30,9 @@ $(document).ready(function () {
 
     $('#seccionInferior').on('click', '.borrar', function (evento) {
         evento.preventDefault();
+        var nombre = $(this).parents("tr").find('td:eq(0)').text();
         $("#modalIdPermiso").val($(this).attr("name"));
+        $("#nombreRegistroBorrar").text(nombre + ": ");
         $("#ModalBorrarPermiso").modal({});
     });
 
@@ -42,6 +44,7 @@ $(document).ready(function () {
             success: function (data) {
                 $('#cuerpoModal').html(data);
                 $('#btnBorrarPermiso').hide();
+                $('#btnCancelarBorrarPermiso').hide();
                 $('#btnRefrescarPantalla').show();
             },
             error: function (data) {
@@ -51,12 +54,6 @@ $(document).ready(function () {
                 $("#cuerpoModal").html(div);
             }
         });
-    });
-
-    $("#btnRefrescarPantalla").click(function () {
-        setTimeout(function () {
-            location.reload();
-        }, 600);
     });
 
 });

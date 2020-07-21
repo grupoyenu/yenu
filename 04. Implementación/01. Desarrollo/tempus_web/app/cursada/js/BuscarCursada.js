@@ -51,7 +51,9 @@ $(document).ready(function () {
 
     $('#seccionInferior').on('click', '.borrar', function (evento) {
         evento.preventDefault();
+        var nombreLargoAsignatura = $(this).parents("tr").find('td:eq(4)').text();
         $("#modalIdPlan").val($(this).attr("name"));
+        $("#nombreRegistroBorrar").text(nombreLargoAsignatura + ": ");
         $("#ModalBorrarCursada").modal({backdrop: 'static', keyboard: false});
     });
 
@@ -63,6 +65,7 @@ $(document).ready(function () {
             success: function (data) {
                 $('#cuerpoModalBorrar').html(data);
                 $('#btnBorrarCursada').hide();
+                $('#btnCancelarBorrarCursada').hide();
                 $('#btnRefrescarPantalla').show();
             },
             error: function (data) {
@@ -74,11 +77,6 @@ $(document).ready(function () {
         });
     });
 
-    $("#btnRefrescarPantalla").click(function () {
-        setTimeout(function () {
-            location.reload();
-        }, 600);
-    });
 });
 
 
@@ -92,7 +90,7 @@ function buscarCursada() {
             $("table#tablaBuscarCursadas").DataTable({
                 dom: 'Bfrtip',
                 responsive: true,
-                language: {url: "./lib/js/Spanish.json"},
+                language: {url: "../../../lib/js/Spanish.json"},
                 buttons: [
                     {extend: 'pdfHtml5',
                         orientation: 'landscape',

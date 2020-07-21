@@ -22,8 +22,6 @@ function onSignIn(googleUser) {
 // jquery extend function
 $.extend({
     redirectPost: function (location, args) {
-
-        alert($("#intentoIngresar").val());
         var form = $('<form></form>');
         form.attr("method", "post");
         form.attr("action", location);

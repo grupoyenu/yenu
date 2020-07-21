@@ -34,7 +34,9 @@ $(document).ready(function () {
 
     $('#seccionInferior').on('click', '.borrar', function (evento) {
         evento.preventDefault();
+        var nombre = $(this).parents("tr").find('td:eq(0)').text();
         $("#modalIdRol").val($(this).attr("name"));
+        $("#nombreRegistroBorrar").text(nombre + ": ");
         $("#ModalBorrarRol").modal({});
     });
 
@@ -46,6 +48,7 @@ $(document).ready(function () {
             success: function (data) {
                 $('#cuerpoModal').html(data);
                 $('#btnBorrarRol').hide();
+                $('#btnCancelarBorrarRol').hide();
                 $('#btnRefrescarPantalla').show();
             },
             error: function (data) {
@@ -55,12 +58,6 @@ $(document).ready(function () {
                 $("#cuerpoModal").html(div);
             }
         });
-    });
-
-    $("#btnRefrescarPantalla").click(function () {
-        setTimeout(function () {
-            location.reload();
-        }, 600);
     });
 
 });

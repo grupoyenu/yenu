@@ -109,7 +109,9 @@ $(document).ready(function () {
      * */
     $('#seccionInferior').on('click', '.borrar', function (evento) {
         evento.preventDefault();
+        var nombreLargoAsignatura = $(this).parents("tr").find('td:eq(4)').text();
         $("#modalIdPlan").val($(this).attr("name"));
+        $("#nombreRegistroBorrar").text(nombreLargoAsignatura + ": ");
         $("#ModalBorrarMesa").modal({});
     });
 
@@ -127,6 +129,7 @@ $(document).ready(function () {
             success: function (data) {
                 $('#cuerpoModalBorrar').html(data);
                 $('#btnBorrarMesa').hide();
+                $('#btnCancelarBorrarMesa').hide();
                 $('#btnRefrescarPantalla').show();
             },
             error: function (data) {
@@ -136,18 +139,6 @@ $(document).ready(function () {
                 $("#cuerpoModal").html(div);
             }
         });
-    });
-
-    /*
-     * ACTUALIZA LA PANTALLA LUEGO QUE SE ELIMINA UNA MESA DE EXAMEN.
-     * Cuando se realiza el proceso de eliminacion de la mesa de examen, se 
-     * refresca la pantalla para que ya no se observe la mesa de examen en la tabla
-     * con los demas resultados.
-     */
-    $("#btnRefrescarPantalla").click(function () {
-        setTimeout(function () {
-            location.reload();
-        }, 600);
     });
 
 });

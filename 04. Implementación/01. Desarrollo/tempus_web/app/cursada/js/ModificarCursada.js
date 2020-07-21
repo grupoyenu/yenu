@@ -39,7 +39,6 @@ $(document).ready(function () {
 
     $("#btnConfirmarEliminacion").click(function (evento) {
         evento.preventDefault();
-        alert("PETICION AJAX 4");
         $.ajax({
             type: "POST",
             dataType: 'json',
@@ -65,9 +64,25 @@ $(document).ready(function () {
     });
 
     $(".borrarClases").change(function () {
+        var dia = $(this).val();
         var checkeado = $(this).prop('checked');
         var disabled = (checkeado) ? false : true;
+        $('input[id="cbClases"][value="' + dia + '"]').prop('disabled', !disabled);
         $("#btnBorrarClases").prop("disabled", disabled);
+    });
+
+    $(".clases").change(function () {
+        var dia = $(this).val();
+        var checkeado = $(this).prop('checked');
+        var disabled = (checkeado) ? false : true;
+        $('input[id="cbBorrarClases"][value="' + dia + '"]').prop('disabled', !disabled);
+        $("#btnModificarCursada").prop("disabled", disabled);
+        $("#horaInicio" + dia).prop("disabled", disabled);
+        $("#horaFin" + dia).prop("disabled", disabled);
+        $("#aula" + dia).prop("disabled", disabled);
+        $("#baja" + dia).prop("disabled", disabled);
+        $("#crear" + dia).prop("disabled", disabled);
+        $("#editar" + dia).prop("disabled", disabled);
     });
 
     $(".horaInicio").change(function () {
@@ -246,17 +261,7 @@ $(document).ready(function () {
         }
     });
 
-    $(".clases").change(function () {
-        var dia = $(this).val();
-        var checkeado = $(this).prop('checked');
-        var disabled = (checkeado) ? false : true;
-        $("#horaInicio" + dia).prop("disabled", disabled);
-        $("#horaFin" + dia).prop("disabled", disabled);
-        $("#aula" + dia).prop("disabled", disabled);
-        $("#baja" + dia).prop("disabled", disabled);
-        $("#crear" + dia).prop("disabled", disabled);
-        $("#editar" + dia).prop("disabled", disabled);
-    });
+
 
 });
 

@@ -65,8 +65,9 @@
                     <div class="modal-body" id="cuerpoModalBorrar">
                         <form name="formBorrarAula" id="formBorrarAula" method="POST">
                             <input type="hidden" name="modalIdAula" id="modalIdAula">
-                            <div class="container">
-                                <p><strong> Presione GUARDAR para confirmar la eliminación del aula </strong></p>
+                            <div class="form-row">
+                                <b><p id="nombreRegistroBorrar" name="nombreRegistroBorrar"></p></b>
+                                <p> &nbsp; Presione <b>GUARDAR</b> para confirmar la eliminación del aula</p>
                             </div>
                         </form>
                     </div>
@@ -74,8 +75,11 @@
                         <button type="submit" class="btn btn-success"
                                 name="btnBorrarAula" id="btnBorrarAula">
                             <i class="far fa-save"></i> GUARDAR</button>
+                        <button type="submit" class="btn btn-outline-secondary" 
+                                name="btnCancelarBorrarAula" id="btnCancelarBorrarAula"
+                                data-dismiss="modal">Cancelar</button>
                         <input type='submit' class='btn btn-outline-secondary' 
-                               style="display: none;"
+                               style="display: none;" onclick="window.location.reload()"
                                name="btnRefrescarPantalla" id="btnRefrescarPantalla" value='Aceptar'>
                     </div>
                 </div>

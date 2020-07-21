@@ -55,8 +55,9 @@
                     <div class="modal-body" id="cuerpoModal">
                         <form id="formBorrarPermiso" name="formBorrarPermiso" method="POST">
                             <input type="hidden" name="modalIdPermiso" id="modalIdPermiso">
-                            <div class="container">
-                                <p><strong> Presione GUARDAR para confirmar la eliminación del permiso </strong></p>
+                            <div class="form-row">
+                                <b><p id="nombreRegistroBorrar" name="nombreRegistroBorrar"></p></b>
+                                <p> &nbsp; Presione <b>GUARDAR</b> para confirmar la eliminación del permiso</p>
                             </div>
                         </form>
                     </div>
@@ -64,8 +65,11 @@
                         <button type="submit" class="btn btn-success"
                                 name="btnBorrarPermiso" id="btnBorrarPermiso">
                             <i class="far fa-save"></i> GUARDAR</button>
+                        <button type="submit" class="btn btn-outline-secondary" 
+                                name="btnCancelarBorrarPermiso" id="btnCancelarBorrarPermiso"
+                                data-dismiss="modal">Cancelar</button>
                         <input type='submit' class='btn btn-outline-secondary' 
-                               style="display: none;"
+                               style="display: none;" onclick="window.location.reload()"
                                name="btnRefrescarPantalla" id="btnRefrescarPantalla" value='Aceptar'>
                     </div>
                 </div>

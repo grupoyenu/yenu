@@ -35,8 +35,10 @@ $(document).ready(function () {
 
     $('#seccionInferior').on('click', '.borrar', function (evento) {
         evento.preventDefault();
+        var nombre = $(this).parents("tr").find('td:eq(0)').text();
         $("#modalIdUsuario").val($(this).attr("name"));
         $("#modalMetodo").val($(this).parents("tr").find('td:eq(2)').text());
+        $("#nombreRegistroBorrar").text(nombre + ": ");
         $("#ModalBorrarUsuario").modal({});
     });
 
@@ -48,6 +50,7 @@ $(document).ready(function () {
             success: function (data) {
                 $('#cuerpoModal').html(data);
                 $('#btnBorrarUsuario').hide();
+                $('#btnCancelarBorrarUsuario').hide();
                 $('#btnRefrescarPantalla').show();
             },
             error: function (data) {
@@ -57,12 +60,6 @@ $(document).ready(function () {
                 $("#cuerpoModal").html(div);
             }
         });
-    });
-
-    $("#btnRefrescarPantalla").click(function () {
-        setTimeout(function () {
-            location.reload();
-        }, 600);
     });
 
 });
