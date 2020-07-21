@@ -24,8 +24,9 @@ for ($hora = 10; $hora < 23; ++$hora) {
         <div class="form-row mt-4 mb-4">
             <div class="col text-left"><h4><i class="far fa-calendar-alt"></i> INFORME MESA DE EXAMEN</h4></div>
             <div class="col text-right">
-                <a href="principal_home">
-                    <button class="btn btn-sm btn-outline-secondary"> 
+                <a href="../../principal/vista/home.php">
+                    <button class="btn btn-sm btn-outline-secondary" 
+                            title="Cerrar página actual"> 
                         <i class="fas fa-times"></i> CERRAR
                     </button>
                 </a>

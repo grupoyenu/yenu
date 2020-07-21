@@ -6,7 +6,7 @@
                 <h4><i class="far fa-calendar-alt"></i> BUSCAR MESA DE EXAMEN</h4>
             </div>
             <div class="col text-right">
-                <a href="principal_home">
+                <a href="../../principal/vista/home.php">
                     <button class="btn btn-sm btn-outline-secondary" 
                             title="Cerrar página actual"> 
                         <i class="fas fa-times"></i> CERRAR
