@@ -40,7 +40,7 @@ if ($cantidad > 0) {
                     <label for="plan" class="col-sm-2 col-form-label"
                            title="Caracter obligatorio">* Asignatura:</label>
                     <div class="col">
-                        <select class="form-control mb-2" 
+                        <select class="form-control mb-2" data-width="100%" 
                                 title="Escriba el nombre de la asignatura para seleccionarla"
                                 name="plan" id="plan" required></select>
                     </div>
@@ -53,16 +53,16 @@ if ($cantidad > 0) {
                 <div class="form-row">
                     <label for="presidente" class="col-sm-2 col-form-label"
                            title="Caracter obligatorio">* Presidente:</label>
-                    <div class="col">
-                        <select class="form-control mb-2" 
+                    <div class="col mb-2">
+                        <select class="form-control mb-2" data-width="100%" 
                                 name="presidente" id="presidente"
                                 title="Escriba el nombre del docente para seleccionarlo"
                                 required></select>
                     </div>
                     <label for="vocal1" class="col-sm-2 col-form-label"
                            title="Caracter obligatorio">* Vocal primero:</label>
-                    <div class="col">
-                        <select class="form-control mb-2" 
+                    <div class="col mb-2">
+                        <select class="form-control mb-2" data-width="100%" 
                                 name="vocal1" id="vocal1" 
                                 title="Escriba el nombre del docente para seleccionarlo"
                                 required disabled></select>
@@ -72,7 +72,7 @@ if ($cantidad > 0) {
                     <label for="vocal2" class="col-sm-2 col-form-label"
                            title="Caracter no obligatorio">Vocal segundo:</label>
                     <div class="col">
-                        <select class="form-control mb-2"
+                        <select class="form-control mb-2" data-width="100%"
                                 name="vocal2" id="vocal2" 
                                 title="Escriba el nombre del docente para seleccionarlo" 
                                 disabled></select>
@@ -80,7 +80,7 @@ if ($cantidad > 0) {
                     <label for="suplente" class="col-sm-2 col-form-label"
                            title="Caracter no obligatorio">Suplente:</label>
                     <div class="col">
-                        <select class="form-control mb-2" 
+                        <select class="form-control mb-2" data-width="100%" 
                                 name="suplente" id="suplente"
                                 title="Escriba el nombre del docente para seleccionarlo" 
                                 disabled></select>

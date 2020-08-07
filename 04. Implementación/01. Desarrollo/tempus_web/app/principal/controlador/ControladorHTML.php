@@ -49,9 +49,14 @@ class ControladorHTML {
     }
 
     public static function mostrarCardResultadoBusqueda($titulo, $contenido) {
+        date_default_timezone_set('America/Argentina/Ushuaia');
+        $date = date("d/m/Y H:i:s");
         $html = "<div class='card border-dark'>
                     <div class='card-header bg-dark text-white'><i class='fas fa-table'></i> {$titulo}</div>
                     <div class='card-body'>{$contenido}</div>
+                    <div class='card-footer bg-dark text-white'>
+                        <div class='row'><div class='col text-right'>{$date}</div></div>
+                    </div>
                  </div>";
         return $html;
     }

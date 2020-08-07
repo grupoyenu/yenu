@@ -44,7 +44,6 @@ $(document).ready(function () {
     $('select#plan').select2({
         placeholder: 'Seleccione una opcion',
         theme: "bootstrap",
-        minimumInputLength: 1,
         maximumSelectionLength: 30,
         language: "es",
         allowClear: true,

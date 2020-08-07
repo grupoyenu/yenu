@@ -5,6 +5,8 @@ require_once 'C:/xampp/htdocs/TempusV7/app/principal/modelo/AutoCargador.php';
 use app\principal\modelo\Constantes;
 use app\principal\modelo\AutoCargador;
 
+
+
 AutoCargador::cargarModulos();
 
 session_start();
@@ -156,6 +158,7 @@ if (isset($_SESSION['user'])) {
         <link rel="stylesheet" type='text/css' href="../../../lib/js/select2/select2.bootstrap.css">
         <!-- Archivos JavaScript -->
         <script type='text/javascript' src='../../../lib/js/jquery-3.3.1/jquery-3.3.1.min.js'></script>
+        <script type='text/javascript' src='../../../lib/js/bootstrap/bootstrap.bundle.min.js'></script>
         <script type='text/javascript' src='../../../lib/js/bootstrap/bootstrap.min.js'></script>
         <script type='text/javascript' src='../../../lib/js/dataTables-1.10.16/jquery.dataTables.min.js'></script>
         <script type='text/javascript' src='../../../lib/js/buttons-1.4.2/buttons.html5.min.js'></script>
