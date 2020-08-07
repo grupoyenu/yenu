@@ -20,9 +20,9 @@ if (isset($_POST['peticion'])) {
     /* SE COMPLETO EL FORMULARIO Y SE PRESIONO EL BOTON */
     $nombreCarrera = $_POST['carrera'];
     $nombreAsignatura = $_POST['asignatura'];
-    $datos = ($nombreCarrera) ? "Carrera : {$nombreCarrera}," : "Carrera: TODAS, ";
-    $datos .= ($nombreAsignatura) ? "Asignatura '{$nombreAsignatura}'" : "Asignatura: TODAS";
-    $filtro = "Resultado de la búsqueda: " . $datos;
+    $datos = "<span class=dropdown-item>Nombre de carrera: <b>{$nombreCarrera}</b></span>";
+    $datos .= "<span class=dropdown-item>Nombre de asignatura: <b>{$nombreAsignatura}</b></span>";
+    $filtro = "Resultado de la búsqueda";
     $resultado = $controlador->buscarPorCarreraAsignatura($nombreCarrera, $nombreAsignatura);
     $_SESSION['BUSCUR'] = array($nombreCarrera, $nombreAsignatura, $datos);
 } else {
@@ -31,14 +31,16 @@ if (isset($_POST['peticion'])) {
         $parametros = $_SESSION['BUSCUR'];
         $nombreCarrera = $parametros[0];
         $nombreAsignatura = $parametros[1];
-        $filtro = "Última búsqueda realizada: " . $parametros[2];
+        $datos = $parametros[2];
+        $filtro = "Última búsqueda realizada";
         $resultado = $controlador->buscarPorCarreraAsignatura($nombreCarrera, $nombreAsignatura);
         $_SESSION['BUSCUR'] = NULL;
     } else {
         /* SE INGRESA POR PRIMERA VEZ */
         $limite = 20;
         $resultado = $controlador->listarResumenCursadas($limite);
-        $filtro = "Resumen de horarios de cursada: Hasta {$limite} registros";
+        $datos = "<span class=dropdown-item>Limite: <b>{$limite}</b></span>";
+        $filtro = "Resumen de horarios de cursada";
         $_SESSION['BUSCUR'] = NULL;
     }
 }
@@ -107,48 +109,48 @@ if ($resultado[0] == 2) {
 
         $filas .= "
             <tr>
-                <td style='display: none;'>{$codigoCarrera}</td>
-                <td style='display: none;'>{$nombreCortoCarrera}</td>
-                <td class='align-middle'>{$nombreLargoCarrera}</td>
-                <td style='display: none;'>{$nombreCortoAsignatura}</td>
-                <td class='align-middle'>{$nombreLargoAsignatura}</td>
-                <td class='align-middle'>{$anio}</td>
-                <td class='align-middle'>{$lunes}</td>
-                <td style='display: none;'>{$horaInicioLunes}</td>
-                <td style='display: none;'>{$horaFinLunes}</td>
-                <td style='display: none;'>{$sectorAulaLunes}</td>
-                <td style='display: none;'>{$nombreAulaLunes}</td>
-                <td style='display: none;'>{$fechaEdicionLunes}</td>
-                <td class='align-middle'>{$martes}</td>
-                <td style='display: none;'>{$horaInicioMartes}</td>
-                <td style='display: none;'>{$horaFinMartes}</td>
-                <td style='display: none;'>{$sectorAulaMartes}</td>
-                <td style='display: none;'>{$nombreAulaMartes}</td>
-                <td style='display: none;''>{$fechaEdicionMartes}</td>
-                <td class='align-middle'>{$miercoles}</td>
-                <td style='display: none;'>{$horaInicioMiercoles}</td>
-                <td style='display: none;'>{$horaFinMiercoles}</td>
-                <td style='display: none;'>{$sectorAulaMiercoles}</td>
-                <td style='display: none;'>{$nombreAulaMiercoles}</td>
-                <td style='display: none;'>{$fechaEdicionMiercoles}</td>
-                <td class='align-middle'>{$jueves}</td>
-                <td style='display: none;'>{$horaInicioJueves}</td>
-                <td style='display: none;'>{$horaFinJueves}</td>
-                <td style='display: none;'>{$sectorAulaJueves}</td>
-                <td style='display: none;'>{$nombreAulaJueves}</td>
-                <td style='display: none;'>{$fechaEdicionJueves}</td>
-                <td class='align-middle'>{$viernes}</td>
-                <td style='display: none;'>{$horaInicioViernes}</td>
-                <td style='display: none;'>{$horaFinViernes}</td>
-                <td style='display: none;'>{$sectorAulaViernes}</td>
-                <td style='display: none;'>{$nombreAulaViernes}</td>
-                <td style='display: none;'>{$fechaEdicionViernes}</td> 
-                <td class='align-middle'>{$sabado}</td>
-                <td style='display: none;'>{$horaInicioSabado}</td>
-                <td style='display: none;'>{$horaFinSabado}</td>
-                <td style='display: none;'>{$sectorAulaSabado}</td>
-                <td style='display: none;'>{$nombreAulaSabado}</td>
-                <td style='display: none;'>{$fechaEdicionSabado}</td>
+                <td class='align-middle col_codigo_carrera' style='display: none;'>{$codigoCarrera}</td>
+                <td class='align-middle col_nombre_corto_carrera' style='display: none;'>{$nombreCortoCarrera}</td>
+                <td class='align-middle col_nombre_largo_carrera' class='align-middle'>{$nombreLargoCarrera}</td>
+                <td class='align-middle col_nombre_corto_asignatura' style='display: none;'>{$nombreCortoAsignatura}</td>
+                <td class='align-middle col_nombre_largo_asignatura'>{$nombreLargoAsignatura}</td>
+                <td class='align-middle col_anio'>{$anio}</td>
+                <td class='align-middle col_dia_lunes'>{$lunes}</td>
+                <td class='align-middle' style='display: none;'>{$horaInicioLunes}</td>
+                <td class='align-middle' style='display: none;'>{$horaFinLunes}</td>
+                <td class='align-middle' style='display: none;'>{$sectorAulaLunes}</td>
+                <td class='align-middle' style='display: none;'>{$nombreAulaLunes}</td>
+                <td class='align-middle' style='display: none;'>{$fechaEdicionLunes}</td>
+                <td class='align-middle col_dia_martes'>{$martes}</td>
+                <td class='align-middle' style='display: none;'>{$horaInicioMartes}</td>
+                <td class='align-middle' style='display: none;'>{$horaFinMartes}</td>
+                <td class='align-middle' style='display: none;'>{$sectorAulaMartes}</td>
+                <td class='align-middle' style='display: none;'>{$nombreAulaMartes}</td>
+                <td class='align-middle' style='display: none;''>{$fechaEdicionMartes}</td>
+                <td class='align-middle col_dia_miercoles'>{$miercoles}</td>
+                <td class='align-middle' style='display: none;'>{$horaInicioMiercoles}</td>
+                <td class='align-middle' style='display: none;'>{$horaFinMiercoles}</td>
+                <td class='align-middle' style='display: none;'>{$sectorAulaMiercoles}</td>
+                <td class='align-middle' style='display: none;'>{$nombreAulaMiercoles}</td>
+                <td class='align-middle' style='display: none;'>{$fechaEdicionMiercoles}</td>
+                <td class='align-middle col_dia_jueves'>{$jueves}</td>
+                <td class='align-middle' style='display: none;'>{$horaInicioJueves}</td>
+                <td class='align-middle' style='display: none;'>{$horaFinJueves}</td>
+                <td class='align-middle' style='display: none;'>{$sectorAulaJueves}</td>
+                <td class='align-middle' style='display: none;'>{$nombreAulaJueves}</td>
+                <td class='align-middle' style='display: none;'>{$fechaEdicionJueves}</td>
+                <td class='align-middle col_dia_viernes'>{$viernes}</td>
+                <td class='align-middle' style='display: none;'>{$horaInicioViernes}</td>
+                <td class='align-middle' style='display: none;'>{$horaFinViernes}</td>
+                <td class='align-middle' style='display: none;'>{$sectorAulaViernes}</td>
+                <td class='align-middle' style='display: none;'>{$nombreAulaViernes}</td>
+                <td class='align-middle' style='display: none;'>{$fechaEdicionViernes}</td> 
+                <td class='align-middle col_dia_sabado'>{$sabado}</td>
+                <td class='align-middle' style='display: none;'>{$horaInicioSabado}</td>
+                <td class='align-middle' style='display: none;'>{$horaFinSabado}</td>
+                <td class='align-middle' style='display: none;'>{$sectorAulaSabado}</td>
+                <td class='align-middle' style='display: none;'>{$nombreAulaSabado}</td>
+                <td class='align-middle' style='display: none;'>{$fechaEdicionSabado}</td>
                 <td class='text-center'>
                     <div class='btn-group btn-group-sm'>
                         <button class='btn btn-outline-info detalle' 
@@ -169,48 +171,123 @@ if ($resultado[0] == 2) {
                 </td>
             </tr>";
     }
+
     $cuerpo = '
+        <div class="form-row">
+            <div class="col text-left">
+                <div class="btn-group">
+                    <button class="btn btn-outline-dark dropdown-toggle"
+                            title="Configurar columnas a visualizar"
+                            type="button" data-toggle="dropdown" 
+                            aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-tasks"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item">
+                            <input type="checkbox" class="col_checkbox" value="col_codigo_carrera"/> 
+                            <span class="ml-4">Código de carrera</span>
+                        </a>
+                        <a class="dropdown-item">
+                            <input type="checkbox" class="col_checkbox" value="col_nombre_corto_carrera"/>
+                            <span class="ml-4">Nombre corto de carrera</span>
+                        </a>
+                        
+                        <a class="dropdown-item">
+                            <input type="checkbox" checked class="col_checkbox" value="col_nombre_largo_carrera"/> 
+                            <span class="ml-4">Nombre largo de carrera</span>
+                        </a>
+                        <a class="dropdown-item">
+                            <input type="checkbox" class="col_checkbox" value="col_nombre_corto_asignatura"/>
+                            <span class="ml-4">Nombre corto de asignatura</span>
+                        </a>
+                        <a class="dropdown-item">
+                            <input type="checkbox" checked class="col_checkbox" value="col_nombre_largo_asignatura"/>
+                            <span class="ml-4">Nombre largo de asignatura</span>
+                        </a>
+                        <a class="dropdown-item">
+                            <input type="checkbox" checked class="col_checkbox" value="col_anio"/>
+                            <span class="ml-4">Año</span>
+                        </a>
+                        <a class="dropdown-item">
+                            <input type="checkbox" checked class="col_checkbox" value="col_dia_lunes"/>
+                            <span class="ml-4">Lunes</span>
+                        </a>
+                        <a class="dropdown-item">
+                            <input type="checkbox" checked class="col_checkbox" value="col_dia_martes"/>
+                            <span class="ml-4">Martes</span>
+                        </a>
+                        <a class="dropdown-item">
+                            <input type="checkbox" checked class="col_checkbox" value="col_dia_miercoles"/>
+                            <span class="ml-4">Miercoles</span>
+                        </a>
+                        <a class="dropdown-item">
+                            <input type="checkbox" checked class="col_checkbox" value="col_dia_jueves"/>
+                            <span class="ml-4">Jueves</span>
+                        </a>
+                        <a class="dropdown-item">
+                            <input type="checkbox" checked class="col_checkbox" value="col_dia_viernes"/>
+                            <span class="ml-4">Viernes</span>
+                        </a>
+                        <a class="dropdown-item">
+                            <input type="checkbox" checked class="col_checkbox" value="col_dia_sabado"/>
+                            <span class="ml-4">Sabado</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-outline-dark dropdown-toggle"
+                            title="Datos del filtro aplicado"
+                            type="button" data-toggle="dropdown" 
+                            aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-filter"></i>
+                    </button>
+                    <div class="dropdown-menu">' . $datos . '</div>
+                </div>   
+            </div>  
+        </div>';
+
+    $cuerpo .= '
         <div class="table-responsive mt-4 mb-4">
             <table id="tablaBuscarCursadas" class="table table-bordered table-hover">
                 <thead>
                     <tr>
-                        <th style="display: none;">Código de carrera</th>
-                        <th style="display: none;">Nombre corto de carrera</th>
-                        <th>Carrera</th>
-                        <th style="display: none;">Nombre corto de asignatura</th>
-                        <th>Asignatura</th>
-                        <th>Año</th>
-                        <th title="">Lunes</th>
+                        <th class="col_codigo_carrera" style="display: none;">Código de carrera</th>
+                        <th class="col_nombre_corto_carrera" style="display: none;">Nombre corto de carrera</th>
+                        <th class="col_nombre_largo_carrera" >Carrera</th>
+                        <th class="col_nombre_corto_asignatura" style="display: none;">Nombre corto de asignatura</th>
+                        <th class="col_nombre_largo_asignatura" >Asignatura</th>
+                        <th class="col_anio">Año</th>
+                        <th class="col_dia_lunes">Lunes</th>
                         <th style="display: none;">Hora inicio</th>
                         <th style="display: none;">Hora fin</th>
                         <th style="display: none;">Sector</th>
                         <th style="display: none;">Aula</th>
                         <th style="display: none;">Fecha de edición</th>
-                        <th title="">Martes</th>
+                        <th class="col_dia_martes" >Martes</th>
                         <th style="display: none;">Hora inicio</th>
                         <th style="display: none;">Hora fin</th>
                         <th style="display: none;">Sector</th>
                         <th style="display: none;">Aula</th>
                         <th style="display: none;">Fecha de edición</th>
-                        <th title="">Miercoles</th>
+                        <th class="col_dia_miercoles">Miercoles</th>
                         <th style="display: none;">Hora inicio</th>
                         <th style="display: none;">Hora fin</th>
                         <th style="display: none;">Sector</th>
                         <th style="display: none;">Aula</th>
                         <th style="display: none;">Fecha de edición</th>
-                        <th title="">Jueves</th>
+                        <th class="col_dia_jueves">Jueves</th>
                         <th style="display: none;">Hora inicio</th>
                         <th style="display: none;">Hora fin</th>
                         <th style="display: none;">Sector</th>
                         <th style="display: none;">Aula</th>
                         <th style="display: none;">Fecha de edición</th>
-                        <th title="">Viernes</th>
+                        <th class="col_dia_viernes">Viernes</th>
                         <th style="display: none;">Hora inicio</th>
                         <th style="display: none;">Hora fin</th>
                         <th style="display: none;">Sector</th>
                         <th style="display: none;">Aula</th>
                         <th style="display: none;">Fecha de edición</th>
-                        <th title="">Sabado</th>
+                        <th class="col_dia_sabado">Sabado</th>
                         <th style="display: none;">Hora inicio</th>
                         <th style="display: none;">Hora fin</th>
                         <th style="display: none;">Sector</th>

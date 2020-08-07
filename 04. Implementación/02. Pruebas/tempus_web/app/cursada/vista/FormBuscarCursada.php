@@ -27,9 +27,9 @@
                             <div class="col">
                                 <input type="text" class="form-control mb-2" 
                                        name="carrera" id="carrera"
-                                       maxlength="20" 
-                                       pattern="[A-Za-zÁÉÍÓÚÑáéíóú ]{0,20}"
-                                       title="Esciba el nombre de la carrera a buscar. Longitud máxima: 20."
+                                       maxlength="40" 
+                                       pattern="[A-Za-zÁÉÍÓÚÑáéíóú ]{0,40}"
+                                       title="Esciba el nombre de la carrera a buscar. Longitud máxima: 40."
                                        placeholder="Nombre de la carrera">
                             </div>
                             <label for="asignatura" class="col-sm-2 col-form-label"
@@ -37,9 +37,9 @@
                             <div class="col">
                                 <input type="text" class="form-control mb-2" 
                                        name="asignatura" id="asignatura"
-                                       maxlength="20" 
-                                       pattern="[A-Za-zÁÉÍÓÚÑáéíóú0-9 ]{0,20}"
-                                       title="Escriba el nombre de la asignatura a buscar. Longitud máxima: 20."
+                                       maxlength="40" 
+                                       pattern="[A-Za-zÁÉÍÓÚÑáéíóú0-9 ]{0,40}"
+                                       title="Escriba el nombre de la asignatura a buscar. Longitud máxima: 40."
                                        placeholder="Nombre de la asignatura">
                             </div>
                         </div>

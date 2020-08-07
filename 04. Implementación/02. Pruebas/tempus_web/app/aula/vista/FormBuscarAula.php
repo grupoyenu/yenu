@@ -35,10 +35,10 @@
                                    title="Caracter no obligatorio">Nombre:</label>
                             <div class="col">
                                 <input type="text" class="form-control mb-2" 
-                                       name="nombre" id="nombre" maxlength="15" 
-                                       pattern="[A-Za-zÁÉÍÓÚÑáéíóúñ0-9 ]{0,15}"
-                                       title="Escriba el nombre del aula a buscar. Longitud máxima: 15."
-                                       placeholder="Nombre del sector o aula">
+                                       name="nombre" id="nombre" maxlength="20" 
+                                       pattern="[A-Za-zÁÉÍÓÚÑáéíóúñ0-9 ]{0,20}"
+                                       title="Escriba el nombre del aula a buscar. Longitud máxima: 20."
+                                       placeholder="Nombre del aula">
                             </div>
                         </div>
                         <div class="form-row">

@@ -31,7 +31,7 @@ for ($dia = 1; $dia < 7; ++$dia) {
                         id="horaFin' . $dia . '" name="horaFin' . $dia . '" disabled>' . $opcionesFin . '</select>
             </td>
             <td class="align-middle">
-                <select class="form-control aula" style="width:100%" 
+                <select class="form-control aula" style="width:100%" data-width="100%"
                         name="aula' . $dia . '" id="aula' . $dia . '" 
                         disabled required>
                 </select>

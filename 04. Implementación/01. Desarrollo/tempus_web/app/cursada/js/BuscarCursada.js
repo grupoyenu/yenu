@@ -77,6 +77,13 @@ $(document).ready(function () {
         });
     });
 
+    $('#seccionInferior').on('change', '.col_checkbox', function () {
+        var columna = $(this).val();
+        var checked = $(this).prop('checked');
+        (checked) ? $('.' + columna).show() : $('.' + columna).hide();
+    });
+
+
 });
 
 
