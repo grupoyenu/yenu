@@ -1,0 +1,6 @@
+[INF][HORA: 02:58:42][USUARIO: grupoyenu@gmail.com][IP: ::1][SCRIPT: index.php][INGRESO DE USUARIO]
+[INF][HORA: 02:59:53][USUARIO: grupoyenu@gmail.com][IP: ::1][SCRIPT: ProcesarModificarUsuario.php][ 2 --> UPDATE usuario SET email = 'grupoyenu@gmail.com', nombre='Grupo Yenu', metodoLogin='Google', estado='Activo' WHERE id = 6]
+[INF][HORA: 02:59:53][USUARIO: grupoyenu@gmail.com][IP: ::1][SCRIPT: ProcesarModificarUsuario.php][ 2 --> DELETE FROM rol_usuario WHERE usuario_id = 6]
+[INF][HORA: 02:59:53][USUARIO: grupoyenu@gmail.com][IP: ::1][SCRIPT: ProcesarModificarUsuario.php][ 2 --> INSERT INTO rol_usuario VALUES (2, 6)]
+[INF][HORA: 02:59:53][USUARIO: grupoyenu@gmail.com][IP: ::1][SCRIPT: ProcesarModificarUsuario.php][CONEXION --> COMMIT]
+[INF][HORA: 03:00:54][USUARIO: grupoyenu@gmail.com][IP: ::1][SCRIPT: index.php][INGRESO DE USUARIO]
