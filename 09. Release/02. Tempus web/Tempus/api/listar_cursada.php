@@ -3,7 +3,7 @@
 header("Access-Control-Allow-Origin: *");
 
 include_once '../config/inc_config.php';
-include_once '../app/modelo/Encriptador.php';
+include_once '../app/principal/modelo/Encriptador.php';
 include_once './MySQL.php';
 
 $idCarrera = strip_tags($_REQUEST['idCarrera']);
@@ -12,13 +12,21 @@ $anio = strip_tags($_REQUEST['anio']);
 
 if ($idCarrera && ($idAsignatura || $anio)) {
     $instancia = MySQL::getInstancia();
-    $query = "SELECT nombreLargoAsignatura, "
-            . " CONCAT(SUBSTRING(horaInicioLunes, 1, 5),' a ', SUBSTRING(horaFinLunes, 1, 5),' - ', sectorAulaLunes,' ', nombreAulaLunes) lunes,"
-            . " CONCAT(SUBSTRING(horaInicioMartes, 1, 5),' a ', SUBSTRING(horaFinMartes, 1, 5),' - ', sectorAulaMartes,' ', nombreAulaMartes) martes,"
-            . " CONCAT(SUBSTRING(horaInicioMiercoles, 1, 5),' a ', SUBSTRING(horaFinMiercoles, 1, 5),' - ', sectorAulaMiercoles,' ', nombreAulaMiercoles) miercoles,"
-            . " CONCAT(SUBSTRING(horaInicioJueves, 1, 5),' a ', SUBSTRING(horaFinJueves, 1, 5),' - ', sectorAulaJueves,' ', nombreAulaJueves) jueves,"
-            . " CONCAT(SUBSTRING(horaInicioViernes, 1, 5),' a ', SUBSTRING(horaFinViernes, 1, 5),' - ', sectorAulaViernes,' ', nombreAulaViernes) viernes,"
-            . " CONCAT(SUBSTRING(horaInicioSabado, 1, 5),' a ', SUBSTRING(horaFinSabado, 1, 5),' - ', sectorAulaSabado,' ', nombreAulaSabado) sabado "
+    $query = "SELECT idPlan, "
+			. " nombreLargoAsignatura, "
+            . " CONCAT(SUBSTRING(horaInicioLunes, 1, 5), ' a ', SUBSTRING(horaFinLunes, 1, 5)) horaLunes, "
+			. " CONCAT(sectorAulaLunes, ' ', nombreAulaLunes) aulaLunes, "
+			. " CONCAT(SUBSTRING(horaInicioMartes, 1, 5), ' a ', SUBSTRING(horaFinMartes, 1, 5)) horaMartes, "
+			. " CONCAT(sectorAulaMartes, ' ', nombreAulaMartes) aulaMartes, "
+			. " CONCAT(SUBSTRING(horaInicioMiercoles, 1, 5), ' a ', SUBSTRING(horaFinMiercoles, 1, 5)) horaMiercoles, "
+			. " CONCAT(sectorAulaMiercoles, ' ', nombreAulaMiercoles) aulaMiercoles, "
+			. " CONCAT(SUBSTRING(horaInicioJueves, 1, 5), ' a ', SUBSTRING(horaFinJueves, 1, 5)) horaJueves, "
+			. " CONCAT(sectorAulaJueves, ' ', nombreAulaJueves) aulaJueves, "
+			. " CONCAT(SUBSTRING(horaInicioViernes, 1, 5), ' a ', SUBSTRING(horaFinViernes, 1, 5)) horaViernes, "
+			. " CONCAT(sectorAulaViernes, ' ', nombreAulaViernes) aulaViernes, "
+			. " CONCAT(SUBSTRING(horaInicioSabado, 1, 5), ' a ', SUBSTRING(horaFinSabado, 1, 5)) horaSabado, "
+			. " CONCAT(sectorAulaSabado, ' ', nombreAulaSabado) aulaSabado, "
+			. " false favorito "
             . " FROM vw_cursada "
             . " WHERE codigoCarrera = {$idCarrera} AND ";
     $query .= ($idAsignatura) ? " idAsignatura = {$idAsignatura} " : " anio = {$anio} ";

@@ -205,7 +205,7 @@ function incializarTabla() {
                 { extend: 'copy', text: 'Copiar' }
             ],
             responsive: true,
-            language: { url: "./lib/js/Spanish.json" }
+            language: { url: "../../../lib/js/Spanish.json" }
         });
     }
 }

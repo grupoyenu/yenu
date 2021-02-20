@@ -105,7 +105,7 @@ if (isset($_SESSION['cursadas'])) {
                 <div class="col text-right">
                     <a href="FormSeleccionarCursada.php">
                         <button type="button" class="btn btn-outline-info">
-                            <i class="fas fa-search"></i> VOLVER
+                            <i class="fas fa-arrow-left"></i> VOLVER
                         </button>
                     </a>
                 </div>

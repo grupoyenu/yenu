@@ -15,7 +15,7 @@ $(document).ready(function () {
         "bPaginate": false,
         paging: false,
         responsive: true,
-        language: { url: "./lib/js/Spanish.json" }
+        language: { url: "../../../lib/js/Spanish.json" }
     });
 
     $('#btnImportarCursada').click(function (evento) {
@@ -31,7 +31,7 @@ $(document).ready(function () {
                     "bPaginate": false,
                     paging: false,
                     responsive: true,
-                    language: { url: "./lib/js/Spanish.json" }
+                    language: { url: "../../../lib/js/Spanish.json" }
                 });
             },
             error: function (data) {

@@ -3,7 +3,7 @@
 header("Access-Control-Allow-Origin: *");
 
 include_once '../config/inc_config.php';
-include_once '../app/modelo/Encriptador.php';
+include_once '../app/principal/modelo/Encriptador.php';
 include_once './MySQL.php';
 
 $idCarrera = strip_tags($_REQUEST['idCarrera']);
@@ -19,11 +19,14 @@ if ($idCarrera && ($idAsignatura || $docente)) {
             . " nombreVocalSegundo,"
             . " nombreSuplente,"
             . " DATE_FORMAT(fechaPrimerLlamado, '%d/%m/%Y') fechaPrimerLlamado,"
+			. " TIME_FORMAT(horaPrimerLlamado, '%H:%i') horaPrimerLlamado,"
             . " (CASE WHEN sectorAulaPrimerLlamado IS NULL THEN 'Sin asignar' ELSE CONCAT(sectorAulaPrimerLlamado,' ',nombreAulaPrimerLlamado) END) aulaPrimerLlamado,"
             . " estadoPrimerLlamado,"
             . " DATE_FORMAT(fechaSegundoLlamado, '%d/%m/%Y') fechaSegundoLlamado,"
+			. " TIME_FORMAT(horaSegundoLlamado, '%H:%i') horaSegundoLlamado,"
             . " (CASE WHEN sectorAulaSegundoLlamado IS NULL THEN 'Sin asignar' ELSE CONCAT(sectorAulaSegundoLlamado,' ',nombreAulaSegundoLlamado) END) aulaSegundoLlamado,"
-            . " estadoSegundoLlamado"
+            . " estadoSegundoLlamado,"
+			. " false favorito"
             . " FROM vw_mesa_examen "
             . " WHERE codigoCarrera = {$idCarrera} AND ";
     $query .= ($idAsignatura) ? " idAsignatura = {$idAsignatura} " : " (nombrePresidente LIKE '%{$docente}%' OR nombreVocalPrimero LIKE '%{$docente}%' OR nombreVocalSegundo LIKE '%{$docente}%' OR nombreSuplente LIKE '%{$docente}%') ";
@@ -34,7 +37,7 @@ if ($idCarrera && ($idAsignatura || $docente)) {
             $carreras = $resultado->fetch_all(MYSQLI_ASSOC);
             $response = array('estado' => 'OK', 'datos' => $carreras);
         } else {
-            $response = array('estado' => 'BAD', 'datos' => 'No se encontraron cursadas cargadas');
+            $response = array('estado' => 'BAD', 'datos' => 'No se encontraron mesas de examen cargadas');
         }
     } else {
         $response = array('estado' => 'BAD', 'datos' => 'Error al consultar mesas de examen');

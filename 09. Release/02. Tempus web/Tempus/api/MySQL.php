@@ -5,7 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-use app\modelo\Encriptador;
+use app\principal\modelo\Encriptador;
 
 class MySQL extends mysqli {
 

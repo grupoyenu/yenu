@@ -3,7 +3,7 @@
 header("Access-Control-Allow-Origin: *");
 
 include_once '../config/inc_config.php';
-include_once '../app/modelo/Encriptador.php';
+include_once '../app/principal/modelo/Encriptador.php';
 include_once './MySQL.php';
 
 

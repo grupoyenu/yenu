@@ -51,7 +51,7 @@ if (isset($_FILES['fileCursadas'])) {
                     <td title='$errores[7]' class='{$classJueves}'>$registro[16] $registro[17] $registro[18] " . utf8_encode($registro[19]) . "</td>
                     <td title='$errores[8]' class='{$classViernes}'>$registro[20] $registro[21] $registro[22] " . utf8_encode($registro[23]) . "</td>
                     <td title='$errores[9]' class='{$classSabado}'>$registro[24] $registro[25] $registro[26] " . utf8_encode($registro[27]) . "</td>
-                    <td style='display: none;'>$estado</td>
+                    <td>$estado</td>
                 </tr>";
         }
         $cuerpo = '
@@ -69,7 +69,7 @@ if (isset($_FILES['fileCursadas'])) {
                             <th title="Clase del día Jueves">Jueves</th>
                             <th title="Clase del día Viernes">Viernes</th>
                             <th title="Clase del día Sabado">Sábado</th>
-                            <th style="display: none;">Estado del registro</th>
+                            <th>Estado</th>
                         </tr>
                     </thead>
                     <tbody>' . $filas . '</tbody>
